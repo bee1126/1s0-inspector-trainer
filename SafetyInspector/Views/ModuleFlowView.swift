@@ -152,12 +152,18 @@ struct CompletionView: View {
                     ScoreBadge(score: score)
                 }
 
-                Button(didSave ? "Saved" : "Save Progress") {
-                    guard !didSave else { return }
-                    onComplete()
-                    didSave = true
+                if didSave {
+                    Button("Saved") {
+                        // No-op once saved
+                    }
+                    .buttonStyle(OutlineButtonStyle())
+                } else {
+                    Button("Save Progress") {
+                        onComplete()
+                        didSave = true
+                    }
+                    .buttonStyle(PrimaryButtonStyle())
                 }
-                .buttonStyle(didSave ? OutlineButtonStyle() : PrimaryButtonStyle())
             }
         }
         .padding(.horizontal, 20)
