@@ -11,36 +11,6 @@ struct ToolsView: View {
                         .font(AppFont.title(26))
                         .foregroundColor(.white)
 
-                    ToolSection(title: "Daily Training") {
-                        NavigationLink { DailyFiveView() } label: {
-                            ToolCard(title: "Daily 5", detail: "Five-question micro quiz with streak tracking")
-                        }
-                        NavigationLink { HazardSpotCheckView() } label: {
-                            ToolCard(title: "Hazard Spot-Check", detail: "Photo-style hazard identification drills")
-                        }
-                    }
-
-                    ToolSection(title: "Inspection Practice") {
-                        NavigationLink { ChecklistModeView() } label: {
-                            ToolCard(title: "Inspect This Shop", detail: "Checklist run with scoring and feedback")
-                        }
-                        NavigationLink { RedTeamView() } label: {
-                            ToolCard(title: "Red Team Report", detail: "Find what is wrong in a mock inspection report")
-                        }
-                    }
-
-                    ToolSection(title: "Field Builders") {
-                        NavigationLink { JhaBuilderView() } label: {
-                            ToolCard(title: "JHA Builder", detail: "Draft a job hazard analysis quickly")
-                        }
-                        NavigationLink { SafetyBriefingView() } label: {
-                            ToolCard(title: "Safety Briefing", detail: "Generate a pre-task briefing outline")
-                        }
-                        NavigationLink { PpeDecisionTreeView() } label: {
-                            ToolCard(title: "PPE Decision Tree", detail: "Walk through PPE selection logic")
-                        }
-                    }
-
                     ToolSection(title: "Feedback") {
                         NavigationLink { BugReportView() } label: {
                             ToolCard(title: "Bug Fix Reports", detail: "Capture issues to share with the dev team")
