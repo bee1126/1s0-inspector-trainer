@@ -86,6 +86,20 @@ enum TrainingContent {
                                 feedback: "Not safe. Stopping at the controls is not isolation.",
                                 isCorrect: false,
                                 nextStepId: "step-2"
+                            ),
+                            ScenarioOption(
+                                id: "step-1-c",
+                                text: "Pull the disconnect immediately without briefing anyone to save time.",
+                                feedback: "Not quite. You still need to notify affected employees and confirm all energy sources and procedures before shutdown.",
+                                isCorrect: false,
+                                nextStepId: "step-2"
+                            ),
+                            ScenarioOption(
+                                id: "step-1-d",
+                                text: "Have the operator stand by the start/stop controls while you remove the guard.",
+                                feedback: "Incorrect. A spotter at the controls is not energy isolation or personal control.",
+                                isCorrect: false,
+                                nextStepId: "step-2"
                             )
                         ]
                     ),
@@ -104,6 +118,20 @@ enum TrainingContent {
                                 id: "step-2-b",
                                 text: "Place a tag on the control panel and start work.",
                                 feedback: "Incorrect. Tags alone do not isolate energy.",
+                                isCorrect: false,
+                                nextStepId: "step-3"
+                            ),
+                            ScenarioOption(
+                                id: "step-2-c",
+                                text: "Remove the guard first, then lock out if the job takes longer than expected.",
+                                feedback: "Unsafe. If you are exposed to hazardous energy during servicing, isolate first—don’t wait until mid-task.",
+                                isCorrect: false,
+                                nextStepId: "step-3"
+                            ),
+                            ScenarioOption(
+                                id: "step-2-d",
+                                text: "Lock only the main switch and ignore secondary sources and stored energy.",
+                                feedback: "Incorrect. You must isolate all energy sources and address stored/accumulated energy as part of the sequence.",
                                 isCorrect: false,
                                 nextStepId: "step-3"
                             )
@@ -126,6 +154,20 @@ enum TrainingContent {
                                 feedback: "Not enough. You must verify isolation.",
                                 isCorrect: false,
                                 nextStepId: "step-4"
+                            ),
+                            ScenarioOption(
+                                id: "step-3-c",
+                                text: "Use only an instrument check and skip try-out to avoid accidental start.",
+                                feedback: "Not enough. Verification should follow the established try-out/verification method—not a single check you invent on the fly.",
+                                isCorrect: false,
+                                nextStepId: "step-4"
+                            ),
+                            ScenarioOption(
+                                id: "step-3-d",
+                                text: "Begin loosening the guard fasteners to see if anything moves.",
+                                feedback: "Unsafe. Verification happens before you place any part of your body into a hazard zone.",
+                                isCorrect: false,
+                                nextStepId: "step-4"
                             )
                         ]
                     ),
@@ -144,6 +186,20 @@ enum TrainingContent {
                                 id: "step-4-b",
                                 text: "Ask another worker to remove your lock while you document the repair.",
                                 feedback: "Incorrect. Removal should be done by the person who applied the lock.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "step-4-c",
+                                text: "Re-energize to test operation before reinstalling the guard to save time.",
+                                feedback: "Incorrect. Restore guarding and ensure the area is clear before re-energizing and returning to service.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "step-4-d",
+                                text: "Remove your lock and leave—assume the operator will handle notifications later.",
+                                feedback: "Not acceptable. Clear communication with affected employees is a required part of restoring the equipment safely.",
                                 isCorrect: false,
                                 nextStepId: nil
                             )
@@ -227,6 +283,20 @@ enum TrainingContent {
                                 feedback: "Not safe. You need protection in place first.",
                                 isCorrect: false,
                                 nextStepId: "fall-step-2"
+                            ),
+                            ScenarioOption(
+                                id: "fall-step-1-c",
+                                text: "Have a coworker spot you while you work near the edge without a system.",
+                                feedback: "Incorrect. A spotter doesn’t prevent a fall—fall protection must be in place before exposure.",
+                                isCorrect: false,
+                                nextStepId: "fall-step-2"
+                            ),
+                            ScenarioOption(
+                                id: "fall-step-1-d",
+                                text: "Mark the edge with tape and proceed since you can see the hazard.",
+                                feedback: "Not enough. Visual cues don’t provide protection if you slip or get distracted.",
+                                isCorrect: false,
+                                nextStepId: "fall-step-2"
                             )
                         ]
                     ),
@@ -247,6 +317,20 @@ enum TrainingContent {
                                 feedback: "Incorrect. Body harnesses are required for arrest systems.",
                                 isCorrect: false,
                                 nextStepId: "fall-step-3"
+                            ),
+                            ScenarioOption(
+                                id: "fall-step-2-c",
+                                text: "Tie off to a nearby pipe/duct because it’s convenient.",
+                                feedback: "Incorrect. Anchorage must be approved/capable for fall loading—convenience is not a rating.",
+                                isCorrect: false,
+                                nextStepId: "fall-step-3"
+                            ),
+                            ScenarioOption(
+                                id: "fall-step-2-d",
+                                text: "Proceed without fall protection because the roof is flat and dry.",
+                                feedback: "Incorrect. Flat surfaces still present fall hazards at unprotected edges.",
+                                isCorrect: false,
+                                nextStepId: "fall-step-3"
                             )
                         ]
                     ),
@@ -265,6 +349,20 @@ enum TrainingContent {
                                 id: "fall-step-3-b",
                                 text: "Skip inspection if the equipment was used yesterday.",
                                 feedback: "Not acceptable. Inspect before each use.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "fall-step-3-c",
+                                text: "Step onto the roof, then clip in once you reach the unit.",
+                                feedback: "Incorrect. You need protection before you’re exposed to the hazard.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "fall-step-3-d",
+                                text: "Set the lanyard as long as possible so you can reach the edge easily.",
+                                feedback: "Incorrect. Rigging must control exposure and account for swing fall and clearance.",
                                 isCorrect: false,
                                 nextStepId: nil
                             )
@@ -350,6 +448,20 @@ enum TrainingContent {
                                 feedback: "Not yet. You must identify and assess hazards first.",
                                 isCorrect: false,
                                 nextStepId: "rm-step-2"
+                            ),
+                            ScenarioOption(
+                                id: "rm-step-1-c",
+                                text: "Skip hazard identification because the inspection is routine.",
+                                feedback: "Incorrect. Routine tasks still require hazard identification—conditions and hazards change.",
+                                isCorrect: false,
+                                nextStepId: "rm-step-2"
+                            ),
+                            ScenarioOption(
+                                id: "rm-step-1-d",
+                                text: "Start the inspection and figure out hazards as you go.",
+                                feedback: "Not ideal. Identify hazards up front so controls and stop-work triggers are in place before exposure.",
+                                isCorrect: false,
+                                nextStepId: "rm-step-2"
                             )
                         ]
                     ),
@@ -368,6 +480,20 @@ enum TrainingContent {
                                 id: "rm-step-2-b",
                                 text: "Assume all hazards are high risk.",
                                 feedback: "Incorrect. Use a structured assessment to prioritize.",
+                                isCorrect: false,
+                                nextStepId: "rm-step-3"
+                            ),
+                            ScenarioOption(
+                                id: "rm-step-2-c",
+                                text: "Use only estimated cost impacts to decide the risk level.",
+                                feedback: "Incorrect. Risk assessment is driven by severity and probability of credible outcomes, not cost alone.",
+                                isCorrect: false,
+                                nextStepId: "rm-step-3"
+                            ),
+                            ScenarioOption(
+                                id: "rm-step-2-d",
+                                text: "Let the most senior person decide risk level without criteria.",
+                                feedback: "Incorrect. Authority matters for acceptance, but assessment should use defined criteria and rationale.",
                                 isCorrect: false,
                                 nextStepId: "rm-step-3"
                             )
@@ -390,6 +516,20 @@ enum TrainingContent {
                                 feedback: "Not ideal. PPE is the last line of defense.",
                                 isCorrect: false,
                                 nextStepId: "rm-step-4"
+                            ),
+                            ScenarioOption(
+                                id: "rm-step-3-c",
+                                text: "Post a sign and continue with no other controls.",
+                                feedback: "Weak control. Signs rely on behavior and don’t reduce the hazard at the source.",
+                                isCorrect: false,
+                                nextStepId: "rm-step-4"
+                            ),
+                            ScenarioOption(
+                                id: "rm-step-3-d",
+                                text: "Document the hazard and proceed without implementing controls.",
+                                feedback: "Incorrect. Documentation does not reduce risk—controls must be implemented and owned.",
+                                isCorrect: false,
+                                nextStepId: "rm-step-4"
                             )
                         ]
                     ),
@@ -408,6 +548,20 @@ enum TrainingContent {
                                 id: "rm-step-4-b",
                                 text: "Assume controls are effective without follow-up.",
                                 feedback: "Incorrect. Supervision and evaluation are required.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "rm-step-4-c",
+                                text: "File the paperwork and consider the process complete.",
+                                feedback: "Incorrect. The loop closes with supervision and evaluation, not filing.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "rm-step-4-d",
+                                text: "Hand it off to the next shift with no follow-up since controls exist on paper.",
+                                feedback: "Not enough. Controls must be verified in execution and adjusted if conditions change.",
                                 isCorrect: false,
                                 nextStepId: nil
                             )
@@ -491,6 +645,20 @@ enum TrainingContent {
                                 feedback: "Not enough. You need supervisor alignment for the whole shop.",
                                 isCorrect: false,
                                 nextStepId: "roles-step-2"
+                            ),
+                            ScenarioOption(
+                                id: "roles-step-1-c",
+                                text: "Skip the brief so you don’t disrupt production and just start the walkthrough.",
+                                feedback: "Incorrect. Alignment up front prevents surprises, resistance, and missed scope during the inspection.",
+                                isCorrect: false,
+                                nextStepId: "roles-step-2"
+                            ),
+                            ScenarioOption(
+                                id: "roles-step-1-d",
+                                text: "Brief only the safety office and begin without engaging the shop leadership.",
+                                feedback: "Not enough. Safety can support, but shop leadership owns day-to-day execution and needs alignment.",
+                                isCorrect: false,
+                                nextStepId: "roles-step-2"
                             )
                         ]
                     ),
@@ -511,6 +679,20 @@ enum TrainingContent {
                                 feedback: "Incorrect. Safety supports, but supervisors own day-to-day enforcement.",
                                 isCorrect: false,
                                 nextStepId: "roles-step-3"
+                            ),
+                            ScenarioOption(
+                                id: "roles-step-2-c",
+                                text: "The individual employee only; enforcement is a personal choice.",
+                                feedback: "Incorrect. Individuals have responsibilities, but supervisors must enforce standards and correct behavior.",
+                                isCorrect: false,
+                                nextStepId: "roles-step-3"
+                            ),
+                            ScenarioOption(
+                                id: "roles-step-2-d",
+                                text: "The inspector should personally correct each employee during the shift.",
+                                feedback: "Not the primary fix. Inspectors can coach, but supervisors own sustained enforcement and training.",
+                                isCorrect: false,
+                                nextStepId: "roles-step-3"
                             )
                         ]
                     ),
@@ -529,6 +711,20 @@ enum TrainingContent {
                                 id: "roles-step-3-b",
                                 text: "Ignore it until next inspection.",
                                 feedback: "Incorrect. Hazards must be addressed and tracked.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "roles-step-3-c",
+                                text: "Close the issue once it’s written down so the paperwork is complete.",
+                                feedback: "Incorrect. Documentation is necessary, but the hazard remains open until controlled or eliminated and verified.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "roles-step-3-d",
+                                text: "Tell the employee to work around it; mission comes first.",
+                                feedback: "Incorrect. Apply interim controls, document, and elevate risk acceptance as required—don’t normalize unsafe workarounds.",
                                 isCorrect: false,
                                 nextStepId: nil
                             )
@@ -611,6 +807,20 @@ enum TrainingContent {
                                 feedback: "Incorrect. Immediate interim controls are needed.",
                                 isCorrect: false,
                                 nextStepId: "abatement-step-2"
+                            ),
+                            ScenarioOption(
+                                id: "abatement-step-1-c",
+                                text: "Tell people to watch their step and keep the cable where it is.",
+                                feedback: "Not enough. Verbal reminders are weak controls—reduce exposure with a physical control and document the hazard.",
+                                isCorrect: false,
+                                nextStepId: "abatement-step-2"
+                            ),
+                            ScenarioOption(
+                                id: "abatement-step-1-d",
+                                text: "Close the hazard because it’s only a near miss, not an injury.",
+                                feedback: "Incorrect. Near misses are signals—control the hazard now and track corrective action to prevent injury.",
+                                isCorrect: false,
+                                nextStepId: "abatement-step-2"
                             )
                         ]
                     ),
@@ -631,6 +841,20 @@ enum TrainingContent {
                                 feedback: "Incorrect. Safety supports, but shop leadership owns corrective action.",
                                 isCorrect: false,
                                 nextStepId: "abatement-step-3"
+                            ),
+                            ScenarioOption(
+                                id: "abatement-step-2-c",
+                                text: "The newest worker because they noticed it first.",
+                                feedback: "Incorrect. Ownership must sit with a person/team who has authority and resources to fix the hazard.",
+                                isCorrect: false,
+                                nextStepId: "abatement-step-3"
+                            ),
+                            ScenarioOption(
+                                id: "abatement-step-2-d",
+                                text: "The inspector who documented it must personally fix it.",
+                                feedback: "Not usually. Inspectors drive accountability and verification; the process owner is responsible for correction.",
+                                isCorrect: false,
+                                nextStepId: "abatement-step-3"
                             )
                         ]
                     ),
@@ -649,6 +873,20 @@ enum TrainingContent {
                                 id: "abatement-step-3-b",
                                 text: "As soon as a work order is opened.",
                                 feedback: "Incorrect. Opening a work order is not closure.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "abatement-step-3-c",
+                                text: "Once leadership verbally accepts the risk.",
+                                feedback: "Incorrect. Risk acceptance does not equal abatement—closure requires a verified effective corrective action.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "abatement-step-3-d",
+                                text: "As soon as interim controls are installed.",
+                                feedback: "Not necessarily. Interim controls reduce risk but do not automatically close the hazard without verified long-term effectiveness.",
                                 isCorrect: false,
                                 nextStepId: nil
                             )
@@ -722,6 +960,20 @@ enum TrainingContent {
                                 feedback: "Incorrect. Use the matrix with defined criteria.",
                                 isCorrect: false,
                                 nextStepId: "rac-step-2"
+                            ),
+                            ScenarioOption(
+                                id: "rac-step-1-c",
+                                text: "Assign severity only and skip probability since it’s performed daily anyway.",
+                                feedback: "Incorrect. RAC requires both severity and probability—frequency/exposure influences probability.",
+                                isCorrect: false,
+                                nextStepId: "rac-step-2"
+                            ),
+                            ScenarioOption(
+                                id: "rac-step-1-d",
+                                text: "Assign RAC based on cost and schedule impact of the fix.",
+                                feedback: "Incorrect. RAC reflects risk, not convenience—use severity/probability criteria.",
+                                isCorrect: false,
+                                nextStepId: "rac-step-2"
                             )
                         ]
                     ),
@@ -740,6 +992,20 @@ enum TrainingContent {
                                 id: "rac-step-2-b",
                                 text: "Assign a low RAC to avoid disrupting operations.",
                                 feedback: "Incorrect. RAC must reflect actual risk.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "rac-step-2-c",
+                                text: "Write it as an observation without a RAC so the shop can decide urgency.",
+                                feedback: "Not enough. A consistent RAC supports prioritization and proper escalation for abatement.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "rac-step-2-d",
+                                text: "Post a warning sign and close the hazard as controlled.",
+                                feedback: "Incorrect. Signs may be interim controls, but they don’t justify closing a high-risk hazard without verified effective correction.",
                                 isCorrect: false,
                                 nextStepId: nil
                             )
@@ -813,6 +1079,20 @@ enum TrainingContent {
                                 feedback: "Incorrect. Entry must follow permit requirements.",
                                 isCorrect: false,
                                 nextStepId: "cs-step-2"
+                            ),
+                            ScenarioOption(
+                                id: "cs-step-1-c",
+                                text: "Start ventilation and enter without a permit since the air should improve.",
+                                feedback: "Incorrect. You must determine classification and follow the required entry process before entry begins.",
+                                isCorrect: false,
+                                nextStepId: "cs-step-2"
+                            ),
+                            ScenarioOption(
+                                id: "cs-step-1-d",
+                                text: "Assume it’s non-permit because it’s just a storage tank.",
+                                feedback: "Incorrect. Classification is based on hazards and configuration—not what the space is used for.",
+                                isCorrect: false,
+                                nextStepId: "cs-step-2"
                             )
                         ]
                     ),
@@ -831,6 +1111,20 @@ enum TrainingContent {
                                 id: "cs-step-2-b",
                                 text: "Enter the space to assist with the inspection.",
                                 feedback: "Incorrect. The attendant should remain outside unless trained and reassigned.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "cs-step-2-c",
+                                text: "Leave the post briefly to get tools once the entrant is inside.",
+                                feedback: "Incorrect. The attendant must remain at the entry and continuously monitor status and conditions.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "cs-step-2-d",
+                                text: "Rely on the entrant to self-monitor and self-rescue if anything changes.",
+                                feedback: "Incorrect. The attendant has a specific duty to monitor and initiate evacuation/response.",
                                 isCorrect: false,
                                 nextStepId: nil
                             )
@@ -904,6 +1198,20 @@ enum TrainingContent {
                                 feedback: "Incorrect. Hot work requires controls before starting.",
                                 isCorrect: false,
                                 nextStepId: "hw-step-2"
+                            ),
+                            ScenarioOption(
+                                id: "hw-step-1-c",
+                                text: "Post a warning sign and begin since everyone knows it’s hot work.",
+                                feedback: "Not enough. A sign doesn’t verify combustibles are controlled or that permit requirements are met.",
+                                isCorrect: false,
+                                nextStepId: "hw-step-2"
+                            ),
+                            ScenarioOption(
+                                id: "hw-step-1-d",
+                                text: "Proceed if a fire extinguisher is nearby, even without a permit.",
+                                feedback: "Incorrect. Extinguishers support response; they don’t replace hazard evaluation, permitting, and area prep.",
+                                isCorrect: false,
+                                nextStepId: "hw-step-2"
                             )
                         ]
                     ),
@@ -922,6 +1230,20 @@ enum TrainingContent {
                                 id: "hw-step-2-b",
                                 text: "Leave once cutting is done.",
                                 feedback: "Incorrect. Fire watch continues after work.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "hw-step-2-c",
+                                text: "Help with cutting while keeping an eye out for fire.",
+                                feedback: "Incorrect. Fire watch must remain focused on monitoring—splitting duties increases miss risk.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "hw-step-2-d",
+                                text: "Focus only on PPE compliance; area monitoring is the welder’s job.",
+                                feedback: "Incorrect. Fire watch monitors the work area and adjacent exposures during and after hot work.",
                                 isCorrect: false,
                                 nextStepId: nil
                             )
@@ -995,6 +1317,20 @@ enum TrainingContent {
                                 feedback: "Incorrect. Exposure can cause permanent damage.",
                                 isCorrect: false,
                                 nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "hc-step-1-c",
+                                text: "Let the job continue and remind them to wear protection at the end of the shift.",
+                                feedback: "Incorrect. The hazard is occurring now—correct PPE use and exposure controls immediately.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "hc-step-1-d",
+                                text: "Post a sign later; PPE compliance is optional if work must continue.",
+                                feedback: "Incorrect. Signs and reminders don’t replace immediate control of hazardous exposure.",
+                                isCorrect: false,
+                                nextStepId: nil
                             )
                         ]
                     )
@@ -1066,6 +1402,20 @@ enum TrainingContent {
                                 feedback: "Incorrect. Report promptly per policy.",
                                 isCorrect: false,
                                 nextStepId: "mr-step-2"
+                            ),
+                            ScenarioOption(
+                                id: "mr-step-1-c",
+                                text: "Interview witnesses first so you can write a complete report.",
+                                feedback: "Not first. Provide care, prevent further injury, and secure the scene before investigative steps.",
+                                isCorrect: false,
+                                nextStepId: "mr-step-2"
+                            ),
+                            ScenarioOption(
+                                id: "mr-step-1-d",
+                                text: "Keep the job moving and report at the end of the shift.",
+                                feedback: "Incorrect. Delayed reporting can miss key facts and may violate notification timelines.",
+                                isCorrect: false,
+                                nextStepId: "mr-step-2"
                             )
                         ]
                     ),
@@ -1084,6 +1434,20 @@ enum TrainingContent {
                                 id: "mr-step-2-b",
                                 text: "Speculation about blame.",
                                 feedback: "Incorrect. Avoid speculation.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "mr-step-2-c",
+                                text: "Only who was at fault so leadership can act quickly.",
+                                feedback: "Incorrect. Reports should focus on facts and conditions—avoid blame speculation.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "mr-step-2-d",
+                                text: "Nothing until all details are confirmed and finalized.",
+                                feedback: "Incorrect. Don’t delay initial reporting while waiting for perfect information—submit facts as known.",
                                 isCorrect: false,
                                 nextStepId: nil
                             )
@@ -1157,6 +1521,20 @@ enum TrainingContent {
                                 feedback: "Incorrect. Focus on facts first.",
                                 isCorrect: false,
                                 nextStepId: "inv-step-2"
+                            ),
+                            ScenarioOption(
+                                id: "inv-step-1-c",
+                                text: "Clean up the area first, then take photos once it’s safe.",
+                                feedback: "Be careful. Make it safe, but preserve and document perishable evidence before it’s lost whenever possible.",
+                                isCorrect: false,
+                                nextStepId: "inv-step-2"
+                            ),
+                            ScenarioOption(
+                                id: "inv-step-1-d",
+                                text: "Wait until the end of the day to interview witnesses so memories settle.",
+                                feedback: "Incorrect. Witness recollection degrades quickly—capture statements and conditions as soon as practical.",
+                                isCorrect: false,
+                                nextStepId: "inv-step-2"
                             )
                         ]
                     ),
@@ -1175,6 +1553,20 @@ enum TrainingContent {
                                 id: "inv-step-2-b",
                                 text: "The slip itself.",
                                 feedback: "Incorrect. The slip is the event, not the root cause.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "inv-step-2-c",
+                                text: "The floor was wet.",
+                                feedback: "That’s a condition/proximate factor. Root causes explain why the condition existed and wasn’t controlled.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "inv-step-2-d",
+                                text: "The worker was careless.",
+                                feedback: "Not sufficient. Go deeper—training, procedures, environment, supervision, and barriers are typical root-cause areas.",
                                 isCorrect: false,
                                 nextStepId: nil
                             )
@@ -1238,6 +1630,20 @@ enum TrainingContent {
                                 feedback: "Incorrect. Identify hazards and controls first.",
                                 isCorrect: false,
                                 nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "jha-step-1-c",
+                                text: "Start moving equipment and write the JHA afterward.",
+                                feedback: "Incorrect. JHA is a planning tool—do it before execution so controls are in place before exposure.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "jha-step-1-d",
+                                text: "Skip the JHA because the team has moved equipment before.",
+                                feedback: "Incorrect. Changes in conditions, routes, and equipment make “routine” a risky assumption—plan the job.",
+                                isCorrect: false,
+                                nextStepId: nil
                             )
                         ]
                     )
@@ -1290,6 +1696,20 @@ enum TrainingContent {
                                 feedback: "Incorrect. Safety elements are required.",
                                 isCorrect: false,
                                 nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "sb-step-1-c",
+                                text: "Only the hazards—controls can be figured out during the job.",
+                                feedback: "Incorrect. Controls and responsibilities should be briefed before work starts so the team executes safely.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "sb-step-1-d",
+                                text: "Read last week’s brief verbatim even if today’s job is different.",
+                                feedback: "Not ideal. Briefs should match today’s tasks, hazards, and conditions to stay actionable.",
+                                isCorrect: false,
+                                nextStepId: nil
                             )
                         ]
                     )
@@ -1340,6 +1760,20 @@ enum TrainingContent {
                                 id: "ppe-step-1-b",
                                 text: "No PPE needed.",
                                 feedback: "Incorrect. Grinding creates hazards.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "ppe-step-1-c",
+                                text: "Only hearing protection since grinders are loud.",
+                                feedback: "Not enough. Noise matters, but the immediate high-severity hazard is flying particles—eye/face protection is critical.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "ppe-step-1-d",
+                                text: "Only a dust mask because debris is visible.",
+                                feedback: "Incorrect. Respiratory protection may be needed depending on material, but impact/thermal hazards require eye/face and hand protection.",
                                 isCorrect: false,
                                 nextStepId: nil
                             )

@@ -35,12 +35,12 @@ struct ModuleFlowView: View {
                         }
                     }
                 case .quiz:
-                    QuizFlowView(questions: module.quiz) { result in
+                    QuizFlowView(questions: module.quiz, onComplete: { result in
                         quizResult = result
                         withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
                             stage = .complete
                         }
-                    }
+                    }, shuffleQuestions: true, maxQuestions: 10)
                 case .complete:
                     CompletionView(
                         moduleTitle: module.title,

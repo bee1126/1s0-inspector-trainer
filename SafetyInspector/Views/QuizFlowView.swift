@@ -39,6 +39,14 @@ struct QuizFlowView: View {
                     resetProgress()
                 }
 
+                if let imageName = question.imageName {
+                    Image(imageName)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxHeight: 180)
+                        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                }
+
                 Text(question.prompt)
                     .font(AppFont.subtitle(18))
                     .foregroundColor(AppTheme.charcoal)
@@ -49,7 +57,8 @@ struct QuizFlowView: View {
                             text: choice.text,
                             isSelected: selectedChoiceId == choice.id,
                             isCorrect: choice.isCorrect,
-                            isLocked: selectedChoiceId != nil
+                            isLocked: selectedChoiceId != nil,
+                            revealCorrect: true
                         )
                         .onTapGesture {
                             guard selectedChoiceId == nil else { return }
@@ -87,9 +96,9 @@ struct QuizFlowView: View {
     }
 
     private func advance() {
-        let filtered = filteredQuestions
-        if index == filtered.count - 1 {
-            onComplete(Result(score: correctCount, total: filtered.count))
+        let list = preparedQuestions.isEmpty ? filteredQuestions : preparedQuestions
+        if index == list.count - 1 {
+            onComplete(Result(score: correctCount, total: list.count))
         } else {
             index += 1
             selectedChoiceId = nil
@@ -124,6 +133,16 @@ struct QuizFlowView: View {
         }
         if let maxQuestions {
             list = Array(list.prefix(maxQuestions))
+        }
+        // Prevent pattern learning (correct answer always in the same position).
+        list = list.map { question in
+            QuizQuestion(
+                id: question.id,
+                prompt: question.prompt,
+                difficulty: question.difficulty,
+                imageName: question.imageName,
+                choices: question.choices.shuffled()
+            )
         }
         preparedQuestions = list
     }

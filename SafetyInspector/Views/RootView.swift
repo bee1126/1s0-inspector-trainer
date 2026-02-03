@@ -15,33 +15,26 @@ struct RootView: View {
                 }
 
                 NavigationStack {
-                    ModuleListView()
-                }
-                .tabItem {
-                    Label("Modules", systemImage: "square.grid.2x2")
-                }
-
-                NavigationStack {
                     ProgressDashboardView()
                 }
                 .tabItem {
                     Label("Progress", systemImage: "chart.bar.xaxis")
                 }
 
-            NavigationStack {
-                SourcesView()
-            }
-            .tabItem {
-                Label("Sources", systemImage: "book")
-            }
+                NavigationStack {
+                    SourcesView()
+                }
+                .tabItem {
+                    Label("Sources", systemImage: "book")
+                }
 
-            NavigationStack {
-                ToolsView()
+                NavigationStack {
+                    ToolsView()
+                }
+                .tabItem {
+                    Label("Feedback", systemImage: "bubble.left.and.bubble.right")
+                }
             }
-            .tabItem {
-                Label("Tools", systemImage: "wrench.and.screwdriver")
-            }
-        }
             .tint(AppTheme.blue)
             .environmentObject(progress)
 

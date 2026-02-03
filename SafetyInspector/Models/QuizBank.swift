@@ -92,7 +92,7 @@ enum QuizBank {
                 QuizChoice(id: "loto-q8-a", text: "A tag plus additional measures that provide physical restraint or control", isCorrect: true),
                 QuizChoice(id: "loto-q8-b", text: "Two tags on the same device", isCorrect: false),
                 QuizChoice(id: "loto-q8-c", text: "A tag and a written reminder at the tool crib", isCorrect: false),
-                QuizChoice(id: "loto-q8-d", text: "A tag is equivalent as long as it is red", isCorrect: false)
+                QuizChoice(id: "loto-q8-d", text: "A tag is equivalent if it is signed, dated, and includes a warning", isCorrect: false)
             ]
         ),
         QuizQuestion(
@@ -115,6 +115,61 @@ enum QuizBank {
                 QuizChoice(id: "loto-q10-b", text: "Only tagging the main control panel", isCorrect: false),
                 QuizChoice(id: "loto-q10-c", text: "Allowing operators to remove locks for troubleshooting", isCorrect: false),
                 QuizChoice(id: "loto-q10-d", text: "Restarting equipment to confirm repairs before notifying anyone", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "loto-q11",
+            prompt: "You’re verifying absence of voltage on a de-energized 480V circuit. Which meter check sequence best prevents a false “dead” reading?",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "loto-q11-a", text: "Test the circuit, then test the meter on a known live source (one check is enough)", isCorrect: false),
+                QuizChoice(id: "loto-q11-b", text: "Test the meter on a known live source, test the circuit, then re-test the meter on a known live source", isCorrect: true),
+                QuizChoice(id: "loto-q11-c", text: "Rely on the disconnect handle position if it’s locked and tagged", isCorrect: false),
+                QuizChoice(id: "loto-q11-d", text: "Use non-contact voltage detection only to avoid exposure", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "loto-q12",
+            prompt: "A machine has a large flywheel and pneumatic assist. After isolating electrical power, what should an effective ECP require before servicing begins?",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "loto-q12-a", text: "Bleed/secure stored energy (mechanical and pneumatic) and verify zero-energy state", isCorrect: true),
+                QuizChoice(id: "loto-q12-b", text: "Post a warning sign and begin work if the controls are off", isCorrect: false),
+                QuizChoice(id: "loto-q12-c", text: "Only lock out the primary electrical disconnect; stored energy is secondary", isCorrect: false),
+                QuizChoice(id: "loto-q12-d", text: "Skip verification if the machine is not scheduled to run that shift", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "loto-q13",
+            prompt: "Periodic inspections of energy control procedures are primarily intended to verify:",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "loto-q13-a", text: "That the procedure is being followed and remains effective for the equipment and task", isCorrect: true),
+                QuizChoice(id: "loto-q13-b", text: "That equipment downtime meets production targets", isCorrect: false),
+                QuizChoice(id: "loto-q13-c", text: "That tags are the same color across the unit", isCorrect: false),
+                QuizChoice(id: "loto-q13-d", text: "That only supervisors sign off on LOTO activities", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "loto-q14",
+            prompt: "A supervisor needs a lock removed because the owner is unavailable. Which element is essential to a compliant lock removal procedure?",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "loto-q14-a", text: "Verify the employee is not on-site, verify equipment is safe to energize, and ensure the employee is notified before they return to work", isCorrect: true),
+                QuizChoice(id: "loto-q14-b", text: "Cut the lock, restart the equipment, and document the action later", isCorrect: false),
+                QuizChoice(id: "loto-q14-c", text: "Replace the lock with a tag signed by the supervisor", isCorrect: false),
+                QuizChoice(id: "loto-q14-d", text: "Wait 24 hours; after that, any lock can be removed", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "loto-q15",
+            prompt: "Cord-and-plug equipment may be controlled without a full written ECP when:",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "loto-q15-a", text: "The plug is unplugged and kept under the exclusive control of the employee performing the service", isCorrect: true),
+                QuizChoice(id: "loto-q15-b", text: "A tag is placed on the cord within 10 feet of the plug", isCorrect: false),
+                QuizChoice(id: "loto-q15-c", text: "The equipment is less than 120V", isCorrect: false),
+                QuizChoice(id: "loto-q15-d", text: "Two employees agree the device will not be plugged back in", isCorrect: false)
             ]
         )
     ]
@@ -141,7 +196,7 @@ enum QuizBank {
                 QuizChoice(id: "fall-q2-a", text: "Convenience for movement", isCorrect: false),
                 QuizChoice(id: "fall-q2-b", text: "Capability/approval of the anchorage for fall-arrest loading", isCorrect: true),
                 QuizChoice(id: "fall-q2-c", text: "Proximity to a ladder", isCorrect: false),
-                QuizChoice(id: "fall-q2-d", text: "Whether it is painted safety green", isCorrect: false)
+                QuizChoice(id: "fall-q2-d", text: "Minimizing free-fall distance even if the point is not rated as an anchorage", isCorrect: false)
             ]
         ),
         QuizQuestion(
@@ -231,6 +286,61 @@ enum QuizBank {
                 QuizChoice(id: "fall-q10-c", text: "Belts cannot be tagged with user names", isCorrect: false),
                 QuizChoice(id: "fall-q10-d", text: "A belt is only used for ladder climbing", isCorrect: false)
             ]
+        ),
+        QuizQuestion(
+            id: "fall-q11",
+            prompt: "A horizontal lifeline is proposed across a bay to support multiple workers. The most correct requirement is that it be:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "fall-q11-a", text: "Designed/installed/used under a qualified person’s oversight due to system forces and deflection", isCorrect: true),
+                QuizChoice(id: "fall-q11-b", text: "Installed by any worker as long as the cable is tight", isCorrect: false),
+                QuizChoice(id: "fall-q11-c", text: "Used only with body belts to reduce harness stretch", isCorrect: false),
+                QuizChoice(id: "fall-q11-d", text: "Allowed without design review if used for fewer than 30 minutes", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "fall-q12",
+            prompt: "For fall arrest, anchorage selection is best described as:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "fall-q12-a", text: "A rated anchorage or an engineered solution meeting required strength and safety factors", isCorrect: true),
+                QuizChoice(id: "fall-q12-b", text: "Any structural member that “looks solid” to the user", isCorrect: false),
+                QuizChoice(id: "fall-q12-c", text: "Any handrail if the lanyard is short", isCorrect: false),
+                QuizChoice(id: "fall-q12-d", text: "Any point above shoulder height, regardless of structural capacity", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "fall-q13",
+            prompt: "In an aerial lift (manlift), the best tie-off practice for a harnessed worker is to:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "fall-q13-a", text: "Connect to the manufacturer-approved anchor point in the basket/boom", isCorrect: true),
+                QuizChoice(id: "fall-q13-b", text: "Tie off to a nearby building column for extra security", isCorrect: false),
+                QuizChoice(id: "fall-q13-c", text: "Tie off to the lift’s guardrail to keep the lanyard out of the way", isCorrect: false),
+                QuizChoice(id: "fall-q13-d", text: "Not tie off; the guardrail replaces PFAS in all lift operations", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "fall-q14",
+            prompt: "To reduce swing-fall risk when using PFAS near an edge, the BEST method is to:",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "fall-q14-a", text: "Keep the anchorage as overhead as feasible and limit lateral travel from the tie-off point", isCorrect: true),
+                QuizChoice(id: "fall-q14-b", text: "Use a longer lanyard so the user clears the structure", isCorrect: false),
+                QuizChoice(id: "fall-q14-c", text: "Tie off at foot level to reduce line-of-sight hazards", isCorrect: false),
+                QuizChoice(id: "fall-q14-d", text: "Rely on the deceleration device to prevent swing", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "fall-q15",
+            prompt: "After any fall arrest event where the system has been loaded, the correct disposition of the equipment is generally to:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "fall-q15-a", text: "Remove from service and handle per manufacturer guidance/competent inspection before any reuse", isCorrect: true),
+                QuizChoice(id: "fall-q15-b", text: "Return to service if no visible damage is present", isCorrect: false),
+                QuizChoice(id: "fall-q15-c", text: "Return to service after cleaning and drying only", isCorrect: false),
+                QuizChoice(id: "fall-q15-d", text: "Use only for fall restraint from then on", isCorrect: false)
+            ]
         )
     ]
 
@@ -255,7 +365,7 @@ enum QuizBank {
             choices: [
                 QuizChoice(id: "rm-q2-a", text: "Accept risk at the appropriate level of authority", isCorrect: true),
                 QuizChoice(id: "rm-q2-b", text: "Accept risk at the lowest level to move fast", isCorrect: false),
-                QuizChoice(id: "rm-q2-c", text: "Avoid documenting risk decisions to reduce admin time", isCorrect: false),
+                QuizChoice(id: "rm-q2-c", text: "Skip formal risk acceptance when the task is routine and has been done before", isCorrect: false),
                 QuizChoice(id: "rm-q2-d", text: "Treat all hazards as identical to simplify planning", isCorrect: false)
             ]
         ),
@@ -345,6 +455,61 @@ enum QuizBank {
                 QuizChoice(id: "rm-q10-b", text: "No mishaps occurred last week", isCorrect: false),
                 QuizChoice(id: "rm-q10-c", text: "The JHA exists in a binder", isCorrect: false),
                 QuizChoice(id: "rm-q10-d", text: "Workers can’t recall the hazards but wear PPE", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "rm-q11",
+            prompt: "A hazard has high potential severity but low probability. What is the most professional RM approach?",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "rm-q11-a", text: "Treat it as low risk because the probability is low", isCorrect: false),
+                QuizChoice(id: "rm-q11-b", text: "Use the matrix, but ensure controls and acceptance reflect worst-credible consequence and mission context", isCorrect: true),
+                QuizChoice(id: "rm-q11-c", text: "Ignore it unless a near-miss already occurred", isCorrect: false),
+                QuizChoice(id: "rm-q11-d", text: "Lower the severity category because probability is low", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "rm-q12",
+            prompt: "A team implemented controls but supervision finds they are not followed in practice. Which RM step is failing first?",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "rm-q12-a", text: "Implement Controls", isCorrect: true),
+                QuizChoice(id: "rm-q12-b", text: "Identify Hazards", isCorrect: false),
+                QuizChoice(id: "rm-q12-c", text: "Assess Hazards", isCorrect: false),
+                QuizChoice(id: "rm-q12-d", text: "Make Decisions", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "rm-q13",
+            prompt: "Which statement best distinguishes a hazard from risk?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "rm-q13-a", text: "A hazard is a condition with potential to cause harm; risk is severity and probability given exposure and controls", isCorrect: true),
+                QuizChoice(id: "rm-q13-b", text: "Risk is the same as hazard; they are interchangeable terms", isCorrect: false),
+                QuizChoice(id: "rm-q13-c", text: "Hazard is the RAC; risk is the probability only", isCorrect: false),
+                QuizChoice(id: "rm-q13-d", text: "Hazard is an injury; risk is the paperwork used to report it", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "rm-q14",
+            prompt: "In Real-Time RM (ABCD), the step most directly associated with updating the team’s shared mental model is:",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "rm-q14-a", text: "Communicate", isCorrect: true),
+                QuizChoice(id: "rm-q14-b", text: "Assess", isCorrect: false),
+                QuizChoice(id: "rm-q14-c", text: "Balance", isCorrect: false),
+                QuizChoice(id: "rm-q14-d", text: "Do/Debrief", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "rm-q15",
+            prompt: "A proposed control reduces risk but significantly degrades mission output. The most correct RM action is to:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "rm-q15-a", text: "Reject the control without discussion because mission comes first", isCorrect: false),
+                QuizChoice(id: "rm-q15-b", text: "Evaluate alternative controls and elevate the residual risk decision to the appropriate acceptance authority", isCorrect: true),
+                QuizChoice(id: "rm-q15-c", text: "Implement the control anyway; all risk must be eliminated", isCorrect: false),
+                QuizChoice(id: "rm-q15-d", text: "Delay the decision until after the task is complete", isCorrect: false)
             ]
         )
     ]
@@ -461,6 +626,61 @@ enum QuizBank {
                 QuizChoice(id: "roles-q10-c", text: "Close hazards once funding is approved", isCorrect: false),
                 QuizChoice(id: "roles-q10-d", text: "Transfer all hazards to safety office ownership permanently", isCorrect: false)
             ]
+        ),
+        QuizQuestion(
+            id: "roles-q11",
+            prompt: "A supervisor disputes your inspection finding and argues “we’ve always done it this way.” The most effective professional response is to:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "roles-q11-a", text: "Restate objective criteria, describe the hazard and risk, propose viable controls, and elevate through the chain if needed", isCorrect: true),
+                QuizChoice(id: "roles-q11-b", text: "Close the finding to preserve relationships", isCorrect: false),
+                QuizChoice(id: "roles-q11-c", text: "Argue until the supervisor agrees", isCorrect: false),
+                QuizChoice(id: "roles-q11-d", text: "Document “disagreed” and take no further action", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "roles-q12",
+            prompt: "A Unit Safety Rep identifies a high-risk hazard that cannot be corrected quickly. The correct next step is to ensure:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "roles-q12-a", text: "The hazard is documented, interim controls are applied, and it is tracked through the formal abatement process with leadership visibility", isCorrect: true),
+                QuizChoice(id: "roles-q12-b", text: "It is handled informally inside the shop with no tracking to avoid attention", isCorrect: false),
+                QuizChoice(id: "roles-q12-c", text: "It is closed once a purchase request is submitted", isCorrect: false),
+                QuizChoice(id: "roles-q12-d", text: "It is delayed until the next annual inspection cycle", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "roles-q13",
+            prompt: "Which scenario most clearly requires coordination with Bioenvironmental Engineering/Industrial Hygiene?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "roles-q13-a", text: "A suspected airborne exposure (noise, fumes, dust) where monitoring and exposure controls are needed", isCorrect: true),
+                QuizChoice(id: "roles-q13-b", text: "A chipped paint mark on the floor boundary line", isCorrect: false),
+                QuizChoice(id: "roles-q13-c", text: "A missing training slide in a briefing deck", isCorrect: false),
+                QuizChoice(id: "roles-q13-d", text: "A mislabeled toolbox drawer", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "roles-q14",
+            prompt: "From a program accountability standpoint, who owns ensuring workers are trained and standards are enforced day-to-day?",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "roles-q14-a", text: "Supervisors and commanders; safety staff advise and verify but do not replace command responsibility", isCorrect: true),
+                QuizChoice(id: "roles-q14-b", text: "Safety office only; supervisors are not responsible once a USR is appointed", isCorrect: false),
+                QuizChoice(id: "roles-q14-c", text: "Workers only; leadership cannot enforce safety beyond policy memos", isCorrect: false),
+                QuizChoice(id: "roles-q14-d", text: "Contractors; host-unit responsibility ends once a contract is awarded", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "roles-q15",
+            prompt: "A best-practice inspection strategy for limited manpower is to prioritize:",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "roles-q15-a", text: "High-risk tasks/areas (severity and exposure) and recurrent deficiency trends", isCorrect: true),
+                QuizChoice(id: "roles-q15-b", text: "Only easy wins that can be closed same-day", isCorrect: false),
+                QuizChoice(id: "roles-q15-c", text: "Only administrative paperwork compliance", isCorrect: false),
+                QuizChoice(id: "roles-q15-d", text: "Only areas that were recently inspected", isCorrect: false)
+            ]
         )
     ]
 
@@ -576,6 +796,61 @@ enum QuizBank {
                 QuizChoice(id: "abatement-q10-c", text: "Rely on PPE only and close the hazard", isCorrect: false),
                 QuizChoice(id: "abatement-q10-d", text: "Avoid documenting until the fix is complete", isCorrect: false)
             ]
+        ),
+        QuizQuestion(
+            id: "abatement-q11",
+            prompt: "A hazard has been identified and cannot be permanently corrected within the near term. The most correct program action is to:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "abatement-q11-a", text: "Enter it into formal tracking, apply interim controls, and manage to a documented suspense and verification plan", isCorrect: true),
+                QuizChoice(id: "abatement-q11-b", text: "Wait to document until the fix is funded", isCorrect: false),
+                QuizChoice(id: "abatement-q11-c", text: "Close the hazard since the unit cannot fix it immediately", isCorrect: false),
+                QuizChoice(id: "abatement-q11-d", text: "Remove the finding if no mishap has occurred", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "abatement-q12",
+            prompt: "Which statement best reflects the difference between interim controls and abatement?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "abatement-q12-a", text: "Interim controls reduce exposure; abatement eliminates or permanently controls the hazard", isCorrect: true),
+                QuizChoice(id: "abatement-q12-b", text: "Interim controls eliminate the hazard; abatement just documents it", isCorrect: false),
+                QuizChoice(id: "abatement-q12-c", text: "There is no difference if a supervisor accepts the risk", isCorrect: false),
+                QuizChoice(id: "abatement-q12-d", text: "A sign is always considered abatement if it’s posted at the entrance", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "abatement-q13",
+            prompt: "An abatement project is funded and scheduled but not yet executed. The hazard status should remain:",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "abatement-q13-a", text: "Open (with interim controls tracked) until the corrective action is completed and verified", isCorrect: true),
+                QuizChoice(id: "abatement-q13-b", text: "Closed because funds are committed", isCorrect: false),
+                QuizChoice(id: "abatement-q13-c", text: "Closed if a work order exists", isCorrect: false),
+                QuizChoice(id: "abatement-q13-d", text: "Transfered to “no longer a hazard” status automatically", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "abatement-q14",
+            prompt: "If interim controls degrade over time and the risk increases, the best action is to:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "abatement-q14-a", text: "Reassess the hazard/RAC, strengthen controls, and elevate acceptance/abatement priority as required", isCorrect: true),
+                QuizChoice(id: "abatement-q14-b", text: "Keep the same RAC to avoid changing the paperwork", isCorrect: false),
+                QuizChoice(id: "abatement-q14-c", text: "Wait until the next scheduled inspection to revisit", isCorrect: false),
+                QuizChoice(id: "abatement-q14-d", text: "Close it; interim controls indicate it’s manageable", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "abatement-q15",
+            prompt: "Which element most often makes abatement succeed in the real world when resources are constrained?",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "abatement-q15-a", text: "Clear leadership prioritization tied to risk, a real suspense, and accountability for execution and verification", isCorrect: true),
+                QuizChoice(id: "abatement-q15-b", text: "An email stating “fix this” with no owner or suspense", isCorrect: false),
+                QuizChoice(id: "abatement-q15-c", text: "Relying solely on PPE because it is faster to issue", isCorrect: false),
+                QuizChoice(id: "abatement-q15-d", text: "Only documenting hazards after they are corrected", isCorrect: false)
+            ]
         )
     ]
 
@@ -611,7 +886,7 @@ enum QuizBank {
             choices: [
                 QuizChoice(id: "rac-q3-a", text: "Use defined criteria consistently and document the rationale", isCorrect: true),
                 QuizChoice(id: "rac-q3-b", text: "Assign based on gut feel only", isCorrect: false),
-                QuizChoice(id: "rac-q3-c", text: "Always choose the lowest probability to reduce paperwork", isCorrect: false),
+                QuizChoice(id: "rac-q3-c", text: "Pick the most optimistic category to avoid elevating the issue", isCorrect: false),
                 QuizChoice(id: "rac-q3-d", text: "Only consider how often the inspector sees it", isCorrect: false)
             ]
         ),
@@ -687,9 +962,64 @@ enum QuizBank {
             difficulty: .hard,
             choices: [
                 QuizChoice(id: "rac-q10-a", text: "RAC reflects the hazard, not mission pressure or convenience", isCorrect: true),
-                QuizChoice(id: "rac-q10-b", text: "RAC should be lowered to keep operations smooth", isCorrect: false),
+                QuizChoice(id: "rac-q10-b", text: "RAC can be adjusted down if the mission is behind schedule", isCorrect: false),
                 QuizChoice(id: "rac-q10-c", text: "RAC is only used after mishaps", isCorrect: false),
                 QuizChoice(id: "rac-q10-d", text: "RAC is optional if the shop is high performing", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "rac-q11",
+            prompt: "When assessing severity, the best practice is to base it on:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "rac-q11-a", text: "Worst credible consequence, given the hazard and exposure scenario", isCorrect: true),
+                QuizChoice(id: "rac-q11-b", text: "Best-case outcome if everything goes right", isCorrect: false),
+                QuizChoice(id: "rac-q11-c", text: "What happened last time", isCorrect: false),
+                QuizChoice(id: "rac-q11-d", text: "The inspector’s preference for conservative ratings without justification", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "rac-q12",
+            prompt: "Two plausible outcomes exist: (1) minor first-aid, (2) severe injury under credible worst-case conditions. Which severity should drive the RAC?",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "rac-q12-a", text: "The worst credible consequence, not the most common minor outcome", isCorrect: true),
+                QuizChoice(id: "rac-q12-b", text: "The minor first-aid outcome because it is most likely", isCorrect: false),
+                QuizChoice(id: "rac-q12-c", text: "Always pick the middle category to be fair", isCorrect: false),
+                QuizChoice(id: "rac-q12-d", text: "Severity doesn’t matter if probability is low", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "rac-q13",
+            prompt: "Initial risk versus residual risk is best described as:",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "rac-q13-a", text: "Initial = before controls; residual = after controls; acceptance should be based on residual risk", isCorrect: true),
+                QuizChoice(id: "rac-q13-b", text: "Initial = after controls; residual = before controls", isCorrect: false),
+                QuizChoice(id: "rac-q13-c", text: "Residual risk is always zero if a JHA exists", isCorrect: false),
+                QuizChoice(id: "rac-q13-d", text: "Initial and residual are the same; only documentation changes", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "rac-q14",
+            prompt: "If a shop’s RAC assignments are inconsistent across similar hazards, the strongest corrective action is to:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "rac-q14-a", text: "Standardize criteria, calibrate with examples, and require documented justification", isCorrect: true),
+                QuizChoice(id: "rac-q14-b", text: "Let each supervisor define their own matrix", isCorrect: false),
+                QuizChoice(id: "rac-q14-c", text: "Stop assigning RAC to avoid conflict", isCorrect: false),
+                QuizChoice(id: "rac-q14-d", text: "Default every hazard to a mid-level RAC", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "rac-q15",
+            prompt: "RAC is most useful to leadership because it helps drive:",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "rac-q15-a", text: "Prioritization of resources, acceptance authority, and abatement urgency", isCorrect: true),
+                QuizChoice(id: "rac-q15-b", text: "The number of inspections required per quarter", isCorrect: false),
+                QuizChoice(id: "rac-q15-c", text: "Which individual to blame for a hazard", isCorrect: false),
+                QuizChoice(id: "rac-q15-d", text: "Only the formatting of the hazard report", isCorrect: false)
             ]
         )
     ]
@@ -705,7 +1035,7 @@ enum QuizBank {
                 QuizChoice(id: "cs-q1-a", text: "Contains or has potential to contain a serious hazard", isCorrect: true),
                 QuizChoice(id: "cs-q1-b", text: "Has a ladder inside", isCorrect: false),
                 QuizChoice(id: "cs-q1-c", text: "Is below ground level", isCorrect: false),
-                QuizChoice(id: "cs-q1-d", text: "Is entered less than once per month", isCorrect: false)
+                QuizChoice(id: "cs-q1-d", text: "Has limited means of entry or exit", isCorrect: false)
             ]
         ),
         QuizQuestion(
@@ -806,6 +1136,61 @@ enum QuizBank {
                 QuizChoice(id: "cs-q10-c", text: "Rely on PPE only", isCorrect: false),
                 QuizChoice(id: "cs-q10-d", text: "Ask operators to “not use the line”", isCorrect: false)
             ]
+        ),
+        QuizQuestion(
+            id: "cs-q11",
+            prompt: "Which is an attendant’s critical duty during permit-required confined space entry?",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "cs-q11-a", text: "Remain outside, maintain accountability, communicate, and initiate rescue response without entering", isCorrect: true),
+                QuizChoice(id: "cs-q11-b", text: "Enter immediately if the entrant stops responding", isCorrect: false),
+                QuizChoice(id: "cs-q11-c", text: "Perform the work inside while entrants take breaks", isCorrect: false),
+                QuizChoice(id: "cs-q11-d", text: "Cancel the permit once the entrant says it feels safe", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "cs-q12",
+            prompt: "Reclassifying a permit-required confined space to non-permit is appropriate only when hazards are:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "cs-q12-a", text: "Eliminated (not just controlled) for the duration of the entry", isCorrect: true),
+                QuizChoice(id: "cs-q12-b", text: "Controlled by PPE for the duration of the entry", isCorrect: false),
+                QuizChoice(id: "cs-q12-c", text: "Reduced by warning signs and an experienced entrant", isCorrect: false),
+                QuizChoice(id: "cs-q12-d", text: "Below the action level without ventilation", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "cs-q13",
+            prompt: "A multi-gas meter shows acceptable readings. Which practice best protects against bad instrumentation?",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "cs-q13-a", text: "Verify meter function per program (e.g., bump test/verification) and follow required monitoring frequency", isCorrect: true),
+                QuizChoice(id: "cs-q13-b", text: "Skip verification if the meter has a current calibration sticker", isCorrect: false),
+                QuizChoice(id: "cs-q13-c", text: "Test only for oxygen; other sensors are optional", isCorrect: false),
+                QuizChoice(id: "cs-q13-d", text: "Rely on smell to confirm safe atmosphere", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "cs-q14",
+            prompt: "An engulfment hazard exists from a gravity-fed product line. The strongest control before entry is to:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "cs-q14-a", text: "Isolate using positive means (blanking/blinding, double block and bleed where approved) and verify", isCorrect: true),
+                QuizChoice(id: "cs-q14-b", text: "Post a barricade at the space entrance", isCorrect: false),
+                QuizChoice(id: "cs-q14-c", text: "Have the entrant hold the valve handle during entry", isCorrect: false),
+                QuizChoice(id: "cs-q14-d", text: "Use only respiratory protection to prevent engulfment", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "cs-q15",
+            prompt: "A permit space entry is in progress. Monitoring shows oxygen dropping and LEL rising. The best immediate action is to:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "cs-q15-a", text: "Order evacuation and reassess controls before resuming entry", isCorrect: true),
+                QuizChoice(id: "cs-q15-b", text: "Continue; the initial readings were acceptable", isCorrect: false),
+                QuizChoice(id: "cs-q15-c", text: "Have the attendant enter to check the meter reading", isCorrect: false),
+                QuizChoice(id: "cs-q15-d", text: "Switch to a different meter and keep working", isCorrect: false)
+            ]
         )
     ]
 
@@ -820,7 +1205,7 @@ enum QuizBank {
                 QuizChoice(id: "hot-q1-a", text: "A permit after site evaluation and controls are confirmed", isCorrect: true),
                 QuizChoice(id: "hot-q1-b", text: "No controls if a fire extinguisher is nearby", isCorrect: false),
                 QuizChoice(id: "hot-q1-c", text: "Only ear protection", isCorrect: false),
-                QuizChoice(id: "hot-q1-d", text: "A waiver if the job is under 10 minutes", isCorrect: false)
+                QuizChoice(id: "hot-q1-d", text: "No permit if a supervisor is physically present", isCorrect: false)
             ]
         ),
         QuizQuestion(
@@ -829,7 +1214,7 @@ enum QuizBank {
             difficulty: .hard,
             choices: [
                 QuizChoice(id: "hot-q2-a", text: "Removed or protected/shielded to prevent ignition", isCorrect: true),
-                QuizChoice(id: "hot-q2-b", text: "Ignored if the welder is experienced", isCorrect: false),
+                QuizChoice(id: "hot-q2-b", text: "Left in place if the operator believes sparks will not reach them", isCorrect: false),
                 QuizChoice(id: "hot-q2-c", text: "Allowed if a sign is posted", isCorrect: false),
                 QuizChoice(id: "hot-q2-d", text: "Wet down only; shielding is unnecessary", isCorrect: false)
             ]
@@ -907,7 +1292,7 @@ enum QuizBank {
             choices: [
                 QuizChoice(id: "hot-q9-a", text: "Confirm controls on paper but aren’t validated in the field before start", isCorrect: true),
                 QuizChoice(id: "hot-q9-b", text: "Include too much technical detail", isCorrect: false),
-                QuizChoice(id: "hot-q9-c", text: "Are printed in black ink", isCorrect: false),
+                QuizChoice(id: "hot-q9-c", text: "Do not assign clear roles (fire watch, monitoring) and stop-work criteria", isCorrect: false),
                 QuizChoice(id: "hot-q9-d", text: "Require PPE selection", isCorrect: false)
             ]
         ),
@@ -917,9 +1302,64 @@ enum QuizBank {
             difficulty: .hard,
             choices: [
                 QuizChoice(id: "hot-q10-a", text: "Ventilation and monitoring for fumes/oxygen displacement as applicable", isCorrect: true),
-                QuizChoice(id: "hot-q10-b", text: "Removing all signs so sparks are visible", isCorrect: false),
+                QuizChoice(id: "hot-q10-b", text: "Posting additional signage without changing ventilation", isCorrect: false),
                 QuizChoice(id: "hot-q10-c", text: "Only increasing lighting", isCorrect: false),
                 QuizChoice(id: "hot-q10-d", text: "Only adding a second welder", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "hot-q11",
+            prompt: "A common baseline for the hot work hazard zone (combustible control radius) is approximately:",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "hot-q11-a", text: "About 35 feet, unless the area is engineered/controlled as a designated hot work area", isCorrect: true),
+                QuizChoice(id: "hot-q11-b", text: "About 5 feet; sparks don’t travel far", isCorrect: false),
+                QuizChoice(id: "hot-q11-c", text: "About 10 feet; anything beyond is safe", isCorrect: false),
+                QuizChoice(id: "hot-q11-d", text: "No radius is needed if a fire watch is present", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "hot-q12",
+            prompt: "After hot work stops, the fire watch should generally remain long enough to detect smoldering ignition—typically:",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "hot-q12-a", text: "At least 30 minutes (or per local permit/program requirements)", isCorrect: true),
+                QuizChoice(id: "hot-q12-b", text: "0 minutes; once the arc stops there is no ignition risk", isCorrect: false),
+                QuizChoice(id: "hot-q12-c", text: "Only until the welder packs up tools", isCorrect: false),
+                QuizChoice(id: "hot-q12-d", text: "Only if flames were observed", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "hot-q13",
+            prompt: "Welding/cutting on coated metals (e.g., painted, galvanized) often requires additional controls because:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "hot-q13-a", text: "Fumes can be hazardous; local exhaust ventilation and exposure controls may be required", isCorrect: true),
+                QuizChoice(id: "hot-q13-b", text: "The coating makes sparks colder", isCorrect: false),
+                QuizChoice(id: "hot-q13-c", text: "It eliminates the need for PPE", isCorrect: false),
+                QuizChoice(id: "hot-q13-d", text: "Permits are not required on coated metals", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "hot-q14",
+            prompt: "The most correct statement about oxygen/fuel gas cylinders for welding operations is:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "hot-q14-a", text: "Store/secure cylinders, separate oxygen and fuel gas per program, and protect valves/caps during transport", isCorrect: true),
+                QuizChoice(id: "hot-q14-b", text: "Store cylinders lying down to reduce tipping risk", isCorrect: false),
+                QuizChoice(id: "hot-q14-c", text: "Keep oxygen regulators greased to prevent sticking", isCorrect: false),
+                QuizChoice(id: "hot-q14-d", text: "Open cylinder valves fully and leave them open when unattended", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "hot-q15",
+            prompt: "A hot work permit is being prepared in a facility with aircraft fuel system work nearby. The most correct additional control focus is to:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "hot-q15-a", text: "Validate the area is free of flammable vapors and isolate/purge as required before authorizing hot work", isCorrect: true),
+                QuizChoice(id: "hot-q15-b", text: "Proceed if the welder wears thicker gloves", isCorrect: false),
+                QuizChoice(id: "hot-q15-c", text: "Rely on a fire extinguisher only", isCorrect: false),
+                QuizChoice(id: "hot-q15-d", text: "Skip coordination; hot work permits are self-contained", isCorrect: false)
             ]
         )
     ]
@@ -1011,7 +1451,7 @@ enum QuizBank {
             choices: [
                 QuizChoice(id: "hc-q8-a", text: "Ensure it is adequate, maintained, and used correctly", isCorrect: true),
                 QuizChoice(id: "hc-q8-b", text: "Accept it without review", isCorrect: false),
-                QuizChoice(id: "hc-q8-c", text: "Require a waiver to wear it", isCorrect: false),
+                QuizChoice(id: "hc-q8-c", text: "Only ensure it is worn; adequacy is the employee’s responsibility", isCorrect: false),
                 QuizChoice(id: "hc-q8-d", text: "Only track it if an STS occurs", isCorrect: false)
             ]
         ),
@@ -1021,7 +1461,7 @@ enum QuizBank {
             difficulty: .medium,
             choices: [
                 QuizChoice(id: "hc-q9-a", text: "Scheduling/rotation to reduce dose and limiting time in high-noise areas", isCorrect: true),
-                QuizChoice(id: "hc-q9-b", text: "Painting equipment green", isCorrect: false),
+                QuizChoice(id: "hc-q9-b", text: "Assigning “experienced-only” personnel to noisy tasks without changing exposure", isCorrect: false),
                 QuizChoice(id: "hc-q9-c", text: "Replacing audiograms with self-reports", isCorrect: false),
                 QuizChoice(id: "hc-q9-d", text: "Only posting posters", isCorrect: false)
             ]
@@ -1035,6 +1475,61 @@ enum QuizBank {
                 QuizChoice(id: "hc-q10-b", text: "Assume NRR equals real-world protection", isCorrect: false),
                 QuizChoice(id: "hc-q10-c", text: "Focus only on annual audiograms", isCorrect: false),
                 QuizChoice(id: "hc-q10-d", text: "Use PPE only after a threshold shift occurs", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "hc-q11",
+            prompt: "The action level for starting a hearing conservation program is typically lower than the permissible exposure limit because it:",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "hc-q11-a", text: "Triggers early monitoring/training to prevent degradation before limits are exceeded", isCorrect: true),
+                QuizChoice(id: "hc-q11-b", text: "Eliminates the need for engineering controls", isCorrect: false),
+                QuizChoice(id: "hc-q11-c", text: "Applies only to new workers", isCorrect: false),
+                QuizChoice(id: "hc-q11-d", text: "Is optional if workers “feel fine”", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "hc-q12",
+            prompt: "A common reason earmuffs underperform in the field is:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "hc-q12-a", text: "Poor seal from eyewear, hair, hard-hat interface, or damaged cushions", isCorrect: true),
+                QuizChoice(id: "hc-q12-b", text: "They block too much sound and cause headaches", isCorrect: false),
+                QuizChoice(id: "hc-q12-c", text: "They require annual calibration", isCorrect: false),
+                QuizChoice(id: "hc-q12-d", text: "Foam plugs are always better than muffs", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "hc-q13",
+            prompt: "When communicating hearing protection requirements, the most effective framing for experienced personnel is:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "hc-q13-a", text: "Dose management: time in noise + attenuation + fit, verified through observation and program checks", isCorrect: true),
+                QuizChoice(id: "hc-q13-b", text: "“Wear them because the sign says so” only", isCorrect: false),
+                QuizChoice(id: "hc-q13-c", text: "“NRR on the box means you’re safe in any noise”", isCorrect: false),
+                QuizChoice(id: "hc-q13-d", text: "“Hearing loss is unavoidable in this job”", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "hc-q14",
+            prompt: "If measured noise exposures increase due to process changes, the correct program response is to:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "hc-q14-a", text: "Reassess risk, update controls/PPE, and ensure training and monitoring remain current", isCorrect: true),
+                QuizChoice(id: "hc-q14-b", text: "Keep existing requirements because the program already exists", isCorrect: false),
+                QuizChoice(id: "hc-q14-c", text: "Rely solely on annual audiograms to detect the problem later", isCorrect: false),
+                QuizChoice(id: "hc-q14-d", text: "Stop measuring noise to avoid changing requirements", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "hc-q15",
+            prompt: "When selecting hearing protection for a high-noise task with comms requirements, the best approach is to:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "hc-q15-a", text: "Select PPE that meets attenuation needs while preserving critical communication, then verify fit and performance", isCorrect: true),
+                QuizChoice(id: "hc-q15-b", text: "Pick the highest NRR product without regard to fit or task needs", isCorrect: false),
+                QuizChoice(id: "hc-q15-c", text: "Allow any personal device as long as it is comfortable", isCorrect: false),
+                QuizChoice(id: "hc-q15-d", text: "Skip hearing PPE if comms are more important", isCorrect: false)
             ]
         )
     ]
@@ -1070,7 +1565,7 @@ enum QuizBank {
             difficulty: .hard,
             choices: [
                 QuizChoice(id: "mishap-q3-a", text: "Evidence is perishable; changes can destroy causal indicators", isCorrect: true),
-                QuizChoice(id: "mishap-q3-b", text: "It is required only for insurance reasons", isCorrect: false),
+                QuizChoice(id: "mishap-q3-b", text: "It’s mainly for convenience so investigators don’t have to interview witnesses", isCorrect: false),
                 QuizChoice(id: "mishap-q3-c", text: "It prevents all future mishaps automatically", isCorrect: false),
                 QuizChoice(id: "mishap-q3-d", text: "It replaces witness interviews", isCorrect: false)
             ]
@@ -1150,6 +1645,61 @@ enum QuizBank {
                 QuizChoice(id: "mishap-q10-b", text: "Resume work quickly to prove it was a one-off", isCorrect: false),
                 QuizChoice(id: "mishap-q10-c", text: "Rely on PPE only and proceed", isCorrect: false),
                 QuizChoice(id: "mishap-q10-d", text: "Wait for annual training updates", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "mishap-q11",
+            prompt: "After immediate hazards are contained, the next best investigation-support action is to:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "mishap-q11-a", text: "Document the scene (photos/notes), preserve evidence, and capture initial facts before memories drift", isCorrect: true),
+                QuizChoice(id: "mishap-q11-b", text: "Allow normal cleanup to restore operations quickly", isCorrect: false),
+                QuizChoice(id: "mishap-q11-c", text: "Have the most senior person write a narrative from memory later", isCorrect: false),
+                QuizChoice(id: "mishap-q11-d", text: "Focus only on estimating cost of damage", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "mishap-q12",
+            prompt: "A “near miss” should still trigger action because it indicates:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "mishap-q12-a", text: "A control gap or latent condition that could produce injury/damage under slightly different circumstances", isCorrect: true),
+                QuizChoice(id: "mishap-q12-b", text: "The hazard is resolved because no one was hurt", isCorrect: false),
+                QuizChoice(id: "mishap-q12-c", text: "Only an administrative issue with no safety relevance", isCorrect: false),
+                QuizChoice(id: "mishap-q12-d", text: "A reason to delay reporting until trends become obvious", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "mishap-q13",
+            prompt: "Which practice most improves the quality of initial mishap notifications (before full investigation)?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "mishap-q13-a", text: "Communicate clear facts (who/what/where/when), immediate controls taken, and current hazards", isCorrect: true),
+                QuizChoice(id: "mishap-q13-b", text: "Speculate on root cause to move faster", isCorrect: false),
+                QuizChoice(id: "mishap-q13-c", text: "Assign blame early to prevent confusion", isCorrect: false),
+                QuizChoice(id: "mishap-q13-d", text: "Delay notification until all details are confirmed", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "mishap-q14",
+            prompt: "Which statement best describes why safety investigation privilege exists?",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "mishap-q14-a", text: "To encourage candid witness input so prevention lessons are accurate and actionable", isCorrect: true),
+                QuizChoice(id: "mishap-q14-b", text: "To protect individuals from all consequences in any process", isCorrect: false),
+                QuizChoice(id: "mishap-q14-c", text: "To avoid documenting hazards in writing", isCorrect: false),
+                QuizChoice(id: "mishap-q14-d", text: "To restrict commanders from making decisions", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "mishap-q15",
+            prompt: "A best-practice immediate mitigation after a vehicle/powered equipment mishap is to:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "mishap-q15-a", text: "Pause similar operations if needed, brief hazards/controls, and verify equipment/process safety before resuming", isCorrect: true),
+                QuizChoice(id: "mishap-q15-b", text: "Continue operations to prove confidence and avoid downtime", isCorrect: false),
+                QuizChoice(id: "mishap-q15-c", text: "Wait for the final report before taking any action", isCorrect: false),
+                QuizChoice(id: "mishap-q15-d", text: "Only remind workers to be careful", isCorrect: false)
             ]
         )
     ]
@@ -1241,8 +1791,8 @@ enum QuizBank {
             choices: [
                 QuizChoice(id: "invest-q8-a", text: "Were the procedure and barriers adequate for the hazard (design vs compliance)?", isCorrect: true),
                 QuizChoice(id: "invest-q8-b", text: "Who can be blamed for the outcome?", isCorrect: false),
-                QuizChoice(id: "invest-q8-c", text: "How to reduce reporting requirements?", isCorrect: false),
-                QuizChoice(id: "invest-q8-d", text: "How to avoid documenting the finding?", isCorrect: false)
+                QuizChoice(id: "invest-q8-c", text: "Whether the worker’s job title aligned with the task", isCorrect: false),
+                QuizChoice(id: "invest-q8-d", text: "Whether the incident can be closed as “unavoidable” without further analysis", isCorrect: false)
             ]
         ),
         QuizQuestion(
@@ -1265,6 +1815,61 @@ enum QuizBank {
                 QuizChoice(id: "invest-q10-b", text: "Assume decisions were obviously wrong after the outcome", isCorrect: false),
                 QuizChoice(id: "invest-q10-c", text: "Ignore context to stay objective", isCorrect: false),
                 QuizChoice(id: "invest-q10-d", text: "Only use final-report summaries", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "invest-q11",
+            prompt: "A strong investigation finding statement should include:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "invest-q11-a", text: "What happened, why it mattered (risk), evidence basis, and the barrier/control that failed or was missing", isCorrect: true),
+                QuizChoice(id: "invest-q11-b", text: "Only the name of the person involved", isCorrect: false),
+                QuizChoice(id: "invest-q11-c", text: "Only a conclusion without evidence", isCorrect: false),
+                QuizChoice(id: "invest-q11-d", text: "Only a policy quote with no context", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "invest-q12",
+            prompt: "Which recommendation is most likely to prevent recurrence of a hazard sequence?",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "invest-q12-a", text: "A barrier-based control change that is engineered or enforced and measurable", isCorrect: true),
+                QuizChoice(id: "invest-q12-b", text: "“Be more careful”", isCorrect: false),
+                QuizChoice(id: "invest-q12-c", text: "“Remind everyone” with no owner/suspense", isCorrect: false),
+                QuizChoice(id: "invest-q12-d", text: "“Discipline the worker” as the primary fix", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "invest-q13",
+            prompt: "Evidence “triangulation” in investigations means:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "invest-q13-a", text: "Corroborating conclusions using multiple independent sources (physical, records, interviews)", isCorrect: true),
+                QuizChoice(id: "invest-q13-b", text: "Asking the same witness the same question repeatedly", isCorrect: false),
+                QuizChoice(id: "invest-q13-c", text: "Using only the most confident testimony", isCorrect: false),
+                QuizChoice(id: "invest-q13-d", text: "Selecting evidence that supports an early theory", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "invest-q14",
+            prompt: "A “proximate cause” differs from a “root cause” because proximate cause:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "invest-q14-a", text: "Is closest in time/sequence to the event, while root cause addresses deeper system contributors", isCorrect: true),
+                QuizChoice(id: "invest-q14-b", text: "Is always a policy violation", isCorrect: false),
+                QuizChoice(id: "invest-q14-c", text: "Is always equipment failure", isCorrect: false),
+                QuizChoice(id: "invest-q14-d", text: "Is not supported by evidence", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "invest-q15",
+            prompt: "The best way to validate that corrective actions worked is to:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "invest-q15-a", text: "Verify barrier performance in the field and track leading indicators (compliance/exposure), not just absence of mishaps", isCorrect: true),
+                QuizChoice(id: "invest-q15-b", text: "Assume success if no one complains", isCorrect: false),
+                QuizChoice(id: "invest-q15-c", text: "Close the finding once training is emailed out", isCorrect: false),
+                QuizChoice(id: "invest-q15-d", text: "Rely only on next year’s annual inspection", isCorrect: false)
             ]
         )
     ]
@@ -1356,7 +1961,7 @@ enum QuizBank {
             choices: [
                 QuizChoice(id: "jha-q8-a", text: "Hazards change by step; controls must match exposure points", isCorrect: true),
                 QuizChoice(id: "jha-q8-b", text: "It makes the document longer", isCorrect: false),
-                QuizChoice(id: "jha-q8-c", text: "It reduces the need for training", isCorrect: false),
+                QuizChoice(id: "jha-q8-c", text: "It makes it easier to file paperwork, regardless of job performance", isCorrect: false),
                 QuizChoice(id: "jha-q8-d", text: "It allows skipping PPE selection", isCorrect: false)
             ]
         ),
@@ -1380,6 +1985,61 @@ enum QuizBank {
                 QuizChoice(id: "jha-q10-b", text: "Assume controls work if written clearly", isCorrect: false),
                 QuizChoice(id: "jha-q10-c", text: "Only review paperwork", isCorrect: false),
                 QuizChoice(id: "jha-q10-d", text: "Wait for a mishap to test the controls", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "jha-q11",
+            prompt: "A high-quality JHA control is strongest when it is:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "jha-q11-a", text: "Observable/verifiable (a barrier or action a supervisor can confirm), with an owner and trigger point", isCorrect: true),
+                QuizChoice(id: "jha-q11-b", text: "A reminder like “pay attention”", isCorrect: false),
+                QuizChoice(id: "jha-q11-c", text: "Only a PPE list with no task context", isCorrect: false),
+                QuizChoice(id: "jha-q11-d", text: "A generic statement that applies to all jobs equally", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "jha-q12",
+            prompt: "When multiple trades work in the same area, the most common JHA miss is failing to address:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "jha-q12-a", text: "Interface hazards (simultaneous operations, energy interactions, shared access/egress)", isCorrect: true),
+                QuizChoice(id: "jha-q12-b", text: "Font size on the document", isCorrect: false),
+                QuizChoice(id: "jha-q12-c", text: "Whether the job is interesting", isCorrect: false),
+                QuizChoice(id: "jha-q12-d", text: "Only which tool brand is used", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "jha-q13",
+            prompt: "For dynamic work where conditions change, the best way to keep the JHA effective is to:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "jha-q13-a", text: "Re-brief and update hazards/controls as conditions change (treat it as a living control)", isCorrect: true),
+                QuizChoice(id: "jha-q13-b", text: "Lock the JHA after the first signature so it can’t change", isCorrect: false),
+                QuizChoice(id: "jha-q13-c", text: "Skip the JHA and rely on experience", isCorrect: false),
+                QuizChoice(id: "jha-q13-d", text: "Only update after a mishap", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "jha-q14",
+            prompt: "If a job requires permits (e.g., LOTO, confined space, hot work), the JHA should:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "jha-q14-a", text: "Integrate permit triggers/steps and ensure controls are not duplicated or contradictory", isCorrect: true),
+                QuizChoice(id: "jha-q14-b", text: "Ignore permits because they are separate paperwork", isCorrect: false),
+                QuizChoice(id: "jha-q14-c", text: "Replace the permit entirely", isCorrect: false),
+                QuizChoice(id: "jha-q14-d", text: "List “get permit” with no details or triggers", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "jha-q15",
+            prompt: "The most professional way to express risk in a JHA is to:",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "jha-q15-a", text: "Describe hazards, controls, and residual risk in terms of exposure and credible severity/probability", isCorrect: true),
+                QuizChoice(id: "jha-q15-b", text: "Use only subjective labels like “safe/unsafe” with no criteria", isCorrect: false),
+                QuizChoice(id: "jha-q15-c", text: "Avoid mentioning risk to reduce anxiety", isCorrect: false),
+                QuizChoice(id: "jha-q15-d", text: "Assume risk is zero when PPE is listed", isCorrect: false)
             ]
         )
     ]
@@ -1496,6 +2156,61 @@ enum QuizBank {
                 QuizChoice(id: "brief-q10-c", text: "Avoid discussing risk to prevent concern", isCorrect: false),
                 QuizChoice(id: "brief-q10-d", text: "Treat the brief as proof of compliance only", isCorrect: false)
             ]
+        ),
+        QuizQuestion(
+            id: "brief-q11",
+            prompt: "A briefing should be re-accomplished (or updated) when:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "brief-q11-a", text: "Hazards, controls, conditions, or personnel change in a way that affects exposure", isCorrect: true),
+                QuizChoice(id: "brief-q11-b", text: "The previous brief was under 5 minutes", isCorrect: false),
+                QuizChoice(id: "brief-q11-c", text: "The supervisor prefers not to repeat information", isCorrect: false),
+                QuizChoice(id: "brief-q11-d", text: "Only if a mishap occurs", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "brief-q12",
+            prompt: "For experienced crews, the best method to keep briefs from becoming “scripted noise” is to:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "brief-q12-a", text: "Brief the deltas: what’s different today, known weak controls, and specific stop-work triggers", isCorrect: true),
+                QuizChoice(id: "brief-q12-b", text: "Read the same brief verbatim every day for consistency", isCorrect: false),
+                QuizChoice(id: "brief-q12-c", text: "Skip briefs; experience replaces communication", isCorrect: false),
+                QuizChoice(id: "brief-q12-d", text: "Only brief the newest person and assume others know it", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "brief-q13",
+            prompt: "Which is the best “stop work” trigger statement?",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "brief-q13-a", text: "If the required barrier/control is missing or conditions change beyond the plan, stop and reassess", isCorrect: true),
+                QuizChoice(id: "brief-q13-b", text: "Stop only if a supervisor is watching", isCorrect: false),
+                QuizChoice(id: "brief-q13-c", text: "Stop only if someone feels uncomfortable but can’t articulate why", isCorrect: false),
+                QuizChoice(id: "brief-q13-d", text: "Stop only after an injury occurs", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "brief-q14",
+            prompt: "A brief for simultaneous operations (SIMOPS) should emphasize:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "brief-q14-a", text: "Interface hazards, shared boundaries, comms plan, and who controls changes/stop-work decisions", isCorrect: true),
+                QuizChoice(id: "brief-q14-b", text: "Only PPE requirements", isCorrect: false),
+                QuizChoice(id: "brief-q14-c", text: "Only the fastest way to finish", isCorrect: false),
+                QuizChoice(id: "brief-q14-d", text: "Only the regulation number", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "brief-q15",
+            prompt: "Documentation is useful, but the strongest indicator of briefing effectiveness is:",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "brief-q15-a", text: "Observed control performance in execution (barriers in place and used correctly)", isCorrect: true),
+                QuizChoice(id: "brief-q15-b", text: "A perfectly completed sign-in sheet", isCorrect: false),
+                QuizChoice(id: "brief-q15-c", text: "A long briefing duration", isCorrect: false),
+                QuizChoice(id: "brief-q15-d", text: "A brief with no questions asked", isCorrect: false)
+            ]
         )
     ]
 
@@ -1610,6 +2325,61 @@ enum QuizBank {
                 QuizChoice(id: "ppe-q10-b", text: "Is PPE available somewhere in the building?", isCorrect: false),
                 QuizChoice(id: "ppe-q10-c", text: "Is PPE the same brand across the shop?", isCorrect: false),
                 QuizChoice(id: "ppe-q10-d", text: "Is PPE color consistent?", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "ppe-q11",
+            prompt: "The requirement to perform and certify a workplace PPE hazard assessment is primarily to:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "ppe-q11-a", text: "Ensure PPE selection is hazard-driven, documented, and accountable (not arbitrary)", isCorrect: true),
+                QuizChoice(id: "ppe-q11-b", text: "Standardize PPE brands across all shops", isCorrect: false),
+                QuizChoice(id: "ppe-q11-c", text: "Replace the need for engineering controls", isCorrect: false),
+                QuizChoice(id: "ppe-q11-d", text: "Reduce the number of inspections required", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "ppe-q12",
+            prompt: "Respirators are issued for a dust-producing process. Which requirement is most commonly missed in the field?",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "ppe-q12-a", text: "Program controls like medical evaluation, fit testing (for tight-fitting), and training before use", isCorrect: true),
+                QuizChoice(id: "ppe-q12-b", text: "Having the respirator stored in its original box", isCorrect: false),
+                QuizChoice(id: "ppe-q12-c", text: "Using a larger size for comfort", isCorrect: false),
+                QuizChoice(id: "ppe-q12-d", text: "Wearing the respirator only during inspections", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "ppe-q13",
+            prompt: "If PPE is the only control proposed for a high-severity hazard, the most professional inspector response is to:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "ppe-q13-a", text: "Challenge the control strategy—seek elimination/engineering/admin controls or elevate residual risk appropriately", isCorrect: true),
+                QuizChoice(id: "ppe-q13-b", text: "Approve immediately; PPE always solves the hazard", isCorrect: false),
+                QuizChoice(id: "ppe-q13-c", text: "Close the hazard once PPE is issued", isCorrect: false),
+                QuizChoice(id: "ppe-q13-d", text: "Ignore because PPE selection is a supply issue, not safety", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "ppe-q14",
+            prompt: "When selecting cut-resistant gloves, the best balancing factor beyond cut rating is:",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "ppe-q14-a", text: "Dexterity/grip for the task (so the glove doesn’t create new risk), verified in use", isCorrect: true),
+                QuizChoice(id: "ppe-q14-b", text: "Choosing the stiffest glove to “force” safe behavior", isCorrect: false),
+                QuizChoice(id: "ppe-q14-c", text: "Selecting based on color so supervisors can see them", isCorrect: false),
+                QuizChoice(id: "ppe-q14-d", text: "Selecting based on the lowest price", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "ppe-q15",
+            prompt: "PPE program effectiveness is best measured by:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "ppe-q15-a", text: "Field verification (fit, correct wear at exposure point) plus exposure reduction, not issuance counts", isCorrect: true),
+                QuizChoice(id: "ppe-q15-b", text: "How many boxes were issued this quarter", isCorrect: false),
+                QuizChoice(id: "ppe-q15-c", text: "Whether PPE is stored neatly", isCorrect: false),
+                QuizChoice(id: "ppe-q15-d", text: "Whether PPE is the same brand across the base", isCorrect: false)
             ]
         )
     ]

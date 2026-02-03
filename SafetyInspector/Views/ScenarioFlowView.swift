@@ -11,6 +11,7 @@ struct ScenarioFlowView: View {
     @State private var answeredCount = 0
     @State private var timeLeft: Int = 25
     @State private var timerActive = true
+    @State private var shuffledOptionsByStepId: [String: [ScenarioOption]]
 
     private let timeLimit = 25
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
@@ -19,10 +20,15 @@ struct ScenarioFlowView: View {
         self.scenario = scenario
         self.onComplete = onComplete
         _currentStepId = State(initialValue: scenario.startStepId)
+        let startStep = scenario.steps.first(where: { $0.id == scenario.startStepId })
+        _shuffledOptionsByStepId = State(initialValue: [
+            scenario.startStepId: (startStep?.options ?? []).shuffled()
+        ])
     }
 
     var body: some View {
         let step = stepForCurrent()
+        let options = shuffledOptionsByStepId[step.id] ?? step.options
 
         GlassCard {
             VStack(alignment: .leading, spacing: 16) {
@@ -57,12 +63,13 @@ struct ScenarioFlowView: View {
                     .foregroundColor(AppTheme.charcoal)
 
                 VStack(spacing: 10) {
-                    ForEach(step.options, id: \.id) { option in
+                    ForEach(options, id: \.id) { option in
                         OptionRow(
                             text: option.text,
                             isSelected: selectedOptionId == option.id,
                             isCorrect: option.isCorrect,
-                            isLocked: selectedOptionId != nil
+                            isLocked: selectedOptionId != nil,
+                            revealCorrect: true
                         )
                         .onTapGesture {
                             guard selectedOptionId == nil else { return }
@@ -92,6 +99,9 @@ struct ScenarioFlowView: View {
             }
         }
         .padding(.horizontal, 20)
+        .onChange(of: currentStepId) { _, newValue in
+            ensureOptions(for: newValue)
+        }
         .onReceive(timer) { _ in
             guard timerActive, selectedOptionId == nil else { return }
             if timeLeft > 0 {
@@ -101,6 +111,7 @@ struct ScenarioFlowView: View {
             }
         }
         .onAppear {
+            ensureOptions(for: scenario.startStepId)
             resetTimer()
         }
     }
@@ -116,6 +127,7 @@ struct ScenarioFlowView: View {
         }
 
         if let nextId = option.nextStepId {
+            ensureOptions(for: nextId)
             currentStepId = nextId
             selectedOptionId = nil
             showFeedback = false
@@ -127,7 +139,8 @@ struct ScenarioFlowView: View {
 
     private func triggerTimeout(for step: ScenarioStep) {
         guard selectedOptionId == nil else { return }
-        if let fallback = step.options.first(where: { !$0.isCorrect }) ?? step.options.first {
+        let options = shuffledOptionsByStepId[step.id] ?? step.options
+        if let fallback = options.filter({ !$0.isCorrect }).randomElement() ?? options.randomElement() {
             selectedOptionId = fallback.id
             answeredCount += 1
             showFeedback = true
@@ -136,6 +149,14 @@ struct ScenarioFlowView: View {
 
     private func resetTimer() {
         timeLeft = timeLimit
+    }
+
+    private func ensureOptions(for stepId: String) {
+        guard shuffledOptionsByStepId[stepId] == nil,
+              let step = scenario.steps.first(where: { $0.id == stepId }) else {
+            return
+        }
+        shuffledOptionsByStepId[stepId] = step.options.shuffled()
     }
 }
 
@@ -151,6 +172,7 @@ struct OptionRow: View {
     let isSelected: Bool
     let isCorrect: Bool
     let isLocked: Bool
+    var revealCorrect: Bool = false
 
     var body: some View {
         HStack(alignment: .top, spacing: 10) {
@@ -172,12 +194,15 @@ struct OptionRow: View {
                         .stroke(borderColor, lineWidth: 1)
                 )
         )
-        .opacity(isLocked && !isSelected ? 0.6 : 1.0)
+        .opacity(isLocked && !isSelected && !(revealCorrect && isCorrect) ? 0.6 : 1.0)
     }
 
     private var indicatorColor: Color {
         if isSelected {
             return isCorrect ? AppTheme.safetyGreen : Color.red.opacity(0.8)
+        }
+        if revealCorrect && isLocked && isCorrect {
+            return AppTheme.safetyGreen
         }
         return AppTheme.blue
     }
@@ -185,6 +210,9 @@ struct OptionRow: View {
     private var borderColor: Color {
         if isSelected {
             return isCorrect ? AppTheme.safetyGreen : Color.red.opacity(0.7)
+        }
+        if revealCorrect && isLocked && isCorrect {
+            return AppTheme.safetyGreen.opacity(0.85)
         }
         return Color.white.opacity(0.4)
     }

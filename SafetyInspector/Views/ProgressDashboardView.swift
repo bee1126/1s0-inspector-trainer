@@ -30,12 +30,14 @@ struct ProgressDashboardView: View {
                             Text("\(completedCount) of \(modules.count) modules completed")
                                 .font(AppFont.body(13))
                                 .foregroundColor(AppTheme.charcoal.opacity(0.7))
-                            Text("Rank: \(rankTitle)")
+                            Text("Current Rank: \(rankTitle)")
                                 .font(AppFont.subtitle(15))
                                 .foregroundColor(AppTheme.blue)
-                            Text("Daily 5 Streak: \(progress.dailyStreak) days")
-                                .font(AppFont.body(12))
-                                .foregroundColor(AppTheme.charcoal.opacity(0.6))
+                            if completedCount < modules.count {
+                                Text("Projected Rank (next completion): \(projectedRankTitle)")
+                                    .font(AppFont.body(12))
+                                    .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                            }
                         }
                     }
 
@@ -143,8 +145,17 @@ struct ProgressDashboardView: View {
         ]
     }
 
+    private var projectedRankTitle: String {
+        let projected = min(completedCount + 1, modules.count)
+        return rankTitle(for: projected)
+    }
+
     private var rankTitle: String {
-        switch completedCount {
+        rankTitle(for: completedCount)
+    }
+
+    private func rankTitle(for completed: Int) -> String {
+        switch completed {
         case 0:
             return "Trainee"
         case 1...2:

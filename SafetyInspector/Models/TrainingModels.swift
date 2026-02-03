@@ -43,12 +43,14 @@ struct ScenarioOption: Identifiable, Hashable {
 struct QuizQuestion: Identifiable, Hashable {
     let id: String
     let prompt: String
+    let imageName: String?
     let choices: [QuizChoice]
     let difficulty: QuizDifficulty
 
-    init(id: String, prompt: String, difficulty: QuizDifficulty = .easy, choices: [QuizChoice]) {
+    init(id: String, prompt: String, difficulty: QuizDifficulty = .easy, imageName: String? = nil, choices: [QuizChoice]) {
         self.id = id
         self.prompt = prompt
+        self.imageName = imageName
         self.difficulty = difficulty
         self.choices = choices
     }

@@ -1,0 +1,19 @@
+.DS_Store
+
+# Xcode
+DerivedData/
+.derived/
+build/
+*.xcuserstate
+xcuserdata/
+*.xcuserdata/
+*.xccheckout
+*.xcscmblueprint
+
+# SwiftPM
+.build/
+
+# Archives
+*.ipa
+*.dSYM.zip
+*.dSYM

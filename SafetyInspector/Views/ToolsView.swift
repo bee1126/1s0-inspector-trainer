@@ -7,7 +7,7 @@ struct ToolsView: View {
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
-                    Text("Tools")
+                    Text("Feedback")
                         .font(AppFont.title(26))
                         .foregroundColor(.white)
 
@@ -23,7 +23,7 @@ struct ToolsView: View {
                 .padding(20)
             }
         }
-        .navigationTitle("Tools")
+        .navigationTitle("Feedback")
         .navigationBarTitleDisplayMode(.inline)
     }
 }
@@ -201,7 +201,8 @@ struct HazardSpotCheckView: View {
                             text: option.text,
                             isSelected: selectedId == option.id,
                             isCorrect: option.isCorrect,
-                            isLocked: selectedId != nil
+                            isLocked: selectedId != nil,
+                            revealCorrect: true
                         )
                         .onTapGesture {
                             guard selectedId == nil else { return }

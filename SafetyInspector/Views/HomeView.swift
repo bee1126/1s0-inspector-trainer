@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct HomeView: View {
+    @EnvironmentObject private var progress: ProgressStore
     private let modules = TrainingContent.modules
 
     var body: some View {
@@ -45,31 +46,8 @@ struct HomeView: View {
                             .cornerRadius(16)
                     }
 
-                    NavigationLink {
-                        ModuleListView()
-                    } label: {
-                        HStack {
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text("Start Training")
-                                    .font(AppFont.subtitle(18))
-                                Text("Choose a module and run the scenario")
-                                    .font(AppFont.body(13))
-                                    .foregroundColor(.white.opacity(0.85))
-                            }
-                            Spacer()
-                            Image(systemName: "arrow.right.circle.fill")
-                                .font(.system(size: 22))
-                        }
-                        .foregroundColor(.white)
-                        .padding(16)
-                        .background(
-                            RoundedRectangle(cornerRadius: 18, style: .continuous)
-                                .fill(AppTheme.blue)
-                        )
-                    }
-
                     VStack(alignment: .leading, spacing: 12) {
-                        Text("Modules")
+                        Text("Training Modules")
                             .font(AppFont.subtitle(18))
                             .foregroundColor(.white)
 
@@ -77,8 +55,13 @@ struct HomeView: View {
                             .font(AppFont.body(12))
                             .foregroundColor(Color.white.opacity(0.7))
 
-                        ForEach(modules.prefix(4), id: \.id) { module in
-                            ModulePreviewRow(module: module)
+                        ForEach(modules, id: \.id) { module in
+                            NavigationLink {
+                                ModuleDetailView(module: module)
+                            } label: {
+                                ModuleCardView(module: module, score: progress.bestScore(for: module.id))
+                            }
+                            .buttonStyle(.plain)
                         }
                     }
 
@@ -92,36 +75,5 @@ struct HomeView: View {
         }
         .navigationTitle("")
         .navigationBarHidden(true)
-    }
-}
-
-struct ModulePreviewRow: View {
-    let module: TrainingModule
-
-    var body: some View {
-        HStack(alignment: .top, spacing: 12) {
-            Circle()
-                .fill(AppTheme.safetyGreen.opacity(0.9))
-                .frame(width: 36, height: 36)
-                .overlay(
-                    Image(systemName: "checkmark.shield")
-                        .foregroundColor(.white)
-                )
-
-            VStack(alignment: .leading, spacing: 4) {
-                Text(module.title)
-                    .font(AppFont.subtitle(16))
-                    .foregroundColor(.white)
-                Text(module.subtitle)
-                    .font(AppFont.body(12))
-                    .foregroundColor(Color.white.opacity(0.7))
-            }
-            Spacer()
-        }
-        .padding(12)
-        .background(
-            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                .fill(Color.white.opacity(0.15))
-        )
     }
 }
