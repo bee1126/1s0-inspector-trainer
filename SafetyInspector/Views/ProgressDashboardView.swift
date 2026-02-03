@@ -30,6 +30,12 @@ struct ProgressDashboardView: View {
                             Text("\(completedCount) of \(modules.count) modules completed")
                                 .font(AppFont.body(13))
                                 .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                            Text("Rank: \(rankTitle)")
+                                .font(AppFont.subtitle(15))
+                                .foregroundColor(AppTheme.blue)
+                            Text("Daily 5 Streak: \(progress.dailyStreak) days")
+                                .font(AppFont.body(12))
+                                .foregroundColor(AppTheme.charcoal.opacity(0.6))
                         }
                     }
 
@@ -121,8 +127,35 @@ struct ProgressDashboardView: View {
                 title: "Safety Ace",
                 detail: "Score 90% or higher on all modules",
                 isEarned: perfectScores == modules.count && !modules.isEmpty
+            ),
+            BadgeState(
+                id: "scenario-master",
+                title: "Scenario Master",
+                detail: "Perfect scenario run on any module",
+                isEarned: !progress.perfectScenario.isEmpty
+            ),
+            BadgeState(
+                id: "quiz-sharp",
+                title: "Quiz Sharp",
+                detail: "Perfect quiz on any module",
+                isEarned: !progress.perfectQuiz.isEmpty
             )
         ]
+    }
+
+    private var rankTitle: String {
+        switch completedCount {
+        case 0:
+            return "Trainee"
+        case 1...2:
+            return "Airman"
+        case 3...5:
+            return "Inspector"
+        case 6...8:
+            return "Lead Inspector"
+        default:
+            return "Safety Advisor"
+        }
     }
 }
 

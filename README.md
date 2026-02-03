@@ -1,4 +1,4 @@
-# 1S0 Professional Training Kit
+# 1S0 Inspector Trainer
 
 This folder contains the SwiftUI source for a native iOS training app tailored to Air Force 1S0 safety inspectors. It is structured so you can drop the `SafetyInspector` folder into an Xcode iOS App project.
 
@@ -9,11 +9,13 @@ This folder contains the SwiftUI source for a native iOS training app tailored t
 
 ## What is Included
 - Interactive modules for Lockout/Tagout, Fall Protection, Risk Management, Roles & Responsibilities, Hazard Abatement, and RAC System
+- Additional modules for Confined Space, Hot Work, Hearing Conservation, Mishap Reporting, Investigation Basics, JHA Fundamentals, Safety Briefing, and PPE Decision
 - Scenario-driven decision paths and quick-check quizzes
 - Pass/fail assessments with printable completion summaries
 - Progress tracking and badges (on-device)
 - References screen and disclaimer
 - Draft App Store metadata in `AppStoreMetadata.md`
+- Tools tab: Daily 5, hazard spot-check, inspection checklist, red team, JHA builder, safety briefing generator, and PPE decision tree
 
 ## Notes
 - All content is paraphrased to align with OSHA and Air Force guidance. Always verify with the latest official publications before release.

@@ -9,6 +9,11 @@ struct ScenarioFlowView: View {
     @State private var showFeedback = false
     @State private var correctCount = 0
     @State private var answeredCount = 0
+    @State private var timeLeft: Int = 25
+    @State private var timerActive = true
+
+    private let timeLimit = 25
+    private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     init(scenario: Scenario, onComplete: @escaping (Result) -> Void) {
         self.scenario = scenario
@@ -34,6 +39,18 @@ struct ScenarioFlowView: View {
                     .foregroundColor(AppTheme.charcoal.opacity(0.75))
 
                 Divider().opacity(0.3)
+
+                HStack {
+                    Text("Time")
+                        .font(AppFont.mono(12))
+                        .foregroundColor(AppTheme.charcoal.opacity(0.6))
+                    Text("\(timeLeft)s")
+                        .font(AppFont.subtitle(14))
+                        .foregroundColor(timeLeft <= 5 ? Color.red.opacity(0.8) : AppTheme.charcoal)
+                    Spacer()
+                    Toggle("Time Pressure", isOn: $timerActive)
+                        .labelsHidden()
+                }
 
                 Text(step.prompt)
                     .font(AppFont.subtitle(17))
@@ -75,6 +92,17 @@ struct ScenarioFlowView: View {
             }
         }
         .padding(.horizontal, 20)
+        .onReceive(timer) { _ in
+            guard timerActive, selectedOptionId == nil else { return }
+            if timeLeft > 0 {
+                timeLeft -= 1
+            } else {
+                triggerTimeout(for: step)
+            }
+        }
+        .onAppear {
+            resetTimer()
+        }
     }
 
     private func stepForCurrent() -> ScenarioStep {
@@ -91,9 +119,23 @@ struct ScenarioFlowView: View {
             currentStepId = nextId
             selectedOptionId = nil
             showFeedback = false
+            resetTimer()
         } else {
             onComplete(Result(score: correctCount, total: answeredCount))
         }
+    }
+
+    private func triggerTimeout(for step: ScenarioStep) {
+        guard selectedOptionId == nil else { return }
+        if let fallback = step.options.first(where: { !$0.isCorrect }) ?? step.options.first {
+            selectedOptionId = fallback.id
+            answeredCount += 1
+            showFeedback = true
+        }
+    }
+
+    private func resetTimer() {
+        timeLeft = timeLimit
     }
 }
 

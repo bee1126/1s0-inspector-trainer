@@ -3,14 +3,19 @@ import SwiftUI
 struct QuizFlowView: View {
     let questions: [QuizQuestion]
     let onComplete: (Result) -> Void
+    var shuffleQuestions: Bool = false
+    var maxQuestions: Int? = nil
 
     @State private var index = 0
     @State private var selectedChoiceId: String? = nil
     @State private var correctCount = 0
     @State private var showFeedback = false
+    @State private var selectedDifficulty: QuizDifficulty = .all
+    @State private var preparedQuestions: [QuizQuestion] = []
 
     var body: some View {
-        let question = questions[index]
+        let filtered = preparedQuestions.isEmpty ? filteredQuestions : preparedQuestions
+        let question = filtered[index]
 
         GlassCard {
             VStack(alignment: .leading, spacing: 16) {
@@ -19,9 +24,19 @@ struct QuizFlowView: View {
                         .font(AppFont.mono(12))
                         .foregroundColor(AppTheme.charcoal.opacity(0.6))
                     Spacer()
-                    Text("\(index + 1)/\(questions.count)")
+                    Text("\(index + 1)/\(filtered.count)")
                         .font(AppFont.mono(12))
                         .foregroundColor(AppTheme.charcoal.opacity(0.6))
+                }
+
+                Picker("Difficulty", selection: $selectedDifficulty) {
+                    ForEach(QuizDifficulty.allCases) { level in
+                        Text(level.rawValue).tag(level)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .onChange(of: selectedDifficulty) { _ in
+                    resetProgress()
                 }
 
                 Text(question.prompt)
@@ -58,7 +73,7 @@ struct QuizFlowView: View {
                 }
 
                 if showFeedback {
-                    Button(index == questions.count - 1 ? "Finish Quiz" : "Next Question") {
+                    Button(index == filtered.count - 1 ? "Finish Quiz" : "Next Question") {
                         advance()
                     }
                     .buttonStyle(PrimaryButtonStyle())
@@ -66,15 +81,50 @@ struct QuizFlowView: View {
             }
         }
         .padding(.horizontal, 20)
+        .onAppear {
+            prepareQuestions()
+        }
     }
 
     private func advance() {
-        if index == questions.count - 1 {
-            onComplete(Result(score: correctCount, total: questions.count))
+        let filtered = filteredQuestions
+        if index == filtered.count - 1 {
+            onComplete(Result(score: correctCount, total: filtered.count))
         } else {
             index += 1
             selectedChoiceId = nil
             showFeedback = false
         }
+    }
+
+    private var filteredQuestions: [QuizQuestion] {
+        let filtered = questions.filter { question in
+            switch selectedDifficulty {
+            case .all:
+                return true
+            default:
+                return question.difficulty == selectedDifficulty
+            }
+        }
+        return filtered.isEmpty ? questions : filtered
+    }
+
+    private func resetProgress() {
+        index = 0
+        selectedChoiceId = nil
+        correctCount = 0
+        showFeedback = false
+        prepareQuestions()
+    }
+
+    private func prepareQuestions() {
+        var list = filteredQuestions
+        if shuffleQuestions {
+            list.shuffle()
+        }
+        if let maxQuestions {
+            list = Array(list.prefix(maxQuestions))
+        }
+        preparedQuestions = list
     }
 }

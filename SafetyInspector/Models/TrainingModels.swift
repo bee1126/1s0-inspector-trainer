@@ -44,12 +44,29 @@ struct QuizQuestion: Identifiable, Hashable {
     let id: String
     let prompt: String
     let choices: [QuizChoice]
+    let difficulty: QuizDifficulty
+
+    init(id: String, prompt: String, difficulty: QuizDifficulty = .easy, choices: [QuizChoice]) {
+        self.id = id
+        self.prompt = prompt
+        self.difficulty = difficulty
+        self.choices = choices
+    }
 }
 
 struct QuizChoice: Identifiable, Hashable {
     let id: String
     let text: String
     let isCorrect: Bool
+}
+
+enum QuizDifficulty: String, CaseIterable, Identifiable {
+    case easy = "Easy"
+    case medium = "Medium"
+    case hard = "Hard"
+    case all = "All"
+
+    var id: String { rawValue }
 }
 
 struct ReferenceSource: Identifiable, Hashable {

@@ -28,13 +28,20 @@ struct RootView: View {
                     Label("Progress", systemImage: "chart.bar.xaxis")
                 }
 
-                NavigationStack {
-                    SourcesView()
-                }
-                .tabItem {
-                    Label("Sources", systemImage: "book")
-                }
+            NavigationStack {
+                SourcesView()
             }
+            .tabItem {
+                Label("Sources", systemImage: "book")
+            }
+
+            NavigationStack {
+                ToolsView()
+            }
+            .tabItem {
+                Label("Tools", systemImage: "wrench.and.screwdriver")
+            }
+        }
             .tint(AppTheme.blue)
             .environmentObject(progress)
 
@@ -81,7 +88,7 @@ struct SplashView: View {
                         .foregroundColor(.white)
                 }
 
-                Text("1S0 Professional Training Kit")
+                Text("1S0 Inspector Trainer")
                     .font(AppFont.title(24))
                     .foregroundColor(.white)
 

@@ -10,7 +10,7 @@ struct HomeView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("1S0 Professional Training Kit")
+                        Text("1S0 Inspector Trainer")
                             .font(AppFont.title(28))
                             .foregroundColor(.white)
                         Text("Interactive safety training for Air Force 1S0 inspectors")
@@ -34,6 +34,15 @@ struct HomeView: View {
                                 TagPill(text: "Standards aligned")
                             }
                         }
+                    }
+
+                    GlassCard {
+                        Image("SafetyHero")
+                            .resizable()
+                            .scaledToFill()
+                            .frame(height: 160)
+                            .clipped()
+                            .cornerRadius(16)
                     }
 
                     NavigationLink {

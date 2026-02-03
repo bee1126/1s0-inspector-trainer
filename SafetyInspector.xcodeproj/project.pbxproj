@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DCBA978527A74611BF0C7D6A /* ToolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B55B06176264F239FEAABC9 /* ToolsView.swift */; };
 		0E91ED6632454A578EE1F04D /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AEBFFBDDE847C4A5C225B5 /* Components.swift */; };
 		315750AB112441B1BEC0399C /* QuizFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BAAD5C65C74C7C981FD78C /* QuizFlowView.swift */; };
 		361FFA23D609407A81CF69EA /* LessonPagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5F88832E9C485CAD594876 /* LessonPagerView.swift */; };
@@ -28,6 +29,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1B55B06176264F239FEAABC9 /* ToolsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsView.swift; sourceTree = "<group>"; };
 		0468BD1193644207B5426AC2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		072153175F864C95A13A7416 /* ModuleFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleFlowView.swift; sourceTree = "<group>"; };
 		0F087354F1FB468AB89CEEBD /* TrainingModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingModels.swift; sourceTree = "<group>"; };
@@ -112,7 +114,8 @@
 				F4A9ACDCBD6747A99BC0D4B1 /* RootView.swift */,
 				7A8D35E4CCC1487EAF35202A /* ScenarioFlowView.swift */,
 				8B61CBA9B08E4B2C90ECD50B /* SourcesView.swift */,
-			);
+			
+				1B55B06176264F239FEAABC9 /* ToolsView.swift */,);
 			path = Views;
 			sourceTree = "<group>";
 		};
@@ -208,10 +211,11 @@
 			);
 			name = "Strip Xattrs";
 			outputPaths = (
+				"$(TARGET_BUILD_DIR)/$(WRAPPER_NAME)/.xattr-stripped",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "xattr -cr \"$TARGET_BUILD_DIR/$WRAPPER_NAME\" || true";
+			shellScript = "xattr -cr \"$TARGET_BUILD_DIR/$WRAPPER_NAME\" || true\n/usr/bin/touch \"$TARGET_BUILD_DIR/$WRAPPER_NAME/.xattr-stripped\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -237,7 +241,8 @@
 				D271356E9D7A459D9853776E /* RootView.swift in Sources */,
 				C527BCED10134641B7604DCB /* ScenarioFlowView.swift in Sources */,
 				77E68A4D6BE343DEA732A3B1 /* SourcesView.swift in Sources */,
-			);
+			
+				DCBA978527A74611BF0C7D6A /* ToolsView.swift in Sources */,);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */

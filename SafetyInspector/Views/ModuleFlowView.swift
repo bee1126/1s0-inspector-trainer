@@ -9,6 +9,7 @@ struct ModuleFlowView: View {
     @State private var scenarioResult = Result(score: 0, total: 0)
     @State private var quizResult = Result(score: 0, total: 0)
     @State private var appeared = false
+    @State private var racJustification = ""
 
     var body: some View {
         ZStack {
@@ -45,9 +46,21 @@ struct ModuleFlowView: View {
                         moduleTitle: module.title,
                         score: finalScore,
                         scenarioResult: scenarioResult,
-                        quizResult: quizResult
+                        quizResult: quizResult,
+                        showRacInput: module.id == "rac-system",
+                        racJustification: $racJustification
                     ) {
-                        progress.markCompleted(moduleId: module.id, score: finalScore)
+                        progress.markCompleted(
+                            moduleId: module.id,
+                            score: finalScore,
+                            scenarioPerfect: scenarioResult.score == scenarioResult.total && scenarioResult.total > 0,
+                            quizPerfect: quizResult.score == quizResult.total && quizResult.total > 0
+                        )
+                    } onRetry: {
+                        scenarioResult = Result(score: 0, total: 0)
+                        quizResult = Result(score: 0, total: 0)
+                        racJustification = ""
+                        stage = .lesson
                     }
                 }
                 Spacer()
@@ -119,7 +132,10 @@ struct CompletionView: View {
     let score: Int
     let scenarioResult: Result
     let quizResult: Result
+    let showRacInput: Bool
+    @Binding var racJustification: String
     let onComplete: () -> Void
+    let onRetry: () -> Void
 
     @State private var didSave = false
     @State private var showShareSheet = false
@@ -168,6 +184,23 @@ struct CompletionView: View {
                     .font(AppFont.body(12))
                     .foregroundColor(AppTheme.charcoal.opacity(0.6))
 
+                if showRacInput {
+                    Text("RAC Justification")
+                        .font(AppFont.subtitle(14))
+                        .foregroundColor(AppTheme.charcoal)
+                    TextEditor(text: $racJustification)
+                        .frame(height: 90)
+                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray.opacity(0.2)))
+                        .font(AppFont.body(12))
+                } else if !racJustification.isEmpty {
+                    Text("RAC Justification")
+                        .font(AppFont.subtitle(14))
+                        .foregroundColor(AppTheme.charcoal)
+                    Text(racJustification)
+                        .font(AppFont.body(12))
+                        .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                }
+
                 if didSave {
                     Button("Saved") {
                         // No-op once saved
@@ -189,7 +222,8 @@ struct CompletionView: View {
                         scenarioResult: scenarioResult,
                         quizResult: quizResult,
                         passed: passed,
-                        completionDate: completionDate
+                        completionDate: completionDate,
+                        racJustification: racJustification.isEmpty ? nil : racJustification
                     )
                     let safeTitle = moduleTitle.replacingOccurrences(of: " ", with: "-")
                     let fileURL = FileManager.default.temporaryDirectory
@@ -199,6 +233,20 @@ struct CompletionView: View {
                     showShareSheet = true
                 }
                 .buttonStyle(OutlineButtonStyle())
+
+                Button("Share Challenge") {
+                    let text = "I completed \(moduleTitle) with a score of \(score)% in the 1S0 Inspector Trainer."
+                    shareItems = [text]
+                    showShareSheet = true
+                }
+                .buttonStyle(OutlineButtonStyle())
+
+                if !passed {
+                    Button("Retry Module") {
+                        onRetry()
+                    }
+                    .buttonStyle(PrimaryButtonStyle())
+                }
             }
         }
         .padding(.horizontal, 20)
@@ -229,7 +277,8 @@ enum CompletionSummaryPDF {
         scenarioResult: Result,
         quizResult: Result,
         passed: Bool,
-        completionDate: Date
+        completionDate: Date,
+        racJustification: String?
     ) -> Data {
         let pageWidth: CGFloat = 612
         let pageHeight: CGFloat = 792
@@ -286,6 +335,14 @@ enum CompletionSummaryPDF {
             let quizLine = "Quiz: \(quizResult.score)/\(quizResult.total)"
             quizLine.draw(in: CGRect(x: x, y: y, width: width, height: 18), withAttributes: bodyAttributes)
             y += 30
+
+            if let racJustification, !racJustification.isEmpty {
+                let racTitle = "RAC Justification"
+                racTitle.draw(in: CGRect(x: x, y: y, width: width, height: 18), withAttributes: headingAttributes)
+                y += 22
+                racJustification.draw(in: CGRect(x: x, y: y, width: width, height: 80), withAttributes: bodyAttributes)
+                y += 90
+            }
 
             let noteTitle = "Notes"
             noteTitle.draw(in: CGRect(x: x, y: y, width: width, height: 18), withAttributes: headingAttributes)
