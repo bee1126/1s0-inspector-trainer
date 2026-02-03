@@ -151,48 +151,7 @@ enum TrainingContent {
                     )
                 ]
             ),
-            quiz: [
-                QuizQuestion(
-                    id: "loto-q1",
-                    prompt: "Which step is part of the OSHA LOTO sequence?",
-                    difficulty: .easy,
-                    choices: [
-                        QuizChoice(id: "loto-q1-a", text: "Verify isolation before starting work", isCorrect: true),
-                        QuizChoice(id: "loto-q1-b", text: "Restart equipment to test the repair", isCorrect: false),
-                        QuizChoice(id: "loto-q1-c", text: "Skip isolation if the equipment is powered off", isCorrect: false)
-                    ]
-                ),
-                QuizQuestion(
-                    id: "loto-q2",
-                    prompt: "Who applies the lockout device?",
-                    difficulty: .medium,
-                    choices: [
-                        QuizChoice(id: "loto-q2-a", text: "The authorized employee performing the work", isCorrect: true),
-                        QuizChoice(id: "loto-q2-b", text: "Any supervisor in the area", isCorrect: false),
-                        QuizChoice(id: "loto-q2-c", text: "The affected employee", isCorrect: false)
-                    ]
-                ),
-                QuizQuestion(
-                    id: "loto-q3",
-                    prompt: "Tags are warning devices and:",
-                    difficulty: .hard,
-                    choices: [
-                        QuizChoice(id: "loto-q3-a", text: "Do not provide physical restraint", isCorrect: true),
-                        QuizChoice(id: "loto-q3-b", text: "Eliminate the need for isolation", isCorrect: false),
-                        QuizChoice(id: "loto-q3-c", text: "Are optional if the machine is off", isCorrect: false)
-                    ]
-                ),
-                QuizQuestion(
-                    id: "loto-q4",
-                    prompt: "Group LOTO requires that:",
-                    difficulty: .easy,
-                    choices: [
-                        QuizChoice(id: "loto-q4-a", text: "Each authorized employee maintains personal lock control", isCorrect: true),
-                        QuizChoice(id: "loto-q4-b", text: "Only the supervisor applies locks", isCorrect: false),
-                        QuizChoice(id: "loto-q4-c", text: "Locks can be shared across shifts", isCorrect: false)
-                    ]
-                )
-            ]
+            quiz: QuizBank.loto
         ),
         TrainingModule(
             id: "fall-protection",
@@ -313,48 +272,7 @@ enum TrainingContent {
                     )
                 ]
             ),
-            quiz: [
-                QuizQuestion(
-                    id: "fall-q1",
-                    prompt: "What is the default fall protection threshold in general industry?",
-                    difficulty: .medium,
-                    choices: [
-                        QuizChoice(id: "fall-q1-a", text: "4 feet above a lower level", isCorrect: true),
-                        QuizChoice(id: "fall-q1-b", text: "10 feet above a lower level", isCorrect: false),
-                        QuizChoice(id: "fall-q1-c", text: "No specific threshold", isCorrect: false)
-                    ]
-                ),
-                QuizQuestion(
-                    id: "fall-q2",
-                    prompt: "Which component is required for a personal fall arrest system?",
-                    difficulty: .hard,
-                    choices: [
-                        QuizChoice(id: "fall-q2-a", text: "Body harness", isCorrect: true),
-                        QuizChoice(id: "fall-q2-b", text: "Waist belt only", isCorrect: false),
-                        QuizChoice(id: "fall-q2-c", text: "Warning line only", isCorrect: false)
-                    ]
-                ),
-                QuizQuestion(
-                    id: "fall-q3",
-                    prompt: "Training should include which of the following?",
-                    difficulty: .easy,
-                    choices: [
-                        QuizChoice(id: "fall-q3-a", text: "Hazards, procedures, and equipment limitations", isCorrect: true),
-                        QuizChoice(id: "fall-q3-b", text: "Only the policy memo title", isCorrect: false),
-                        QuizChoice(id: "fall-q3-c", text: "Only how to complete paperwork", isCorrect: false)
-                    ]
-                ),
-                QuizQuestion(
-                    id: "fall-q4",
-                    prompt: "Rescue planning is important because:",
-                    difficulty: .medium,
-                    choices: [
-                        QuizChoice(id: "fall-q4-a", text: "Suspension time after a fall can create additional risk", isCorrect: true),
-                        QuizChoice(id: "fall-q4-b", text: "It replaces fall protection", isCorrect: false),
-                        QuizChoice(id: "fall-q4-c", text: "It eliminates the need for inspection", isCorrect: false)
-                    ]
-                )
-            ]
+            quiz: QuizBank.fallProtection
         ),
         TrainingModule(
             id: "risk-management",
@@ -497,48 +415,7 @@ enum TrainingContent {
                     )
                 ]
             ),
-            quiz: [
-                QuizQuestion(
-                    id: "rm-q1",
-                    prompt: "What are the first two steps of the RM process?",
-                    difficulty: .hard,
-                    choices: [
-                        QuizChoice(id: "rm-q1-a", text: "Identify hazards, assess hazards", isCorrect: true),
-                        QuizChoice(id: "rm-q1-b", text: "Implement controls, supervise", isCorrect: false),
-                        QuizChoice(id: "rm-q1-c", text: "Make decisions, report results", isCorrect: false)
-                    ]
-                ),
-                QuizQuestion(
-                    id: "rm-q2",
-                    prompt: "Which control is preferred over PPE?",
-                    difficulty: .easy,
-                    choices: [
-                        QuizChoice(id: "rm-q2-a", text: "Engineering controls", isCorrect: true),
-                        QuizChoice(id: "rm-q2-b", text: "Reminders only", isCorrect: false),
-                        QuizChoice(id: "rm-q2-c", text: "No control", isCorrect: false)
-                    ]
-                ),
-                QuizQuestion(
-                    id: "rm-q3",
-                    prompt: "Why do we supervise and evaluate?",
-                    difficulty: .medium,
-                    choices: [
-                        QuizChoice(id: "rm-q3-a", text: "To verify controls work and adjust as needed", isCorrect: true),
-                        QuizChoice(id: "rm-q3-b", text: "Only to complete paperwork", isCorrect: false),
-                        QuizChoice(id: "rm-q3-c", text: "Because the process ends after controls are chosen", isCorrect: false)
-                    ]
-                ),
-                QuizQuestion(
-                    id: "rm-q4",
-                    prompt: "Risk decisions should be:",
-                    difficulty: .hard,
-                    choices: [
-                        QuizChoice(id: "rm-q4-a", text: "Communicated to the team and documented", isCorrect: true),
-                        QuizChoice(id: "rm-q4-b", text: "Kept informal to save time", isCorrect: false),
-                        QuizChoice(id: "rm-q4-c", text: "Made without considering controls", isCorrect: false)
-                    ]
-                )
-            ]
+            quiz: QuizBank.riskManagement
         ),
         TrainingModule(
             id: "roles-responsibilities",
@@ -659,38 +536,7 @@ enum TrainingContent {
                     )
                 ]
             ),
-            quiz: [
-                QuizQuestion(
-                    id: "roles-q1",
-                    prompt: "Who is responsible for enforcing safe procedures in daily operations?",
-                    difficulty: .easy,
-                    choices: [
-                        QuizChoice(id: "roles-q1-a", text: "Supervisors", isCorrect: true),
-                        QuizChoice(id: "roles-q1-b", text: "Only the safety office", isCorrect: false),
-                        QuizChoice(id: "roles-q1-c", text: "Only the commander", isCorrect: false)
-                    ]
-                ),
-                QuizQuestion(
-                    id: "roles-q2",
-                    prompt: "Employees should:",
-                    difficulty: .medium,
-                    choices: [
-                        QuizChoice(id: "roles-q2-a", text: "Report hazards and follow procedures", isCorrect: true),
-                        QuizChoice(id: "roles-q2-b", text: "Wait for inspections to mention hazards", isCorrect: false),
-                        QuizChoice(id: "roles-q2-c", text: "Use PPE only when convenient", isCorrect: false)
-                    ]
-                ),
-                QuizQuestion(
-                    id: "roles-q3",
-                    prompt: "The safety office primarily provides:",
-                    difficulty: .hard,
-                    choices: [
-                        QuizChoice(id: "roles-q3-a", text: "Oversight, guidance, and program support", isCorrect: true),
-                        QuizChoice(id: "roles-q3-b", text: "Only disciplinary actions", isCorrect: false),
-                        QuizChoice(id: "roles-q3-c", text: "Only emergency response", isCorrect: false)
-                    ]
-                )
-            ]
+            quiz: QuizBank.rolesResponsibilities
         ),
         TrainingModule(
             id: "hazard-abatement",
@@ -810,38 +656,7 @@ enum TrainingContent {
                     )
                 ]
             ),
-            quiz: [
-                QuizQuestion(
-                    id: "abatement-q1",
-                    prompt: "Interim controls are used when:",
-                    difficulty: .easy,
-                    choices: [
-                        QuizChoice(id: "abatement-q1-a", text: "A permanent fix is not yet complete", isCorrect: true),
-                        QuizChoice(id: "abatement-q1-b", text: "No hazard exists", isCorrect: false),
-                        QuizChoice(id: "abatement-q1-c", text: "To replace documentation", isCorrect: false)
-                    ]
-                ),
-                QuizQuestion(
-                    id: "abatement-q2",
-                    prompt: "Who should be assigned corrective action responsibility?",
-                    difficulty: .medium,
-                    choices: [
-                        QuizChoice(id: "abatement-q2-a", text: "The person or team with authority to fix it", isCorrect: true),
-                        QuizChoice(id: "abatement-q2-b", text: "Anyone available", isCorrect: false),
-                        QuizChoice(id: "abatement-q2-c", text: "No one until funding arrives", isCorrect: false)
-                    ]
-                ),
-                QuizQuestion(
-                    id: "abatement-q3",
-                    prompt: "A hazard can be closed when:",
-                    difficulty: .hard,
-                    choices: [
-                        QuizChoice(id: "abatement-q3-a", text: "The corrective action is verified effective", isCorrect: true),
-                        QuizChoice(id: "abatement-q3-b", text: "A memo is sent", isCorrect: false),
-                        QuizChoice(id: "abatement-q3-c", text: "The next inspection is scheduled", isCorrect: false)
-                    ]
-                )
-            ]
+            quiz: QuizBank.hazardAbatement
         ),
         TrainingModule(
             id: "rac-system",
@@ -932,38 +747,7 @@ enum TrainingContent {
                     )
                 ]
             ),
-            quiz: [
-                QuizQuestion(
-                    id: "rac-q1",
-                    prompt: "RAC is determined by:",
-                    difficulty: .easy,
-                    choices: [
-                        QuizChoice(id: "rac-q1-a", text: "Severity and probability", isCorrect: true),
-                        QuizChoice(id: "rac-q1-b", text: "Cost of the fix only", isCorrect: false),
-                        QuizChoice(id: "rac-q1-c", text: "Who reported the hazard", isCorrect: false)
-                    ]
-                ),
-                QuizQuestion(
-                    id: "rac-q2",
-                    prompt: "A higher RAC generally means:",
-                    difficulty: .medium,
-                    choices: [
-                        QuizChoice(id: "rac-q2-a", text: "Faster abatement and higher-level attention", isCorrect: true),
-                        QuizChoice(id: "rac-q2-b", text: "Less documentation", isCorrect: false),
-                        QuizChoice(id: "rac-q2-c", text: "Lower urgency", isCorrect: false)
-                    ]
-                ),
-                QuizQuestion(
-                    id: "rac-q3",
-                    prompt: "If you are unsure about severity or probability, you should:",
-                    difficulty: .hard,
-                    choices: [
-                        QuizChoice(id: "rac-q3-a", text: "Consult the safety office for alignment", isCorrect: true),
-                        QuizChoice(id: "rac-q3-b", text: "Assign the lowest RAC", isCorrect: false),
-                        QuizChoice(id: "rac-q3-c", text: "Skip the RAC", isCorrect: false)
-                    ]
-                )
-            ]
+            quiz: QuizBank.racSystem
         ),
         TrainingModule(
             id: "confined-space",
@@ -1054,38 +838,7 @@ enum TrainingContent {
                     )
                 ]
             ),
-            quiz: [
-                QuizQuestion(
-                    id: "cs-q1",
-                    prompt: "A permit-required confined space may include:",
-                    difficulty: .easy,
-                    choices: [
-                        QuizChoice(id: "cs-q1-a", text: "Atmospheric hazards", isCorrect: true),
-                        QuizChoice(id: "cs-q1-b", text: "No hazards at all", isCorrect: false),
-                        QuizChoice(id: "cs-q1-c", text: "Only noise hazards", isCorrect: false)
-                    ]
-                ),
-                QuizQuestion(
-                    id: "cs-q2",
-                    prompt: "An attendant should:",
-                    difficulty: .medium,
-                    choices: [
-                        QuizChoice(id: "cs-q2-a", text: "Monitor entrants and keep communication", isCorrect: true),
-                        QuizChoice(id: "cs-q2-b", text: "Leave the post when busy", isCorrect: false),
-                        QuizChoice(id: "cs-q2-c", text: "Ignore the permit once signed", isCorrect: false)
-                    ]
-                ),
-                QuizQuestion(
-                    id: "cs-q3",
-                    prompt: "Rescue planning should be:",
-                    difficulty: .hard,
-                    choices: [
-                        QuizChoice(id: "cs-q3-a", text: "Completed before entry begins", isCorrect: true),
-                        QuizChoice(id: "cs-q3-b", text: "Delayed until an emergency", isCorrect: false),
-                        QuizChoice(id: "cs-q3-c", text: "Handled only by external responders", isCorrect: false)
-                    ]
-                )
-            ]
+            quiz: QuizBank.confinedSpace
         ),
         TrainingModule(
             id: "hot-work",
@@ -1176,38 +929,7 @@ enum TrainingContent {
                     )
                 ]
             ),
-            quiz: [
-                QuizQuestion(
-                    id: "hw-q1",
-                    prompt: "Hot work permits help ensure:",
-                    difficulty: .easy,
-                    choices: [
-                        QuizChoice(id: "hw-q1-a", text: "Controls are in place before work", isCorrect: true),
-                        QuizChoice(id: "hw-q1-b", text: "Faster production only", isCorrect: false),
-                        QuizChoice(id: "hw-q1-c", text: "No need for fire watch", isCorrect: false)
-                    ]
-                ),
-                QuizQuestion(
-                    id: "hw-q2",
-                    prompt: "Fire watch should:",
-                    difficulty: .medium,
-                    choices: [
-                        QuizChoice(id: "hw-q2-a", text: "Remain during and after hot work", isCorrect: true),
-                        QuizChoice(id: "hw-q2-b", text: "Leave when cutting stops", isCorrect: false),
-                        QuizChoice(id: "hw-q2-c", text: "Ignore the permit", isCorrect: false)
-                    ]
-                ),
-                QuizQuestion(
-                    id: "hw-q3",
-                    prompt: "After hot work, you should:",
-                    difficulty: .hard,
-                    choices: [
-                        QuizChoice(id: "hw-q3-a", text: "Inspect for smoldering materials", isCorrect: true),
-                        QuizChoice(id: "hw-q3-b", text: "Assume the area is safe", isCorrect: false),
-                        QuizChoice(id: "hw-q3-c", text: "Remove fire extinguishers", isCorrect: false)
-                    ]
-                )
-            ]
+            quiz: QuizBank.hotWork
         ),
         TrainingModule(
             id: "hearing-conservation",
@@ -1278,38 +1000,7 @@ enum TrainingContent {
                     )
                 ]
             ),
-            quiz: [
-                QuizQuestion(
-                    id: "hc-q1",
-                    prompt: "Hearing protection is:",
-                    difficulty: .easy,
-                    choices: [
-                        QuizChoice(id: "hc-q1-a", text: "The last line of defense", isCorrect: true),
-                        QuizChoice(id: "hc-q1-b", text: "More effective than engineering controls", isCorrect: false),
-                        QuizChoice(id: "hc-q1-c", text: "Optional in high-noise areas", isCorrect: false)
-                    ]
-                ),
-                QuizQuestion(
-                    id: "hc-q2",
-                    prompt: "Audiograms are used to:",
-                    difficulty: .medium,
-                    choices: [
-                        QuizChoice(id: "hc-q2-a", text: "Track hearing changes over time", isCorrect: true),
-                        QuizChoice(id: "hc-q2-b", text: "Replace PPE", isCorrect: false),
-                        QuizChoice(id: "hc-q2-c", text: "Avoid training", isCorrect: false)
-                    ]
-                ),
-                QuizQuestion(
-                    id: "hc-q3",
-                    prompt: "Administrative controls include:",
-                    difficulty: .hard,
-                    choices: [
-                        QuizChoice(id: "hc-q3-a", text: "Limiting exposure time", isCorrect: true),
-                        QuizChoice(id: "hc-q3-b", text: "Removing PPE", isCorrect: false),
-                        QuizChoice(id: "hc-q3-c", text: "Ignoring hazard signage", isCorrect: false)
-                    ]
-                )
-            ]
+            quiz: QuizBank.hearingConservation
         ),
         TrainingModule(
             id: "mishap-reporting",
@@ -1400,38 +1091,7 @@ enum TrainingContent {
                     )
                 ]
             ),
-            quiz: [
-                QuizQuestion(
-                    id: "mr-q1",
-                    prompt: "Reports should be:",
-                    difficulty: .easy,
-                    choices: [
-                        QuizChoice(id: "mr-q1-a", text: "Timely and factual", isCorrect: true),
-                        QuizChoice(id: "mr-q1-b", text: "Delayed until all details are known", isCorrect: false),
-                        QuizChoice(id: "mr-q1-c", text: "Limited to severe injuries only", isCorrect: false)
-                    ]
-                ),
-                QuizQuestion(
-                    id: "mr-q2",
-                    prompt: "The first priority after a mishap is:",
-                    difficulty: .medium,
-                    choices: [
-                        QuizChoice(id: "mr-q2-a", text: "Medical care and scene safety", isCorrect: true),
-                        QuizChoice(id: "mr-q2-b", text: "Collecting statements", isCorrect: false),
-                        QuizChoice(id: "mr-q2-c", text: "Posting on social media", isCorrect: false)
-                    ]
-                ),
-                QuizQuestion(
-                    id: "mr-q3",
-                    prompt: "Reports help by:",
-                    difficulty: .hard,
-                    choices: [
-                        QuizChoice(id: "mr-q3-a", text: "Preventing recurrence", isCorrect: true),
-                        QuizChoice(id: "mr-q3-b", text: "Assigning blame", isCorrect: false),
-                        QuizChoice(id: "mr-q3-c", text: "Replacing inspections", isCorrect: false)
-                    ]
-                )
-            ]
+            quiz: QuizBank.mishapReporting
         ),
         TrainingModule(
             id: "investigation-basics",
@@ -1522,38 +1182,7 @@ enum TrainingContent {
                     )
                 ]
             ),
-            quiz: [
-                QuizQuestion(
-                    id: "inv-q1",
-                    prompt: "Root causes are:",
-                    difficulty: .easy,
-                    choices: [
-                        QuizChoice(id: "inv-q1-a", text: "Underlying system failures", isCorrect: true),
-                        QuizChoice(id: "inv-q1-b", text: "Only individual mistakes", isCorrect: false),
-                        QuizChoice(id: "inv-q1-c", text: "Always equipment defects", isCorrect: false)
-                    ]
-                ),
-                QuizQuestion(
-                    id: "inv-q2",
-                    prompt: "Evidence should be collected:",
-                    difficulty: .medium,
-                    choices: [
-                        QuizChoice(id: "inv-q2-a", text: "As soon as possible", isCorrect: true),
-                        QuizChoice(id: "inv-q2-b", text: "After cleanup", isCorrect: false),
-                        QuizChoice(id: "inv-q2-c", text: "Only if requested", isCorrect: false)
-                    ]
-                ),
-                QuizQuestion(
-                    id: "inv-q3",
-                    prompt: "Corrective actions should:",
-                    difficulty: .hard,
-                    choices: [
-                        QuizChoice(id: "inv-q3-a", text: "Address root causes", isCorrect: true),
-                        QuizChoice(id: "inv-q3-b", text: "Be optional", isCorrect: false),
-                        QuizChoice(id: "inv-q3-c", text: "Avoid documentation", isCorrect: false)
-                    ]
-                )
-            ]
+            quiz: QuizBank.investigationBasics
         ),
         TrainingModule(
             id: "jha-builder",
@@ -1614,28 +1243,7 @@ enum TrainingContent {
                     )
                 ]
             ),
-            quiz: [
-                QuizQuestion(
-                    id: "jha-q1",
-                    prompt: "A JHA should:",
-                    difficulty: .easy,
-                    choices: [
-                        QuizChoice(id: "jha-q1-a", text: "Identify hazards and controls by step", isCorrect: true),
-                        QuizChoice(id: "jha-q1-b", text: "Ignore environmental conditions", isCorrect: false),
-                        QuizChoice(id: "jha-q1-c", text: "Be optional for routine tasks", isCorrect: false)
-                    ]
-                ),
-                QuizQuestion(
-                    id: "jha-q2",
-                    prompt: "Controls should prioritize:",
-                    difficulty: .medium,
-                    choices: [
-                        QuizChoice(id: "jha-q2-a", text: "Elimination and engineering", isCorrect: true),
-                        QuizChoice(id: "jha-q2-b", text: "PPE only", isCorrect: false),
-                        QuizChoice(id: "jha-q2-c", text: "No documentation", isCorrect: false)
-                    ]
-                )
-            ]
+            quiz: QuizBank.jhaFundamentals
         ),
         TrainingModule(
             id: "safety-briefing",
@@ -1687,18 +1295,7 @@ enum TrainingContent {
                     )
                 ]
             ),
-            quiz: [
-                QuizQuestion(
-                    id: "sb-q1",
-                    prompt: "A good safety briefing includes:",
-                    difficulty: .hard,
-                    choices: [
-                        QuizChoice(id: "sb-q1-a", text: "Hazards, controls, and responsibilities", isCorrect: true),
-                        QuizChoice(id: "sb-q1-b", text: "Only task timing", isCorrect: false),
-                        QuizChoice(id: "sb-q1-c", text: "No questions", isCorrect: false)
-                    ]
-                )
-            ]
+            quiz: QuizBank.safetyBriefing
         ),
         TrainingModule(
             id: "ppe-decision",
@@ -1750,28 +1347,7 @@ enum TrainingContent {
                     )
                 ]
             ),
-            quiz: [
-                QuizQuestion(
-                    id: "ppe-q1",
-                    prompt: "PPE should be:",
-                    difficulty: .easy,
-                    choices: [
-                        QuizChoice(id: "ppe-q1-a", text: "Matched to hazards and fit properly", isCorrect: true),
-                        QuizChoice(id: "ppe-q1-b", text: "Shared without inspection", isCorrect: false),
-                        QuizChoice(id: "ppe-q1-c", text: "Optional when busy", isCorrect: false)
-                    ]
-                ),
-                QuizQuestion(
-                    id: "ppe-q2",
-                    prompt: "Before use, PPE should be:",
-                    difficulty: .medium,
-                    choices: [
-                        QuizChoice(id: "ppe-q2-a", text: "Inspected for damage", isCorrect: true),
-                        QuizChoice(id: "ppe-q2-b", text: "Assumed good", isCorrect: false),
-                        QuizChoice(id: "ppe-q2-c", text: "Left uncleaned", isCorrect: false)
-                    ]
-                )
-            ]
+            quiz: QuizBank.ppeDecision
         )
     ]
 
