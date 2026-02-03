@@ -38,6 +38,17 @@ struct SourcesView: View {
 
                     GlassCard {
                         VStack(alignment: .leading, spacing: 8) {
+                            Text("Privacy & Data Use")
+                                .font(AppFont.subtitle(16))
+                                .foregroundColor(AppTheme.charcoal)
+                            Text("This app stores training progress only on your device. No analytics, advertising, or external data sharing is enabled by default.")
+                                .font(AppFont.body(13))
+                                .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                        }
+                    }
+
+                    GlassCard {
+                        VStack(alignment: .leading, spacing: 8) {
                             Text("Disclaimer")
                                 .font(AppFont.subtitle(16))
                                 .foregroundColor(AppTheme.charcoal)

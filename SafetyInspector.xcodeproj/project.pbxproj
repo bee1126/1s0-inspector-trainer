@@ -144,6 +144,7 @@
 				ABBE7ABD78E84A50A3C3A40B /* Sources */,
 				C855255D97F44A78AA6E81D6 /* Frameworks */,
 				0D55537160C54AD0BD6E3C7C /* Resources */,
+				2CC52A0C8C4B4B9D80B7C2EC /* Strip Xattrs */,
 			);
 			buildRules = (
 			);
@@ -196,6 +197,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		2CC52A0C8C4B4B9D80B7C2EC /* Strip Xattrs */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Strip Xattrs";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "xattr -cr \"$TARGET_BUILD_DIR/$WRAPPER_NAME\" || true";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		ABBE7ABD78E84A50A3C3A40B /* Sources */ = {

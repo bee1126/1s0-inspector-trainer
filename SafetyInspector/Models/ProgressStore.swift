@@ -4,9 +4,11 @@ import SwiftUI
 final class ProgressStore: ObservableObject {
     @Published private(set) var completedModules: Set<String> = []
     @Published private(set) var bestScores: [String: Int] = [:]
+    @Published private(set) var lastCompleted: [String: Date] = [:]
 
     private let completedKey = "completedModules"
     private let scoresKey = "bestScores"
+    private let completedDatesKey = "completedDates"
 
     init() {
         load()
@@ -14,6 +16,7 @@ final class ProgressStore: ObservableObject {
 
     func markCompleted(moduleId: String, score: Int) {
         completedModules.insert(moduleId)
+        lastCompleted[moduleId] = Date()
         let current = bestScores[moduleId] ?? 0
         if score > current {
             bestScores[moduleId] = score
@@ -29,9 +32,14 @@ final class ProgressStore: ObservableObject {
         bestScores[moduleId] ?? 0
     }
 
+    func lastCompletionDate(for moduleId: String) -> Date? {
+        lastCompleted[moduleId]
+    }
+
     func resetAll() {
         completedModules = []
         bestScores = [:]
+        lastCompleted = [:]
         save()
     }
 
@@ -45,6 +53,10 @@ final class ProgressStore: ObservableObject {
            let decoded = try? JSONDecoder().decode([String: Int].self, from: data) {
             bestScores = decoded
         }
+        if let data = defaults.data(forKey: completedDatesKey),
+           let decoded = try? JSONDecoder().decode([String: Date].self, from: data) {
+            lastCompleted = decoded
+        }
     }
 
     private func save() {
@@ -54,6 +66,9 @@ final class ProgressStore: ObservableObject {
         }
         if let data = try? JSONEncoder().encode(bestScores) {
             defaults.set(data, forKey: scoresKey)
+        }
+        if let data = try? JSONEncoder().encode(lastCompleted) {
+            defaults.set(data, forKey: completedDatesKey)
         }
     }
 }

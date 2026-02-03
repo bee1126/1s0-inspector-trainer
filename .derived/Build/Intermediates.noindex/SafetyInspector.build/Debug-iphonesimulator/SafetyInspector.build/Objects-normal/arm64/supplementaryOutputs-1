@@ -1,0 +1,23 @@
+{
+  "/Users/bah/Desktop/Safety Inspector App/SafetyInspector/App/SafetyInspectorApp.swift" : {
+    "const-values" : "/Users/bah/Desktop/Safety Inspector App/.derived/Build/Intermediates.noindex/SafetyInspector.build/Debug-iphonesimulator/SafetyInspector.build/Objects-normal/arm64/SafetyInspectorApp.swiftconstvalues",
+    "dependencies" : "/Users/bah/Desktop/Safety Inspector App/.derived/Build/Intermediates.noindex/SafetyInspector.build/Debug-iphonesimulator/SafetyInspector.build/Objects-normal/arm64/SafetyInspectorApp.d",
+    "diagnostics" : "/Users/bah/Desktop/Safety Inspector App/.derived/Build/Intermediates.noindex/SafetyInspector.build/Debug-iphonesimulator/SafetyInspector.build/Objects-normal/arm64/SafetyInspectorApp.dia",
+    "object" : "/Users/bah/Desktop/Safety Inspector App/.derived/Build/Intermediates.noindex/SafetyInspector.build/Debug-iphonesimulator/SafetyInspector.build/Objects-normal/arm64/SafetyInspectorApp.o",
+    "swift-dependencies" : "/Users/bah/Desktop/Safety Inspector App/.derived/Build/Intermediates.noindex/SafetyInspector.build/Debug-iphonesimulator/SafetyInspector.build/Objects-normal/arm64/SafetyInspectorApp.swiftdeps"
+  },
+  "/Users/bah/Desktop/Safety Inspector App/SafetyInspector/Models/ProgressStore.swift" : {
+    "const-values" : "/Users/bah/Desktop/Safety Inspector App/.derived/Build/Intermediates.noindex/SafetyInspector.build/Debug-iphonesimulator/SafetyInspector.build/Objects-normal/arm64/ProgressStore.swiftconstvalues",
+    "dependencies" : "/Users/bah/Desktop/Safety Inspector App/.derived/Build/Intermediates.noindex/SafetyInspector.build/Debug-iphonesimulator/SafetyInspector.build/Objects-normal/arm64/ProgressStore.d",
+    "diagnostics" : "/Users/bah/Desktop/Safety Inspector App/.derived/Build/Intermediates.noindex/SafetyInspector.build/Debug-iphonesimulator/SafetyInspector.build/Objects-normal/arm64/ProgressStore.dia",
+    "object" : "/Users/bah/Desktop/Safety Inspector App/.derived/Build/Intermediates.noindex/SafetyInspector.build/Debug-iphonesimulator/SafetyInspector.build/Objects-normal/arm64/ProgressStore.o",
+    "swift-dependencies" : "/Users/bah/Desktop/Safety Inspector App/.derived/Build/Intermediates.noindex/SafetyInspector.build/Debug-iphonesimulator/SafetyInspector.build/Objects-normal/arm64/ProgressStore.swiftdeps"
+  },
+  "/Users/bah/Desktop/Safety Inspector App/SafetyInspector/Models/TrainingContent.swift" : {
+    "const-values" : "/Users/bah/Desktop/Safety Inspector App/.derived/Build/Intermediates.noindex/SafetyInspector.build/Debug-iphonesimulator/SafetyInspector.build/Objects-normal/arm64/TrainingContent.swiftconstvalues",
+    "dependencies" : "/Users/bah/Desktop/Safety Inspector App/.derived/Build/Intermediates.noindex/SafetyInspector.build/Debug-iphonesimulator/SafetyInspector.build/Objects-normal/arm64/TrainingContent.d",
+    "diagnostics" : "/Users/bah/Desktop/Safety Inspector App/.derived/Build/Intermediates.noindex/SafetyInspector.build/Debug-iphonesimulator/SafetyInspector.build/Objects-normal/arm64/TrainingContent.dia",
+    "object" : "/Users/bah/Desktop/Safety Inspector App/.derived/Build/Intermediates.noindex/SafetyInspector.build/Debug-iphonesimulator/SafetyInspector.build/Objects-normal/arm64/TrainingContent.o",
+    "swift-dependencies" : "/Users/bah/Desktop/Safety Inspector App/.derived/Build/Intermediates.noindex/SafetyInspector.build/Debug-iphonesimulator/SafetyInspector.build/Objects-normal/arm64/TrainingContent.swiftdeps"
+  }
+}

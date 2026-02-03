@@ -64,7 +64,11 @@ struct HomeView: View {
                             .font(AppFont.subtitle(18))
                             .foregroundColor(.white)
 
-                        ForEach(modules.prefix(3), id: \.id) { module in
+                        Text("\(modules.count) modules available")
+                            .font(AppFont.body(12))
+                            .foregroundColor(Color.white.opacity(0.7))
+
+                        ForEach(modules.prefix(4), id: \.id) { module in
                             ModulePreviewRow(module: module)
                         }
                     }

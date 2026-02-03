@@ -3,6 +3,12 @@ import SwiftUI
 struct ProgressDashboardView: View {
     @EnvironmentObject private var progress: ProgressStore
     private let modules = TrainingContent.modules
+    private let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+        return formatter
+    }()
 
     var body: some View {
         ZStack {
@@ -42,6 +48,11 @@ struct ProgressDashboardView: View {
                                         Text(progress.isCompleted(module.id) ? "Completed" : "Not started")
                                             .font(AppFont.body(12))
                                             .foregroundColor(AppTheme.charcoal.opacity(0.6))
+                                        if let date = progress.lastCompletionDate(for: module.id) {
+                                            Text("Last completed \(dateFormatter.string(from: date))")
+                                                .font(AppFont.body(11))
+                                                .foregroundColor(AppTheme.charcoal.opacity(0.55))
+                                        }
                                     }
                                     Spacer()
                                     if progress.isCompleted(module.id) {

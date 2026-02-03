@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 struct ModuleFlowView: View {
     @EnvironmentObject private var progress: ProgressStore
@@ -121,6 +122,9 @@ struct CompletionView: View {
     let onComplete: () -> Void
 
     @State private var didSave = false
+    @State private var showShareSheet = false
+    @State private var shareItems: [Any] = []
+    @State private var completionDate = Date()
 
     var body: some View {
         GlassCard {
@@ -152,6 +156,18 @@ struct CompletionView: View {
                     ScoreBadge(score: score)
                 }
 
+                HStack(spacing: 10) {
+                    Text("Status")
+                        .font(AppFont.mono(12))
+                        .foregroundColor(AppTheme.charcoal.opacity(0.6))
+                    Text(passed ? "Pass" : "Remediate")
+                        .font(AppFont.subtitle(16))
+                        .foregroundColor(passed ? AppTheme.safetyGreen : Color.red.opacity(0.8))
+                }
+                Text("Pass threshold: 80%")
+                    .font(AppFont.body(12))
+                    .foregroundColor(AppTheme.charcoal.opacity(0.6))
+
                 if didSave {
                     Button("Saved") {
                         // No-op once saved
@@ -161,11 +177,122 @@ struct CompletionView: View {
                     Button("Save Progress") {
                         onComplete()
                         didSave = true
+                        completionDate = Date()
                     }
                     .buttonStyle(PrimaryButtonStyle())
                 }
+
+                Button("Generate Completion Summary") {
+                    let pdfData = CompletionSummaryPDF.generate(
+                        moduleTitle: moduleTitle,
+                        score: score,
+                        scenarioResult: scenarioResult,
+                        quizResult: quizResult,
+                        passed: passed,
+                        completionDate: completionDate
+                    )
+                    let safeTitle = moduleTitle.replacingOccurrences(of: " ", with: "-")
+                    let fileURL = FileManager.default.temporaryDirectory
+                        .appendingPathComponent("CompletionSummary-\(safeTitle).pdf")
+                    try? pdfData.write(to: fileURL, options: .atomic)
+                    shareItems = [fileURL]
+                    showShareSheet = true
+                }
+                .buttonStyle(OutlineButtonStyle())
             }
         }
         .padding(.horizontal, 20)
+        .sheet(isPresented: $showShareSheet) {
+            ShareSheet(activityItems: shareItems)
+        }
+    }
+
+    private var passed: Bool {
+        score >= 80
+    }
+}
+
+struct ShareSheet: UIViewControllerRepresentable {
+    let activityItems: [Any]
+
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+    }
+
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
+}
+
+enum CompletionSummaryPDF {
+    static func generate(
+        moduleTitle: String,
+        score: Int,
+        scenarioResult: Result,
+        quizResult: Result,
+        passed: Bool,
+        completionDate: Date
+    ) -> Data {
+        let pageWidth: CGFloat = 612
+        let pageHeight: CGFloat = 792
+        let bounds = CGRect(x: 0, y: 0, width: pageWidth, height: pageHeight)
+        let renderer = UIGraphicsPDFRenderer(bounds: bounds)
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+
+        return renderer.pdfData { context in
+            context.beginPage()
+
+            let titleAttributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.boldSystemFont(ofSize: 26),
+                .foregroundColor: UIColor.black
+            ]
+            let headingAttributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.boldSystemFont(ofSize: 16),
+                .foregroundColor: UIColor.black
+            ]
+            let bodyAttributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.systemFont(ofSize: 13),
+                .foregroundColor: UIColor.darkGray
+            ]
+
+            var y: CGFloat = 48
+            let x: CGFloat = 48
+            let width: CGFloat = pageWidth - 96
+
+            let title = "Training Completion Summary"
+            title.draw(in: CGRect(x: x, y: y, width: width, height: 32), withAttributes: titleAttributes)
+            y += 40
+
+            let moduleLine = "Module: \(moduleTitle)"
+            moduleLine.draw(in: CGRect(x: x, y: y, width: width, height: 20), withAttributes: headingAttributes)
+            y += 24
+
+            let dateLine = "Completion Date: \(formatter.string(from: completionDate))"
+            dateLine.draw(in: CGRect(x: x, y: y, width: width, height: 18), withAttributes: bodyAttributes)
+            y += 24
+
+            let statusLine = "Status: \(passed ? "Pass" : "Remediate")"
+            statusLine.draw(in: CGRect(x: x, y: y, width: width, height: 18), withAttributes: bodyAttributes)
+            y += 24
+
+            let scoreLine = "Overall Score: \(score)%"
+            scoreLine.draw(in: CGRect(x: x, y: y, width: width, height: 18), withAttributes: bodyAttributes)
+            y += 24
+
+            let scenarioLine = "Scenario: \(scenarioResult.score)/\(scenarioResult.total)"
+            scenarioLine.draw(in: CGRect(x: x, y: y, width: width, height: 18), withAttributes: bodyAttributes)
+            y += 18
+
+            let quizLine = "Quiz: \(quizResult.score)/\(quizResult.total)"
+            quizLine.draw(in: CGRect(x: x, y: y, width: width, height: 18), withAttributes: bodyAttributes)
+            y += 30
+
+            let noteTitle = "Notes"
+            noteTitle.draw(in: CGRect(x: x, y: y, width: width, height: 18), withAttributes: headingAttributes)
+            y += 22
+
+            let noteText = "This summary is a training aid and does not replace official Air Force guidance or OSHA requirements. Verify current publications and local procedures."
+            noteText.draw(in: CGRect(x: x, y: y, width: width, height: 60), withAttributes: bodyAttributes)
+        }
     }
 }
