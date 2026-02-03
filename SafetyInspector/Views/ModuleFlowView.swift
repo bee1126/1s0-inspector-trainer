@@ -3,22 +3,28 @@ import UIKit
 
 struct ModuleFlowView: View {
     @EnvironmentObject private var progress: ProgressStore
+    @Environment(\.dismiss) private var dismiss
     let module: TrainingModule
 
     @State private var stage: ModuleStage = .lesson
-    @State private var scenarioResult = Result(score: 0, total: 0)
-    @State private var quizResult = Result(score: 0, total: 0)
+    @State private var scenarioResult = AssessmentResult(score: 0, total: 0)
+    @State private var quizResult = AssessmentResult(score: 0, total: 0)
     @State private var appeared = false
     @State private var racJustification = ""
+    @State private var showPracticeSheet = false
 
     var body: some View {
         ZStack {
             BackgroundView()
 
             VStack(spacing: 16) {
-                StageProgressView(stage: stage)
-                    .padding(.horizontal, 20)
-                    .padding(.top, 8)
+                HStack(spacing: 12) {
+                    StageProgressView(stage: stage)
+                    Spacer()
+                    HeartsView(hearts: progress.hearts, maxHearts: progress.maxHearts)
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, 8)
 
                 switch stage {
                 case .lesson:
@@ -28,19 +34,23 @@ struct ModuleFlowView: View {
                         }
                     }
                 case .scenario:
-                    ScenarioFlowView(scenario: module.scenario) { result in
+                    ScenarioFlowView(scenario: module.scenario, onWrongAnswer: {
+                        progress.consumeHeart()
+                    }, showsHearts: false) { result in
                         scenarioResult = result
                         withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
                             stage = .quiz
                         }
                     }
                 case .quiz:
-                    QuizFlowView(questions: module.quiz, onComplete: { result in
+                    QuizFlowView(questions: module.quiz, onWrongAnswer: {
+                        progress.consumeHeart()
+                    }, onComplete: { result in
                         quizResult = result
                         withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
                             stage = .complete
                         }
-                    }, shuffleQuestions: true, maxQuestions: 10)
+                    }, showsHearts: false, shuffleQuestions: true, maxQuestions: 10)
                 case .complete:
                     CompletionView(
                         moduleTitle: module.title,
@@ -50,15 +60,15 @@ struct ModuleFlowView: View {
                         showRacInput: module.id == "rac-system",
                         racJustification: $racJustification
                     ) {
-                        progress.markCompleted(
+                        progress.completeModule(
                             moduleId: module.id,
                             score: finalScore,
-                            scenarioPerfect: scenarioResult.score == scenarioResult.total && scenarioResult.total > 0,
-                            quizPerfect: quizResult.score == quizResult.total && quizResult.total > 0
+                            scenarioResult: scenarioResult,
+                            quizResult: quizResult
                         )
                     } onRetry: {
-                        scenarioResult = Result(score: 0, total: 0)
-                        quizResult = Result(score: 0, total: 0)
+                        scenarioResult = AssessmentResult(score: 0, total: 0)
+                        quizResult = AssessmentResult(score: 0, total: 0)
                         racJustification = ""
                         stage = .lesson
                     }
@@ -69,6 +79,7 @@ struct ModuleFlowView: View {
             .opacity(appeared ? 1 : 0)
             .offset(y: appeared ? 0 : 12)
             .onAppear {
+                progress.refreshForNewDayIfNeeded()
                 withAnimation(.easeOut(duration: 0.4)) {
                     appeared = true
                 }
@@ -76,6 +87,19 @@ struct ModuleFlowView: View {
         }
         .navigationTitle(module.title)
         .navigationBarTitleDisplayMode(.inline)
+        .overlay(alignment: .center) {
+            if progress.hearts == 0 && (stage == .scenario || stage == .quiz) {
+                HeartsEmptyOverlay(onPractice: {
+                    showPracticeSheet = true
+                }, onExit: {
+                    dismiss()
+                })
+            }
+        }
+        .sheet(isPresented: $showPracticeSheet) {
+            PracticeSessionView()
+                .environmentObject(progress)
+        }
     }
 
     private var finalScore: Int {
@@ -91,11 +115,6 @@ enum ModuleStage {
     case scenario
     case quiz
     case complete
-}
-
-struct Result {
-    let score: Int
-    let total: Int
 }
 
 struct StageProgressView: View {
@@ -128,19 +147,21 @@ struct StageChip: View {
 }
 
 struct CompletionView: View {
+    @EnvironmentObject private var progress: ProgressStore
     let moduleTitle: String
     let score: Int
-    let scenarioResult: Result
-    let quizResult: Result
+    let scenarioResult: AssessmentResult
+    let quizResult: AssessmentResult
     let showRacInput: Bool
     @Binding var racJustification: String
-    let onComplete: () -> Void
+    let onComplete: () -> RewardSummary
     let onRetry: () -> Void
 
     @State private var didSave = false
     @State private var showShareSheet = false
     @State private var shareItems: [Any] = []
     @State private var completionDate = Date()
+    @State private var rewardSummary: RewardSummary? = nil
 
     var body: some View {
         GlassCard {
@@ -208,11 +229,15 @@ struct CompletionView: View {
                     .buttonStyle(OutlineButtonStyle())
                 } else {
                     Button("Save Progress") {
-                        onComplete()
+                        rewardSummary = onComplete()
                         didSave = true
                         completionDate = Date()
                     }
                     .buttonStyle(PrimaryButtonStyle())
+                }
+
+                if let rewardSummary {
+                    RewardSummaryCard(summary: rewardSummary, xpToNextLevel: progress.xpToNextLevel)
                 }
 
                 Button("Generate Completion Summary") {
@@ -235,7 +260,7 @@ struct CompletionView: View {
                 .buttonStyle(OutlineButtonStyle())
 
                 Button("Share Challenge") {
-                    let text = "I completed \(moduleTitle) with a score of \(score)% in the 1S0 Inspector Trainer."
+                    let text = "I completed \(moduleTitle) with a score of \(score)% in the Safety Inspector Trainer."
                     shareItems = [text]
                     showShareSheet = true
                 }
@@ -274,8 +299,8 @@ enum CompletionSummaryPDF {
     static func generate(
         moduleTitle: String,
         score: Int,
-        scenarioResult: Result,
-        quizResult: Result,
+        scenarioResult: AssessmentResult,
+        quizResult: AssessmentResult,
         passed: Bool,
         completionDate: Date,
         racJustification: String?

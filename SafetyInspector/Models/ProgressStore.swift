@@ -7,18 +7,27 @@ final class ProgressStore: ObservableObject {
     @Published private(set) var lastCompleted: [String: Date] = [:]
     @Published private(set) var perfectScenario: Set<String> = []
     @Published private(set) var perfectQuiz: Set<String> = []
+    @Published private(set) var xp: Int = 0
+    @Published private(set) var dailyXp: Int = 0
+    @Published private(set) var dailyGoal: Int = 20
     @Published private(set) var dailyStreak: Int = 0
-    @Published private(set) var lastDailyDate: Date? = nil
-    @Published private(set) var bestDailyScore: Int = 0
+    @Published private(set) var lastDailyGoalDate: Date? = nil
+    @Published private(set) var lastDailyReset: Date? = nil
+    @Published private(set) var hearts: Int = 5
+    let maxHearts: Int = 5
 
     private let completedKey = "completedModules"
     private let scoresKey = "bestScores"
     private let completedDatesKey = "completedDates"
     private let perfectScenarioKey = "perfectScenario"
     private let perfectQuizKey = "perfectQuiz"
+    private let xpKey = "xpTotal"
+    private let dailyXpKey = "dailyXp"
+    private let dailyGoalKey = "dailyGoal"
     private let dailyStreakKey = "dailyStreak"
-    private let lastDailyKey = "lastDaily"
-    private let bestDailyKey = "bestDaily"
+    private let lastDailyGoalKey = "lastDailyGoal"
+    private let lastDailyResetKey = "lastDailyReset"
+    private let heartsKey = "hearts"
 
     init() {
         load()
@@ -54,10 +63,33 @@ final class ProgressStore: ObservableObject {
         lastCompleted = [:]
         perfectScenario = []
         perfectQuiz = []
+        xp = 0
+        dailyXp = 0
+        dailyGoal = 20
         dailyStreak = 0
-        lastDailyDate = nil
-        bestDailyScore = 0
+        lastDailyGoalDate = nil
+        lastDailyReset = nil
+        hearts = maxHearts
         save()
+    }
+
+    var level: Int {
+        max(1, xp / levelStep + 1)
+    }
+
+    var levelProgress: Double {
+        guard levelStep > 0 else { return 0 }
+        return Double(xp % levelStep) / Double(levelStep)
+    }
+
+    var xpToNextLevel: Int {
+        let progress = xp % levelStep
+        return max(0, levelStep - progress)
+    }
+
+    var dailyGoalProgress: Double {
+        guard dailyGoal > 0 else { return 0 }
+        return min(1, Double(dailyXp) / Double(dailyGoal))
     }
 
     private func load() {
@@ -82,11 +114,22 @@ final class ProgressStore: ObservableObject {
            let decoded = try? JSONDecoder().decode([String].self, from: data) {
             perfectQuiz = Set(decoded)
         }
-        if let date = defaults.object(forKey: lastDailyKey) as? Date {
-            lastDailyDate = date
-        }
+        xp = defaults.integer(forKey: xpKey)
+        dailyXp = defaults.integer(forKey: dailyXpKey)
+        let storedGoal = defaults.integer(forKey: dailyGoalKey)
+        dailyGoal = storedGoal == 0 ? 20 : storedGoal
         dailyStreak = defaults.integer(forKey: dailyStreakKey)
-        bestDailyScore = defaults.integer(forKey: bestDailyKey)
+        if let date = defaults.object(forKey: lastDailyGoalKey) as? Date {
+            lastDailyGoalDate = date
+        }
+        if let date = defaults.object(forKey: lastDailyResetKey) as? Date {
+            lastDailyReset = date
+        }
+        if defaults.object(forKey: heartsKey) == nil {
+            hearts = maxHearts
+        } else {
+            hearts = defaults.integer(forKey: heartsKey)
+        }
     }
 
     private func save() {
@@ -106,27 +149,131 @@ final class ProgressStore: ObservableObject {
         if let data = try? JSONEncoder().encode(Array(perfectQuiz)) {
             defaults.set(data, forKey: perfectQuizKey)
         }
+        defaults.set(xp, forKey: xpKey)
+        defaults.set(dailyXp, forKey: dailyXpKey)
+        defaults.set(dailyGoal, forKey: dailyGoalKey)
         defaults.set(dailyStreak, forKey: dailyStreakKey)
-        defaults.set(bestDailyScore, forKey: bestDailyKey)
-        defaults.set(lastDailyDate, forKey: lastDailyKey)
+        defaults.set(lastDailyGoalDate, forKey: lastDailyGoalKey)
+        defaults.set(lastDailyReset, forKey: lastDailyResetKey)
+        defaults.set(hearts, forKey: heartsKey)
     }
 
-    func recordDailyFive(score: Int, total: Int) {
+    func refreshForNewDayIfNeeded() {
         let today = Calendar.current.startOfDay(for: Date())
-        if let last = lastDailyDate {
-            let lastDay = Calendar.current.startOfDay(for: last)
-            let diff = Calendar.current.dateComponents([.day], from: lastDay, to: today).day ?? 0
-            if diff == 1 {
-                dailyStreak += 1
-            } else if diff > 1 {
-                dailyStreak = 1
-            }
-        } else {
-            dailyStreak = 1
+        guard let lastReset = lastDailyReset else {
+            lastDailyReset = today
+            save()
+            return
         }
-        lastDailyDate = today
-        let percent = total > 0 ? Int(round(Double(score) / Double(total) * 100)) : 0
-        bestDailyScore = max(bestDailyScore, percent)
+        if !Calendar.current.isDate(lastReset, inSameDayAs: today) {
+            dailyXp = 0
+            hearts = maxHearts
+            lastDailyReset = today
+            if let lastGoal = lastDailyGoalDate {
+                let lastGoalDay = Calendar.current.startOfDay(for: lastGoal)
+                let diff = Calendar.current.dateComponents([.day], from: lastGoalDay, to: today).day ?? 0
+                if diff > 1 {
+                    dailyStreak = 0
+                }
+            }
+            save()
+        }
+    }
+
+    func consumeHeart() {
+        refreshForNewDayIfNeeded()
+        guard hearts > 0 else { return }
+        hearts -= 1
         save()
     }
+
+    @discardableResult
+    func restoreHearts(_ amount: Int) -> Int {
+        refreshForNewDayIfNeeded()
+        guard amount > 0 else { return 0 }
+        let before = hearts
+        hearts = min(maxHearts, hearts + amount)
+        save()
+        return max(0, hearts - before)
+    }
+
+    func completeModule(moduleId: String, score: Int, scenarioResult: AssessmentResult, quizResult: AssessmentResult) -> RewardSummary {
+        markCompleted(
+            moduleId: moduleId,
+            score: score,
+            scenarioPerfect: scenarioResult.score == scenarioResult.total && scenarioResult.total > 0,
+            quizPerfect: quizResult.score == quizResult.total && quizResult.total > 0
+        )
+
+        let lessonXp = 12
+        let scenarioXp = scenarioResult.score * 8
+        let quizXp = quizResult.score * 6
+        let passBonus = score >= 80 ? 20 : 0
+        let perfectBonus = score == 100 ? 10 : 0
+        let totalXp = lessonXp + scenarioXp + quizXp + passBonus + perfectBonus
+        return earnXp(totalXp, heartsRestored: 0)
+    }
+
+    func completePractice(score: Int, total: Int) -> RewardSummary {
+        refreshForNewDayIfNeeded()
+        let accuracy = total > 0 ? Double(score) / Double(total) : 0
+        let baseXp = 10
+        let bonusXp = Int(round(accuracy * 25))
+        let earned = baseXp + bonusXp
+        var restored = 0
+
+        if accuracy >= 0.9 {
+            restored = restoreHearts(2)
+        } else if accuracy >= 0.7 {
+            restored = restoreHearts(1)
+        }
+
+        return earnXp(earned, heartsRestored: restored)
+    }
+
+    private func earnXp(_ amount: Int, heartsRestored: Int) -> RewardSummary {
+        refreshForNewDayIfNeeded()
+        guard amount > 0 else {
+            return RewardSummary(xpGained: 0, leveledUp: false, streakIncreased: false, heartsRestored: heartsRestored)
+        }
+
+        let previousLevel = level
+        xp += amount
+        dailyXp += amount
+
+        var streakIncreased = false
+        let today = Calendar.current.startOfDay(for: Date())
+        if dailyXp >= dailyGoal {
+            if let lastGoalDate = lastDailyGoalDate {
+                let lastGoalDay = Calendar.current.startOfDay(for: lastGoalDate)
+                let diff = Calendar.current.dateComponents([.day], from: lastGoalDay, to: today).day ?? 0
+                if diff == 0 {
+                    // Already counted today
+                } else if diff == 1 {
+                    dailyStreak += 1
+                    streakIncreased = true
+                } else {
+                    dailyStreak = 1
+                    streakIncreased = true
+                }
+            } else {
+                dailyStreak = 1
+                streakIncreased = true
+            }
+            lastDailyGoalDate = today
+        }
+
+        let leveledUp = level > previousLevel
+        save()
+        return RewardSummary(xpGained: amount, leveledUp: leveledUp, streakIncreased: streakIncreased, heartsRestored: heartsRestored)
+    }
+
+    private let levelStep: Int = 120
+}
+
+struct RewardSummary {
+    let xpGained: Int
+    let leveledUp: Bool
+    let streakIncreased: Bool
+    let heartsRestored: Int
 }

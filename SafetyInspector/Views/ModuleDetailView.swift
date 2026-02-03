@@ -55,6 +55,20 @@ struct ModuleDetailView: View {
                     }
                     .buttonStyle(PrimaryButtonStyle())
 
+                    GlassCard {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Rewards")
+                                .font(AppFont.subtitle(16))
+                                .foregroundColor(AppTheme.charcoal)
+                            Text("Up to \(maxXp) XP")
+                                .font(AppFont.title(22))
+                                .foregroundColor(AppTheme.xpGold)
+                            Text("Mistakes cost a heart. Practice restores hearts.")
+                                .font(AppFont.body(12))
+                                .foregroundColor(AppTheme.charcoal.opacity(0.6))
+                        }
+                    }
+
                     if progress.isCompleted(module.id) {
                         GlassCard {
                             VStack(alignment: .leading, spacing: 6) {
@@ -73,5 +87,11 @@ struct ModuleDetailView: View {
         }
         .navigationTitle(module.title)
         .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private var maxXp: Int {
+        let scenarioMax = module.scenario.steps.count
+        let quizMax = min(module.quiz.count, 10)
+        return 12 + scenarioMax * 8 + quizMax * 6 + 30
     }
 }

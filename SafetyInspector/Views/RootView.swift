@@ -45,6 +45,7 @@ struct RootView: View {
             }
         }
         .onAppear {
+            progress.refreshForNewDayIfNeeded()
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
                 withAnimation(.easeOut(duration: 0.45)) {
                     showSplash = false
@@ -81,11 +82,11 @@ struct SplashView: View {
                         .foregroundColor(.white)
                 }
 
-                Text("1S0 Inspector Trainer")
+                Text("Safety Inspector Trainer")
                     .font(AppFont.title(24))
                     .foregroundColor(.white)
 
-                Text("Mission-ready safety training")
+                Text("Daily missions, XP, and streaks")
                     .font(AppFont.body(14))
                     .foregroundColor(Color.white.opacity(0.8))
             }

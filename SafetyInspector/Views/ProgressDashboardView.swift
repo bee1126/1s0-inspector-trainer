@@ -21,6 +21,46 @@ struct ProgressDashboardView: View {
                         .foregroundColor(.white)
 
                     GlassCard {
+                        HStack(alignment: .center, spacing: 16) {
+                            XPProgressRing(progress: progress.levelProgress, level: progress.level, size: 72, onDark: false)
+
+                            VStack(alignment: .leading, spacing: 6) {
+                                Text("Level \(progress.level)")
+                                    .font(AppFont.subtitle(18))
+                                    .foregroundColor(AppTheme.charcoal)
+                                Text("\(progress.xp) XP total")
+                                    .font(AppFont.body(13))
+                                    .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                                Text("\(progress.xpToNextLevel) XP to next level")
+                                    .font(AppFont.body(12))
+                                    .foregroundColor(AppTheme.charcoal.opacity(0.6))
+                            }
+                            Spacer()
+                        }
+                    }
+
+                    GlassCard {
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text("Daily Goal")
+                                .font(AppFont.subtitle(18))
+                                .foregroundColor(AppTheme.charcoal)
+                            Text("\(progress.dailyXp)/\(progress.dailyGoal) XP today")
+                                .font(AppFont.body(13))
+                                .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                            ProgressView(value: progress.dailyGoalProgress)
+                                .tint(AppTheme.xpGold)
+
+                            HStack {
+                                Text("Streak: \(progress.dailyStreak) days")
+                                    .font(AppFont.body(12))
+                                    .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                                Spacer()
+                                HeartsView(hearts: progress.hearts, maxHearts: progress.maxHearts, onDark: false)
+                            }
+                        }
+                    }
+
+                    GlassCard {
                         VStack(alignment: .leading, spacing: 12) {
                             Text("Overall Readiness")
                                 .font(AppFont.subtitle(18))
@@ -92,6 +132,9 @@ struct ProgressDashboardView: View {
         }
         .navigationTitle("Progress")
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            progress.refreshForNewDayIfNeeded()
+        }
     }
 
     private var completedCount: Int {
@@ -141,6 +184,24 @@ struct ProgressDashboardView: View {
                 title: "Quiz Sharp",
                 detail: "Perfect quiz on any module",
                 isEarned: !progress.perfectQuiz.isEmpty
+            ),
+            BadgeState(
+                id: "streak-starter",
+                title: "Streak Starter",
+                detail: "Maintain a 3-day daily goal streak",
+                isEarned: progress.dailyStreak >= 3
+            ),
+            BadgeState(
+                id: "streak-veteran",
+                title: "Streak Veteran",
+                detail: "Maintain a 7-day daily goal streak",
+                isEarned: progress.dailyStreak >= 7
+            ),
+            BadgeState(
+                id: "xp-collector",
+                title: "XP Collector",
+                detail: "Earn 500 total XP",
+                isEarned: progress.xp >= 500
             )
         ]
     }

@@ -10,29 +10,35 @@ struct HomeView: View {
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("1S0 Inspector Trainer")
-                            .font(AppFont.title(28))
-                            .foregroundColor(.white)
-                        Text("Interactive safety training for Air Force 1S0 inspectors")
-                            .font(AppFont.body(15))
-                            .foregroundColor(Color.white.opacity(0.85))
+                    HStack(alignment: .top, spacing: 16) {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Safety Inspector Trainer")
+                                .font(AppFont.title(28))
+                                .foregroundColor(.white)
+                            Text("Level up your inspection skills with daily practice.")
+                                .font(AppFont.body(15))
+                                .foregroundColor(Color.white.opacity(0.85))
+                        }
+                        Spacer()
+                        XPProgressRing(progress: progress.levelProgress, level: progress.level, size: 64)
                     }
 
                     GlassCard {
                         VStack(alignment: .leading, spacing: 12) {
-                            Text("Mission Brief")
+                            Text("Daily Goal")
                                 .font(AppFont.subtitle(18))
                                 .foregroundColor(AppTheme.charcoal)
 
-                            Text("Build habits that prevent accidents and keep teams mission-ready. Work through scenarios, quick checks, and score-based progression.")
+                            Text("\(progress.dailyXp)/\(progress.dailyGoal) XP today")
                                 .font(AppFont.body(14))
                                 .foregroundColor(AppTheme.charcoal.opacity(0.8))
 
+                            ProgressView(value: progress.dailyGoalProgress)
+                                .tint(AppTheme.xpGold)
+
                             HStack(spacing: 8) {
-                                TagPill(text: "On-device")
-                                TagPill(text: "Scenario-driven")
-                                TagPill(text: "Standards aligned")
+                                StatPill(title: "Streak", value: "\(progress.dailyStreak) days", tint: AppTheme.xpGold)
+                                StatPill(title: "Hearts", value: "\(progress.hearts)/\(progress.maxHearts)", tint: AppTheme.heartRed)
                             }
                         }
                     }
@@ -44,6 +50,28 @@ struct HomeView: View {
                             .frame(height: 160)
                             .clipped()
                             .cornerRadius(16)
+                    }
+
+                    GlassCard {
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text("Practice Zone")
+                                .font(AppFont.subtitle(18))
+                                .foregroundColor(AppTheme.charcoal)
+                            Text("Earn XP, restore hearts, and keep your streak alive.")
+                                .font(AppFont.body(13))
+                                .foregroundColor(AppTheme.charcoal.opacity(0.7))
+
+                            NavigationLink {
+                                PracticeSessionView()
+                            } label: {
+                                HStack {
+                                    Text("Start Practice")
+                                    Spacer()
+                                    Image(systemName: "bolt.fill")
+                                }
+                            }
+                            .buttonStyle(PrimaryButtonStyle())
+                        }
                     }
 
                     VStack(alignment: .leading, spacing: 12) {
@@ -75,5 +103,8 @@ struct HomeView: View {
         }
         .navigationTitle("")
         .navigationBarHidden(true)
+        .onAppear {
+            progress.refreshForNewDayIfNeeded()
+        }
     }
 }

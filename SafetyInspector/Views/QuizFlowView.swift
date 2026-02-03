@@ -1,8 +1,11 @@
 import SwiftUI
 
 struct QuizFlowView: View {
+    @EnvironmentObject private var progress: ProgressStore
     let questions: [QuizQuestion]
-    let onComplete: (Result) -> Void
+    var onWrongAnswer: (() -> Void)? = nil
+    let onComplete: (AssessmentResult) -> Void
+    var showsHearts: Bool = true
     var shuffleQuestions: Bool = false
     var maxQuestions: Int? = nil
 
@@ -24,6 +27,9 @@ struct QuizFlowView: View {
                         .font(AppFont.mono(12))
                         .foregroundColor(AppTheme.charcoal.opacity(0.6))
                     Spacer()
+                    if showsHearts {
+                        HeartsView(hearts: progress.hearts, maxHearts: progress.maxHearts, compact: true, onDark: false)
+                    }
                     Text("\(index + 1)/\(filtered.count)")
                         .font(AppFont.mono(12))
                         .foregroundColor(AppTheme.charcoal.opacity(0.6))
@@ -65,6 +71,8 @@ struct QuizFlowView: View {
                             selectedChoiceId = choice.id
                             if choice.isCorrect {
                                 correctCount += 1
+                            } else {
+                                onWrongAnswer?()
                             }
                             withAnimation(.easeInOut(duration: 0.2)) {
                                 showFeedback = true
@@ -98,7 +106,7 @@ struct QuizFlowView: View {
     private func advance() {
         let list = preparedQuestions.isEmpty ? filteredQuestions : preparedQuestions
         if index == list.count - 1 {
-            onComplete(Result(score: correctCount, total: list.count))
+            onComplete(AssessmentResult(score: correctCount, total: list.count))
         } else {
             index += 1
             selectedChoiceId = nil

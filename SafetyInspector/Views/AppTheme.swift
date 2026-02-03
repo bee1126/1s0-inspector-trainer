@@ -8,6 +8,8 @@ enum AppTheme {
     static let mint = Color(red: 0.74, green: 0.94, blue: 0.84)
     static let sand = Color(red: 0.96, green: 0.96, blue: 0.94)
     static let charcoal = Color(red: 0.14, green: 0.16, blue: 0.20)
+    static let xpGold = Color(red: 0.98, green: 0.78, blue: 0.2)
+    static let heartRed = Color(red: 0.92, green: 0.2, blue: 0.28)
 
     static let backgroundGradient = LinearGradient(
         gradient: Gradient(colors: [navy, blue, sky, mint]),

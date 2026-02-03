@@ -28,6 +28,7 @@
 		D271356E9D7A459D9853776E /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A9ACDCBD6747A99BC0D4B1 /* RootView.swift */; };
 		D42EA7CFC48D481BA32AF055 /* ProgressDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA413EE88AF47A68BE9CA46 /* ProgressDashboardView.swift */; };
 		D9B3C1AD08F942C0BAAF87D9 /* ModuleDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82A650A0B65431196F5A0F8 /* ModuleDetailView.swift */; };
+		E2C9A3B4F5D6A7B8C9D0E1F2 /* PracticeSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E2D3C4B5A69788796A5B4C /* PracticeSessionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,7 @@
 		C506A214268B476AB97AFCF9 /* SafetyInspector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = SafetyInspector.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBA413EE88AF47A68BE9CA46 /* ProgressDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressDashboardView.swift; sourceTree = "<group>"; };
 		D84B5E74DAD64241A4C71C85 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		F1E2D3C4B5A69788796A5B4C /* PracticeSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeSessionView.swift; sourceTree = "<group>"; };
 		F4A9ACDCBD6747A99BC0D4B1 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		FF93D66C48034BC686CED02F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -116,6 +118,7 @@
 				7F4C994046BF462DB2E96042 /* ModuleListView.swift */,
 				CBA413EE88AF47A68BE9CA46 /* ProgressDashboardView.swift */,
 				32BAAD5C65C74C7C981FD78C /* QuizFlowView.swift */,
+				F1E2D3C4B5A69788796A5B4C /* PracticeSessionView.swift */,
 				F4A9ACDCBD6747A99BC0D4B1 /* RootView.swift */,
 				7A8D35E4CCC1487EAF35202A /* ScenarioFlowView.swift */,
 				8B61CBA9B08E4B2C90ECD50B /* SourcesView.swift */,
@@ -246,6 +249,7 @@
 				577F87A126C14A529F911618 /* ModuleListView.swift in Sources */,
 				D42EA7CFC48D481BA32AF055 /* ProgressDashboardView.swift in Sources */,
 				315750AB112441B1BEC0399C /* QuizFlowView.swift in Sources */,
+				E2C9A3B4F5D6A7B8C9D0E1F2 /* PracticeSessionView.swift in Sources */,
 				D271356E9D7A459D9853776E /* RootView.swift in Sources */,
 				C527BCED10134641B7604DCB /* ScenarioFlowView.swift in Sources */,
 				77E68A4D6BE343DEA732A3B1 /* SourcesView.swift in Sources */,

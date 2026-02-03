@@ -1,8 +1,11 @@
 import SwiftUI
 
 struct ScenarioFlowView: View {
+    @EnvironmentObject private var progress: ProgressStore
     let scenario: Scenario
-    let onComplete: (Result) -> Void
+    var onWrongAnswer: (() -> Void)? = nil
+    let onComplete: (AssessmentResult) -> Void
+    var showsHearts: Bool = true
 
     @State private var currentStepId: String
     @State private var selectedOptionId: String? = nil
@@ -16,8 +19,10 @@ struct ScenarioFlowView: View {
     private let timeLimit = 25
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
-    init(scenario: Scenario, onComplete: @escaping (Result) -> Void) {
+    init(scenario: Scenario, onWrongAnswer: (() -> Void)? = nil, showsHearts: Bool = true, onComplete: @escaping (AssessmentResult) -> Void) {
         self.scenario = scenario
+        self.onWrongAnswer = onWrongAnswer
+        self.showsHearts = showsHearts
         self.onComplete = onComplete
         _currentStepId = State(initialValue: scenario.startStepId)
         let startStep = scenario.steps.first(where: { $0.id == scenario.startStepId })
@@ -54,6 +59,9 @@ struct ScenarioFlowView: View {
                         .font(AppFont.subtitle(14))
                         .foregroundColor(timeLeft <= 5 ? Color.red.opacity(0.8) : AppTheme.charcoal)
                     Spacer()
+                    if showsHearts {
+                        HeartsView(hearts: progress.hearts, maxHearts: progress.maxHearts, compact: true, onDark: false)
+                    }
                     Toggle("Time Pressure", isOn: $timerActive)
                         .labelsHidden()
                 }
@@ -77,6 +85,8 @@ struct ScenarioFlowView: View {
                             answeredCount += 1
                             if option.isCorrect {
                                 correctCount += 1
+                            } else {
+                                onWrongAnswer?()
                             }
                             withAnimation(.easeInOut(duration: 0.2)) {
                                 showFeedback = true
@@ -133,7 +143,7 @@ struct ScenarioFlowView: View {
             showFeedback = false
             resetTimer()
         } else {
-            onComplete(Result(score: correctCount, total: answeredCount))
+            onComplete(AssessmentResult(score: correctCount, total: answeredCount))
         }
     }
 
@@ -143,6 +153,7 @@ struct ScenarioFlowView: View {
         if let fallback = options.filter({ !$0.isCorrect }).randomElement() ?? options.randomElement() {
             selectedOptionId = fallback.id
             answeredCount += 1
+            onWrongAnswer?()
             showFeedback = true
         }
     }
