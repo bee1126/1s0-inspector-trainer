@@ -1,0 +1,42 @@
+# App Store Submission Checklist
+
+## 1) Project settings (Xcode)
+- Bundle ID: change `com.example.safetyinspector` to your App ID bundle identifier.
+- Versioning: bump `MARKETING_VERSION` (e.g., `1.0.1`) and `CURRENT_PROJECT_VERSION` (build number).
+- Deployment target: confirm the minimum iOS version you want to support.
+- Devices: the project is currently `iPhone + iPad` (`TARGETED_DEVICE_FAMILY = 1,2`). If you want **iPhone-only**, switch it to `1` to avoid iPad screenshot requirements.
+
+## 2) Required web links (App Store Connect)
+App Store Connect requires HTTPS links for:
+- **Support URL**
+- **Privacy Policy URL** (recommended even if you collect no data; required in some cases)
+- **Marketing URL** (optional)
+
+This repo includes a ready-to-host set of pages in `docs/`:
+- `docs/index.html` (marketing)
+- `docs/support.html` (support)
+- `docs/privacy.html` (privacy policy)
+
+Host them (GitHub Pages or any static host) and paste the resulting URLs into App Store Connect and `AppStoreMetadata.md`.
+
+## 3) Privacy / export compliance
+- The app stores progress **on-device** (UserDefaults) and does not include analytics/ads by default.
+- `ITSAppUsesNonExemptEncryption` is set to `false` in `SafetyInspector/Resources/Info.plist`.
+- A privacy manifest is included at `SafetyInspector/Resources/PrivacyInfo.xcprivacy` (no tracking / no collected data declared).
+
+## 4) App Store assets
+- App icon: verify it’s final (1024×1024 included in the asset catalog).
+- Screenshots: capture required sizes (if universal: iPhone + iPad).
+- Optional: add an App Preview video.
+
+## 5) Archive & upload (Xcode)
+1. Select **Any iOS Device (arm64)** (not a simulator).
+2. Product → **Archive**.
+3. Distribute App → **App Store Connect** → Upload.
+
+## 6) App Review notes (recommended)
+Include:
+- No account / login required.
+- On-device only; no analytics/ads by default.
+- “Not an official Air Force product” disclaimer.
+

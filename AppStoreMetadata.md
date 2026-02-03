@@ -26,13 +26,13 @@ safety,inspection,air force,1s0,lockout tagout,fall protection,risk management,t
 Education
 
 ## Support URL
-TBD
+Host `docs/support.html` (GitHub Pages or any static host) and paste the HTTPS URL here.
 
 ## Marketing URL
-TBD
+Host `docs/index.html` (GitHub Pages or any static host) and paste the HTTPS URL here.
 
 ## Privacy Policy URL
-TBD
+Host `docs/privacy.html` (GitHub Pages or any static host) and paste the HTTPS URL here.
 
 ## App Review Notes
 - On-device only. No accounts required.

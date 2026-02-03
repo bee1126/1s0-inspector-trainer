@@ -19,6 +19,7 @@
 		70C498755F3A439EA025734C /* ProgressStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534B8049CF904994B419DE7D /* ProgressStore.swift */; };
 		77E68A4D6BE343DEA732A3B1 /* SourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B61CBA9B08E4B2C90ECD50B /* SourcesView.swift */; };
 		9C9CB5AC29954FB895B07BB2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF93D66C48034BC686CED02F /* Assets.xcassets */; };
+		05913B87B18360AF583623ED /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 9B985BD79A7D2983D60E5E5A /* PrivacyInfo.xcprivacy */; };
 		9CC3563F2CFB4938A4AECC07 /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6583B73C5E4CA089EA252A /* AppTheme.swift */; };
 		BCCA7070DA45411BAD68AD85 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D84B5E74DAD64241A4C71C85 /* HomeView.swift */; };
 		C3400AE4C88A49E5A170110C /* TrainingModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F087354F1FB468AB89CEEBD /* TrainingModels.swift */; };
@@ -32,6 +33,7 @@
 /* Begin PBXFileReference section */
 		1B55B06176264F239FEAABC9 /* ToolsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsView.swift; sourceTree = "<group>"; };
 		0468BD1193644207B5426AC2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9B985BD79A7D2983D60E5E5A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		072153175F864C95A13A7416 /* ModuleFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleFlowView.swift; sourceTree = "<group>"; };
 		0F087354F1FB468AB89CEEBD /* TrainingModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingModels.swift; sourceTree = "<group>"; };
 		A561485258DE42A4B11F142F /* QuizBank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizBank.swift; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 			children = (
 				FF93D66C48034BC686CED02F /* Assets.xcassets */,
 				0468BD1193644207B5426AC2 /* Info.plist */,
+				9B985BD79A7D2983D60E5E5A /* PrivacyInfo.xcprivacy */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -199,6 +202,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C9CB5AC29954FB895B07BB2 /* Assets.xcassets in Resources */,
+				05913B87B18360AF583623ED /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,7 +263,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 			};
@@ -274,7 +278,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MM76BGJBJR;
 				INFOPLIST_FILE = SafetyInspector/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -296,7 +300,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MM76BGJBJR;
 				INFOPLIST_FILE = SafetyInspector/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -317,7 +321,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 			};

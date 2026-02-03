@@ -35,7 +35,7 @@ struct QuizFlowView: View {
                     }
                 }
                 .pickerStyle(.segmented)
-                .onChange(of: selectedDifficulty) { _, _ in
+                .onChange(of: selectedDifficulty) { _ in
                     resetProgress()
                 }
 

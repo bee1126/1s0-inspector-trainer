@@ -16,6 +16,8 @@ This folder contains the SwiftUI source for a native iOS training app tailored t
 - Progress tracking and badges (on-device)
 - References screen and disclaimer
 - Draft App Store metadata in `AppStoreMetadata.md`
+- App Store submission checklist in `AppStoreSubmissionChecklist.md`
+- Ready-to-host Support / Privacy pages in `docs/`
 - Feedback tab: shareable bug reports and feature requests
 
 ## Notes

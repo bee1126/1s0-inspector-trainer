@@ -1,5 +1,0 @@
----
-triple:          'arm64-apple-darwin'
-binary-path:     '/Users/bah/Desktop/Safety Inspector App/.derived/Build/Products/Debug-iphonesimulator/SafetyInspector.app/SafetyInspector'
-relocations:     []
-...

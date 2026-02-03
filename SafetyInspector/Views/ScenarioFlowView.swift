@@ -99,7 +99,7 @@ struct ScenarioFlowView: View {
             }
         }
         .padding(.horizontal, 20)
-        .onChange(of: currentStepId) { _, newValue in
+        .onChange(of: currentStepId) { newValue in
             ensureOptions(for: newValue)
         }
         .onReceive(timer) { _ in
