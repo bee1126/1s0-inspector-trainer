@@ -28,7 +28,11 @@ struct ModuleFlowView: View {
 
                 switch stage {
                 case .lesson:
-                    LessonPagerView(pages: module.lessonPages) {
+                    LessonPagerView(pages: module.lessonPages, onSkip: {
+                        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                            stage = .scenario
+                        }
+                    }) {
                         withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
                             stage = .scenario
                         }
@@ -282,10 +286,31 @@ struct ShareSheet: UIViewControllerRepresentable {
     let activityItems: [Any]
 
     func makeUIViewController(context: Context) -> UIActivityViewController {
-        UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+        let controller = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+        if let popover = controller.popoverPresentationController {
+            let sourceView = UIApplication.shared.keyWindow ?? controller.view
+            popover.sourceView = sourceView
+            popover.sourceRect = CGRect(
+                x: sourceView.bounds.midX,
+                y: sourceView.bounds.midY,
+                width: 1,
+                height: 1
+            )
+            popover.permittedArrowDirections = []
+        }
+        return controller
     }
 
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
+}
+
+private extension UIApplication {
+    var keyWindow: UIWindow? {
+        connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .flatMap { $0.windows }
+            .first { $0.isKeyWindow }
+    }
 }
 
 enum CompletionSummaryPDF {

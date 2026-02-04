@@ -13,8 +13,9 @@ struct QuizFlowView: View {
     @State private var selectedChoiceId: String? = nil
     @State private var correctCount = 0
     @State private var showFeedback = false
-    @State private var selectedDifficulty: QuizDifficulty = .all
+    @State private var selectedDifficulty: QuizDifficulty = .hard
     @State private var preparedQuestions: [QuizQuestion] = []
+    private let swipeThreshold: CGFloat = 70
 
     var body: some View {
         let filtered = preparedQuestions.isEmpty ? filteredQuestions : preparedQuestions
@@ -33,17 +34,6 @@ struct QuizFlowView: View {
                     Text("\(index + 1)/\(filtered.count)")
                         .font(AppFont.mono(12))
                         .foregroundColor(AppTheme.charcoal.opacity(0.6))
-                }
-
-                Picker("Difficulty", selection: $selectedDifficulty) {
-                    ForEach(QuizDifficulty.allCases) { level in
-                        Text(level.rawValue).tag(level)
-                    }
-                }
-                .pickerStyle(.segmented)
-                .tint(AppTheme.blue)
-                .onChange(of: selectedDifficulty) { _ in
-                    resetProgress()
                 }
 
                 if let imageName = question.imageName {
@@ -99,6 +89,12 @@ struct QuizFlowView: View {
             }
         }
         .padding(.horizontal, AppSpacing.screenPadding)
+        .gesture(
+            DragGesture(minimumDistance: 20)
+                .onEnded { value in
+                    handleSwipe(value)
+                }
+        )
         .onAppear {
             prepareQuestions()
         }
@@ -117,22 +113,9 @@ struct QuizFlowView: View {
 
     private var filteredQuestions: [QuizQuestion] {
         let filtered = questions.filter { question in
-            switch selectedDifficulty {
-            case .all:
-                return true
-            default:
-                return question.difficulty == selectedDifficulty
-            }
+            question.difficulty == selectedDifficulty
         }
         return filtered.isEmpty ? questions : filtered
-    }
-
-    private func resetProgress() {
-        index = 0
-        selectedChoiceId = nil
-        correctCount = 0
-        showFeedback = false
-        prepareQuestions()
     }
 
     private func prepareQuestions() {
@@ -154,5 +137,14 @@ struct QuizFlowView: View {
             )
         }
         preparedQuestions = list
+    }
+
+    private func handleSwipe(_ value: DragGesture.Value) {
+        guard showFeedback else { return }
+        let horizontal = value.translation.width
+        guard abs(horizontal) > swipeThreshold else { return }
+        if horizontal < 0 {
+            advance()
+        }
     }
 }

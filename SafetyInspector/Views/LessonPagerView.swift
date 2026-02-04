@@ -2,18 +2,27 @@ import SwiftUI
 
 struct LessonPagerView: View {
     let pages: [LessonPage]
+    var onSkip: (() -> Void)? = nil
     let onComplete: () -> Void
 
     @State private var index: Int = 0
+    private let swipeThreshold: CGFloat = 70
 
     var body: some View {
         GlassCard {
             VStack(alignment: .leading, spacing: AppSpacing.stack) {
-                HStack {
+                HStack(spacing: 12) {
                     Text("Lesson")
                         .font(AppFont.mono(12))
                         .foregroundColor(AppTheme.charcoal.opacity(0.6))
                     Spacer()
+                    if let onSkip {
+                        Button("Skip Lesson") {
+                            onSkip()
+                        }
+                        .font(AppFont.mono(12))
+                        .foregroundColor(AppTheme.blue)
+                    }
                     Text("\(index + 1)/\(pages.count)")
                         .font(AppFont.mono(12))
                         .foregroundColor(AppTheme.charcoal.opacity(0.6))
@@ -62,5 +71,29 @@ struct LessonPagerView: View {
             }
         }
         .padding(.horizontal, AppSpacing.screenPadding)
+        .gesture(
+            DragGesture(minimumDistance: 20)
+                .onEnded { value in
+                    handleSwipe(value)
+                }
+        )
+    }
+
+    private func handleSwipe(_ value: DragGesture.Value) {
+        let horizontal = value.translation.width
+        guard abs(horizontal) > swipeThreshold else { return }
+        if horizontal < 0 {
+            if index == pages.count - 1 {
+                onComplete()
+            } else {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    index += 1
+                }
+            }
+        } else if horizontal > 0, index > 0 {
+            withAnimation(.easeInOut(duration: 0.2)) {
+                index -= 1
+            }
+        }
     }
 }

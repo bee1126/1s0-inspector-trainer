@@ -15,6 +15,7 @@ struct ScenarioFlowView: View {
     @State private var timeLeft: Int = 25
     @State private var timerActive = true
     @State private var shuffledOptionsByStepId: [String: [ScenarioOption]]
+    private let swipeThreshold: CGFloat = 70
 
     private let timeLimit = 25
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
@@ -110,6 +111,12 @@ struct ScenarioFlowView: View {
             }
         }
         .padding(.horizontal, AppSpacing.screenPadding)
+        .gesture(
+            DragGesture(minimumDistance: 20)
+                .onEnded { value in
+                    handleSwipe(value, step: step)
+                }
+        )
         .onChange(of: currentStepId) { newValue in
             ensureOptions(for: newValue)
         }
@@ -169,6 +176,15 @@ struct ScenarioFlowView: View {
             return
         }
         shuffledOptionsByStepId[stepId] = step.options.shuffled()
+    }
+
+    private func handleSwipe(_ value: DragGesture.Value, step: ScenarioStep) {
+        guard showFeedback else { return }
+        let horizontal = value.translation.width
+        guard abs(horizontal) > swipeThreshold else { return }
+        if horizontal < 0 {
+            advance(from: step)
+        }
     }
 }
 
