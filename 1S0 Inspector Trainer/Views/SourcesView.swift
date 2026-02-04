@@ -8,7 +8,7 @@ struct SourcesView: View {
             BackgroundView()
 
             ScrollView {
-                VStack(alignment: .leading, spacing: AppSpacing.section) {
+                LazyVStack(alignment: .leading, spacing: AppSpacing.section) {
                     Text("Sources")
                         .font(AppFont.title(26))
                         .foregroundColor(.white)
@@ -19,7 +19,8 @@ struct SourcesView: View {
                                 .font(AppFont.subtitle(18))
                                 .foregroundColor(AppTheme.charcoal)
 
-                            ForEach(Array(references.enumerated()), id: \.element.id) { index, source in
+                            ForEach(references.indices, id: \.self) { index in
+                                let source = references[index]
                                 VStack(alignment: .leading, spacing: 6) {
                                     Text(source.title)
                                         .font(AppFont.subtitle(15))

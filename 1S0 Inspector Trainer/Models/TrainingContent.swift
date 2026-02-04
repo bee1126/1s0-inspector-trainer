@@ -1785,6 +1785,8 @@ enum TrainingContent {
         )
     ]
 
+    static let allQuizQuestions: [QuizQuestion] = modules.flatMap { $0.quiz }
+
     static let references: [ReferenceSource] = [
         ReferenceSource(
             id: "osha-1910-95",

@@ -13,7 +13,7 @@ struct HomeView: View {
             BackgroundView()
 
             ScrollView {
-                VStack(alignment: .leading, spacing: AppSpacing.section) {
+                LazyVStack(alignment: .leading, spacing: AppSpacing.section) {
                     HStack(alignment: .top, spacing: 16) {
                         VStack(alignment: .leading, spacing: 8) {
                             Text("1S0 Inspector Trainer")

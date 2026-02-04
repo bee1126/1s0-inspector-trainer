@@ -8,7 +8,7 @@ struct ToolsView: View {
             BackgroundView()
 
             ScrollView {
-                VStack(alignment: .leading, spacing: AppSpacing.stack) {
+                LazyVStack(alignment: .leading, spacing: AppSpacing.stack) {
                     Text("Feedback")
                         .font(AppFont.title(26))
                         .foregroundColor(.white)

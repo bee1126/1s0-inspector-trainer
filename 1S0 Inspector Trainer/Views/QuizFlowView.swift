@@ -23,76 +23,79 @@ struct QuizFlowView: View {
         let filtered = preparedQuestions.isEmpty ? filteredQuestions : preparedQuestions
         let question = filtered[index]
 
-        GlassCard {
-            VStack(alignment: .leading, spacing: AppSpacing.stack) {
-                HStack {
-                    Text("Quick Check")
-                        .font(AppFont.mono(12))
-                        .foregroundColor(AppTheme.charcoal.opacity(0.6))
-                    Spacer()
-                    if showsHearts {
-                        HeartsView(hearts: progress.hearts, maxHearts: progress.maxHearts, compact: true, onDark: false)
+        ScrollView {
+            GlassCard {
+                VStack(alignment: .leading, spacing: AppSpacing.stack) {
+                    HStack {
+                        Text("Quick Check")
+                            .font(AppFont.mono(12))
+                            .foregroundColor(AppTheme.charcoal.opacity(0.6))
+                        Spacer()
+                        if showsHearts {
+                            HeartsView(hearts: progress.hearts, maxHearts: progress.maxHearts, compact: true, onDark: false)
+                        }
+                        Text("\(index + 1)/\(filtered.count)")
+                            .font(AppFont.mono(12))
+                            .foregroundColor(AppTheme.charcoal.opacity(0.6))
                     }
-                    Text("\(index + 1)/\(filtered.count)")
-                        .font(AppFont.mono(12))
-                        .foregroundColor(AppTheme.charcoal.opacity(0.6))
-                }
 
-                if let imageName = question.imageName {
-                    Image(imageName)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxHeight: 180)
-                        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-                }
+                    if let imageName = question.imageName {
+                        Image(imageName)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxHeight: 180)
+                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    }
 
-                Text(question.prompt)
-                    .font(AppFont.subtitle(18))
-                    .foregroundColor(AppTheme.charcoal)
+                    Text(question.prompt)
+                        .font(AppFont.subtitle(18))
+                        .foregroundColor(AppTheme.charcoal)
 
-                VStack(spacing: 10) {
-                    ForEach(question.choices, id: \.id) { choice in
-                        OptionRow(
-                            text: choice.text,
-                            isSelected: selectedChoiceId == choice.id,
-                            isCorrect: choice.isCorrect,
-                            isLocked: selectedChoiceId != nil,
-                            revealCorrect: true
-                        )
-                        .onTapGesture {
-                            guard selectedChoiceId == nil else { return }
-                            selectedChoiceId = choice.id
-                            if choice.isCorrect {
-                                correctCount += 1
-                            } else {
-                                onWrongAnswer?()
-                            }
-                            updateState()
-                            withAnimation(.easeInOut(duration: 0.2)) {
-                                showFeedback = true
+                    VStack(spacing: 10) {
+                        ForEach(question.choices, id: \.id) { choice in
+                            OptionRow(
+                                text: choice.text,
+                                isSelected: selectedChoiceId == choice.id,
+                                isCorrect: choice.isCorrect,
+                                isLocked: selectedChoiceId != nil,
+                                revealCorrect: true
+                            )
+                            .onTapGesture {
+                                guard selectedChoiceId == nil else { return }
+                                selectedChoiceId = choice.id
+                                if choice.isCorrect {
+                                    correctCount += 1
+                                } else {
+                                    onWrongAnswer?()
+                                }
+                                updateState()
+                                withAnimation(.easeInOut(duration: 0.2)) {
+                                    showFeedback = true
+                                }
                             }
                         }
                     }
-                }
 
-                if let selectedId = selectedChoiceId,
-                   let selected = question.choices.first(where: { $0.id == selectedId }) {
-                    FeedbackView(
-                        text: selected.isCorrect ? "Correct." : "Not quite. Review the lesson and try again.",
-                        isCorrect: selected.isCorrect
-                    )
-                }
-
-                if showFeedback {
-                    Button(index == filtered.count - 1 ? "Finish Quiz" : "Next Question") {
-                        advance()
+                    if let selectedId = selectedChoiceId,
+                       let selected = question.choices.first(where: { $0.id == selectedId }) {
+                        FeedbackView(
+                            text: selected.isCorrect ? "Correct." : "Not quite. Review the lesson and try again.",
+                            isCorrect: selected.isCorrect
+                        )
                     }
-                    .buttonStyle(PrimaryButtonStyle())
+
+                    if showFeedback {
+                        Button(index == filtered.count - 1 ? "Finish Quiz" : "Next Question") {
+                            advance()
+                        }
+                        .buttonStyle(PrimaryButtonStyle())
+                    }
                 }
             }
+            .padding(.horizontal, AppSpacing.screenPadding)
         }
-        .padding(.horizontal, AppSpacing.screenPadding)
-        .gesture(
+        .scrollIndicators(.hidden)
+        .simultaneousGesture(
             DragGesture(minimumDistance: 20)
                 .onEnded { value in
                     handleSwipe(value)

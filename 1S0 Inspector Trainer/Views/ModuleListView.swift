@@ -9,7 +9,7 @@ struct ModuleListView: View {
             BackgroundView()
 
             ScrollView {
-                VStack(alignment: .leading, spacing: AppSpacing.stack) {
+                LazyVStack(alignment: .leading, spacing: AppSpacing.stack) {
                     Text("Training Modules")
                         .font(AppFont.title(26))
                         .foregroundColor(.white)

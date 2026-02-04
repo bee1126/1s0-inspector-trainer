@@ -15,7 +15,7 @@ struct ProgressDashboardView: View {
             BackgroundView()
 
             ScrollView {
-                VStack(alignment: .leading, spacing: AppSpacing.section) {
+                LazyVStack(alignment: .leading, spacing: AppSpacing.section) {
                     Text("Progress")
                         .font(AppFont.title(26))
                         .foregroundColor(.white)
@@ -87,7 +87,8 @@ struct ProgressDashboardView: View {
                                 .font(AppFont.subtitle(18))
                                 .foregroundColor(AppTheme.charcoal)
 
-                            ForEach(Array(modules.enumerated()), id: \.element.id) { index, module in
+                            ForEach(modules.indices, id: \.self) { index in
+                                let module = modules[index]
                                 HStack {
                                     VStack(alignment: .leading, spacing: 4) {
                                         Text(module.title)

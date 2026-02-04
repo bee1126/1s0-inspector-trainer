@@ -9,7 +9,7 @@ struct ModuleDetailView: View {
             BackgroundView()
 
             ScrollView {
-                VStack(alignment: .leading, spacing: AppSpacing.section) {
+                LazyVStack(alignment: .leading, spacing: AppSpacing.section) {
                     GlassCard {
                         VStack(alignment: .leading, spacing: 10) {
                             Text(module.title)

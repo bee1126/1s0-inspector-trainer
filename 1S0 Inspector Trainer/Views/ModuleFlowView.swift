@@ -205,110 +205,113 @@ struct CompletionView: View {
     @State private var rewardSummary: RewardSummary? = nil
 
     var body: some View {
-        GlassCard {
-            VStack(alignment: .leading, spacing: 14) {
-                Text("Module Complete")
-                    .font(AppFont.title(22))
-                    .foregroundColor(AppTheme.charcoal)
+        ScrollView {
+            GlassCard {
+                VStack(alignment: .leading, spacing: 14) {
+                    Text("Module Complete")
+                        .font(AppFont.title(22))
+                        .foregroundColor(AppTheme.charcoal)
 
-                Text(moduleTitle)
-                    .font(AppFont.subtitle(16))
-                    .foregroundColor(AppTheme.charcoal.opacity(0.8))
-
-                HStack(spacing: 12) {
-                    VStack(alignment: .leading) {
-                        Text("Scenario")
-                            .font(AppFont.mono(12))
-                            .foregroundColor(AppTheme.charcoal.opacity(0.6))
-                        Text("\(scenarioResult.score)/\(scenarioResult.total)")
-                            .font(AppFont.subtitle(18))
-                    }
-                    VStack(alignment: .leading) {
-                        Text("Quiz")
-                            .font(AppFont.mono(12))
-                            .foregroundColor(AppTheme.charcoal.opacity(0.6))
-                        Text("\(quizResult.score)/\(quizResult.total)")
-                            .font(AppFont.subtitle(18))
-                    }
-                    Spacer()
-                    ScoreBadge(score: score)
-                }
-
-                HStack(spacing: 10) {
-                    Text("Status")
-                        .font(AppFont.mono(12))
-                        .foregroundColor(AppTheme.charcoal.opacity(0.6))
-                    Text(passed ? "Pass" : "Remediate")
+                    Text(moduleTitle)
                         .font(AppFont.subtitle(16))
-                        .foregroundColor(passed ? AppTheme.safetyGreen : Color.red.opacity(0.8))
-                }
-                Text("Pass threshold: 80%")
-                    .font(AppFont.body(12))
-                    .foregroundColor(AppTheme.charcoal.opacity(0.6))
+                        .foregroundColor(AppTheme.charcoal.opacity(0.8))
 
-                if showRacInput {
-                    FormFieldLabel(text: "RAC Justification")
-                    AppTextEditor(text: $racJustification, height: 100)
-                } else if !racJustification.isEmpty {
-                    FormFieldLabel(text: "RAC Justification")
-                    Text(racJustification)
+                    HStack(spacing: 12) {
+                        VStack(alignment: .leading) {
+                            Text("Scenario")
+                                .font(AppFont.mono(12))
+                                .foregroundColor(AppTheme.charcoal.opacity(0.6))
+                            Text("\(scenarioResult.score)/\(scenarioResult.total)")
+                                .font(AppFont.subtitle(18))
+                        }
+                        VStack(alignment: .leading) {
+                            Text("Quiz")
+                                .font(AppFont.mono(12))
+                                .foregroundColor(AppTheme.charcoal.opacity(0.6))
+                            Text("\(quizResult.score)/\(quizResult.total)")
+                                .font(AppFont.subtitle(18))
+                        }
+                        Spacer()
+                        ScoreBadge(score: score)
+                    }
+
+                    HStack(spacing: 10) {
+                        Text("Status")
+                            .font(AppFont.mono(12))
+                            .foregroundColor(AppTheme.charcoal.opacity(0.6))
+                        Text(passed ? "Pass" : "Remediate")
+                            .font(AppFont.subtitle(16))
+                            .foregroundColor(passed ? AppTheme.safetyGreen : Color.red.opacity(0.8))
+                    }
+                    Text("Pass threshold: 80%")
                         .font(AppFont.body(12))
-                        .foregroundColor(AppTheme.charcoal.opacity(0.7))
-                }
+                        .foregroundColor(AppTheme.charcoal.opacity(0.6))
 
-                if didSave {
-                    Button("Saved") {
-                        // No-op once saved
+                    if showRacInput {
+                        FormFieldLabel(text: "RAC Justification")
+                        AppTextEditor(text: $racJustification, height: 100)
+                    } else if !racJustification.isEmpty {
+                        FormFieldLabel(text: "RAC Justification")
+                        Text(racJustification)
+                            .font(AppFont.body(12))
+                            .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                    }
+
+                    if didSave {
+                        Button("Saved") {
+                            // No-op once saved
+                        }
+                        .buttonStyle(OutlineButtonStyle())
+                    } else {
+                        Button("Save Progress") {
+                            rewardSummary = onComplete()
+                            didSave = true
+                            completionDate = Date()
+                        }
+                        .buttonStyle(PrimaryButtonStyle())
+                    }
+
+                    if let rewardSummary {
+                        RewardSummaryCard(summary: rewardSummary, xpToNextLevel: progress.xpToNextLevel)
+                    }
+
+                    Button("Generate Completion Summary") {
+                        let pdfData = CompletionSummaryPDF.generate(
+                            moduleTitle: moduleTitle,
+                            score: score,
+                            scenarioResult: scenarioResult,
+                            quizResult: quizResult,
+                            passed: passed,
+                            completionDate: completionDate,
+                            racJustification: racJustification.isEmpty ? nil : racJustification
+                        )
+                        let safeTitle = moduleTitle.replacingOccurrences(of: " ", with: "-")
+                        let fileURL = FileManager.default.temporaryDirectory
+                            .appendingPathComponent("CompletionSummary-\(safeTitle).pdf")
+                        try? pdfData.write(to: fileURL, options: .atomic)
+                        shareItems = [fileURL]
+                        showShareSheet = true
                     }
                     .buttonStyle(OutlineButtonStyle())
-                } else {
-                    Button("Save Progress") {
-                        rewardSummary = onComplete()
-                        didSave = true
-                        completionDate = Date()
+
+                    Button("Share Challenge") {
+                        let text = "I completed \(moduleTitle) with a score of \(score)% in the 1S0 Inspector Trainer."
+                        shareItems = [text]
+                        showShareSheet = true
                     }
-                    .buttonStyle(PrimaryButtonStyle())
-                }
+                    .buttonStyle(OutlineButtonStyle())
 
-                if let rewardSummary {
-                    RewardSummaryCard(summary: rewardSummary, xpToNextLevel: progress.xpToNextLevel)
-                }
-
-                Button("Generate Completion Summary") {
-                    let pdfData = CompletionSummaryPDF.generate(
-                        moduleTitle: moduleTitle,
-                        score: score,
-                        scenarioResult: scenarioResult,
-                        quizResult: quizResult,
-                        passed: passed,
-                        completionDate: completionDate,
-                        racJustification: racJustification.isEmpty ? nil : racJustification
-                    )
-                    let safeTitle = moduleTitle.replacingOccurrences(of: " ", with: "-")
-                    let fileURL = FileManager.default.temporaryDirectory
-                        .appendingPathComponent("CompletionSummary-\(safeTitle).pdf")
-                    try? pdfData.write(to: fileURL, options: .atomic)
-                    shareItems = [fileURL]
-                    showShareSheet = true
-                }
-                .buttonStyle(OutlineButtonStyle())
-
-                Button("Share Challenge") {
-                    let text = "I completed \(moduleTitle) with a score of \(score)% in the 1S0 Inspector Trainer."
-                    shareItems = [text]
-                    showShareSheet = true
-                }
-                .buttonStyle(OutlineButtonStyle())
-
-                if !passed {
-                    Button("Retry Module") {
-                        onRetry()
+                    if !passed {
+                        Button("Retry Module") {
+                            onRetry()
+                        }
+                        .buttonStyle(PrimaryButtonStyle())
                     }
-                    .buttonStyle(PrimaryButtonStyle())
                 }
             }
+            .padding(.horizontal, 20)
         }
-        .padding(.horizontal, 20)
+        .scrollIndicators(.hidden)
         .sheet(isPresented: $showShareSheet) {
             ShareSheet(activityItems: shareItems)
         }
