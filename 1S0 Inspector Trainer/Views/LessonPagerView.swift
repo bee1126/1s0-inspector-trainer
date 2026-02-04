@@ -4,9 +4,20 @@ struct LessonPagerView: View {
     let pages: [LessonPage]
     var onSkip: (() -> Void)? = nil
     let onComplete: () -> Void
+    var initialIndex: Int = 0
+    var onIndexChange: ((Int) -> Void)? = nil
 
-    @State private var index: Int = 0
+    @State private var index: Int
     private let swipeThreshold: CGFloat = 70
+
+    init(pages: [LessonPage], onSkip: (() -> Void)? = nil, onComplete: @escaping () -> Void, initialIndex: Int = 0, onIndexChange: ((Int) -> Void)? = nil) {
+        self.pages = pages
+        self.onSkip = onSkip
+        self.onComplete = onComplete
+        self.initialIndex = initialIndex
+        self.onIndexChange = onIndexChange
+        _index = State(initialValue: max(0, min(initialIndex, max(0, pages.count - 1))))
+    }
 
     var body: some View {
         GlassCard {
@@ -77,6 +88,9 @@ struct LessonPagerView: View {
                     handleSwipe(value)
                 }
         )
+        .onChange(of: index) { newValue in
+            onIndexChange?(newValue)
+        }
     }
 
     private func handleSwipe(_ value: DragGesture.Value) {

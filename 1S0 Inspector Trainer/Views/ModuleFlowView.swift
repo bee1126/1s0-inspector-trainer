@@ -10,6 +10,8 @@ struct ModuleFlowView: View {
     @State private var scenarioResult = AssessmentResult(score: 0, total: 0)
     @State private var quizResult = AssessmentResult(score: 0, total: 0)
     @State private var appeared = false
+    @State private var lessonIndex: Int = 0
+    @State private var didApplyResume = false
     @State private var racJustification = ""
     @State private var showPracticeSheet = false
 
@@ -36,7 +38,10 @@ struct ModuleFlowView: View {
                         withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
                             stage = .scenario
                         }
-                    }
+                    } initialIndex: lessonIndex, onIndexChange: { newIndex in
+                        lessonIndex = newIndex
+                        progress.updateResume(moduleId: module.id, stage: .lesson, lessonIndex: newIndex)
+                    })
                 case .scenario:
                     ScenarioFlowView(scenario: module.scenario, onWrongAnswer: {
                         progress.consumeHeart()
@@ -54,7 +59,9 @@ struct ModuleFlowView: View {
                         withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
                             stage = .complete
                         }
-                    }, showsHearts: false, shuffleQuestions: true, maxQuestions: 10)
+                    }, showsHearts: false, shuffleQuestions: true, maxQuestions: 10, resumeState: progress.resumeState(for: module.id)?.quizState, onStateUpdate: { state in
+                        progress.updateResume(moduleId: module.id, stage: .quiz, quizState: state)
+                    })
                 case .complete:
                     CompletionView(
                         moduleTitle: module.title,
@@ -84,8 +91,32 @@ struct ModuleFlowView: View {
             .offset(y: appeared ? 0 : 12)
             .onAppear {
                 progress.refreshForNewDayIfNeeded()
+                if !didApplyResume, let resume = progress.resumeState(for: module.id) {
+                    lessonIndex = min(resume.lessonIndex, max(0, module.lessonPages.count - 1))
+                    switch resume.stage {
+                    case .lesson:
+                        stage = .lesson
+                    case .scenario:
+                        stage = .scenario
+                    case .quiz:
+                        stage = .quiz
+                    }
+                }
+                didApplyResume = true
                 withAnimation(.easeOut(duration: 0.4)) {
                     appeared = true
+                }
+            }
+            .onChange(of: stage) { newStage in
+                switch newStage {
+                case .lesson:
+                    progress.updateResume(moduleId: module.id, stage: .lesson, lessonIndex: lessonIndex)
+                case .scenario:
+                    progress.updateResume(moduleId: module.id, stage: .scenario, lessonIndex: lessonIndex)
+                case .quiz:
+                    progress.updateResume(moduleId: module.id, stage: .quiz, lessonIndex: lessonIndex, quizState: progress.resumeState(for: module.id)?.quizState)
+                case .complete:
+                    progress.clearResume(for: module.id)
                 }
             }
         }
@@ -257,7 +288,7 @@ struct CompletionView: View {
                 .buttonStyle(OutlineButtonStyle())
 
                 Button("Share Challenge") {
-                    let text = "I completed \(moduleTitle) with a score of \(score)% in the Safety Inspector Trainer."
+                    let text = "I completed \(moduleTitle) with a score of \(score)% in the 1S0 Inspector Trainer."
                     shareItems = [text]
                     showShareSheet = true
                 }
@@ -407,4 +438,3 @@ enum CompletionSummaryPDF {
         }
     }
 }
-

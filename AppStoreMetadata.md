@@ -1,13 +1,13 @@
 # App Store Metadata (Draft)
 
 ## App Name
-Safety Inspector Trainer
+1S0 Inspector Trainer
 
 ## Subtitle
 Interactive safety training for Air Force inspectors
 
 ## Description
-Safety Inspector Trainer is a mission-ready training companion for Air Force safety inspectors. It blends standards-aligned lessons with scenario-based learning, quick checks, and on-device progress tracking plus XP, levels, streaks, and hearts so you can build and sustain inspection proficiency.
+1S0 Inspector Trainer is a mission-ready training companion for Air Force safety inspectors. It blends standards-aligned lessons with scenario-based learning, quick checks, and on-device progress tracking plus XP, levels, streaks, and hearts so you can build and sustain inspection proficiency.
 
 Features:
 - Interactive modules for Lockout/Tagout, Fall Protection, Risk Management, Roles & Responsibilities, Hazard Abatement, RAC System, Confined Space, Hot Work, Hearing Conservation, Mishap Reporting, Investigation Basics, JHA Fundamentals, Safety Briefing, and PPE Decision

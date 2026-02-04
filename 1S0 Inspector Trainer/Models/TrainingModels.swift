@@ -82,3 +82,24 @@ struct ReferenceSource: Identifiable, Hashable {
     let date: String
     let notes: String
 }
+
+enum ModuleStageKey: String, Codable {
+    case lesson
+    case scenario
+    case quiz
+}
+
+struct QuizResumeState: Codable, Hashable {
+    let questionIds: [String]
+    let choiceOrder: [String: [String]]
+    let index: Int
+    let correctCount: Int
+}
+
+struct ModuleResumeState: Codable, Hashable {
+    let moduleId: String
+    let stage: ModuleStageKey
+    let lessonIndex: Int
+    let quizState: QuizResumeState?
+    let updatedAt: Date
+}

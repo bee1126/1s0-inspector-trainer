@@ -82,7 +82,7 @@ struct SplashView: View {
                         .foregroundColor(.white)
                 }
 
-                Text("Safety Inspector Trainer")
+                Text("1S0 Inspector Trainer")
                     .font(AppFont.title(24))
                     .foregroundColor(.white)
 

@@ -13,6 +13,11 @@ final class ProgressStore: ObservableObject {
     @Published private(set) var dailyStreak: Int = 0
     @Published private(set) var lastDailyGoalDate: Date? = nil
     @Published private(set) var lastDailyReset: Date? = nil
+    @Published private(set) var dailyFiveStreak: Int = 0
+    @Published private(set) var lastDailyFiveDate: Date? = nil
+    @Published private(set) var bestDailyFiveScore: Int = 0
+    @Published private(set) var lastDailyFiveScore: Int = 0
+    @Published private(set) var resumeState: ModuleResumeState? = nil
     @Published private(set) var hearts: Int = 5
     let maxHearts: Int = 5
 
@@ -27,6 +32,11 @@ final class ProgressStore: ObservableObject {
     private let dailyStreakKey = "dailyStreak"
     private let lastDailyGoalKey = "lastDailyGoal"
     private let lastDailyResetKey = "lastDailyReset"
+    private let dailyFiveStreakKey = "dailyFiveStreak"
+    private let lastDailyFiveKey = "lastDailyFive"
+    private let bestDailyFiveKey = "bestDailyFive"
+    private let lastDailyFiveScoreKey = "lastDailyFiveScore"
+    private let resumeStateKey = "resumeState"
     private let heartsKey = "hearts"
 
     init() {
@@ -69,6 +79,11 @@ final class ProgressStore: ObservableObject {
         dailyStreak = 0
         lastDailyGoalDate = nil
         lastDailyReset = nil
+        dailyFiveStreak = 0
+        lastDailyFiveDate = nil
+        bestDailyFiveScore = 0
+        lastDailyFiveScore = 0
+        resumeState = nil
         hearts = maxHearts
         save()
     }
@@ -125,6 +140,16 @@ final class ProgressStore: ObservableObject {
         if let date = defaults.object(forKey: lastDailyResetKey) as? Date {
             lastDailyReset = date
         }
+        dailyFiveStreak = defaults.integer(forKey: dailyFiveStreakKey)
+        if let date = defaults.object(forKey: lastDailyFiveKey) as? Date {
+            lastDailyFiveDate = date
+        }
+        bestDailyFiveScore = defaults.integer(forKey: bestDailyFiveKey)
+        lastDailyFiveScore = defaults.integer(forKey: lastDailyFiveScoreKey)
+        if let data = defaults.data(forKey: resumeStateKey),
+           let decoded = try? JSONDecoder().decode(ModuleResumeState.self, from: data) {
+            resumeState = decoded
+        }
         if defaults.object(forKey: heartsKey) == nil {
             hearts = maxHearts
         } else {
@@ -155,6 +180,16 @@ final class ProgressStore: ObservableObject {
         defaults.set(dailyStreak, forKey: dailyStreakKey)
         defaults.set(lastDailyGoalDate, forKey: lastDailyGoalKey)
         defaults.set(lastDailyReset, forKey: lastDailyResetKey)
+        defaults.set(dailyFiveStreak, forKey: dailyFiveStreakKey)
+        defaults.set(lastDailyFiveDate, forKey: lastDailyFiveKey)
+        defaults.set(bestDailyFiveScore, forKey: bestDailyFiveKey)
+        defaults.set(lastDailyFiveScore, forKey: lastDailyFiveScoreKey)
+        if let resumeState,
+           let data = try? JSONEncoder().encode(resumeState) {
+            defaults.set(data, forKey: resumeStateKey)
+        } else {
+            defaults.removeObject(forKey: resumeStateKey)
+        }
         defaults.set(hearts, forKey: heartsKey)
     }
 
@@ -269,6 +304,50 @@ final class ProgressStore: ObservableObject {
     }
 
     private let levelStep: Int = 120
+
+    func recordDailyFive(score: Int, total: Int) {
+        let today = Calendar.current.startOfDay(for: Date())
+        if let lastDate = lastDailyFiveDate {
+            let lastDay = Calendar.current.startOfDay(for: lastDate)
+            let diff = Calendar.current.dateComponents([.day], from: lastDay, to: today).day ?? 0
+            if diff == 1 {
+                dailyFiveStreak += 1
+            } else if diff > 1 {
+                dailyFiveStreak = 1
+            }
+        } else {
+            dailyFiveStreak = 1
+        }
+        lastDailyFiveDate = today
+        let percent = total > 0 ? Int(round(Double(score) / Double(total) * 100)) : 0
+        lastDailyFiveScore = percent
+        bestDailyFiveScore = max(bestDailyFiveScore, percent)
+        save()
+    }
+
+    func updateResume(moduleId: String, stage: ModuleStageKey, lessonIndex: Int? = nil, quizState: QuizResumeState? = nil) {
+        let currentLessonIndex = lessonIndex ?? resumeState?.lessonIndex ?? 0
+        let currentQuiz = stage == .quiz ? (quizState ?? resumeState?.quizState) : nil
+        resumeState = ModuleResumeState(
+            moduleId: moduleId,
+            stage: stage,
+            lessonIndex: currentLessonIndex,
+            quizState: currentQuiz,
+            updatedAt: Date()
+        )
+        save()
+    }
+
+    func clearResume(for moduleId: String) {
+        guard resumeState?.moduleId == moduleId else { return }
+        resumeState = nil
+        save()
+    }
+
+    func resumeState(for moduleId: String) -> ModuleResumeState? {
+        guard let state = resumeState, state.moduleId == moduleId else { return nil }
+        return state
+    }
 }
 
 struct RewardSummary {

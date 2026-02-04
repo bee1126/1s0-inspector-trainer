@@ -8,6 +8,8 @@ struct QuizFlowView: View {
     var showsHearts: Bool = true
     var shuffleQuestions: Bool = false
     var maxQuestions: Int? = nil
+    var resumeState: QuizResumeState? = nil
+    var onStateUpdate: ((QuizResumeState) -> Void)? = nil
 
     @State private var index = 0
     @State private var selectedChoiceId: String? = nil
@@ -65,6 +67,7 @@ struct QuizFlowView: View {
                             } else {
                                 onWrongAnswer?()
                             }
+                            updateState()
                             withAnimation(.easeInOut(duration: 0.2)) {
                                 showFeedback = true
                             }
@@ -108,6 +111,7 @@ struct QuizFlowView: View {
             index += 1
             selectedChoiceId = nil
             showFeedback = false
+            updateState()
         }
     }
 
@@ -119,6 +123,29 @@ struct QuizFlowView: View {
     }
 
     private func prepareQuestions() {
+        if let resumeState {
+            let questionMap = Dictionary(uniqueKeysWithValues: questions.map { ($0.id, $0) })
+            let ordered = resumeState.questionIds.compactMap { questionMap[$0] }
+            if !ordered.isEmpty {
+                preparedQuestions = ordered.map { question in
+                    let order = resumeState.choiceOrder[question.id]
+                    let choicesById = Dictionary(uniqueKeysWithValues: question.choices.map { ($0.id, $0) })
+                    let orderedChoices = order?.compactMap { choicesById[$0] } ?? question.choices
+                    return QuizQuestion(
+                        id: question.id,
+                        prompt: question.prompt,
+                        difficulty: question.difficulty,
+                        imageName: question.imageName,
+                        choices: orderedChoices
+                    )
+                }
+                index = min(resumeState.index, max(0, preparedQuestions.count - 1))
+                correctCount = resumeState.correctCount
+                updateState()
+                return
+            }
+        }
+
         var list = filteredQuestions
         if shuffleQuestions {
             list.shuffle()
@@ -126,7 +153,6 @@ struct QuizFlowView: View {
         if let maxQuestions {
             list = Array(list.prefix(maxQuestions))
         }
-        // Prevent pattern learning (correct answer always in the same position).
         list = list.map { question in
             QuizQuestion(
                 id: question.id,
@@ -137,6 +163,7 @@ struct QuizFlowView: View {
             )
         }
         preparedQuestions = list
+        updateState()
     }
 
     private func handleSwipe(_ value: DragGesture.Value) {
@@ -146,5 +173,23 @@ struct QuizFlowView: View {
         if horizontal < 0 {
             advance()
         }
+    }
+
+    private func updateState() {
+        let list = preparedQuestions.isEmpty ? filteredQuestions : preparedQuestions
+        guard !list.isEmpty else { return }
+        let questionIds = list.map { $0.id }
+        var choiceOrder: [String: [String]] = [:]
+        for question in list {
+            choiceOrder[question.id] = question.choices.map { $0.id }
+        }
+        onStateUpdate?(
+            QuizResumeState(
+                questionIds: questionIds,
+                choiceOrder: choiceOrder,
+                index: index,
+                correctCount: correctCount
+            )
+        )
     }
 }

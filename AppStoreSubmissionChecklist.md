@@ -21,8 +21,8 @@ Host them (GitHub Pages or any static host) and paste the resulting URLs into Ap
 
 ## 3) Privacy / export compliance
 - The app stores progress **on-device** (UserDefaults) and does not include analytics/ads by default.
-- `ITSAppUsesNonExemptEncryption` is set to `false` in `SafetyInspector/Resources/Info.plist`.
-- A privacy manifest is included at `SafetyInspector/Resources/PrivacyInfo.xcprivacy` (no tracking / no collected data declared).
+- `ITSAppUsesNonExemptEncryption` is set to `false` in `1S0 Inspector Trainer/Resources/Info.plist`.
+- A privacy manifest is included at `1S0 Inspector Trainer/Resources/PrivacyInfo.xcprivacy` (no tracking / no collected data declared).
 
 ## 4) App Store assets
 - App icon: verify it’s final (1024×1024 included in the asset catalog).

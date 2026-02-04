@@ -55,6 +55,19 @@ struct ModuleDetailView: View {
                     }
                     .buttonStyle(PrimaryButtonStyle())
 
+                    if progress.resumeState(for: module.id) != nil {
+                        NavigationLink {
+                            ModuleFlowView(module: module)
+                        } label: {
+                            HStack {
+                                Text("Continue")
+                                Spacer()
+                                Image(systemName: "arrow.right.circle.fill")
+                            }
+                        }
+                        .buttonStyle(OutlineButtonStyle())
+                    }
+
                     GlassCard {
                         VStack(alignment: .leading, spacing: 8) {
                             Text("Rewards")

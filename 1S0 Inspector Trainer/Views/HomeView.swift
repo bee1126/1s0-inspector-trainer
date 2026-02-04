@@ -3,6 +3,10 @@ import SwiftUI
 struct HomeView: View {
     @EnvironmentObject private var progress: ProgressStore
     private let modules = TrainingContent.modules
+    private var resumeModule: TrainingModule? {
+        guard let resume = progress.resumeState else { return nil }
+        return modules.first(where: { $0.id == resume.moduleId })
+    }
 
     var body: some View {
         ZStack {
@@ -12,7 +16,7 @@ struct HomeView: View {
                 VStack(alignment: .leading, spacing: AppSpacing.section) {
                     HStack(alignment: .top, spacing: 16) {
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Safety Inspector Trainer")
+                            Text("1S0 Inspector Trainer")
                                 .font(AppFont.title(28))
                                 .foregroundColor(.white)
                             Text("Level up your inspection skills with daily practice.")
@@ -39,6 +43,29 @@ struct HomeView: View {
                             HStack(spacing: 8) {
                                 StatPill(title: "Streak", value: "\(progress.dailyStreak) days", tint: AppTheme.xpGold)
                                 StatPill(title: "Hearts", value: "\(progress.hearts)/\(progress.maxHearts)", tint: AppTheme.heartRed)
+                            }
+                        }
+                    }
+
+                    if let resumeModule {
+                        GlassCard {
+                            VStack(alignment: .leading, spacing: 10) {
+                                Text("Continue Training")
+                                    .font(AppFont.subtitle(18))
+                                    .foregroundColor(AppTheme.charcoal)
+                                Text(resumeModule.title)
+                                    .font(AppFont.body(13))
+                                    .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                                NavigationLink {
+                                    ModuleFlowView(module: resumeModule)
+                                } label: {
+                                    HStack {
+                                        Text("Continue")
+                                        Spacer()
+                                        Image(systemName: "arrow.right.circle.fill")
+                                    }
+                                }
+                                .buttonStyle(PrimaryButtonStyle())
                             }
                         }
                     }
@@ -71,6 +98,17 @@ struct HomeView: View {
                                     }
                                 }
                                 .buttonStyle(PrimaryButtonStyle())
+
+                                NavigationLink {
+                                    PracticeSessionView(mode: .dailyFive)
+                                } label: {
+                                    HStack {
+                                        Text("Daily 5")
+                                        Spacer()
+                                        Image(systemName: "checkmark.seal.fill")
+                                    }
+                                }
+                                .buttonStyle(OutlineButtonStyle())
 
                                 NavigationLink {
                                     MatchingGameView()

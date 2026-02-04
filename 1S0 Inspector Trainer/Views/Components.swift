@@ -246,6 +246,22 @@ struct RewardChip: View {
     }
 }
 
+struct ChallengeRow: View {
+    let title: String
+    let isComplete: Bool
+
+    var body: some View {
+        HStack(spacing: 8) {
+            Image(systemName: isComplete ? "checkmark.circle.fill" : "circle")
+                .foregroundColor(isComplete ? AppTheme.safetyGreen : AppTheme.charcoal.opacity(0.4))
+            Text(title)
+                .font(AppFont.body(12))
+                .foregroundColor(AppTheme.charcoal.opacity(0.75))
+            Spacer()
+        }
+    }
+}
+
 struct FormFieldLabel: View {
     let text: String
 

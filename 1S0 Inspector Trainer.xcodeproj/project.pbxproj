@@ -11,7 +11,7 @@
 		0E91ED6632454A578EE1F04D /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AEBFFBDDE847C4A5C225B5 /* Components.swift */; };
 		315750AB112441B1BEC0399C /* QuizFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BAAD5C65C74C7C981FD78C /* QuizFlowView.swift */; };
 		361FFA23D609407A81CF69EA /* LessonPagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5F88832E9C485CAD594876 /* LessonPagerView.swift */; };
-		385B0547EA624ED4980254F0 /* SafetyInspectorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F24684BB97641B9BDE038CA /* SafetyInspectorApp.swift */; };
+		385B0547EA624ED4980254F0 /* InspectorTrainerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F24684BB97641B9BDE038CA /* InspectorTrainerApp.swift */; };
 		3E4AB0E655E94B92BBFC3B33 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19302FDEB72143C5A663AE4E /* BackgroundView.swift */; };
 		3F977012712F1F26857E1093 /* MatchingGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73524C141A3F5AB2EFF99FE1 /* MatchingGameView.swift */; };
 		577F87A126C14A529F911618 /* ModuleListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F4C994046BF462DB2E96042 /* ModuleListView.swift */; };
@@ -43,7 +43,7 @@
 		40AEBFFBDDE847C4A5C225B5 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
 		534B8049CF904994B419DE7D /* ProgressStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStore.swift; sourceTree = "<group>"; };
 		5D6583B73C5E4CA089EA252A /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
-		6F24684BB97641B9BDE038CA /* SafetyInspectorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyInspectorApp.swift; sourceTree = "<group>"; };
+		6F24684BB97641B9BDE038CA /* InspectorTrainerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorTrainerApp.swift; sourceTree = "<group>"; };
 		73524C141A3F5AB2EFF99FE1 /* MatchingGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingGameView.swift; sourceTree = "<group>"; };
 		7A8D35E4CCC1487EAF35202A /* ScenarioFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScenarioFlowView.swift; sourceTree = "<group>"; };
 		7F4C994046BF462DB2E96042 /* ModuleListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleListView.swift; sourceTree = "<group>"; };
@@ -52,7 +52,7 @@
 		9B985BD79A7D2983D60E5E5A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A561485258DE42A4B11F142F /* QuizBank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizBank.swift; sourceTree = "<group>"; };
 		B82A650A0B65431196F5A0F8 /* ModuleDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleDetailView.swift; sourceTree = "<group>"; };
-		C506A214268B476AB97AFCF9 /* SafetyInspector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = SafetyInspector.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C506A214268B476AB97AFCF9 /* 1S0 Inspector Trainer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = "1S0 Inspector Trainer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBA413EE88AF47A68BE9CA46 /* ProgressDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressDashboardView.swift; sourceTree = "<group>"; };
 		D84B5E74DAD64241A4C71C85 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		F1E2D3C4B5A69788796A5B4C /* PracticeSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeSessionView.swift; sourceTree = "<group>"; };
@@ -74,7 +74,7 @@
 		104EAB322CA54DCF95BC57E0 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				6F24684BB97641B9BDE038CA /* SafetyInspectorApp.swift */,
+				6F24684BB97641B9BDE038CA /* InspectorTrainerApp.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -89,7 +89,7 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		3C642D13FB8F405FAE878EF0 /* SafetyInspector */ = {
+		3C642D13FB8F405FAE878EF0 /* 1S0 Inspector Trainer */ = {
 			isa = PBXGroup;
 			children = (
 				104EAB322CA54DCF95BC57E0 /* App */,
@@ -97,13 +97,13 @@
 				A68CB731C9B34082B43DDC93 /* Views */,
 				39EFCE7531DD4B2190B0B359 /* Resources */,
 			);
-			path = SafetyInspector;
+			path = "1S0 Inspector Trainer";
 			sourceTree = "<group>";
 		};
 		80242FCCE50E4387A7C830B9 = {
 			isa = PBXGroup;
 			children = (
-				C506A214268B476AB97AFCF9 /* SafetyInspector.app */,
+				C506A214268B476AB97AFCF9 /* 1S0 Inspector Trainer.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -133,7 +133,7 @@
 		C15083C0F3D94AE09873BD8B = {
 			isa = PBXGroup;
 			children = (
-				3C642D13FB8F405FAE878EF0 /* SafetyInspector */,
+				3C642D13FB8F405FAE878EF0 /* 1S0 Inspector Trainer */,
 				80242FCCE50E4387A7C830B9,
 			);
 			sourceTree = "<group>";
@@ -152,9 +152,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		EBB4F50E21FC4E5D918D0003 /* SafetyInspector */ = {
+		EBB4F50E21FC4E5D918D0003 /* 1S0 Inspector Trainer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 177928223580487486D8EAD5 /* Build configuration list for PBXNativeTarget "SafetyInspector" */;
+			buildConfigurationList = 177928223580487486D8EAD5 /* Build configuration list for PBXNativeTarget "1S0 Inspector Trainer" */;
 			buildPhases = (
 				ABBE7ABD78E84A50A3C3A40B /* Sources */,
 				C855255D97F44A78AA6E81D6 /* Frameworks */,
@@ -165,9 +165,9 @@
 			);
 			dependencies = (
 			);
-			name = SafetyInspector;
-			productName = SafetyInspector;
-			productReference = C506A214268B476AB97AFCF9 /* SafetyInspector.app */;
+			name = "1S0 Inspector Trainer";
+			productName = "1S0 Inspector Trainer";
+			productReference = C506A214268B476AB97AFCF9 /* 1S0 Inspector Trainer.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -178,14 +178,14 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 2620;
-				ORGANIZATIONNAME = "Safety Inspector";
+				ORGANIZATIONNAME = "1S0 Inspector Trainer";
 				TargetAttributes = {
 					EBB4F50E21FC4E5D918D0003 = {
 						CreatedOnToolsVersion = 26.2;
 					};
 				};
 			};
-			buildConfigurationList = 64DFCE3369E740ABAEF505E2 /* Build configuration list for PBXProject "SafetyInspector" */;
+			buildConfigurationList = 64DFCE3369E740ABAEF505E2 /* Build configuration list for PBXProject "1S0 Inspector Trainer" */;
 			compatibilityVersion = "Xcode 15.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -198,7 +198,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				EBB4F50E21FC4E5D918D0003 /* SafetyInspector */,
+				EBB4F50E21FC4E5D918D0003 /* 1S0 Inspector Trainer */,
 			);
 		};
 /* End PBXProject section */
@@ -238,7 +238,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				385B0547EA624ED4980254F0 /* SafetyInspectorApp.swift in Sources */,
+				385B0547EA624ED4980254F0 /* InspectorTrainerApp.swift in Sources */,
 				70C498755F3A439EA025734C /* ProgressStore.swift in Sources */,
 				C67DC6A217DA4697B1D7A8AA /* TrainingContent.swift in Sources */,
 				CAA3AFB3F017458E9211BA50 /* QuizBank.swift in Sources */,
@@ -316,8 +316,8 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				INFOPLIST_FILE = SafetyInspector/Resources/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "1S0 Safety Inspector Toolkit";
+				INFOPLIST_FILE = "1S0 Inspector Trainer/Resources/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "1S0 Inspector Trainer";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -339,8 +339,8 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				INFOPLIST_FILE = SafetyInspector/Resources/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "1S0 Safety Inspector Toolkit";
+				INFOPLIST_FILE = "1S0 Inspector Trainer/Resources/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "1S0 Inspector Trainer";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -402,7 +402,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		177928223580487486D8EAD5 /* Build configuration list for PBXNativeTarget "SafetyInspector" */ = {
+		177928223580487486D8EAD5 /* Build configuration list for PBXNativeTarget "1S0 Inspector Trainer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5FCA106D7D0445B39A0A7246 /* Debug */,
@@ -411,7 +411,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		64DFCE3369E740ABAEF505E2 /* Build configuration list for PBXProject "SafetyInspector" */ = {
+		64DFCE3369E740ABAEF505E2 /* Build configuration list for PBXProject "1S0 Inspector Trainer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				138E3FD2A8674A778A3C7A28 /* Debug */,
