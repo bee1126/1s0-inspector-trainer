@@ -194,8 +194,13 @@ struct OptionRow: View {
             Text(text)
                 .font(AppFont.body(14))
                 .foregroundColor(AppTheme.charcoal)
+                .multilineTextAlignment(.leading)
+                .lineLimit(nil)
+                .fixedSize(horizontal: false, vertical: true)
+                .layoutPriority(1)
             Spacer()
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(12)
         .background(
             RoundedRectangle(cornerRadius: 14, style: .continuous)
