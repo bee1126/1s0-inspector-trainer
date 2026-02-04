@@ -288,11 +288,22 @@ struct ShareSheet: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIActivityViewController {
         let controller = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
         if let popover = controller.popoverPresentationController {
-            let sourceView = UIApplication.shared.keyWindow ?? controller.view
+            // Prefer the key window's root view as the anchor if available; otherwise, fall back to the controller's view.
+            let sourceView: UIView
+            if let keyWindowView = UIApplication.shared.keyWindow?.rootViewController?.view {
+                sourceView = keyWindowView
+            } else if let controllerView = controller.view {
+                sourceView = controllerView
+            } else {
+                // As a last resort, create a temporary view to satisfy popover requirements.
+                sourceView = UIView(frame: .zero)
+            }
+
             popover.sourceView = sourceView
+            let rect = sourceView.bounds
             popover.sourceRect = CGRect(
-                x: sourceView.bounds.midX,
-                y: sourceView.bounds.midY,
+                x: rect.midX,
+                y: rect.midY,
                 width: 1,
                 height: 1
             )
@@ -396,3 +407,202 @@ enum CompletionSummaryPDF {
         }
     }
 }
+
+// MARK: - Placeholders for missing app-specific types and views to allow compilation
+// Simple theme and font placeholders
+struct AppTheme {
+    static let charcoal = Color.black.opacity(0.85)
+    static let blue = Color.blue
+    static let safetyGreen = Color.green
+}
+
+struct AppFont {
+    static func title(_ size: CGFloat) -> Font { .system(size: size, weight: .bold) }
+    static func subtitle(_ size: CGFloat) -> Font { .system(size: size, weight: .semibold) }
+    static func body(_ size: CGFloat) -> Font { .system(size: size, weight: .regular) }
+    static func mono(_ size: CGFloat) -> Font { .system(size: size, design: .monospaced) }
+}
+
+struct AppSpacing {
+    static let stack: CGFloat = 16
+    static let screenPadding: CGFloat = 16
+}
+
+// Placeholder models
+struct AssessmentResult {
+    var score: Int
+    var total: Int
+}
+
+struct TrainingModule {
+    var id: String
+    var title: String
+    var lessonPages: [String] = []
+    var scenario: String = ""
+    var quiz: [String] = []
+}
+
+// Placeholder progress store
+final class ProgressStore: ObservableObject {
+    @Published var hearts: Int = 5
+    let maxHearts: Int = 5
+    var xpToNextLevel: Int { 100 }
+
+    func refreshForNewDayIfNeeded() {}
+    func consumeHeart() { hearts = max(0, hearts - 1) }
+    @discardableResult
+    func completeModule(moduleId: String, score: Int, scenarioResult: AssessmentResult, quizResult: AssessmentResult) -> RewardSummary {
+        return RewardSummary(xpEarned: 10, coinsEarned: 1)
+    }
+}
+
+// Placeholder reward summary and card
+struct RewardSummary {
+    var xpEarned: Int
+    var coinsEarned: Int
+}
+
+struct RewardSummaryCard: View {
+    let summary: RewardSummary
+    let xpToNextLevel: Int
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Rewards")
+                .font(AppFont.subtitle(16))
+            Text("XP: \(summary.xpEarned) • Coins: \(summary.coinsEarned)")
+                .font(AppFont.body(14))
+        }
+        .padding()
+        .background(RoundedRectangle(cornerRadius: 12).fill(Color.white.opacity(0.9)))
+    }
+}
+
+// Placeholder views used in ModuleFlowView
+struct BackgroundView: View { var body: some View { Color(.systemGroupedBackground).ignoresSafeArea() } }
+
+struct HeartsView: View {
+    let hearts: Int
+    let maxHearts: Int
+    var body: some View { Text("\(hearts)/\(maxHearts) ❤︎").font(AppFont.mono(12)) }
+}
+
+struct LessonPagerView: View {
+    let pages: [String]
+    let onSkip: () -> Void
+    let onComplete: () -> Void
+    var body: some View {
+        VStack(spacing: 12) {
+            Text("Lesson (") + Text("\(pages.count)") + Text(")")
+            Button("Skip", action: onSkip)
+            Button("Continue", action: onComplete)
+        }
+        .padding()
+    }
+}
+
+struct ScenarioFlowView: View {
+    let scenario: String
+    let onWrongAnswer: () -> Void
+    let showsHearts: Bool
+    let onComplete: (AssessmentResult) -> Void
+    var body: some View {
+        VStack(spacing: 12) {
+            Text("Scenario")
+            Button("Wrong Answer", action: onWrongAnswer)
+            Button("Complete") { onComplete(AssessmentResult(score: 1, total: 1)) }
+        }
+        .padding()
+    }
+}
+
+struct QuizFlowView: View {
+    let questions: [String]
+    let onWrongAnswer: () -> Void
+    let onComplete: (AssessmentResult) -> Void
+    let showsHearts: Bool
+    let shuffleQuestions: Bool
+    let maxQuestions: Int
+    var body: some View {
+        VStack(spacing: 12) {
+            Text("Quiz (") + Text("\(min(maxQuestions, questions.count))") + Text(")")
+            Button("Wrong Answer", action: onWrongAnswer)
+            Button("Finish") { onComplete(AssessmentResult(score: 1, total: 1)) }
+        }
+        .padding()
+    }
+}
+
+struct HeartsEmptyOverlay: View {
+    let onPractice: () -> Void
+    let onExit: () -> Void
+    var body: some View {
+        VStack(spacing: 12) {
+            Text("Out of hearts")
+            Button("Practice", action: onPractice)
+            Button("Exit", action: onExit)
+        }
+        .padding()
+        .background(RoundedRectangle(cornerRadius: 12).fill(Color.white))
+    }
+}
+
+struct PracticeSessionView: View { var body: some View { Text("Practice Session") } }
+
+struct GlassCard<Content: View>: View {
+    @ViewBuilder var content: Content
+    var body: some View {
+        content
+            .padding(16)
+            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
+    }
+}
+
+struct ScoreBadge: View {
+    let score: Int
+    var body: some View {
+        Text("\(score)%")
+            .font(AppFont.subtitle(16))
+            .padding(.horizontal, 10)
+            .padding(.vertical, 6)
+            .background(Capsule().fill(Color.blue.opacity(0.15)))
+    }
+}
+
+struct FormFieldLabel: View {
+    let text: String
+    var body: some View { Text(text).font(AppFont.mono(12)).foregroundColor(AppTheme.charcoal.opacity(0.6)) }
+}
+
+struct AppTextEditor: View {
+    @Binding var text: String
+    var height: CGFloat
+    var body: some View {
+        TextEditor(text: $text)
+            .frame(minHeight: height, maxHeight: height)
+            .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray.opacity(0.3)))
+    }
+}
+
+// Placeholder button styles
+struct PrimaryButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .padding(.horizontal, 14)
+            .padding(.vertical, 10)
+            .background(RoundedRectangle(cornerRadius: 10).fill(Color.blue))
+            .foregroundColor(.white)
+            .opacity(configuration.isPressed ? 0.8 : 1)
+    }
+}
+
+struct OutlineButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .padding(.horizontal, 14)
+            .padding(.vertical, 10)
+            .background(RoundedRectangle(cornerRadius: 10).stroke(Color.blue, lineWidth: 1))
+            .foregroundColor(Color.blue)
+            .opacity(configuration.isPressed ? 0.7 : 1)
+    }
+}
+

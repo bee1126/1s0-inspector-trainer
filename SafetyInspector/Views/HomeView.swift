@@ -60,17 +60,29 @@ struct HomeView: View {
                             Text("Earn XP, restore hearts, and keep your streak alive.")
                                 .font(AppFont.body(13))
                                 .foregroundColor(AppTheme.charcoal.opacity(0.7))
-
-                            NavigationLink {
-                                PracticeSessionView()
-                            } label: {
-                                HStack {
-                                    Text("Start Practice")
-                                    Spacer()
-                                    Image(systemName: "bolt.fill")
+                            VStack(spacing: 10) {
+                                NavigationLink {
+                                    PracticeSessionView()
+                                } label: {
+                                    HStack {
+                                        Text("Start Practice")
+                                        Spacer()
+                                        Image(systemName: "bolt.fill")
+                                    }
                                 }
+                                .buttonStyle(PrimaryButtonStyle())
+
+                                NavigationLink {
+                                    MatchingGameView()
+                                } label: {
+                                    HStack {
+                                        Text("Match Sprint")
+                                        Spacer()
+                                        Image(systemName: "timer")
+                                    }
+                                }
+                                .buttonStyle(OutlineButtonStyle())
                             }
-                            .buttonStyle(PrimaryButtonStyle())
                         }
                     }
 
