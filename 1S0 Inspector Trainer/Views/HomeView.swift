@@ -111,7 +111,7 @@ struct HomeView: View {
                                 .buttonStyle(OutlineButtonStyle())
 
                                 NavigationLink {
-                                    MatchingGameView()
+                                    MatchingDeckSelectionView()
                                 } label: {
                                     HStack {
                                         Text("Match Sprint")

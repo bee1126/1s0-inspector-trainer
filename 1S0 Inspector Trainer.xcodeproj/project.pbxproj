@@ -155,12 +155,11 @@
 		EBB4F50E21FC4E5D918D0003 /* 1S0 Inspector Trainer */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 177928223580487486D8EAD5 /* Build configuration list for PBXNativeTarget "1S0 Inspector Trainer" */;
-			buildPhases = (
-				ABBE7ABD78E84A50A3C3A40B /* Sources */,
-				C855255D97F44A78AA6E81D6 /* Frameworks */,
-				0D55537160C54AD0BD6E3C7C /* Resources */,
-				2CC52A0C8C4B4B9D80B7C2EC /* Strip Xattrs */,
-			);
+				buildPhases = (
+					ABBE7ABD78E84A50A3C3A40B /* Sources */,
+					C855255D97F44A78AA6E81D6 /* Frameworks */,
+					0D55537160C54AD0BD6E3C7C /* Resources */,
+				);
 			buildRules = (
 			);
 			dependencies = (
@@ -215,23 +214,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		2CC52A0C8C4B4B9D80B7C2EC /* Strip Xattrs */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Strip Xattrs";
-			outputPaths = (
-				"$(TARGET_BUILD_DIR)/$(WRAPPER_NAME)/.xattr-stripped",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "xattr -cr \"$TARGET_BUILD_DIR/$WRAPPER_NAME\" || true\n/usr/bin/touch \"$TARGET_BUILD_DIR/$WRAPPER_NAME/.xattr-stripped\"\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		ABBE7ABD78E84A50A3C3A40B /* Sources */ = {

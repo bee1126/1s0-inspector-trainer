@@ -232,6 +232,21 @@ final class ProgressStore: ObservableObject {
         return max(0, hearts - before)
     }
 
+    func restoreAllHearts() {
+        refreshForNewDayIfNeeded()
+        hearts = maxHearts
+        save()
+    }
+
+    func debugMaxRank(modules: [TrainingModule]) {
+        for module in modules {
+            markCompleted(moduleId: module.id, score: 100, scenarioPerfect: true, quizPerfect: true)
+        }
+        xp = max(xp, levelStep * 20)
+        dailyXp = max(dailyXp, dailyGoal)
+        save()
+    }
+
     func completeModule(moduleId: String, score: Int, scenarioResult: AssessmentResult, quizResult: AssessmentResult) -> RewardSummary {
         markCompleted(
             moduleId: moduleId,

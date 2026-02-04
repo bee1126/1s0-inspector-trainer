@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct ToolsView: View {
+    @EnvironmentObject private var progress: ProgressStore
+
     var body: some View {
         ZStack {
             BackgroundView()
@@ -18,6 +20,22 @@ struct ToolsView: View {
                         NavigationLink { FeatureRequestView() } label: {
                             ToolCard(title: "Feature Requests", detail: "Submit ideas for future updates")
                         }
+                    }
+
+                    ToolSection(title: "Developer") {
+                        Button {
+                            progress.restoreAllHearts()
+                        } label: {
+                            ToolCard(title: "Restore Hearts", detail: "Refill all hearts for testing")
+                        }
+                        .buttonStyle(.plain)
+
+                        Button {
+                            progress.debugMaxRank(modules: TrainingContent.modules)
+                        } label: {
+                            ToolCard(title: "Max Rank & Level", detail: "Complete every module and boost XP")
+                        }
+                        .buttonStyle(.plain)
                     }
                 }
                 .padding(AppSpacing.screenPadding)

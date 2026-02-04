@@ -5,36 +5,34 @@ struct MatchingGameView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
-    @State private var selectedDeckId: String = "all"
+    let deckId: String
+    let deckTitle: String
+
     @State private var cards: [MatchCard] = []
     @State private var selectedCardId: UUID? = nil
     @State private var matchedPairIds: Set<UUID> = []
     @State private var mismatchCardIds: Set<UUID> = []
     @State private var isResolvingMismatch = false
     @State private var mistakeCount = 0
-    @State private var elapsed: TimeInterval = 0
+    @State private var timeRemaining: TimeInterval = 0
     @State private var startTime: Date? = nil
     @State private var timerRunning = false
     @State private var rewardSummary: RewardSummary? = nil
     @State private var isComplete = false
+    @State private var timedOut = false
 
     private let timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
+    private let timeLimit: TimeInterval = 30
 
     private var questionPool: [QuizQuestion] {
         TrainingContent.modules.flatMap { $0.quiz }
     }
 
-    private var deckOptions: [MatchDeckOption] {
-        var options: [MatchDeckOption] = [MatchDeckOption(id: "all", title: "All Modules")]
-        options.append(contentsOf: TrainingContent.modules.map { MatchDeckOption(id: $0.id, title: $0.title) })
-        return options
-    }
-
     private var selectedQuestions: [QuizQuestion] {
-        if selectedDeckId == "all" {
+        if deckId == "all" {
             return questionPool
         }
-        return TrainingContent.modules.first(where: { $0.id == selectedDeckId })?.quiz ?? questionPool
+        return TrainingContent.modules.first(where: { $0.id == deckId })?.quiz ?? questionPool
     }
 
     private var totalPairs: Int {
@@ -77,9 +75,6 @@ struct MatchingGameView: View {
             progress.refreshForNewDayIfNeeded()
             resetGame()
         }
-        .onChange(of: selectedDeckId) { _ in
-            resetGame()
-        }
         .onReceive(timer) { _ in
             updateTimer()
         }
@@ -102,28 +97,12 @@ struct MatchingGameView: View {
                 }
 
                 HStack(spacing: 10) {
-                    StatPill(title: "Time", value: formattedTime(elapsed), tint: AppTheme.xpGold)
+                    StatPill(title: "Time", value: formattedTime(timeRemaining), tint: timeRemaining <= 5 ? Color.red.opacity(0.7) : AppTheme.xpGold)
                     StatPill(title: "Pairs", value: "\(pairsMatched)/\(totalPairs)", tint: AppTheme.safetyGreen)
                     StatPill(title: "Mistakes", value: "\(mistakeCount)", tint: Color.red.opacity(0.7))
                 }
 
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Deck")
-                        .font(AppFont.mono(11))
-                        .foregroundColor(AppTheme.charcoal.opacity(0.6))
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 8) {
-                            ForEach(deckOptions) { option in
-                                DeckChip(
-                                    title: option.title,
-                                    isSelected: selectedDeckId == option.id
-                                ) {
-                                    selectedDeckId = option.id
-                                }
-                            }
-                        }
-                    }
-                }
+                TagPill(text: deckTitle)
 
                 Button("Shuffle & Restart") {
                     resetGame()
@@ -155,7 +134,7 @@ struct MatchingGameView: View {
     private var helperCopy: some View {
         Group {
             if !isComplete {
-                Text(startTime == nil ? "Tap any card to start the timer." : "Match every pair to stop the clock.")
+                Text(startTime == nil ? "Tap any card to start the 30-second timer." : "Match every pair before time runs out.")
                     .font(AppFont.body(13))
                     .foregroundColor(Color.white.opacity(0.85))
             }
@@ -169,13 +148,17 @@ struct MatchingGameView: View {
 
             GlassCard {
                 VStack(alignment: .leading, spacing: 12) {
-                    Text("Sprint Complete")
+                    Text(timedOut ? "Time's Up" : "Sprint Complete")
                         .font(AppFont.title(22))
                         .foregroundColor(AppTheme.charcoal)
 
-                    Text("Time: \(formattedTime(elapsed))")
+                    Text("Time left: \(formattedTime(timeRemaining))")
                         .font(AppFont.subtitle(16))
                         .foregroundColor(AppTheme.charcoal)
+
+                    Text("Pairs matched: \(pairsMatched)/\(totalPairs)")
+                        .font(AppFont.body(14))
+                        .foregroundColor(AppTheme.charcoal.opacity(0.75))
 
                     Text("Mistakes: \(mistakeCount)")
                         .font(AppFont.body(14))
@@ -240,18 +223,24 @@ struct MatchingGameView: View {
     }
 
     private func finishGame() {
-        timerRunning = false
         if let startTime {
-            elapsed = Date().timeIntervalSince(startTime)
+            let elapsed = Date().timeIntervalSince(startTime)
+            timeRemaining = max(0, timeLimit - elapsed)
         }
-        let score = max(0, totalPairs - mistakeCount)
+        timerRunning = false
+        let score = max(0, pairsMatched - mistakeCount)
         rewardSummary = progress.completePractice(score: score, total: totalPairs)
         isComplete = true
     }
 
     private func updateTimer() {
         guard timerRunning, let startTime else { return }
-        elapsed = Date().timeIntervalSince(startTime)
+        let elapsed = Date().timeIntervalSince(startTime)
+        timeRemaining = max(0, timeLimit - elapsed)
+        if timeRemaining <= 0 {
+            timedOut = true
+            finishGame()
+        }
     }
 
     private func resetGame() {
@@ -261,11 +250,12 @@ struct MatchingGameView: View {
         mismatchCardIds = []
         isResolvingMismatch = false
         mistakeCount = 0
-        elapsed = 0
+        timeRemaining = timeLimit
         startTime = nil
         timerRunning = false
         rewardSummary = nil
         isComplete = false
+        timedOut = false
     }
 
     private func buildCards() -> [MatchCard] {
@@ -304,17 +294,98 @@ struct MatchingGameView: View {
     }
 
     private func formattedTime(_ interval: TimeInterval) -> String {
-        let totalSeconds = Int(interval)
+        let clamped = max(0, interval)
+        let totalSeconds = Int(clamped)
         let minutes = totalSeconds / 60
         let seconds = totalSeconds % 60
-        let tenths = Int((interval - Double(totalSeconds)) * 10)
+        let tenths = Int((clamped - Double(totalSeconds)) * 10)
         return String(format: "%02d:%02d.%d", minutes, seconds, tenths)
+    }
+}
+
+struct MatchingDeckSelectionView: View {
+    private let deckOptions: [MatchDeckOption] = {
+        let allCount = TrainingContent.modules.flatMap { $0.quiz }.count
+        var options: [MatchDeckOption] = [
+            MatchDeckOption(
+                id: "all",
+                title: "All Modules",
+                detail: "Mix every topic into one sprint.",
+                questionCount: allCount
+            )
+        ]
+        options.append(contentsOf: TrainingContent.modules.map { module in
+            MatchDeckOption(
+                id: module.id,
+                title: module.title,
+                detail: module.subtitle,
+                questionCount: module.quiz.count
+            )
+        })
+        return options
+    }()
+
+    var body: some View {
+        ZStack {
+            BackgroundView()
+
+            ScrollView {
+                VStack(alignment: .leading, spacing: AppSpacing.section) {
+                    Text("Match Sprint")
+                        .font(AppFont.title(26))
+                        .foregroundColor(.white)
+
+                    Text("Choose a module to start a 30-second sprint.")
+                        .font(AppFont.body(14))
+                        .foregroundColor(Color.white.opacity(0.85))
+
+                    VStack(alignment: .leading, spacing: 12) {
+                        ForEach(deckOptions) { option in
+                            NavigationLink {
+                                MatchingGameView(deckId: option.id, deckTitle: option.title)
+                            } label: {
+                                MatchDeckCard(option: option)
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+                }
+                .padding(AppSpacing.screenPadding)
+            }
+            .scrollIndicators(.hidden)
+        }
+        .navigationTitle("Match Sprint")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
 private struct MatchDeckOption: Identifiable {
     let id: String
     let title: String
+    let detail: String
+    let questionCount: Int
+}
+
+private struct MatchDeckCard: View {
+    let option: MatchDeckOption
+
+    var body: some View {
+        GlassCard {
+            VStack(alignment: .leading, spacing: 8) {
+                HStack(alignment: .center, spacing: 10) {
+                    Text(option.title)
+                        .font(AppFont.subtitle(17))
+                        .foregroundColor(AppTheme.charcoal)
+                    Spacer()
+                    TagPill(text: "\(option.questionCount) Qs")
+                }
+
+                Text(option.detail)
+                    .font(AppFont.body(13))
+                    .foregroundColor(AppTheme.charcoal.opacity(0.7))
+            }
+        }
+    }
 }
 
 private struct MatchPair: Hashable {
@@ -411,30 +482,5 @@ private struct MatchCardView: View {
             return AppTheme.blue
         }
         return AppTheme.charcoal.opacity(0.5)
-    }
-}
-
-private struct DeckChip: View {
-    let title: String
-    let isSelected: Bool
-    let onTap: () -> Void
-
-    var body: some View {
-        Button(action: onTap) {
-            Text(title)
-                .font(AppFont.mono(11))
-                .foregroundColor(isSelected ? .white : AppTheme.charcoal)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 8)
-                .background(
-                    Capsule()
-                        .fill(isSelected ? AppTheme.blue : Color.white.opacity(0.9))
-                )
-                .overlay(
-                    Capsule()
-                        .stroke(AppTheme.blue.opacity(0.5), lineWidth: isSelected ? 0 : 1)
-                )
-        }
-        .buttonStyle(.plain)
     }
 }
