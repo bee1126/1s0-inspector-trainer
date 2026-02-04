@@ -13,6 +13,7 @@
 		361FFA23D609407A81CF69EA /* LessonPagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5F88832E9C485CAD594876 /* LessonPagerView.swift */; };
 		385B0547EA624ED4980254F0 /* SafetyInspectorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F24684BB97641B9BDE038CA /* SafetyInspectorApp.swift */; };
 		3E4AB0E655E94B92BBFC3B33 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19302FDEB72143C5A663AE4E /* BackgroundView.swift */; };
+		3F977012712F1F26857E1093 /* MatchingGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73524C141A3F5AB2EFF99FE1 /* MatchingGameView.swift */; };
 		577F87A126C14A529F911618 /* ModuleListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F4C994046BF462DB2E96042 /* ModuleListView.swift */; };
 		67F52C395D294862B5195B86 /* ModuleFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072153175F864C95A13A7416 /* ModuleFlowView.swift */; };
 		70C498755F3A439EA025734C /* ProgressStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534B8049CF904994B419DE7D /* ProgressStore.swift */; };
@@ -43,6 +44,7 @@
 		534B8049CF904994B419DE7D /* ProgressStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStore.swift; sourceTree = "<group>"; };
 		5D6583B73C5E4CA089EA252A /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
 		6F24684BB97641B9BDE038CA /* SafetyInspectorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyInspectorApp.swift; sourceTree = "<group>"; };
+		73524C141A3F5AB2EFF99FE1 /* MatchingGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingGameView.swift; sourceTree = "<group>"; };
 		7A8D35E4CCC1487EAF35202A /* ScenarioFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScenarioFlowView.swift; sourceTree = "<group>"; };
 		7F4C994046BF462DB2E96042 /* ModuleListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleListView.swift; sourceTree = "<group>"; };
 		8B61CBA9B08E4B2C90ECD50B /* SourcesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourcesView.swift; sourceTree = "<group>"; };
@@ -113,6 +115,7 @@
 				40AEBFFBDDE847C4A5C225B5 /* Components.swift */,
 				D84B5E74DAD64241A4C71C85 /* HomeView.swift */,
 				2E5F88832E9C485CAD594876 /* LessonPagerView.swift */,
+				73524C141A3F5AB2EFF99FE1 /* MatchingGameView.swift */,
 				B82A650A0B65431196F5A0F8 /* ModuleDetailView.swift */,
 				072153175F864C95A13A7416 /* ModuleFlowView.swift */,
 				7F4C994046BF462DB2E96042 /* ModuleListView.swift */,
@@ -245,6 +248,7 @@
 				0E91ED6632454A578EE1F04D /* Components.swift in Sources */,
 				BCCA7070DA45411BAD68AD85 /* HomeView.swift in Sources */,
 				361FFA23D609407A81CF69EA /* LessonPagerView.swift in Sources */,
+				3F977012712F1F26857E1093 /* MatchingGameView.swift in Sources */,
 				D9B3C1AD08F942C0BAAF87D9 /* ModuleDetailView.swift in Sources */,
 				67F52C395D294862B5195B86 /* ModuleFlowView.swift in Sources */,
 				577F87A126C14A529F911618 /* ModuleListView.swift in Sources */,
