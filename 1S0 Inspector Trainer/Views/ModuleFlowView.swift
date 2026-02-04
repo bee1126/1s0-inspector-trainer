@@ -30,18 +30,24 @@ struct ModuleFlowView: View {
 
                 switch stage {
                 case .lesson:
-                    LessonPagerView(pages: module.lessonPages, onSkip: {
-                        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
-                            stage = .scenario
+                    LessonPagerView(
+                        pages: module.lessonPages,
+                        onSkip: {
+                            withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                                stage = .scenario
+                            }
+                        },
+                        onComplete: {
+                            withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                                stage = .scenario
+                            }
+                        },
+                        initialIndex: lessonIndex,
+                        onIndexChange: { newIndex in
+                            lessonIndex = newIndex
+                            progress.updateResume(moduleId: module.id, stage: .lesson, lessonIndex: newIndex)
                         }
-                    }) {
-                        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
-                            stage = .scenario
-                        }
-                    } initialIndex: lessonIndex, onIndexChange: { newIndex in
-                        lessonIndex = newIndex
-                        progress.updateResume(moduleId: module.id, stage: .lesson, lessonIndex: newIndex)
-                    })
+                    )
                 case .scenario:
                     ScenarioFlowView(scenario: module.scenario, onWrongAnswer: {
                         progress.consumeHeart()
