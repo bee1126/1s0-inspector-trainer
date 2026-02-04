@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CAA3AFB3F017458E9211BA50 /* QuizBank.swift in Sources */ = {isa = PBXBuildFile; fileRef = A561485258DE42A4B11F142F /* QuizBank.swift */; };
-		DCBA978527A74611BF0C7D6A /* ToolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B55B06176264F239FEAABC9 /* ToolsView.swift */; };
+		05913B87B18360AF583623ED /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 9B985BD79A7D2983D60E5E5A /* PrivacyInfo.xcprivacy */; };
 		0E91ED6632454A578EE1F04D /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AEBFFBDDE847C4A5C225B5 /* Components.swift */; };
 		315750AB112441B1BEC0399C /* QuizFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BAAD5C65C74C7C981FD78C /* QuizFlowView.swift */; };
 		361FFA23D609407A81CF69EA /* LessonPagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5F88832E9C485CAD594876 /* LessonPagerView.swift */; };
@@ -19,26 +18,25 @@
 		70C498755F3A439EA025734C /* ProgressStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534B8049CF904994B419DE7D /* ProgressStore.swift */; };
 		77E68A4D6BE343DEA732A3B1 /* SourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B61CBA9B08E4B2C90ECD50B /* SourcesView.swift */; };
 		9C9CB5AC29954FB895B07BB2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF93D66C48034BC686CED02F /* Assets.xcassets */; };
-		05913B87B18360AF583623ED /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 9B985BD79A7D2983D60E5E5A /* PrivacyInfo.xcprivacy */; };
 		9CC3563F2CFB4938A4AECC07 /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6583B73C5E4CA089EA252A /* AppTheme.swift */; };
 		BCCA7070DA45411BAD68AD85 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D84B5E74DAD64241A4C71C85 /* HomeView.swift */; };
 		C3400AE4C88A49E5A170110C /* TrainingModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F087354F1FB468AB89CEEBD /* TrainingModels.swift */; };
 		C527BCED10134641B7604DCB /* ScenarioFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8D35E4CCC1487EAF35202A /* ScenarioFlowView.swift */; };
 		C67DC6A217DA4697B1D7A8AA /* TrainingContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BAAC854C3FE4083A46821F8 /* TrainingContent.swift */; };
+		CAA3AFB3F017458E9211BA50 /* QuizBank.swift in Sources */ = {isa = PBXBuildFile; fileRef = A561485258DE42A4B11F142F /* QuizBank.swift */; };
 		D271356E9D7A459D9853776E /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A9ACDCBD6747A99BC0D4B1 /* RootView.swift */; };
 		D42EA7CFC48D481BA32AF055 /* ProgressDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA413EE88AF47A68BE9CA46 /* ProgressDashboardView.swift */; };
 		D9B3C1AD08F942C0BAAF87D9 /* ModuleDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82A650A0B65431196F5A0F8 /* ModuleDetailView.swift */; };
+		DCBA978527A74611BF0C7D6A /* ToolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B55B06176264F239FEAABC9 /* ToolsView.swift */; };
 		E2C9A3B4F5D6A7B8C9D0E1F2 /* PracticeSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E2D3C4B5A69788796A5B4C /* PracticeSessionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1B55B06176264F239FEAABC9 /* ToolsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsView.swift; sourceTree = "<group>"; };
 		0468BD1193644207B5426AC2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9B985BD79A7D2983D60E5E5A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		072153175F864C95A13A7416 /* ModuleFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleFlowView.swift; sourceTree = "<group>"; };
 		0F087354F1FB468AB89CEEBD /* TrainingModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingModels.swift; sourceTree = "<group>"; };
-		A561485258DE42A4B11F142F /* QuizBank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizBank.swift; sourceTree = "<group>"; };
 		19302FDEB72143C5A663AE4E /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
+		1B55B06176264F239FEAABC9 /* ToolsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsView.swift; sourceTree = "<group>"; };
 		2E5F88832E9C485CAD594876 /* LessonPagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonPagerView.swift; sourceTree = "<group>"; };
 		32BAAD5C65C74C7C981FD78C /* QuizFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizFlowView.swift; sourceTree = "<group>"; };
 		40AEBFFBDDE847C4A5C225B5 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
@@ -49,6 +47,8 @@
 		7F4C994046BF462DB2E96042 /* ModuleListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleListView.swift; sourceTree = "<group>"; };
 		8B61CBA9B08E4B2C90ECD50B /* SourcesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourcesView.swift; sourceTree = "<group>"; };
 		8BAAC854C3FE4083A46821F8 /* TrainingContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingContent.swift; sourceTree = "<group>"; };
+		9B985BD79A7D2983D60E5E5A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		A561485258DE42A4B11F142F /* QuizBank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizBank.swift; sourceTree = "<group>"; };
 		B82A650A0B65431196F5A0F8 /* ModuleDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleDetailView.swift; sourceTree = "<group>"; };
 		C506A214268B476AB97AFCF9 /* SafetyInspector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = SafetyInspector.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBA413EE88AF47A68BE9CA46 /* ProgressDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressDashboardView.swift; sourceTree = "<group>"; };
@@ -122,8 +122,8 @@
 				F4A9ACDCBD6747A99BC0D4B1 /* RootView.swift */,
 				7A8D35E4CCC1487EAF35202A /* ScenarioFlowView.swift */,
 				8B61CBA9B08E4B2C90ECD50B /* SourcesView.swift */,
-			
-				1B55B06176264F239FEAABC9 /* ToolsView.swift */,);
+				1B55B06176264F239FEAABC9 /* ToolsView.swift */,
+			);
 			path = Views;
 			sourceTree = "<group>";
 		};
@@ -253,8 +253,8 @@
 				D271356E9D7A459D9853776E /* RootView.swift in Sources */,
 				C527BCED10134641B7604DCB /* ScenarioFlowView.swift in Sources */,
 				77E68A4D6BE343DEA732A3B1 /* SourcesView.swift in Sources */,
-			
-				DCBA978527A74611BF0C7D6A /* ToolsView.swift in Sources */,);
+				DCBA978527A74611BF0C7D6A /* ToolsView.swift in Sources */,
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
@@ -282,6 +282,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MM76BGJBJR;
 				INFOPLIST_FILE = SafetyInspector/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "1S0 Safety Inspector Toolkit";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -304,6 +306,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MM76BGJBJR;
 				INFOPLIST_FILE = SafetyInspector/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "1S0 Safety Inspector Toolkit";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

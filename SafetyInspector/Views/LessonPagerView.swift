@@ -8,7 +8,7 @@ struct LessonPagerView: View {
 
     var body: some View {
         GlassCard {
-            VStack(alignment: .leading, spacing: 16) {
+            VStack(alignment: .leading, spacing: AppSpacing.stack) {
                 HStack {
                     Text("Lesson")
                         .font(AppFont.mono(12))
@@ -61,6 +61,6 @@ struct LessonPagerView: View {
                 }
             }
         }
-        .padding(.horizontal, 20)
+        .padding(.horizontal, AppSpacing.screenPadding)
     }
 }

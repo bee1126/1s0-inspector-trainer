@@ -18,6 +18,15 @@ enum AppTheme {
     )
 }
 
+enum AppSpacing {
+    static let screenPadding: CGFloat = 20
+    static let section: CGFloat = 18
+    static let stack: CGFloat = 16
+    static let item: CGFloat = 12
+    static let compact: CGFloat = 8
+    static let cardPadding: CGFloat = 18
+}
+
 enum AppFont {
     static func title(_ size: CGFloat) -> Font {
         .custom("AvenirNext-Heavy", size: size)

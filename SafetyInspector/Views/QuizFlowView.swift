@@ -21,7 +21,7 @@ struct QuizFlowView: View {
         let question = filtered[index]
 
         GlassCard {
-            VStack(alignment: .leading, spacing: 16) {
+            VStack(alignment: .leading, spacing: AppSpacing.stack) {
                 HStack {
                     Text("Quick Check")
                         .font(AppFont.mono(12))
@@ -41,6 +41,7 @@ struct QuizFlowView: View {
                     }
                 }
                 .pickerStyle(.segmented)
+                .tint(AppTheme.blue)
                 .onChange(of: selectedDifficulty) { _ in
                     resetProgress()
                 }
@@ -97,7 +98,7 @@ struct QuizFlowView: View {
                 }
             }
         }
-        .padding(.horizontal, 20)
+        .padding(.horizontal, AppSpacing.screenPadding)
         .onAppear {
             prepareQuestions()
         }

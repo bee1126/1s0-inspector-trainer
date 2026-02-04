@@ -9,7 +9,7 @@ struct ModuleListView: View {
             BackgroundView()
 
             ScrollView {
-                VStack(alignment: .leading, spacing: 16) {
+                VStack(alignment: .leading, spacing: AppSpacing.stack) {
                     Text("Training Modules")
                         .font(AppFont.title(26))
                         .foregroundColor(.white)
@@ -23,8 +23,9 @@ struct ModuleListView: View {
                         .buttonStyle(.plain)
                     }
                 }
-                .padding(20)
+                .padding(AppSpacing.screenPadding)
             }
+            .scrollIndicators(.hidden)
         }
         .navigationTitle("Modules")
         .navigationBarTitleDisplayMode(.inline)

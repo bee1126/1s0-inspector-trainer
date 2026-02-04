@@ -9,7 +9,7 @@ struct HomeView: View {
             BackgroundView()
 
             ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
+                VStack(alignment: .leading, spacing: AppSpacing.section) {
                     HStack(alignment: .top, spacing: 16) {
                         VStack(alignment: .leading, spacing: 8) {
                             Text("Safety Inspector Trainer")
@@ -96,10 +96,11 @@ struct HomeView: View {
                     Text("Not an official Air Force product. Training aids only.")
                         .font(AppFont.body(12))
                         .foregroundColor(Color.white.opacity(0.75))
-                        .padding(.top, 10)
+                        .padding(.top, AppSpacing.item)
                 }
-                .padding(20)
+                .padding(AppSpacing.screenPadding)
             }
+            .scrollIndicators(.hidden)
         }
         .navigationTitle("")
         .navigationBarHidden(true)

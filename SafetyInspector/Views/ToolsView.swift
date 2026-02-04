@@ -6,7 +6,7 @@ struct ToolsView: View {
             BackgroundView()
 
             ScrollView {
-                VStack(alignment: .leading, spacing: 16) {
+                VStack(alignment: .leading, spacing: AppSpacing.stack) {
                     Text("Feedback")
                         .font(AppFont.title(26))
                         .foregroundColor(.white)
@@ -20,8 +20,9 @@ struct ToolsView: View {
                         }
                     }
                 }
-                .padding(20)
+                .padding(AppSpacing.screenPadding)
             }
+            .scrollIndicators(.hidden)
         }
         .navigationTitle("Feedback")
         .navigationBarTitleDisplayMode(.inline)
@@ -77,48 +78,43 @@ struct BugReportView: View {
         ZStack {
             BackgroundView()
 
-            GlassCard {
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Bug Fix Report")
-                        .font(AppFont.title(22))
-                        .foregroundColor(AppTheme.charcoal)
+            ScrollView {
+                GlassCard {
+                    VStack(alignment: .leading, spacing: AppSpacing.item) {
+                        Text("Bug Fix Report")
+                            .font(AppFont.title(22))
+                            .foregroundColor(AppTheme.charcoal)
 
-                    TextField("Short title", text: $title)
-                        .textFieldStyle(.roundedBorder)
+                        FormFieldLabel(text: "Short title")
+                        AppTextField(placeholder: "Brief summary", text: $title)
 
-                    Text("Steps to reproduce")
-                        .font(AppFont.subtitle(14))
-                    TextEditor(text: $steps)
-                        .frame(height: 90)
-                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray.opacity(0.2)))
+                        FormFieldLabel(text: "Steps to reproduce")
+                        AppTextEditor(text: $steps, height: 100)
 
-                    Text("Expected result")
-                        .font(AppFont.subtitle(14))
-                    TextEditor(text: $expected)
-                        .frame(height: 70)
-                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray.opacity(0.2)))
+                        FormFieldLabel(text: "Expected result")
+                        AppTextEditor(text: $expected, height: 80)
 
-                    Text("Actual result")
-                        .font(AppFont.subtitle(14))
-                    TextEditor(text: $actual)
-                        .frame(height: 70)
-                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray.opacity(0.2)))
+                        FormFieldLabel(text: "Actual result")
+                        AppTextEditor(text: $actual, height: 80)
 
-                    Button("Share Bug Report") {
-                        let text = """
+                        Button("Share Bug Report") {
+                            let text = """
 Bug Report
 Title: \(title)
 Steps: \(steps)
 Expected: \(expected)
 Actual: \(actual)
 """
-                        shareItems = [text]
-                        showShare = true
+                            shareItems = [text]
+                            showShare = true
+                        }
+                        .buttonStyle(PrimaryButtonStyle())
                     }
-                    .buttonStyle(PrimaryButtonStyle())
                 }
+                .padding(AppSpacing.screenPadding)
             }
-            .padding(20)
+            .scrollIndicators(.hidden)
+            .scrollDismissesKeyboard(.interactively)
         }
         .sheet(isPresented: $showShare) {
             ShareSheet(activityItems: shareItems)
@@ -139,41 +135,39 @@ struct FeatureRequestView: View {
         ZStack {
             BackgroundView()
 
-            GlassCard {
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Feature Request")
-                        .font(AppFont.title(22))
-                        .foregroundColor(AppTheme.charcoal)
+            ScrollView {
+                GlassCard {
+                    VStack(alignment: .leading, spacing: AppSpacing.item) {
+                        Text("Feature Request")
+                            .font(AppFont.title(22))
+                            .foregroundColor(AppTheme.charcoal)
 
-                    TextField("Feature title", text: $title)
-                        .textFieldStyle(.roundedBorder)
+                        FormFieldLabel(text: "Feature title")
+                        AppTextField(placeholder: "Short descriptive title", text: $title)
 
-                    Text("Why this helps")
-                        .font(AppFont.subtitle(14))
-                    TextEditor(text: $value)
-                        .frame(height: 80)
-                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray.opacity(0.2)))
+                        FormFieldLabel(text: "Why this helps")
+                        AppTextEditor(text: $value, height: 90)
 
-                    Text("Details")
-                        .font(AppFont.subtitle(14))
-                    TextEditor(text: $details)
-                        .frame(height: 80)
-                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray.opacity(0.2)))
+                        FormFieldLabel(text: "Details")
+                        AppTextEditor(text: $details, height: 90)
 
-                    Button("Share Feature Request") {
-                        let text = """
+                        Button("Share Feature Request") {
+                            let text = """
 Feature Request
 Title: \(title)
 Why it helps: \(value)
 Details: \(details)
 """
-                        shareItems = [text]
-                        showShare = true
+                            shareItems = [text]
+                            showShare = true
+                        }
+                        .buttonStyle(PrimaryButtonStyle())
                     }
-                    .buttonStyle(PrimaryButtonStyle())
                 }
+                .padding(AppSpacing.screenPadding)
             }
-            .padding(20)
+            .scrollIndicators(.hidden)
+            .scrollDismissesKeyboard(.interactively)
         }
         .sheet(isPresented: $showShare) {
             ShareSheet(activityItems: shareItems)

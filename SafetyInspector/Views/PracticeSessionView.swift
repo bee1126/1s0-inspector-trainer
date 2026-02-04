@@ -41,7 +41,7 @@ struct PracticeSessionView: View {
                         .buttonStyle(OutlineButtonStyle())
                     }
                 }
-                .padding(20)
+                .padding(AppSpacing.screenPadding)
             } else {
                 QuizFlowView(
                     questions: questionPool,

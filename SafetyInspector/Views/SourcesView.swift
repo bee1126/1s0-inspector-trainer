@@ -8,7 +8,7 @@ struct SourcesView: View {
             BackgroundView()
 
             ScrollView {
-                VStack(alignment: .leading, spacing: 18) {
+                VStack(alignment: .leading, spacing: AppSpacing.section) {
                     Text("Sources")
                         .font(AppFont.title(26))
                         .foregroundColor(.white)
@@ -19,7 +19,7 @@ struct SourcesView: View {
                                 .font(AppFont.subtitle(18))
                                 .foregroundColor(AppTheme.charcoal)
 
-                            ForEach(references, id: \.id) { source in
+                            ForEach(Array(references.enumerated()), id: \.element.id) { index, source in
                                 VStack(alignment: .leading, spacing: 6) {
                                     Text(source.title)
                                         .font(AppFont.subtitle(15))
@@ -31,7 +31,9 @@ struct SourcesView: View {
                                         .font(AppFont.body(12))
                                         .foregroundColor(AppTheme.charcoal.opacity(0.7))
                                 }
-                                Divider().opacity(0.3)
+                                if index < references.count - 1 {
+                                    Divider().opacity(0.3)
+                                }
                             }
                         }
                     }
@@ -58,8 +60,9 @@ struct SourcesView: View {
                         }
                     }
                 }
-                .padding(20)
+                .padding(AppSpacing.screenPadding)
             }
+            .scrollIndicators(.hidden)
         }
         .navigationTitle("Sources")
         .navigationBarTitleDisplayMode(.inline)

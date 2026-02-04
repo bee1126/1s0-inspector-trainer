@@ -15,7 +15,7 @@ struct ProgressDashboardView: View {
             BackgroundView()
 
             ScrollView {
-                VStack(alignment: .leading, spacing: 18) {
+                VStack(alignment: .leading, spacing: AppSpacing.section) {
                     Text("Progress")
                         .font(AppFont.title(26))
                         .foregroundColor(.white)
@@ -87,7 +87,7 @@ struct ProgressDashboardView: View {
                                 .font(AppFont.subtitle(18))
                                 .foregroundColor(AppTheme.charcoal)
 
-                            ForEach(modules, id: \.id) { module in
+                            ForEach(Array(modules.enumerated()), id: \.element.id) { index, module in
                                 HStack {
                                     VStack(alignment: .leading, spacing: 4) {
                                         Text(module.title)
@@ -107,7 +107,9 @@ struct ProgressDashboardView: View {
                                         ScoreBadge(score: progress.bestScore(for: module.id))
                                     }
                                 }
-                                Divider().opacity(0.3)
+                                if index < modules.count - 1 {
+                                    Divider().opacity(0.3)
+                                }
                             }
                         }
                     }
@@ -127,8 +129,9 @@ struct ProgressDashboardView: View {
                     }
                     .buttonStyle(OutlineButtonStyle())
                 }
-                .padding(20)
+                .padding(AppSpacing.screenPadding)
             }
+            .scrollIndicators(.hidden)
         }
         .navigationTitle("Progress")
         .navigationBarTitleDisplayMode(.inline)

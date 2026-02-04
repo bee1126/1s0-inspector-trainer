@@ -17,13 +17,13 @@ struct ModuleFlowView: View {
         ZStack {
             BackgroundView()
 
-            VStack(spacing: 16) {
+            VStack(spacing: AppSpacing.stack) {
                 HStack(spacing: 12) {
                     StageProgressView(stage: stage)
                     Spacer()
                     HeartsView(hearts: progress.hearts, maxHearts: progress.maxHearts)
                 }
-                .padding(.horizontal, 20)
+                .padding(.horizontal, AppSpacing.screenPadding)
                 .padding(.top, 8)
 
                 switch stage {
@@ -75,7 +75,7 @@ struct ModuleFlowView: View {
                 }
                 Spacer()
             }
-            .padding(.bottom, 20)
+            .padding(.bottom, AppSpacing.screenPadding)
             .opacity(appeared ? 1 : 0)
             .offset(y: appeared ? 0 : 12)
             .onAppear {
@@ -206,17 +206,10 @@ struct CompletionView: View {
                     .foregroundColor(AppTheme.charcoal.opacity(0.6))
 
                 if showRacInput {
-                    Text("RAC Justification")
-                        .font(AppFont.subtitle(14))
-                        .foregroundColor(AppTheme.charcoal)
-                    TextEditor(text: $racJustification)
-                        .frame(height: 90)
-                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray.opacity(0.2)))
-                        .font(AppFont.body(12))
+                    FormFieldLabel(text: "RAC Justification")
+                    AppTextEditor(text: $racJustification, height: 100)
                 } else if !racJustification.isEmpty {
-                    Text("RAC Justification")
-                        .font(AppFont.subtitle(14))
-                        .foregroundColor(AppTheme.charcoal)
+                    FormFieldLabel(text: "RAC Justification")
                     Text(racJustification)
                         .font(AppFont.body(12))
                         .foregroundColor(AppTheme.charcoal.opacity(0.7))

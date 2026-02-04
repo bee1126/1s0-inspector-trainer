@@ -2,14 +2,17 @@ import SwiftUI
 
 struct GlassCard<Content: View>: View {
     let content: Content
+    var fullWidth: Bool = true
 
-    init(@ViewBuilder content: () -> Content) {
+    init(fullWidth: Bool = true, @ViewBuilder content: () -> Content) {
         self.content = content()
+        self.fullWidth = fullWidth
     }
 
     var body: some View {
         content
-            .padding(18)
+            .padding(AppSpacing.cardPadding)
+            .frame(maxWidth: fullWidth ? .infinity : nil, alignment: .leading)
             .background(
                 RoundedRectangle(cornerRadius: 20, style: .continuous)
                     .fill(Color.white.opacity(0.88))
@@ -243,6 +246,59 @@ struct RewardChip: View {
     }
 }
 
+struct FormFieldLabel: View {
+    let text: String
+
+    var body: some View {
+        Text(text)
+            .font(AppFont.subtitle(14))
+            .foregroundColor(AppTheme.charcoal)
+    }
+}
+
+struct AppTextField: View {
+    let placeholder: String
+    @Binding var text: String
+
+    var body: some View {
+        TextField(placeholder, text: $text)
+            .font(AppFont.body(13))
+            .foregroundColor(AppTheme.charcoal)
+            .padding(.vertical, 10)
+            .padding(.horizontal, 12)
+            .background(
+                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    .fill(Color.white.opacity(0.95))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    .stroke(Color.black.opacity(0.08), lineWidth: 1)
+            )
+    }
+}
+
+struct AppTextEditor: View {
+    @Binding var text: String
+    var height: CGFloat = 80
+
+    var body: some View {
+        TextEditor(text: $text)
+            .font(AppFont.body(13))
+            .foregroundColor(AppTheme.charcoal)
+            .scrollContentBackground(.hidden)
+            .frame(height: height)
+            .padding(8)
+            .background(
+                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    .fill(Color.white.opacity(0.95))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    .stroke(Color.black.opacity(0.08), lineWidth: 1)
+            )
+    }
+}
+
 struct HeartsEmptyOverlay: View {
     let onPractice: () -> Void
     let onExit: () -> Void
@@ -252,7 +308,7 @@ struct HeartsEmptyOverlay: View {
             Color.black.opacity(0.55)
                 .ignoresSafeArea()
 
-            GlassCard {
+            GlassCard(fullWidth: false) {
                 VStack(alignment: .leading, spacing: 12) {
                     Text("Out of Hearts")
                         .font(AppFont.title(20))

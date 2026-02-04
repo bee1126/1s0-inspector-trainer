@@ -9,7 +9,7 @@ struct ModuleDetailView: View {
             BackgroundView()
 
             ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
+                VStack(alignment: .leading, spacing: AppSpacing.section) {
                     GlassCard {
                         VStack(alignment: .leading, spacing: 10) {
                             Text(module.title)
@@ -82,8 +82,9 @@ struct ModuleDetailView: View {
                         }
                     }
                 }
-                .padding(20)
+                .padding(AppSpacing.screenPadding)
             }
+            .scrollIndicators(.hidden)
         }
         .navigationTitle(module.title)
         .navigationBarTitleDisplayMode(.inline)

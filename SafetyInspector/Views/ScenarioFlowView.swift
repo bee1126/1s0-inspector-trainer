@@ -36,7 +36,7 @@ struct ScenarioFlowView: View {
         let options = shuffledOptionsByStepId[step.id] ?? step.options
 
         GlassCard {
-            VStack(alignment: .leading, spacing: 16) {
+            VStack(alignment: .leading, spacing: AppSpacing.stack) {
                 Text("Scenario")
                     .font(AppFont.mono(12))
                     .foregroundColor(AppTheme.charcoal.opacity(0.6))
@@ -64,6 +64,7 @@ struct ScenarioFlowView: View {
                     }
                     Toggle("Time Pressure", isOn: $timerActive)
                         .labelsHidden()
+                        .tint(AppTheme.blue)
                 }
 
                 Text(step.prompt)
@@ -108,7 +109,7 @@ struct ScenarioFlowView: View {
                 }
             }
         }
-        .padding(.horizontal, 20)
+        .padding(.horizontal, AppSpacing.screenPadding)
         .onChange(of: currentStepId) { newValue in
             ensureOptions(for: newValue)
         }
@@ -201,7 +202,7 @@ struct OptionRow: View {
             Spacer()
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(12)
+        .padding(AppSpacing.item)
         .background(
             RoundedRectangle(cornerRadius: 14, style: .continuous)
                 .fill(isSelected ? Color.white : Color.white.opacity(0.85))
@@ -247,9 +248,12 @@ struct FeedbackView: View {
             Text(text)
                 .font(AppFont.body(14))
                 .foregroundColor(AppTheme.charcoal)
+                .multilineTextAlignment(.leading)
+                .lineLimit(nil)
+                .fixedSize(horizontal: false, vertical: true)
             Spacer()
         }
-        .padding(12)
+        .padding(AppSpacing.item)
         .background(
             RoundedRectangle(cornerRadius: 14, style: .continuous)
                 .fill(isCorrect ? AppTheme.mint.opacity(0.6) : Color.red.opacity(0.1))
