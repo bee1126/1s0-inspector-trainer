@@ -86,7 +86,7 @@ struct RacSortView: View {
                             }
                         }
                     }
-                    .onDrop(of: [UTType.text]) { providers in
+                    .onDrop(of: [UTType.text], isTargeted: .constant(false)) { providers in
                         handleDrop(providers: providers, to: nil)
                     }
                 }
@@ -199,9 +199,9 @@ struct RacSortView: View {
     private func handleDrop(providers: [NSItemProvider], to category: RacCategory?) -> Bool {
         guard let provider = providers.first else { return false }
         provider.loadObject(ofClass: NSString.self) { object, _ in
-            guard let idString = object as String? else { return }
+            guard let idString = object as? NSString else { return }
             DispatchQueue.main.async {
-                moveHazard(withId: idString, to: category)
+                moveHazard(withId: idString as String, to: category)
             }
         }
         return true
@@ -1153,3 +1153,4 @@ struct OnboardingPathView: View {
         }
     }
 }
+
