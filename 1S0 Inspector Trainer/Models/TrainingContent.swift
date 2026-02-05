@@ -1787,6 +1787,15 @@ enum TrainingContent {
 
     static let allQuizQuestions: [QuizQuestion] = modules.flatMap { $0.quiz }
 
+    static func modules(for role: TrainingRole?) -> [TrainingModule] {
+        guard let role else { return modules }
+        return modules.map { $0.tailored(for: role) }
+    }
+
+    static func allQuizQuestions(for role: TrainingRole?) -> [QuizQuestion] {
+        modules(for: role).flatMap { $0.quiz }
+    }
+
     static let references: [ReferenceSource] = [
         ReferenceSource(
             id: "osha-1910-95",

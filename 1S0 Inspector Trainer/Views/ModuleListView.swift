@@ -2,7 +2,9 @@ import SwiftUI
 
 struct ModuleListView: View {
     @EnvironmentObject private var progress: ProgressStore
-    private let modules = TrainingContent.modules
+    private var modules: [TrainingModule] {
+        TrainingContent.modules(for: progress.selectedRole)
+    }
 
     var body: some View {
         ZStack {

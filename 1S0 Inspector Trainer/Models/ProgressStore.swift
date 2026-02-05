@@ -19,6 +19,7 @@ final class ProgressStore: ObservableObject {
     @Published private(set) var lastDailyFiveScore: Int = 0
     @Published private(set) var resumeState: ModuleResumeState? = nil
     @Published private(set) var hearts: Int = 5
+    @Published private(set) var selectedRole: TrainingRole? = nil
     let maxHearts: Int = 5
 
     private let completedKey = "completedModules"
@@ -38,6 +39,7 @@ final class ProgressStore: ObservableObject {
     private let lastDailyFiveScoreKey = "lastDailyFiveScore"
     private let resumeStateKey = "resumeState"
     private let heartsKey = "hearts"
+    private let selectedRoleKey = "selectedRole"
 
     init() {
         load()
@@ -155,6 +157,10 @@ final class ProgressStore: ObservableObject {
         } else {
             hearts = defaults.integer(forKey: heartsKey)
         }
+        if let rawRole = defaults.string(forKey: selectedRoleKey),
+           let role = TrainingRole(rawValue: rawRole) {
+            selectedRole = role
+        }
     }
 
     private func save() {
@@ -191,6 +197,12 @@ final class ProgressStore: ObservableObject {
             defaults.removeObject(forKey: resumeStateKey)
         }
         defaults.set(hearts, forKey: heartsKey)
+        defaults.set(selectedRole?.rawValue, forKey: selectedRoleKey)
+    }
+
+    func setRole(_ role: TrainingRole) {
+        selectedRole = role
+        save()
     }
 
     func refreshForNewDayIfNeeded() {
@@ -247,7 +259,7 @@ final class ProgressStore: ObservableObject {
         save()
     }
 
-    func completeModule(moduleId: String, score: Int, scenarioResult: AssessmentResult, quizResult: AssessmentResult) -> RewardSummary {
+    func completeModule(moduleId: String, score: Int, scenarioResult: AssessmentResult, quizResult: AssessmentResult, quizMultiplier: Double = 1.0) -> RewardSummary {
         markCompleted(
             moduleId: moduleId,
             score: score,
@@ -257,19 +269,19 @@ final class ProgressStore: ObservableObject {
 
         let lessonXp = 12
         let scenarioXp = scenarioResult.score * 8
-        let quizXp = quizResult.score * 6
+        let quizXp = Int(round(Double(quizResult.score * 6) * quizMultiplier))
         let passBonus = score >= 80 ? 20 : 0
         let perfectBonus = score == 100 ? 10 : 0
         let totalXp = lessonXp + scenarioXp + quizXp + passBonus + perfectBonus
-        return earnXp(totalXp, heartsRestored: 0)
+        return earnXp(totalXp, heartsRestored: 0, streakMultiplier: quizMultiplier)
     }
 
-    func completePractice(score: Int, total: Int) -> RewardSummary {
+    func completePractice(score: Int, total: Int, streakMultiplier: Double = 1.0) -> RewardSummary {
         refreshForNewDayIfNeeded()
         let accuracy = total > 0 ? Double(score) / Double(total) : 0
         let baseXp = 10
         let bonusXp = Int(round(accuracy * 25))
-        let earned = baseXp + bonusXp
+        let earned = Int(round(Double(baseXp + bonusXp) * streakMultiplier))
         var restored = 0
 
         if accuracy >= 0.9 {
@@ -278,13 +290,13 @@ final class ProgressStore: ObservableObject {
             restored = restoreHearts(1)
         }
 
-        return earnXp(earned, heartsRestored: restored)
+        return earnXp(earned, heartsRestored: restored, streakMultiplier: streakMultiplier)
     }
 
-    private func earnXp(_ amount: Int, heartsRestored: Int) -> RewardSummary {
+    private func earnXp(_ amount: Int, heartsRestored: Int, streakMultiplier: Double = 1.0) -> RewardSummary {
         refreshForNewDayIfNeeded()
         guard amount > 0 else {
-            return RewardSummary(xpGained: 0, leveledUp: false, streakIncreased: false, heartsRestored: heartsRestored)
+            return RewardSummary(xpGained: 0, leveledUp: false, streakIncreased: false, heartsRestored: heartsRestored, streakMultiplier: streakMultiplier)
         }
 
         let previousLevel = level
@@ -315,7 +327,7 @@ final class ProgressStore: ObservableObject {
 
         let leveledUp = level > previousLevel
         save()
-        return RewardSummary(xpGained: amount, leveledUp: leveledUp, streakIncreased: streakIncreased, heartsRestored: heartsRestored)
+        return RewardSummary(xpGained: amount, leveledUp: leveledUp, streakIncreased: streakIncreased, heartsRestored: heartsRestored, streakMultiplier: streakMultiplier)
     }
 
     private let levelStep: Int = 120
@@ -370,4 +382,5 @@ struct RewardSummary {
     let leveledUp: Bool
     let streakIncreased: Bool
     let heartsRestored: Int
+    let streakMultiplier: Double
 }

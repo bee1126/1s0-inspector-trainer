@@ -9,6 +9,7 @@ struct ModuleFlowView: View {
     @State private var stage: ModuleStage = .lesson
     @State private var scenarioResult = AssessmentResult(score: 0, total: 0)
     @State private var quizResult = AssessmentResult(score: 0, total: 0)
+    @State private var quizStreakSummary = QuizStreakSummary(maxStreak: 0, multiplier: 1.0)
     @State private var appeared = false
     @State private var lessonIndex: Int = 0
     @State private var didApplyResume = false
@@ -60,8 +61,9 @@ struct ModuleFlowView: View {
                 case .quiz:
                     QuizFlowView(questions: module.quiz, onWrongAnswer: {
                         progress.consumeHeart()
-                    }, onComplete: { result in
+                    }, onComplete: { result, streak in
                         quizResult = result
+                        quizStreakSummary = streak
                         withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
                             stage = .complete
                         }
@@ -81,7 +83,8 @@ struct ModuleFlowView: View {
                             moduleId: module.id,
                             score: finalScore,
                             scenarioResult: scenarioResult,
-                            quizResult: quizResult
+                            quizResult: quizResult,
+                            quizMultiplier: quizStreakSummary.multiplier
                         )
                     } onRetry: {
                         scenarioResult = AssessmentResult(score: 0, total: 0)
@@ -295,7 +298,8 @@ struct CompletionView: View {
                     .buttonStyle(OutlineButtonStyle())
 
                     Button("Share Challenge") {
-                        let text = "I completed \(moduleTitle) with a score of \(score)% in the 1S0 Inspector Trainer."
+                        let appName = progress.selectedRole?.appTitle ?? "Inspector Trainer"
+                        let text = "I completed \(moduleTitle) with a score of \(score)% in the \(appName)."
                         shareItems = [text]
                         showShareSheet = true
                     }

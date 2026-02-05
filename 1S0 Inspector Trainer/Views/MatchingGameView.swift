@@ -8,37 +8,34 @@ struct MatchingGameView: View {
     let deckId: String
     let deckTitle: String
 
-    @State private var cards: [MatchCard] = []
-    @State private var selectedCardId: UUID? = nil
+    @State private var termCards: [MatchCard] = []
+    @State private var definitionCards: [MatchCard] = []
+    @State private var selectedTermId: UUID? = nil
+    @State private var selectedDefinitionId: UUID? = nil
     @State private var matchedPairIds: Set<UUID> = []
     @State private var mismatchCardIds: Set<UUID> = []
     @State private var isResolvingMismatch = false
     @State private var mistakeCount = 0
-    @State private var timeRemaining: TimeInterval = 0
-    @State private var startTime: Date? = nil
-    @State private var timerRunning = false
     @State private var rewardSummary: RewardSummary? = nil
     @State private var isComplete = false
-    @State private var timedOut = false
     @State private var mistakes: [MatchMistake] = []
     @State private var pairsSnapshot: [MatchPairSummary] = []
-
-    private let timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
-    private let timeLimit: TimeInterval = 30
+    @State private var cardFrames: [UUID: CGRect] = [:]
+    @State private var dragState: DragMatchState? = nil
 
     private var questionPool: [QuizQuestion] {
-        TrainingContent.allQuizQuestions
+        TrainingContent.allQuizQuestions(for: progress.selectedRole)
     }
 
     private var selectedQuestions: [QuizQuestion] {
         if deckId == "all" {
             return questionPool
         }
-        return TrainingContent.modules.first(where: { $0.id == deckId })?.quiz ?? questionPool
+        return TrainingContent.modules(for: progress.selectedRole).first(where: { $0.id == deckId })?.quiz ?? questionPool
     }
 
     private var totalPairs: Int {
-        Set(cards.map { $0.pairId }).count
+        pairsSnapshot.count
     }
 
     private var pairsMatched: Int {
@@ -49,12 +46,8 @@ struct MatchingGameView: View {
         horizontalSizeClass == .regular ? 8 : 6
     }
 
-    private var columnCount: Int {
-        horizontalSizeClass == .regular ? 3 : 2
-    }
-
-    private var columns: [GridItem] {
-        Array(repeating: GridItem(.flexible(), spacing: 12), count: columnCount)
+    private var columnSpacing: CGFloat {
+        horizontalSizeClass == .regular ? 20 : 14
     }
 
     var body: some View {
@@ -71,9 +64,6 @@ struct MatchingGameView: View {
         .onAppear {
             progress.refreshForNewDayIfNeeded()
             resetGame()
-        }
-        .onReceive(timer) { _ in
-            updateTimer()
         }
     }
 
@@ -97,15 +87,23 @@ struct MatchingGameView: View {
                 }
 
                 Spacer()
+                Text("\(pairsMatched)/\(totalPairs) matched")
+                    .font(AppFont.mono(12))
+                    .foregroundColor(Color.white.opacity(0.8))
             }
-            .overlay(
-                Text(formattedTime(timeRemaining))
-                    .font(AppFont.mono(22))
-                    .foregroundColor(timeRemaining <= 5 ? Color.red.opacity(0.9) : Color.white)
-            )
+
+            Text(deckTitle)
+                .font(AppFont.subtitle(18))
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            Text("Match each prompt to the correct answer. Tap or drag to connect.")
+                .font(AppFont.body(13))
+                .foregroundColor(Color.white.opacity(0.85))
+                .frame(maxWidth: .infinity, alignment: .leading)
 
             ScrollView {
-                matchGrid
+                matchColumns
                     .padding(.top, 4)
             }
             .scrollIndicators(.hidden)
@@ -113,19 +111,94 @@ struct MatchingGameView: View {
         .padding(AppSpacing.screenPadding)
     }
 
-    private var matchGrid: some View {
-        LazyVGrid(columns: columns, spacing: 12) {
-            ForEach(cards) { card in
-                MatchCardView(
-                    card: card,
-                    isSelected: selectedCardId == card.id,
-                    isMatched: matchedPairIds.contains(card.pairId),
-                    isMismatched: mismatchCardIds.contains(card.id)
-                )
-                .onTapGesture {
-                    handleTap(card)
+    private var matchColumns: some View {
+        ZStack {
+            matchLines
+
+            HStack(alignment: .top, spacing: columnSpacing) {
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("Prompts")
+                        .font(AppFont.mono(12))
+                        .foregroundColor(Color.white.opacity(0.7))
+                    ForEach(termCards) { card in
+                        MatchCardView(
+                            card: card,
+                            isSelected: selectedTermId == card.id,
+                            isMatched: matchedPairIds.contains(card.pairId),
+                            isMismatched: mismatchCardIds.contains(card.id)
+                        )
+                        .onTapGesture {
+                            handleTap(card)
+                        }
+                        .gesture(
+                            DragGesture(minimumDistance: 8, coordinateSpace: .named("matchGrid"))
+                                .onChanged { value in
+                                    handleDragChanged(card: card, location: value.location)
+                                }
+                                .onEnded { value in
+                                    handleDragEnded(card: card, location: value.location)
+                                }
+                        )
+                        .animation(.spring(response: 0.25, dampingFraction: 0.8), value: matchedPairIds)
+                    }
                 }
-                .animation(.spring(response: 0.25, dampingFraction: 0.8), value: matchedPairIds)
+
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("Answers")
+                        .font(AppFont.mono(12))
+                        .foregroundColor(Color.white.opacity(0.7))
+                    ForEach(definitionCards) { card in
+                        MatchCardView(
+                            card: card,
+                            isSelected: selectedDefinitionId == card.id,
+                            isMatched: matchedPairIds.contains(card.pairId),
+                            isMismatched: mismatchCardIds.contains(card.id)
+                        )
+                        .onTapGesture {
+                            handleTap(card)
+                        }
+                        .animation(.spring(response: 0.25, dampingFraction: 0.8), value: matchedPairIds)
+                    }
+                }
+            }
+        }
+        .coordinateSpace(name: "matchGrid")
+        .onPreferenceChange(CardFramePreferenceKey.self) { value in
+            cardFrames = value
+        }
+    }
+
+    private var matchLines: some View {
+        Canvas { context, _ in
+            for pairId in matchedPairIds {
+                guard let termFrame = frameForTerm(pairId: pairId),
+                      let definitionFrame = frameForDefinition(pairId: pairId) else {
+                    continue
+                }
+                let start = CGPoint(x: termFrame.maxX, y: termFrame.midY)
+                let end = CGPoint(x: definitionFrame.minX, y: definitionFrame.midY)
+                var path = Path()
+                path.move(to: start)
+                path.addCurve(
+                    to: end,
+                    control1: CGPoint(x: start.x + 40, y: start.y),
+                    control2: CGPoint(x: end.x - 40, y: end.y)
+                )
+                context.stroke(path, with: .color(AppTheme.safetyGreen.opacity(0.8)), lineWidth: 3)
+            }
+
+            if let dragState,
+               let termFrame = cardFrames[dragState.termId] {
+                let start = CGPoint(x: termFrame.maxX, y: termFrame.midY)
+                let end = dragState.location
+                var path = Path()
+                path.move(to: start)
+                path.addCurve(
+                    to: end,
+                    control1: CGPoint(x: start.x + 40, y: start.y),
+                    control2: CGPoint(x: end.x - 20, y: end.y)
+                )
+                context.stroke(path, with: .color(AppTheme.blue.opacity(0.6)), lineWidth: 2)
             }
         }
     }
@@ -133,13 +206,9 @@ struct MatchingGameView: View {
     private var resultsView: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: AppSpacing.section) {
-                Text(timedOut ? "Time's Up" : "Sprint Complete")
+                Text("Sprint Complete")
                     .font(AppFont.title(24))
                     .foregroundColor(.white)
-
-                Text("Time left: \(formattedTime(timeRemaining))")
-                    .font(AppFont.body(15))
-                    .foregroundColor(Color.white.opacity(0.85))
 
                 Text("Pairs matched: \(pairsMatched)/\(totalPairs)")
                     .font(AppFont.body(14))
@@ -218,97 +287,144 @@ struct MatchingGameView: View {
         guard !isComplete else { return }
         guard !matchedPairIds.contains(card.pairId) else { return }
         guard !isResolvingMismatch else { return }
+        if card.kind == .term {
+            selectTerm(card)
+        } else {
+            selectDefinition(card)
+        }
+    }
 
-        if startTime == nil {
-            startTime = Date()
-            timerRunning = true
+    private func selectTerm(_ card: MatchCard) {
+        if selectedTermId == card.id {
+            selectedTermId = nil
+            return
+        }
+        selectedTermId = card.id
+        if let selectedDefinitionId {
+            attemptMatch(termId: card.id, definitionId: selectedDefinitionId)
+        }
+    }
+
+    private func selectDefinition(_ card: MatchCard) {
+        if selectedDefinitionId == card.id {
+            selectedDefinitionId = nil
+            return
+        }
+        selectedDefinitionId = card.id
+        if let selectedTermId {
+            attemptMatch(termId: selectedTermId, definitionId: card.id)
+        }
+    }
+
+    private func handleDragChanged(card: MatchCard, location: CGPoint) {
+        guard card.kind == .term else { return }
+        guard !isComplete else { return }
+        guard !matchedPairIds.contains(card.pairId) else { return }
+        guard !isResolvingMismatch else { return }
+        selectedTermId = card.id
+        dragState = DragMatchState(termId: card.id, location: location)
+    }
+
+    private func handleDragEnded(card: MatchCard, location: CGPoint) {
+        guard card.kind == .term else { return }
+        guard !isComplete else { return }
+        dragState = nil
+        attemptMatch(termId: card.id, dropLocation: location)
+    }
+
+    private func attemptMatch(termId: UUID, dropLocation: CGPoint) {
+        guard let target = definitionCards.first(where: { card in
+            guard let frame = cardFrames[card.id] else { return false }
+            return frame.contains(dropLocation)
+        }) else {
+            selectedTermId = nil
+            return
+        }
+        attemptMatch(termId: termId, definitionId: target.id)
+    }
+
+    private func attemptMatch(termId: UUID, definitionId: UUID) {
+        guard let term = termCards.first(where: { $0.id == termId }),
+              let definition = definitionCards.first(where: { $0.id == definitionId }) else {
+            return
+        }
+        guard !matchedPairIds.contains(term.pairId),
+              !matchedPairIds.contains(definition.pairId) else {
+            return
         }
 
-        if let selectedId = selectedCardId {
-            if selectedId == card.id {
-                selectedCardId = nil
-                return
-            }
+        selectedTermId = nil
+        selectedDefinitionId = nil
 
-            let first = cards.first { $0.id == selectedId }
-            selectedCardId = nil
-
-            guard let first else { return }
-            if first.pairId == card.pairId {
-                matchedPairIds.insert(card.pairId)
-                if pairsMatched == totalPairs {
-                    finishGame()
-                }
-            } else {
-                mistakeCount += 1
-                mistakes.append(
-                    MatchMistake(
-                        firstText: first.text,
-                        firstKind: first.kind,
-                        secondText: card.text,
-                        secondKind: card.kind
-                    )
-                )
-                mismatchCardIds = [first.id, card.id]
-                isResolvingMismatch = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.45) {
-                    mismatchCardIds.removeAll()
-                    isResolvingMismatch = false
-                }
+        if term.pairId == definition.pairId {
+            matchedPairIds.insert(term.pairId)
+            AppFeedback.correct()
+            if pairsMatched == totalPairs {
+                finishGame()
             }
         } else {
-            selectedCardId = card.id
+            mistakeCount += 1
+            AppFeedback.incorrect()
+            mistakes.append(
+                MatchMistake(
+                    firstText: term.text,
+                    firstKind: term.kind,
+                    secondText: definition.text,
+                    secondKind: definition.kind
+                )
+            )
+            mismatchCardIds = [term.id, definition.id]
+            isResolvingMismatch = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.45) {
+                mismatchCardIds.removeAll()
+                isResolvingMismatch = false
+            }
         }
     }
 
     private func finishGame() {
-        if let startTime {
-            let elapsed = Date().timeIntervalSince(startTime)
-            timeRemaining = max(0, timeLimit - elapsed)
-        }
-        timerRunning = false
         let score = max(0, pairsMatched - mistakeCount)
         rewardSummary = progress.completePractice(score: score, total: totalPairs)
         isComplete = true
     }
 
-    private func updateTimer() {
-        guard timerRunning, let startTime else { return }
-        let elapsed = Date().timeIntervalSince(startTime)
-        timeRemaining = max(0, timeLimit - elapsed)
-        if timeRemaining <= 0 {
-            timedOut = true
-            finishGame()
-        }
+    private func frameForTerm(pairId: UUID) -> CGRect? {
+        guard let term = termCards.first(where: { $0.pairId == pairId }) else { return nil }
+        return cardFrames[term.id]
+    }
+
+    private func frameForDefinition(pairId: UUID) -> CGRect? {
+        guard let definition = definitionCards.first(where: { $0.pairId == pairId }) else { return nil }
+        return cardFrames[definition.id]
     }
 
     private func resetGame() {
-        let newCards = buildCards()
-        cards = newCards
-        selectedCardId = nil
+        let newCards = buildCardSets()
+        termCards = newCards.terms
+        definitionCards = newCards.definitions
+        selectedTermId = nil
+        selectedDefinitionId = nil
         matchedPairIds = []
         mismatchCardIds = []
         isResolvingMismatch = false
         mistakeCount = 0
         mistakes = []
-        timeRemaining = timeLimit
-        startTime = nil
-        timerRunning = false
         rewardSummary = nil
         isComplete = false
-        timedOut = false
-        pairsSnapshot = buildPairSummaries(from: newCards)
+        pairsSnapshot = buildPairSummaries(from: newCards.pairs)
+        cardFrames = [:]
+        dragState = nil
     }
 
-    private func buildCards() -> [MatchCard] {
+    private func buildCardSets() -> (terms: [MatchCard], definitions: [MatchCard], pairs: [MatchPair]) {
         let pairs = buildPairs(from: selectedQuestions, count: desiredPairCount)
-        let cards = pairs.flatMap { pair in
-            [
-                MatchCard(id: UUID(), pairId: pair.id, text: pair.term, kind: .term),
-                MatchCard(id: UUID(), pairId: pair.id, text: pair.definition, kind: .definition)
-            ]
+        let terms = pairs.map { pair in
+            MatchCard(id: UUID(), pairId: pair.id, text: pair.term, kind: .term)
         }
-        return arrangeCardsAvoidingAdjacentPairs(cards, columns: columnCount)
+        let definitions = pairs.map { pair in
+            MatchCard(id: UUID(), pairId: pair.id, text: pair.definition, kind: .definition)
+        }
+        return (terms.shuffled(), definitions.shuffled(), pairs)
     }
 
     private func buildPairs(from questions: [QuizQuestion], count: Int) -> [MatchPair] {
@@ -335,80 +451,22 @@ struct MatchingGameView: View {
         return pairs
     }
 
-    private func formattedTime(_ interval: TimeInterval) -> String {
-        let clamped = max(0, interval)
-        let totalSeconds = Int(clamped)
-        let minutes = totalSeconds / 60
-        let seconds = totalSeconds % 60
-        let tenths = Int((clamped - Double(totalSeconds)) * 10)
-        return String(format: "%02d:%02d.%d", minutes, seconds, tenths)
-    }
-
-    private func arrangeCardsAvoidingAdjacentPairs(_ cards: [MatchCard], columns: Int) -> [MatchCard] {
-        guard cards.count > 2, columns > 0 else { return cards.shuffled() }
-        var best = cards
-        var bestScore = Int.max
-
-        for _ in 0..<300 {
-            let shuffled = cards.shuffled()
-            let score = adjacentPairCount(in: shuffled, columns: columns)
-            if score == 0 {
-                return shuffled
-            }
-            if score < bestScore {
-                bestScore = score
-                best = shuffled
-            }
-        }
-
-        return best
-    }
-
-    private func adjacentPairCount(in cards: [MatchCard], columns: Int) -> Int {
-        var indices: [UUID: [Int]] = [:]
-        for (index, card) in cards.enumerated() {
-            indices[card.pairId, default: []].append(index)
-        }
-        var count = 0
-        for (_, pairIndices) in indices {
-            guard pairIndices.count == 2 else { continue }
-            if areAdjacent(pairIndices[0], pairIndices[1], columns: columns) {
-                count += 1
-            }
-        }
-        return count
-    }
-
-    private func areAdjacent(_ first: Int, _ second: Int, columns: Int) -> Bool {
-        let rowA = first / columns
-        let colA = first % columns
-        let rowB = second / columns
-        let colB = second % columns
-        if rowA == rowB && abs(colA - colB) == 1 {
-            return true
-        }
-        if colA == colB && abs(rowA - rowB) == 1 {
-            return true
-        }
-        return false
-    }
-
-    private func buildPairSummaries(from cards: [MatchCard]) -> [MatchPairSummary] {
-        let grouped = Dictionary(grouping: cards, by: { $0.pairId })
-        return grouped.compactMap { pairId, cards in
-            guard let term = cards.first(where: { $0.kind == .term })?.text,
-                  let definition = cards.first(where: { $0.kind == .definition })?.text else {
-                return nil
-            }
-            return MatchPairSummary(id: pairId, term: term, definition: definition)
-        }
-        .sorted { $0.term.localizedCaseInsensitiveCompare($1.term) == .orderedAscending }
+    private func buildPairSummaries(from pairs: [MatchPair]) -> [MatchPairSummary] {
+        pairs
+            .map { MatchPairSummary(id: $0.id, term: $0.term, definition: $0.definition) }
+            .sorted { $0.term.localizedCaseInsensitiveCompare($1.term) == .orderedAscending }
     }
 }
 
 struct MatchingDeckSelectionView: View {
-    private let deckOptions: [MatchDeckOption] = {
-        let allCount = TrainingContent.allQuizQuestions.count
+    @EnvironmentObject private var progress: ProgressStore
+
+    private var modules: [TrainingModule] {
+        TrainingContent.modules(for: progress.selectedRole)
+    }
+
+    private var deckOptions: [MatchDeckOption] {
+        let allCount = TrainingContent.allQuizQuestions(for: progress.selectedRole).count
         var options: [MatchDeckOption] = [
             MatchDeckOption(
                 id: "all",
@@ -417,7 +475,7 @@ struct MatchingDeckSelectionView: View {
                 questionCount: allCount
             )
         ]
-        options.append(contentsOf: TrainingContent.modules.map { module in
+        options.append(contentsOf: modules.map { module in
             MatchDeckOption(
                 id: module.id,
                 title: module.title,
@@ -426,7 +484,7 @@ struct MatchingDeckSelectionView: View {
             )
         })
         return options
-    }()
+    }
 
     var body: some View {
         ZStack {
@@ -438,7 +496,7 @@ struct MatchingDeckSelectionView: View {
                         .font(AppFont.title(26))
                         .foregroundColor(.white)
 
-                    Text("Choose a module to start a 30-second sprint.")
+                    Text("Choose a module to start a matching sprint.")
                         .font(AppFont.body(14))
                         .foregroundColor(Color.white.opacity(0.85))
 
@@ -523,6 +581,19 @@ private struct MatchMistake: Identifiable {
     let secondKind: MatchCardKind
 }
 
+private struct DragMatchState {
+    let termId: UUID
+    let location: CGPoint
+}
+
+private struct CardFramePreferenceKey: PreferenceKey {
+    static var defaultValue: [UUID: CGRect] = [:]
+
+    static func reduce(value: inout [UUID: CGRect], nextValue: () -> [UUID: CGRect]) {
+        value.merge(nextValue(), uniquingKeysWith: { $1 })
+    }
+}
+
 private extension MatchCardKind {
     var label: String {
         switch self {
@@ -574,6 +645,13 @@ private struct MatchCardView: View {
                     .padding(10)
             }
         }
+        .background(
+            GeometryReader { proxy in
+                Color.clear
+                    .preference(key: CardFramePreferenceKey.self, value: [card.id: proxy.frame(in: .named("matchGrid"))])
+            }
+        )
+        .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
     }
 
     private var backgroundColor: Color {

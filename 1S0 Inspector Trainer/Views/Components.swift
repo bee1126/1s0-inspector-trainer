@@ -1,3 +1,4 @@
+import Foundation
 import SwiftUI
 
 struct GlassCard<Content: View>: View {
@@ -22,6 +23,7 @@ struct GlassCard<Content: View>: View {
                     .stroke(Color.white.opacity(0.4), lineWidth: 1)
             )
             .shadow(color: Color.black.opacity(0.12), radius: 12, x: 0, y: 6)
+            .contentShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
     }
 }
 
@@ -117,6 +119,7 @@ struct MissionBadge: View {
     let title: String
     let detail: String
     let isEarned: Bool
+    @State private var animate = false
 
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
@@ -144,6 +147,14 @@ struct MissionBadge: View {
             RoundedRectangle(cornerRadius: 16, style: .continuous)
                 .fill(Color.white.opacity(0.9))
         )
+        .scaleEffect(animate ? 1.0 : 0.96)
+        .shadow(color: isEarned ? AppTheme.safetyGreen.opacity(0.18) : Color.black.opacity(0.08), radius: 10, x: 0, y: 6)
+        .onAppear {
+            guard isEarned else { return }
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
+                animate = true
+            }
+        }
     }
 }
 
@@ -188,6 +199,8 @@ struct XPProgressRing: View {
 struct RewardSummaryCard: View {
     let summary: RewardSummary
     var xpToNextLevel: Int?
+    @State private var didTrigger = false
+    @State private var pulse = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -201,11 +214,17 @@ struct RewardSummaryCard: View {
                     RewardChip(text: "+\(summary.heartsRestored) Hearts", systemImage: "heart.fill")
                 }
             }
+            .scaleEffect(pulse ? 1.04 : 1.0)
 
             if summary.leveledUp {
                 Text("Level up unlocked!")
                     .font(AppFont.subtitle(14))
                     .foregroundColor(AppTheme.xpGold)
+            }
+            if summary.streakMultiplier > 1.0 {
+                Text("Streak bonus x\(String(format: "%.1f", summary.streakMultiplier))")
+                    .font(AppFont.body(12))
+                    .foregroundColor(AppTheme.safetyGreen)
             }
             if summary.streakIncreased {
                 Text("Daily goal streak extended.")
@@ -223,6 +242,30 @@ struct RewardSummaryCard: View {
             RoundedRectangle(cornerRadius: 16, style: .continuous)
                 .fill(AppTheme.mint.opacity(0.6))
         )
+        .overlay(alignment: .topTrailing) {
+            if summary.leveledUp {
+                SparkleBurstView(color: AppTheme.xpGold)
+                    .frame(width: 70, height: 70)
+                    .offset(x: 8, y: -12)
+            }
+        }
+        .onAppear {
+            guard !didTrigger else { return }
+            didTrigger = true
+            withAnimation(.spring(response: 0.35, dampingFraction: 0.7)) {
+                pulse = true
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                withAnimation(.easeInOut(duration: 0.25)) {
+                    pulse = false
+                }
+            }
+            if summary.leveledUp {
+                AppFeedback.levelUp()
+            } else {
+                AppFeedback.complete()
+            }
+        }
     }
 }
 
@@ -243,6 +286,57 @@ struct RewardChip: View {
         .background(
             Capsule().fill(Color.white.opacity(0.9))
         )
+    }
+}
+
+struct StreakPopupView: View {
+    let text: String
+
+    var body: some View {
+        HStack(spacing: 6) {
+            Image(systemName: "bolt.fill")
+                .font(.system(size: 12, weight: .semibold))
+            Text(text)
+                .font(AppFont.subtitle(12))
+        }
+        .foregroundColor(.white)
+        .padding(.horizontal, 12)
+        .padding(.vertical, 8)
+        .background(
+            Capsule().fill(AppTheme.xpGold)
+        )
+        .shadow(color: AppTheme.xpGold.opacity(0.35), radius: 8, x: 0, y: 4)
+    }
+}
+
+struct SparkleBurstView: View {
+    let color: Color
+    @State private var animate = false
+
+    private let offsets: [CGSize] = [
+        CGSize(width: -22, height: -10),
+        CGSize(width: 18, height: -18),
+        CGSize(width: -26, height: 8),
+        CGSize(width: 22, height: 10),
+        CGSize(width: -8, height: 24),
+        CGSize(width: 12, height: 26)
+    ]
+
+    var body: some View {
+        ZStack {
+            ForEach(offsets.indices, id: \.self) { index in
+                Circle()
+                    .fill(color.opacity(0.9))
+                    .frame(width: 6, height: 6)
+                    .scaleEffect(animate ? 0.4 : 0.1)
+                    .opacity(animate ? 0 : 1)
+                    .offset(animate ? offsets[index] : .zero)
+                    .animation(.easeOut(duration: 0.9).delay(Double(index) * 0.04), value: animate)
+            }
+        }
+        .onAppear {
+            animate = true
+        }
     }
 }
 

@@ -1,10 +1,11 @@
+import Foundation
 import SwiftUI
 
 struct QuizFlowView: View {
     @EnvironmentObject private var progress: ProgressStore
     let questions: [QuizQuestion]
     var onWrongAnswer: (() -> Void)? = nil
-    let onComplete: (AssessmentResult) -> Void
+    let onComplete: (AssessmentResult, QuizStreakSummary) -> Void
     var showsHearts: Bool = true
     var shuffleQuestions: Bool = false
     var maxQuestions: Int? = nil
@@ -17,6 +18,12 @@ struct QuizFlowView: View {
     @State private var showFeedback = false
     @State private var selectedDifficulty: QuizDifficulty = .hard
     @State private var preparedQuestions: [QuizQuestion] = []
+    @State private var streakCount = 0
+    @State private var bestStreakCount = 0
+    @State private var streakTier = 0
+    @State private var bestStreakTier = 0
+    @State private var streakPopupText: String? = nil
+    @State private var showStreakPopup = false
     private let swipeThreshold: CGFloat = 70
 
     var body: some View {
@@ -65,8 +72,12 @@ struct QuizFlowView: View {
                                 selectedChoiceId = choice.id
                                 if choice.isCorrect {
                                     correctCount += 1
+                                    registerCorrectAnswer()
+                                    AppFeedback.correct()
                                 } else {
                                     onWrongAnswer?()
+                                    registerIncorrectAnswer()
+                                    AppFeedback.incorrect()
                                 }
                                 updateState()
                                 withAnimation(.easeInOut(duration: 0.2)) {
@@ -93,6 +104,13 @@ struct QuizFlowView: View {
                 }
             }
             .padding(.horizontal, AppSpacing.screenPadding)
+            .overlay(alignment: .top) {
+                if showStreakPopup, let streakPopupText {
+                    StreakPopupView(text: streakPopupText)
+                        .padding(.top, -8)
+                        .transition(.move(edge: .top).combined(with: .opacity))
+                }
+            }
         }
         .scrollIndicators(.hidden)
         .simultaneousGesture(
@@ -109,7 +127,11 @@ struct QuizFlowView: View {
     private func advance() {
         let list = preparedQuestions.isEmpty ? filteredQuestions : preparedQuestions
         if index == list.count - 1 {
-            onComplete(AssessmentResult(score: correctCount, total: list.count))
+            let summary = QuizStreakSummary(
+                maxStreak: bestStreakCount,
+                multiplier: 1.0 + Double(bestStreakTier) * 0.1
+            )
+            onComplete(AssessmentResult(score: correctCount, total: list.count), summary)
         } else {
             index += 1
             selectedChoiceId = nil
@@ -126,6 +148,7 @@ struct QuizFlowView: View {
     }
 
     private func prepareQuestions() {
+        resetStreak()
         if let resumeState {
             let questionMap = Dictionary(uniqueKeysWithValues: questions.map { ($0.id, $0) })
             let ordered = resumeState.questionIds.compactMap { questionMap[$0] }
@@ -167,6 +190,46 @@ struct QuizFlowView: View {
         }
         preparedQuestions = list
         updateState()
+    }
+
+    private func registerCorrectAnswer() {
+        streakCount += 1
+        bestStreakCount = max(bestStreakCount, streakCount)
+        let newTier = streakCount / 3
+        if newTier > streakTier {
+            streakTier = newTier
+            bestStreakTier = max(bestStreakTier, newTier)
+            showStreakPopup(for: newTier)
+        } else {
+            bestStreakTier = max(bestStreakTier, newTier)
+        }
+    }
+
+    private func registerIncorrectAnswer() {
+        streakCount = 0
+        streakTier = 0
+    }
+
+    private func resetStreak() {
+        streakCount = 0
+        bestStreakCount = 0
+        streakTier = 0
+        bestStreakTier = 0
+        showStreakPopup = false
+        streakPopupText = nil
+    }
+
+    private func showStreakPopup(for tier: Int) {
+        let multiplier = 1.0 + Double(tier) * 0.1
+        streakPopupText = "Streak x\(String(format: "%.1f", multiplier))"
+        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+            showStreakPopup = true
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            withAnimation(.easeInOut(duration: 0.2)) {
+                showStreakPopup = false
+            }
+        }
     }
 
     private func handleSwipe(_ value: DragGesture.Value) {

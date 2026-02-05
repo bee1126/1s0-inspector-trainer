@@ -2,7 +2,9 @@ import SwiftUI
 
 struct ProgressDashboardView: View {
     @EnvironmentObject private var progress: ProgressStore
-    private let modules = TrainingContent.modules
+    private var modules: [TrainingModule] {
+        TrainingContent.modules(for: progress.selectedRole)
+    }
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium

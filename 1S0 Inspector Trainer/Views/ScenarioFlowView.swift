@@ -88,8 +88,10 @@ struct ScenarioFlowView: View {
                                 answeredCount += 1
                                 if option.isCorrect {
                                     correctCount += 1
+                                    AppFeedback.correct()
                                 } else {
                                     onWrongAnswer?()
+                                    AppFeedback.incorrect()
                                 }
                                 withAnimation(.easeInOut(duration: 0.2)) {
                                     showFeedback = true
@@ -165,6 +167,7 @@ struct ScenarioFlowView: View {
             selectedOptionId = fallback.id
             answeredCount += 1
             onWrongAnswer?()
+            AppFeedback.incorrect()
             showFeedback = true
         }
     }
@@ -231,6 +234,7 @@ struct OptionRow: View {
                 )
         )
         .opacity(isLocked && !isSelected && !(revealCorrect && isCorrect) ? 0.6 : 1.0)
+        .contentShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
     }
 
     private var indicatorColor: Color {

@@ -2,7 +2,9 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject private var progress: ProgressStore
-    private let modules = TrainingContent.modules
+    private var modules: [TrainingModule] {
+        TrainingContent.modules(for: progress.selectedRole)
+    }
     private var resumeModule: TrainingModule? {
         guard let resume = progress.resumeState else { return nil }
         return modules.first(where: { $0.id == resume.moduleId })
@@ -16,10 +18,10 @@ struct HomeView: View {
                 LazyVStack(alignment: .leading, spacing: AppSpacing.section) {
                     HStack(alignment: .top, spacing: 16) {
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("1S0 Inspector Trainer")
+                            Text(progress.selectedRole?.appTitle ?? "Inspector Trainer")
                                 .font(AppFont.title(28))
                                 .foregroundColor(.white)
-                            Text("Level up your inspection skills with daily practice.")
+                            Text(progress.selectedRole?.homeSubtitle ?? "Level up your inspection skills with daily practice.")
                                 .font(AppFont.body(15))
                                 .foregroundColor(Color.white.opacity(0.85))
                         }
@@ -68,15 +70,6 @@ struct HomeView: View {
                                 .buttonStyle(PrimaryButtonStyle())
                             }
                         }
-                    }
-
-                    GlassCard {
-                        Image("SafetyHero")
-                            .resizable()
-                            .scaledToFill()
-                            .frame(height: 160)
-                            .clipped()
-                            .cornerRadius(16)
                     }
 
                     GlassCard {

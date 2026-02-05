@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ToolsView: View {
     @EnvironmentObject private var progress: ProgressStore
+    @State private var showRoleSelection = false
 
     var body: some View {
         ZStack {
@@ -31,9 +32,21 @@ struct ToolsView: View {
                         .buttonStyle(.plain)
 
                         Button {
-                            progress.debugMaxRank(modules: TrainingContent.modules)
+                            progress.debugMaxRank(modules: TrainingContent.modules(for: progress.selectedRole))
                         } label: {
                             ToolCard(title: "Max Rank & Level", detail: "Complete every module and boost XP")
+                        }
+                        .buttonStyle(.plain)
+                    }
+
+                    ToolSection(title: "Profile") {
+                        Button {
+                            showRoleSelection = true
+                        } label: {
+                            ToolCard(
+                                title: "Training Role",
+                                detail: progress.selectedRole?.displayName ?? "Choose your role"
+                            )
                         }
                         .buttonStyle(.plain)
                     }
@@ -44,6 +57,16 @@ struct ToolsView: View {
         }
         .navigationTitle("Feedback")
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(isPresented: $showRoleSelection) {
+            RoleSelectionView(
+                title: "Update Training Role",
+                subtitle: "Switch roles to see tailored modules and questions.",
+                onSelect: { role in
+                    progress.setRole(role)
+                    showRoleSelection = false
+                }
+            )
+        }
     }
 }
 

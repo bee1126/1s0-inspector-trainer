@@ -3,16 +3,20 @@ import SwiftUI
 struct RootView: View {
     @StateObject private var progress = ProgressStore()
     @State private var showSplash = true
+    @State private var selectedTab: RootTab = .home
+    @State private var showRoleSelection = false
+    private let swipeThreshold: CGFloat = 120
 
     var body: some View {
         ZStack {
-            TabView {
+            TabView(selection: $selectedTab) {
                 NavigationStack {
                     HomeView()
                 }
                 .tabItem {
                     Label("Home", systemImage: "shield.lefthalf.filled")
                 }
+                .tag(RootTab.home)
 
                 NavigationStack {
                     ProgressDashboardView()
@@ -20,6 +24,7 @@ struct RootView: View {
                 .tabItem {
                     Label("Progress", systemImage: "chart.bar.xaxis")
                 }
+                .tag(RootTab.progress)
 
                 NavigationStack {
                     SourcesView()
@@ -27,6 +32,7 @@ struct RootView: View {
                 .tabItem {
                     Label("Sources", systemImage: "book")
                 }
+                .tag(RootTab.sources)
 
                 NavigationStack {
                     ToolsView()
@@ -34,28 +40,74 @@ struct RootView: View {
                 .tabItem {
                     Label("Feedback", systemImage: "bubble.left.and.bubble.right")
                 }
+                .tag(RootTab.feedback)
             }
             .tint(AppTheme.blue)
             .environmentObject(progress)
+            .simultaneousGesture(
+                DragGesture(minimumDistance: 20)
+                    .onEnded { value in
+                        handleTabSwipe(value)
+                    }
+            )
 
             if showSplash {
-                SplashView()
+                SplashView(title: progress.selectedRole?.appTitle ?? "Inspector Trainer")
                     .transition(.opacity)
                     .zIndex(10)
             }
         }
         .onAppear {
             progress.refreshForNewDayIfNeeded()
+            if progress.selectedRole == nil {
+                showRoleSelection = true
+            }
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
                 withAnimation(.easeOut(duration: 0.45)) {
                     showSplash = false
                 }
             }
         }
+        .fullScreenCover(isPresented: $showRoleSelection) {
+            RoleSelectionView(
+                title: "Choose Your Role",
+                subtitle: "We'll tailor lessons and questions to your program.",
+                onSelect: { role in
+                    progress.setRole(role)
+                    showRoleSelection = false
+                }
+            )
+            .interactiveDismissDisabled()
+        }
+    }
+
+    private func handleTabSwipe(_ value: DragGesture.Value) {
+        let horizontal = value.translation.width
+        let vertical = value.translation.height
+        guard abs(horizontal) > abs(vertical) else { return }
+        guard abs(horizontal) > swipeThreshold else { return }
+
+        let allTabs = RootTab.allCases
+        guard let currentIndex = allTabs.firstIndex(of: selectedTab) else { return }
+
+        if horizontal < 0, currentIndex < allTabs.count - 1 {
+            selectedTab = allTabs[currentIndex + 1]
+        } else if horizontal > 0, currentIndex > 0 {
+            selectedTab = allTabs[currentIndex - 1]
+        }
     }
 }
 
+enum RootTab: Int, CaseIterable {
+    case home
+    case progress
+    case sources
+    case feedback
+}
+
 struct SplashView: View {
+    let title: String
+
     var body: some View {
         ZStack {
             AppTheme.backgroundGradient
@@ -82,7 +134,7 @@ struct SplashView: View {
                         .foregroundColor(.white)
                 }
 
-                Text("1S0 Inspector Trainer")
+                Text(title)
                     .font(AppFont.title(24))
                     .foregroundColor(.white)
 

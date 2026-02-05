@@ -16,7 +16,7 @@ struct PracticeSessionView: View {
     @State private var priorDailyScore: Int = 0
 
     private var questionPool: [QuizQuestion] {
-        TrainingContent.allQuizQuestions
+        TrainingContent.allQuizQuestions(for: progress.selectedRole)
     }
 
     init(mode: PracticeMode = .practice) {
@@ -83,8 +83,8 @@ struct PracticeSessionView: View {
             } else {
                 QuizFlowView(
                     questions: questionPool,
-                    onComplete: { result in
-                        rewardSummary = progress.completePractice(score: result.score, total: result.total)
+                    onComplete: { result, streak in
+                        rewardSummary = progress.completePractice(score: result.score, total: result.total, streakMultiplier: streak.multiplier)
                         if mode == .dailyFive {
                             priorDailyScore = progress.lastDailyFiveScore
                             progress.recordDailyFive(score: result.score, total: result.total)

@@ -67,6 +67,11 @@ struct AssessmentResult: Hashable {
     let total: Int
 }
 
+struct QuizStreakSummary: Hashable {
+    let maxStreak: Int
+    let multiplier: Double
+}
+
 enum QuizDifficulty: String, CaseIterable, Identifiable {
     case easy = "Easy"
     case medium = "Medium"
