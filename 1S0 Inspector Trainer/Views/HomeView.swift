@@ -49,6 +49,42 @@ struct HomeView: View {
                         }
                     }
 
+                    GlassCard {
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text("New Trainee Path")
+                                .font(AppFont.subtitle(18))
+                                .foregroundColor(AppTheme.charcoal)
+
+                            Text("7-day starter program with daily check-ins.")
+                                .font(AppFont.body(13))
+                                .foregroundColor(AppTheme.charcoal.opacity(0.7))
+
+                            ProgressView(value: onboardingProgress)
+                                .tint(AppTheme.safetyGreen)
+
+                            Text("\(onboardingCompleted)/\(onboardingTotal) check-ins")
+                                .font(AppFont.body(12))
+                                .foregroundColor(AppTheme.charcoal.opacity(0.6))
+
+                            if let dayNumber = onboardingDayNumber {
+                                Text("Day \(dayNumber) of \(onboardingTotal)")
+                                    .font(AppFont.body(12))
+                                    .foregroundColor(AppTheme.blue)
+                            }
+
+                            NavigationLink {
+                                OnboardingPathView()
+                            } label: {
+                                HStack {
+                                    Text("Open Starter Path")
+                                    Spacer()
+                                    Image(systemName: "calendar")
+                                }
+                            }
+                            .buttonStyle(OutlineButtonStyle())
+                        }
+                    }
+
                     if let resumeModule {
                         GlassCard {
                             VStack(alignment: .leading, spacing: 10) {
@@ -113,6 +149,50 @@ struct HomeView: View {
                                     }
                                 }
                                 .buttonStyle(OutlineButtonStyle())
+
+                                NavigationLink {
+                                    TrueFalseBlitzView()
+                                } label: {
+                                    HStack {
+                                        Text("True/False Blitz")
+                                        Spacer()
+                                        Image(systemName: "bolt.circle")
+                                    }
+                                }
+                                .buttonStyle(OutlineButtonStyle())
+
+                                NavigationLink {
+                                    SequenceBuilderSelectionView()
+                                } label: {
+                                    HStack {
+                                        Text("Sequence Builder")
+                                        Spacer()
+                                        Image(systemName: "arrow.up.arrow.down.square")
+                                    }
+                                }
+                                .buttonStyle(OutlineButtonStyle())
+
+                                NavigationLink {
+                                    RacSortView()
+                                } label: {
+                                    HStack {
+                                        Text("RAC Sort")
+                                        Spacer()
+                                        Image(systemName: "square.grid.2x2")
+                                    }
+                                }
+                                .buttonStyle(OutlineButtonStyle())
+
+                                NavigationLink {
+                                    MicroDrillSelectionView()
+                                } label: {
+                                    HStack {
+                                        Text("Micro-Drills")
+                                        Spacer()
+                                        Image(systemName: "scope")
+                                    }
+                                }
+                                .buttonStyle(OutlineButtonStyle())
                             }
                         }
                     }
@@ -150,5 +230,22 @@ struct HomeView: View {
         .onAppear {
             progress.refreshForNewDayIfNeeded()
         }
+    }
+
+    private var onboardingTotal: Int {
+        PracticeContent.onboardingDays.count
+    }
+
+    private var onboardingCompleted: Int {
+        progress.onboardingCheckIns.count
+    }
+
+    private var onboardingProgress: Double {
+        guard onboardingTotal > 0 else { return 0 }
+        return Double(onboardingCompleted) / Double(onboardingTotal)
+    }
+
+    private var onboardingDayNumber: Int? {
+        progress.onboardingDayNumber()
     }
 }

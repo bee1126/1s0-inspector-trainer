@@ -16,6 +16,7 @@
 		385B0547EA624ED4980254F0 /* InspectorTrainerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F24684BB97641B9BDE038CA /* InspectorTrainerApp.swift */; };
 		3E4AB0E655E94B92BBFC3B33 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19302FDEB72143C5A663AE4E /* BackgroundView.swift */; };
 		3F977012712F1F26857E1093 /* MatchingGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73524C141A3F5AB2EFF99FE1 /* MatchingGameView.swift */; };
+		7EE70027C2504F5DACDF4651 /* PracticeGamesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BB159C4A5742E59988F9D4 /* PracticeGamesView.swift */; };
 		577F87A126C14A529F911618 /* ModuleListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F4C994046BF462DB2E96042 /* ModuleListView.swift */; };
 		67F52C395D294862B5195B86 /* ModuleFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072153175F864C95A13A7416 /* ModuleFlowView.swift */; };
 		70C498755F3A439EA025734C /* ProgressStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534B8049CF904994B419DE7D /* ProgressStore.swift */; };
@@ -28,6 +29,7 @@
 		C527BCED10134641B7604DCB /* ScenarioFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8D35E4CCC1487EAF35202A /* ScenarioFlowView.swift */; };
 		C67DC6A217DA4697B1D7A8AA /* TrainingContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BAAC854C3FE4083A46821F8 /* TrainingContent.swift */; };
 		CAA3AFB3F017458E9211BA50 /* QuizBank.swift in Sources */ = {isa = PBXBuildFile; fileRef = A561485258DE42A4B11F142F /* QuizBank.swift */; };
+		B444DF1BB0EC4341AA079060 /* PracticeContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F897A880F5B4B02A81A8BDE /* PracticeContent.swift */; };
 		D271356E9D7A459D9853776E /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A9ACDCBD6747A99BC0D4B1 /* RootView.swift */; };
 		D42EA7CFC48D481BA32AF055 /* ProgressDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA413EE88AF47A68BE9CA46 /* ProgressDashboardView.swift */; };
 		D9B3C1AD08F942C0BAAF87D9 /* ModuleDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82A650A0B65431196F5A0F8 /* ModuleDetailView.swift */; };
@@ -49,8 +51,10 @@
 		40AEBFFBDDE847C4A5C225B5 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
 		534B8049CF904994B419DE7D /* ProgressStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStore.swift; sourceTree = "<group>"; };
 		5D6583B73C5E4CA089EA252A /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
+		5F897A880F5B4B02A81A8BDE /* PracticeContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeContent.swift; sourceTree = "<group>"; };
 		6F24684BB97641B9BDE038CA /* InspectorTrainerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorTrainerApp.swift; sourceTree = "<group>"; };
 		73524C141A3F5AB2EFF99FE1 /* MatchingGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingGameView.swift; sourceTree = "<group>"; };
+		76BB159C4A5742E59988F9D4 /* PracticeGamesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeGamesView.swift; sourceTree = "<group>"; };
 		7A8D35E4CCC1487EAF35202A /* ScenarioFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScenarioFlowView.swift; sourceTree = "<group>"; };
 		7F4C994046BF462DB2E96042 /* ModuleListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleListView.swift; sourceTree = "<group>"; };
 		8B61CBA9B08E4B2C90ECD50B /* SourcesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourcesView.swift; sourceTree = "<group>"; };
@@ -130,6 +134,7 @@
 				CBA413EE88AF47A68BE9CA46 /* ProgressDashboardView.swift */,
 				32BAAD5C65C74C7C981FD78C /* QuizFlowView.swift */,
 				F1E2D3C4B5A69788796A5B4C /* PracticeSessionView.swift */,
+				76BB159C4A5742E59988F9D4 /* PracticeGamesView.swift */,
 				2B40D56892E1473CAECAC983 /* RoleSelectionView.swift */,
 				F4A9ACDCBD6747A99BC0D4B1 /* RootView.swift */,
 				7A8D35E4CCC1487EAF35202A /* ScenarioFlowView.swift */,
@@ -153,6 +158,7 @@
 				23300B9FDEF1494197E818B3 /* AppFeedback.swift */,
 				534B8049CF904994B419DE7D /* ProgressStore.swift */,
 				A561485258DE42A4B11F142F /* QuizBank.swift */,
+				5F897A880F5B4B02A81A8BDE /* PracticeContent.swift */,
 				8BAAC854C3FE4083A46821F8 /* TrainingContent.swift */,
 				92ACBA60D36B4E208BEAA126 /* TrainingRole+Content.swift */,
 				E0C3EDD2069644FCA0930019 /* TrainingRole.swift */,
@@ -238,6 +244,7 @@
 				C67DC6A217DA4697B1D7A8AA /* TrainingContent.swift in Sources */,
 				6C6B0D3C69F343BC86E71433 /* TrainingRole+Content.swift in Sources */,
 				CAA3AFB3F017458E9211BA50 /* QuizBank.swift in Sources */,
+				B444DF1BB0EC4341AA079060 /* PracticeContent.swift in Sources */,
 				184A33BE966D40AC984D48F9 /* TrainingRole.swift in Sources */,
 				C3400AE4C88A49E5A170110C /* TrainingModels.swift in Sources */,
 				9CC3563F2CFB4938A4AECC07 /* AppTheme.swift in Sources */,
@@ -246,6 +253,7 @@
 				BCCA7070DA45411BAD68AD85 /* HomeView.swift in Sources */,
 				361FFA23D609407A81CF69EA /* LessonPagerView.swift in Sources */,
 				3F977012712F1F26857E1093 /* MatchingGameView.swift in Sources */,
+				7EE70027C2504F5DACDF4651 /* PracticeGamesView.swift in Sources */,
 				D9B3C1AD08F942C0BAAF87D9 /* ModuleDetailView.swift in Sources */,
 				67F52C395D294862B5195B86 /* ModuleFlowView.swift in Sources */,
 				577F87A126C14A529F911618 /* ModuleListView.swift in Sources */,

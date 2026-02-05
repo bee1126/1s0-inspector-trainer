@@ -20,6 +20,8 @@ final class ProgressStore: ObservableObject {
     @Published private(set) var resumeState: ModuleResumeState? = nil
     @Published private(set) var hearts: Int = 5
     @Published private(set) var selectedRole: TrainingRole? = nil
+    @Published private(set) var onboardingStartDate: Date? = nil
+    @Published private(set) var onboardingCheckIns: Set<Int> = []
     let maxHearts: Int = 5
 
     private let completedKey = "completedModules"
@@ -40,6 +42,8 @@ final class ProgressStore: ObservableObject {
     private let resumeStateKey = "resumeState"
     private let heartsKey = "hearts"
     private let selectedRoleKey = "selectedRole"
+    private let onboardingStartKey = "onboardingStartDate"
+    private let onboardingCheckInsKey = "onboardingCheckIns"
 
     init() {
         load()
@@ -87,6 +91,8 @@ final class ProgressStore: ObservableObject {
         lastDailyFiveScore = 0
         resumeState = nil
         hearts = maxHearts
+        onboardingStartDate = nil
+        onboardingCheckIns = []
         save()
     }
 
@@ -161,6 +167,13 @@ final class ProgressStore: ObservableObject {
            let role = TrainingRole(rawValue: rawRole) {
             selectedRole = role
         }
+        if let date = defaults.object(forKey: onboardingStartKey) as? Date {
+            onboardingStartDate = date
+        }
+        if let data = defaults.data(forKey: onboardingCheckInsKey),
+           let decoded = try? JSONDecoder().decode([Int].self, from: data) {
+            onboardingCheckIns = Set(decoded)
+        }
     }
 
     private func save() {
@@ -198,6 +211,10 @@ final class ProgressStore: ObservableObject {
         }
         defaults.set(hearts, forKey: heartsKey)
         defaults.set(selectedRole?.rawValue, forKey: selectedRoleKey)
+        defaults.set(onboardingStartDate, forKey: onboardingStartKey)
+        if let data = try? JSONEncoder().encode(Array(onboardingCheckIns)) {
+            defaults.set(data, forKey: onboardingCheckInsKey)
+        }
     }
 
     func setRole(_ role: TrainingRole) {
@@ -374,6 +391,46 @@ final class ProgressStore: ObservableObject {
     func resumeState(for moduleId: String) -> ModuleResumeState? {
         guard let state = resumeState, state.moduleId == moduleId else { return nil }
         return state
+    }
+
+    func startOnboardingIfNeeded() {
+        if onboardingStartDate == nil {
+            onboardingStartDate = Calendar.current.startOfDay(for: Date())
+            onboardingCheckIns = []
+            save()
+        }
+    }
+
+    func restartOnboarding() {
+        onboardingStartDate = Calendar.current.startOfDay(for: Date())
+        onboardingCheckIns = []
+        save()
+    }
+
+    func onboardingDayIndex(for date: Date = Date()) -> Int? {
+        guard let start = onboardingStartDate else { return nil }
+        let startDay = Calendar.current.startOfDay(for: start)
+        let targetDay = Calendar.current.startOfDay(for: date)
+        let diff = Calendar.current.dateComponents([.day], from: startDay, to: targetDay).day ?? 0
+        return min(max(diff, 0), 6)
+    }
+
+    func onboardingDayNumber(for date: Date = Date()) -> Int? {
+        guard let index = onboardingDayIndex(for: date) else { return nil }
+        return index + 1
+    }
+
+    func isOnboardingDayComplete(_ day: Int) -> Bool {
+        onboardingCheckIns.contains(day)
+    }
+
+    @discardableResult
+    func checkInOnboardingDay() -> RewardSummary? {
+        guard let dayNumber = onboardingDayNumber() else { return nil }
+        guard !onboardingCheckIns.contains(dayNumber) else { return nil }
+        onboardingCheckIns.insert(dayNumber)
+        save()
+        return earnXp(8, heartsRestored: 0, streakMultiplier: 1.0)
     }
 }
 
