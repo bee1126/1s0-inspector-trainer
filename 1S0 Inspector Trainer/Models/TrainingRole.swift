@@ -16,7 +16,7 @@ enum TrainingRole: String, CaseIterable, Identifiable, Codable {
         case .usr:
             return "Unit Safety Representative"
         case .msr:
-            return "Maintenance Safety Representative"
+            return "Motorcycle Safety Representative"
         }
     }
 
@@ -27,7 +27,7 @@ enum TrainingRole: String, CaseIterable, Identifiable, Codable {
         case .usr:
             return "Unit Safety Program"
         case .msr:
-            return "Maintenance Safety Program"
+            return "Motorcycle Safety Program"
         }
     }
 
@@ -49,7 +49,7 @@ enum TrainingRole: String, CaseIterable, Identifiable, Codable {
         case .usr:
             return "Strengthen unit-level safety support with focused practice."
         case .msr:
-            return "Sharpen maintenance safety support with targeted practice."
+            return "Support safe riding with targeted practice."
         }
     }
 
@@ -60,7 +60,7 @@ enum TrainingRole: String, CaseIterable, Identifiable, Codable {
         case .usr:
             return "USR focus: unit-level hazard identification, reporting, and program support."
         case .msr:
-            return "MSR focus: maintenance-area hazard controls, procedures, and trend awareness."
+            return "MSR focus: motorcycle safety program execution and DAFI 91-207 compliance."
         }
     }
 

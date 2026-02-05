@@ -1828,6 +1828,12 @@ enum TrainingContent {
             notes: "Fall protection thresholds, systems, and training requirements."
         ),
         ReferenceSource(
+            id: "dafi-91-207",
+            title: "DAFI 91-207 - The US Air Force Traffic Safety Program",
+            date: "Accessed Feb 2, 2026",
+            notes: "Motorcycle safety program requirements and rider responsibilities."
+        ),
+        ReferenceSource(
             id: "dafman-91-203",
             title: "DAFMAN 91-203 - Air Force Occupational Safety, Fire, and Health Standards",
             date: "25 Mar 2022 with DAFGM 2025-01 (12 May 2025)",

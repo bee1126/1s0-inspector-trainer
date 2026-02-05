@@ -21,7 +21,6 @@ struct MatchingGameView: View {
     @State private var mistakes: [MatchMistake] = []
     @State private var pairsSnapshot: [MatchPairSummary] = []
     @State private var cardFrames: [UUID: CGRect] = [:]
-    @State private var dragState: DragMatchState? = nil
 
     private var questionPool: [QuizQuestion] {
         TrainingContent.allQuizQuestions(for: progress.selectedRole)
@@ -97,7 +96,7 @@ struct MatchingGameView: View {
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            Text("Match each prompt to the correct answer. Tap or drag to connect.")
+            Text("Match each prompt to the correct answer. Tap a prompt, then tap its answer.")
                 .font(AppFont.body(13))
                 .foregroundColor(Color.white.opacity(0.85))
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -130,15 +129,6 @@ struct MatchingGameView: View {
                         .onTapGesture {
                             handleTap(card)
                         }
-                        .gesture(
-                            DragGesture(minimumDistance: 8, coordinateSpace: .named("matchGrid"))
-                                .onChanged { value in
-                                    handleDragChanged(card: card, location: value.location)
-                                }
-                                .onEnded { value in
-                                    handleDragEnded(card: card, location: value.location)
-                                }
-                        )
                         .animation(.spring(response: 0.25, dampingFraction: 0.8), value: matchedPairIds)
                     }
                 }
@@ -187,19 +177,6 @@ struct MatchingGameView: View {
                 context.stroke(path, with: .color(AppTheme.safetyGreen.opacity(0.8)), lineWidth: 3)
             }
 
-            if let dragState,
-               let termFrame = cardFrames[dragState.termId] {
-                let start = CGPoint(x: termFrame.maxX, y: termFrame.midY)
-                let end = dragState.location
-                var path = Path()
-                path.move(to: start)
-                path.addCurve(
-                    to: end,
-                    control1: CGPoint(x: start.x + 40, y: start.y),
-                    control2: CGPoint(x: end.x - 20, y: end.y)
-                )
-                context.stroke(path, with: .color(AppTheme.blue.opacity(0.6)), lineWidth: 2)
-            }
         }
     }
 
@@ -316,33 +293,6 @@ struct MatchingGameView: View {
         }
     }
 
-    private func handleDragChanged(card: MatchCard, location: CGPoint) {
-        guard card.kind == .term else { return }
-        guard !isComplete else { return }
-        guard !matchedPairIds.contains(card.pairId) else { return }
-        guard !isResolvingMismatch else { return }
-        selectedTermId = card.id
-        dragState = DragMatchState(termId: card.id, location: location)
-    }
-
-    private func handleDragEnded(card: MatchCard, location: CGPoint) {
-        guard card.kind == .term else { return }
-        guard !isComplete else { return }
-        dragState = nil
-        attemptMatch(termId: card.id, dropLocation: location)
-    }
-
-    private func attemptMatch(termId: UUID, dropLocation: CGPoint) {
-        guard let target = definitionCards.first(where: { card in
-            guard let frame = cardFrames[card.id] else { return false }
-            return frame.contains(dropLocation)
-        }) else {
-            selectedTermId = nil
-            return
-        }
-        attemptMatch(termId: termId, definitionId: target.id)
-    }
-
     private func attemptMatch(termId: UUID, definitionId: UUID) {
         guard let term = termCards.first(where: { $0.id == termId }),
               let definition = definitionCards.first(where: { $0.id == definitionId }) else {
@@ -413,7 +363,6 @@ struct MatchingGameView: View {
         isComplete = false
         pairsSnapshot = buildPairSummaries(from: newCards.pairs)
         cardFrames = [:]
-        dragState = nil
     }
 
     private func buildCardSets() -> (terms: [MatchCard], definitions: [MatchCard], pairs: [MatchPair]) {
@@ -579,11 +528,6 @@ private struct MatchMistake: Identifiable {
     let firstKind: MatchCardKind
     let secondText: String
     let secondKind: MatchCardKind
-}
-
-private struct DragMatchState {
-    let termId: UUID
-    let location: CGPoint
 }
 
 private struct CardFramePreferenceKey: PreferenceKey {
