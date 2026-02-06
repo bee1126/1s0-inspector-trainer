@@ -181,11 +181,11 @@ struct StageChip: View {
     var body: some View {
         Text(title)
             .font(AppFont.mono(11))
-            .foregroundColor(isActive ? .white : AppTheme.charcoal)
+            .foregroundColor(isActive ? AppTheme.bg : AppTheme.muted)
             .padding(.horizontal, 10)
             .padding(.vertical, 6)
             .background(
-                Capsule().fill(isActive ? AppTheme.blue : Color.white.opacity(0.85))
+                Capsule().fill(isActive ? AppTheme.primary : AppTheme.surface)
             )
     }
 }
@@ -213,26 +213,28 @@ struct CompletionView: View {
                 VStack(alignment: .leading, spacing: 14) {
                     Text("Module Complete")
                         .font(AppFont.title(22))
-                        .foregroundColor(AppTheme.charcoal)
+                        .foregroundColor(AppTheme.text)
 
                     Text(moduleTitle)
                         .font(AppFont.subtitle(16))
-                        .foregroundColor(AppTheme.charcoal.opacity(0.8))
+                        .foregroundColor(AppTheme.muted)
 
                     HStack(spacing: 12) {
                         VStack(alignment: .leading) {
                             Text("Scenario")
                                 .font(AppFont.mono(12))
-                                .foregroundColor(AppTheme.charcoal.opacity(0.6))
+                                .foregroundColor(AppTheme.muted)
                             Text("\(scenarioResult.score)/\(scenarioResult.total)")
                                 .font(AppFont.subtitle(18))
+                                .foregroundColor(AppTheme.text)
                         }
                         VStack(alignment: .leading) {
                             Text("Quiz")
                                 .font(AppFont.mono(12))
-                                .foregroundColor(AppTheme.charcoal.opacity(0.6))
+                                .foregroundColor(AppTheme.muted)
                             Text("\(quizResult.score)/\(quizResult.total)")
                                 .font(AppFont.subtitle(18))
+                                .foregroundColor(AppTheme.text)
                         }
                         Spacer()
                         ScoreBadge(score: score)
@@ -241,14 +243,14 @@ struct CompletionView: View {
                     HStack(spacing: 10) {
                         Text("Status")
                             .font(AppFont.mono(12))
-                            .foregroundColor(AppTheme.charcoal.opacity(0.6))
+                            .foregroundColor(AppTheme.muted)
                         Text(passed ? "Pass" : "Remediate")
                             .font(AppFont.subtitle(16))
-                            .foregroundColor(passed ? AppTheme.safetyGreen : Color.red.opacity(0.8))
+                            .foregroundColor(passed ? AppTheme.primary : AppTheme.danger)
                     }
                     Text("Pass threshold: 80%")
                         .font(AppFont.body(12))
-                        .foregroundColor(AppTheme.charcoal.opacity(0.6))
+                        .foregroundColor(AppTheme.muted)
 
                     if showRacInput {
                         FormFieldLabel(text: "RAC Justification")
@@ -257,7 +259,7 @@ struct CompletionView: View {
                         FormFieldLabel(text: "RAC Justification")
                         Text(racJustification)
                             .font(AppFont.body(12))
-                            .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                            .foregroundColor(AppTheme.muted)
                     }
 
                     if didSave {

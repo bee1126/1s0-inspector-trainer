@@ -14,10 +14,10 @@ struct ModuleDetailView: View {
                         VStack(alignment: .leading, spacing: 10) {
                             Text(module.title)
                                 .font(AppFont.title(24))
-                                .foregroundColor(AppTheme.charcoal)
+                                .foregroundColor(AppTheme.text)
                             Text(module.subtitle)
                                 .font(AppFont.body(14))
-                                .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                                .foregroundColor(AppTheme.muted)
 
                             HStack(spacing: 10) {
                                 TagPill(text: "\(module.estimatedMinutes) min")
@@ -28,17 +28,17 @@ struct ModuleDetailView: View {
 
                     GlassCard {
                         VStack(alignment: .leading, spacing: 10) {
-                            Text("Objectives")
-                                .font(AppFont.subtitle(18))
-                                .foregroundColor(AppTheme.charcoal)
+                            Text("OBJECTIVES")
+                                .font(AppFont.mono(11))
+                                .foregroundColor(AppTheme.muted)
                             ForEach(module.objectives, id: \.self) { objective in
                                 HStack(alignment: .top, spacing: 8) {
                                     Text("-")
                                         .font(AppFont.subtitle(14))
-                                        .foregroundColor(AppTheme.safetyGreen)
+                                        .foregroundColor(AppTheme.primary)
                                     Text(objective)
                                         .font(AppFont.body(14))
-                                        .foregroundColor(AppTheme.charcoal.opacity(0.8))
+                                        .foregroundColor(AppTheme.text.opacity(0.8))
                                 }
                             }
                         }
@@ -70,27 +70,27 @@ struct ModuleDetailView: View {
 
                     GlassCard {
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Rewards")
-                                .font(AppFont.subtitle(16))
-                                .foregroundColor(AppTheme.charcoal)
+                            Text("REWARDS")
+                                .font(AppFont.mono(11))
+                                .foregroundColor(AppTheme.muted)
                             Text("Up to \(maxXp) XP")
                                 .font(AppFont.title(22))
                                 .foregroundColor(AppTheme.xpGold)
                             Text("Mistakes cost a heart. Practice restores hearts.")
                                 .font(AppFont.body(12))
-                                .foregroundColor(AppTheme.charcoal.opacity(0.6))
+                                .foregroundColor(AppTheme.muted)
                         }
                     }
 
                     if progress.isCompleted(module.id) {
                         GlassCard {
                             VStack(alignment: .leading, spacing: 6) {
-                                Text("Best Score")
-                                    .font(AppFont.subtitle(16))
-                                    .foregroundColor(AppTheme.charcoal)
+                                Text("BEST SCORE")
+                                    .font(AppFont.mono(11))
+                                    .foregroundColor(AppTheme.muted)
                                 Text("\(progress.bestScore(for: module.id))%")
                                     .font(AppFont.title(30))
-                                    .foregroundColor(AppTheme.blue)
+                                    .foregroundColor(AppTheme.info)
                             }
                         }
                     }

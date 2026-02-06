@@ -41,37 +41,37 @@ struct ScenarioFlowView: View {
                 VStack(alignment: .leading, spacing: AppSpacing.stack) {
                     Text("Scenario")
                         .font(AppFont.mono(12))
-                        .foregroundColor(AppTheme.charcoal.opacity(0.6))
+                        .foregroundColor(AppTheme.muted)
 
                     Text(scenario.title)
                         .font(AppFont.title(22))
-                        .foregroundColor(AppTheme.charcoal)
+                        .foregroundColor(AppTheme.text)
 
                     Text(scenario.intro)
                         .font(AppFont.body(14))
-                        .foregroundColor(AppTheme.charcoal.opacity(0.75))
+                        .foregroundColor(AppTheme.muted)
 
-                    Divider().opacity(0.3)
+                    Divider().overlay(AppTheme.border)
 
                     HStack {
                         Text("Time")
                             .font(AppFont.mono(12))
-                            .foregroundColor(AppTheme.charcoal.opacity(0.6))
+                            .foregroundColor(AppTheme.muted)
                         Text("\(timeLeft)s")
                             .font(AppFont.subtitle(14))
-                            .foregroundColor(timeLeft <= 5 ? Color.red.opacity(0.8) : AppTheme.charcoal)
+                            .foregroundColor(timeLeft <= 5 ? AppTheme.danger : AppTheme.text)
                         Spacer()
                         if showsHearts {
                             HeartsView(hearts: progress.hearts, maxHearts: progress.maxHearts, compact: true, onDark: false)
                         }
                         Toggle("Time Pressure", isOn: $timerActive)
                             .labelsHidden()
-                            .tint(AppTheme.blue)
+                            .tint(AppTheme.primary)
                     }
 
                     Text(step.prompt)
                         .font(AppFont.subtitle(17))
-                        .foregroundColor(AppTheme.charcoal)
+                        .foregroundColor(AppTheme.text)
 
                     VStack(spacing: 10) {
                         ForEach(options, id: \.id) { option in
@@ -198,88 +198,5 @@ private extension ScenarioStep {
     func nextStepId(for selectedOptionId: String?) -> String? {
         guard let selectedOptionId else { return nil }
         return options.first(where: { $0.id == selectedOptionId })?.nextStepId
-    }
-}
-
-struct OptionRow: View {
-    let text: String
-    let isSelected: Bool
-    let isCorrect: Bool
-    let isLocked: Bool
-    var revealCorrect: Bool = false
-
-    var body: some View {
-        HStack(alignment: .top, spacing: 10) {
-            Circle()
-                .fill(indicatorColor)
-                .frame(width: 10, height: 10)
-                .padding(.top, 6)
-            Text(text)
-                .font(AppFont.body(14))
-                .foregroundColor(AppTheme.charcoal)
-                .multilineTextAlignment(.leading)
-                .lineLimit(nil)
-                .fixedSize(horizontal: false, vertical: true)
-                .layoutPriority(1)
-            Spacer()
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(AppSpacing.item)
-        .background(
-            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                .fill(isSelected ? Color.white : Color.white.opacity(0.85))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 14, style: .continuous)
-                        .stroke(borderColor, lineWidth: 1)
-                )
-        )
-        .opacity(isLocked && !isSelected && !(revealCorrect && isCorrect) ? 0.6 : 1.0)
-        .contentShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-    }
-
-    private var indicatorColor: Color {
-        if isSelected {
-            return isCorrect ? AppTheme.safetyGreen : Color.red.opacity(0.8)
-        }
-        if revealCorrect && isLocked && isCorrect {
-            return AppTheme.safetyGreen
-        }
-        return AppTheme.blue
-    }
-
-    private var borderColor: Color {
-        if isSelected {
-            return isCorrect ? AppTheme.safetyGreen : Color.red.opacity(0.7)
-        }
-        if revealCorrect && isLocked && isCorrect {
-            return AppTheme.safetyGreen.opacity(0.85)
-        }
-        return Color.white.opacity(0.4)
-    }
-}
-
-struct FeedbackView: View {
-    let text: String
-    let isCorrect: Bool
-
-    var body: some View {
-        HStack(alignment: .top, spacing: 10) {
-            Circle()
-                .fill(isCorrect ? AppTheme.safetyGreen : Color.red.opacity(0.7))
-                .frame(width: 10, height: 10)
-                .padding(.top, 6)
-            Text(text)
-                .font(AppFont.body(14))
-                .foregroundColor(AppTheme.charcoal)
-                .multilineTextAlignment(.leading)
-                .lineLimit(nil)
-                .fixedSize(horizontal: false, vertical: true)
-            Spacer()
-        }
-        .padding(AppSpacing.item)
-        .background(
-            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                .fill(isCorrect ? AppTheme.mint.opacity(0.6) : Color.red.opacity(0.1))
-        )
     }
 }

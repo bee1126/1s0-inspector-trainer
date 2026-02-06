@@ -11,26 +11,26 @@ struct SourcesView: View {
                 LazyVStack(alignment: .leading, spacing: AppSpacing.section) {
                     Text("Sources")
                         .font(AppFont.title(26))
-                        .foregroundColor(.white)
+                        .foregroundColor(AppTheme.text)
 
                     GlassCard {
                         VStack(alignment: .leading, spacing: 10) {
-                            Text("Reference Materials")
-                                .font(AppFont.subtitle(18))
-                                .foregroundColor(AppTheme.charcoal)
+                            Text("REFERENCE MATERIALS")
+                                .font(AppFont.mono(11))
+                                .foregroundColor(AppTheme.muted)
 
                             ForEach(references.indices, id: \.self) { index in
                                 let source = references[index]
                                 VStack(alignment: .leading, spacing: 6) {
                                     Text(source.title)
                                         .font(AppFont.subtitle(15))
-                                        .foregroundColor(AppTheme.charcoal)
+                                        .foregroundColor(AppTheme.text)
                                     Text(source.date)
                                         .font(AppFont.mono(11))
-                                        .foregroundColor(AppTheme.charcoal.opacity(0.6))
+                                        .foregroundColor(AppTheme.muted)
                                     Text(source.notes)
                                         .font(AppFont.body(12))
-                                        .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                                        .foregroundColor(AppTheme.muted)
                                 }
                                 if index < references.count - 1 {
                                     Divider().opacity(0.3)
@@ -41,23 +41,23 @@ struct SourcesView: View {
 
                     GlassCard {
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Privacy & Data Use")
-                                .font(AppFont.subtitle(16))
-                                .foregroundColor(AppTheme.charcoal)
+                            Text("PRIVACY & DATA USE")
+                                .font(AppFont.mono(11))
+                                .foregroundColor(AppTheme.muted)
                             Text("This app stores training progress only on your device. No analytics, advertising, or external data sharing is enabled by default.")
                                 .font(AppFont.body(13))
-                                .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                                .foregroundColor(AppTheme.muted)
                         }
                     }
 
                     GlassCard {
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Disclaimer")
-                                .font(AppFont.subtitle(16))
-                                .foregroundColor(AppTheme.charcoal)
+                            Text("DISCLAIMER")
+                                .font(AppFont.mono(11))
+                                .foregroundColor(AppTheme.muted)
                             Text("This application is not an official Air Force product. It is a training aid intended to reinforce published guidance and OSHA standards. Always follow unit-specific procedures and the most current official publications.")
                                 .font(AppFont.body(13))
-                                .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                                .foregroundColor(AppTheme.muted)
                         }
                     }
                 }

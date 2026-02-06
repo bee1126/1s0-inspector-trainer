@@ -1,82 +1,97 @@
 import SwiftUI
 
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// TACTICAL DARK — Design System
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
 enum AppTheme {
-    static let navy = Color(red: 0.05, green: 0.11, blue: 0.22)
-    static let blue = Color(red: 0.12, green: 0.37, blue: 0.72)
-    static let sky = Color(red: 0.52, green: 0.78, blue: 0.96)
-    static let safetyGreen = Color(red: 0.21, green: 0.72, blue: 0.48)
-    static let mint = Color(red: 0.74, green: 0.94, blue: 0.84)
-    static let sand = Color(red: 0.96, green: 0.96, blue: 0.94)
-    static let charcoal = Color(red: 0.14, green: 0.16, blue: 0.20)
-    static let xpGold = Color(red: 0.98, green: 0.78, blue: 0.2)
-    static let heartRed = Color(red: 0.92, green: 0.2, blue: 0.28)
+    // Core palette
+    static let bg       = Color(red: 0.04, green: 0.055, blue: 0.08)
+    static let surface  = Color(red: 0.08, green: 0.10, blue: 0.13)
+    static let border   = Color(red: 0.12, green: 0.16, blue: 0.22)
+    static let primary  = Color(red: 0.0, green: 0.90, blue: 0.63)
+    static let accent   = Color(red: 1.0, green: 0.72, blue: 0.0)
+    static let danger   = Color(red: 1.0, green: 0.23, blue: 0.36)
+    static let text     = Color(red: 0.91, green: 0.93, blue: 0.95)
+    static let muted    = Color(red: 0.35, green: 0.40, blue: 0.47)
+    static let info     = Color(red: 0.4, green: 0.6, blue: 1.0)
+
+    // Semantic aliases (backward-compatible names)
+    static let navy        = bg
+    static let blue        = info
+    static let sky         = info.opacity(0.4)
+    static let safetyGreen = primary
+    static let mint        = primary.opacity(0.3)
+    static let sand        = text
+    static let charcoal    = text
+    static let xpGold      = accent
+    static let heartRed    = danger
 
     static let backgroundGradient = LinearGradient(
-        gradient: Gradient(colors: [navy, blue, sky, mint]),
-        startPoint: .topLeading,
-        endPoint: .bottomTrailing
+        gradient: Gradient(colors: [bg, surface]),
+        startPoint: .top,
+        endPoint: .bottom
     )
 }
 
 enum AppSpacing {
     static let screenPadding: CGFloat = 20
-    static let section: CGFloat = 18
-    static let stack: CGFloat = 16
-    static let item: CGFloat = 12
-    static let compact: CGFloat = 8
-    static let cardPadding: CGFloat = 18
+    static let section: CGFloat = 16
+    static let stack: CGFloat = 14
+    static let item: CGFloat = 10
+    static let compact: CGFloat = 6
+    static let cardPadding: CGFloat = 16
 }
 
 enum AppFont {
     static func title(_ size: CGFloat) -> Font {
-        .custom("AvenirNext-Heavy", size: size)
+        .system(size: size, weight: .black, design: .default)
     }
 
     static func subtitle(_ size: CGFloat) -> Font {
-        .custom("AvenirNext-DemiBold", size: size)
+        .system(size: size, weight: .semibold, design: .default)
     }
 
     static func body(_ size: CGFloat) -> Font {
-        .custom("AvenirNext-Regular", size: size)
+        .system(size: size, weight: .regular, design: .default)
     }
 
     static func mono(_ size: CGFloat) -> Font {
-        .custom("Menlo", size: size)
+        .system(size: size, weight: .medium, design: .monospaced)
     }
 }
+
+// MARK: - Button Styles
 
 struct PrimaryButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(AppFont.subtitle(16))
-            .foregroundColor(.white)
+            .font(AppFont.subtitle(14))
+            .foregroundColor(AppTheme.bg)
             .padding(.vertical, 12)
-            .padding(.horizontal, 18)
+            .padding(.horizontal, 20)
             .background(
-                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .fill(AppTheme.blue)
+                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    .fill(AppTheme.primary)
             )
-            .overlay(
-                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .stroke(Color.white.opacity(0.2), lineWidth: 1)
-            )
-            .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
-            .animation(.spring(response: 0.25, dampingFraction: 0.7), value: configuration.isPressed)
+            .shadow(color: AppTheme.primary.opacity(0.3), radius: 8, x: 0, y: 4)
+            .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
+            .animation(.easeOut(duration: 0.15), value: configuration.isPressed)
     }
 }
 
 struct OutlineButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(AppFont.subtitle(15))
-            .foregroundColor(AppTheme.blue)
+            .font(AppFont.subtitle(14))
+            .foregroundColor(AppTheme.primary)
             .padding(.vertical, 10)
-            .padding(.horizontal, 16)
+            .padding(.horizontal, 18)
             .background(
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .stroke(AppTheme.blue, lineWidth: 1.5)
+                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    .stroke(AppTheme.primary.opacity(0.5), lineWidth: 1)
             )
-            .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
-            .animation(.spring(response: 0.25, dampingFraction: 0.7), value: configuration.isPressed)
+            .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
+            .animation(.easeOut(duration: 0.15), value: configuration.isPressed)
     }
 }

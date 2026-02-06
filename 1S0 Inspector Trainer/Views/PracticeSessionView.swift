@@ -33,19 +33,19 @@ struct PracticeSessionView: View {
                         VStack(alignment: .leading, spacing: 12) {
                             Text(mode == .dailyFive ? "Daily 5 Complete" : "Practice Complete")
                                 .font(AppFont.title(22))
-                                .foregroundColor(AppTheme.charcoal)
+                                .foregroundColor(AppTheme.text)
                             Text("Score: \(result.score)/\(result.total)")
                                 .font(AppFont.subtitle(16))
-                                .foregroundColor(AppTheme.charcoal)
+                                .foregroundColor(AppTheme.text)
 
                             if mode == .dailyFive {
                                 Text("Daily 5 Streak: \(progress.dailyFiveStreak) days")
                                     .font(AppFont.body(13))
-                                    .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                                    .foregroundColor(AppTheme.muted)
                                 VStack(alignment: .leading, spacing: 6) {
                                     Text("Challenges")
                                         .font(AppFont.subtitle(14))
-                                        .foregroundColor(AppTheme.charcoal)
+                                        .foregroundColor(AppTheme.text)
                                     ChallengeRow(
                                         title: "Beat your last score",
                                         isComplete: priorDailyScore > 0 && progress.lastDailyFiveScore > priorDailyScore
@@ -57,7 +57,7 @@ struct PracticeSessionView: View {
                                     if progress.bestDailyFiveScore > 0 {
                                         Text("Best Daily 5: \(progress.bestDailyFiveScore)%")
                                             .font(AppFont.body(12))
-                                            .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                                            .foregroundColor(AppTheme.muted)
                                     }
                                 }
                             }

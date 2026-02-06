@@ -14,7 +14,7 @@ struct ModuleListView: View {
                 LazyVStack(alignment: .leading, spacing: AppSpacing.stack) {
                     Text("Training Modules")
                         .font(AppFont.title(26))
-                        .foregroundColor(.white)
+                        .foregroundColor(AppTheme.text)
 
                     ForEach(modules, id: \.id) { module in
                         NavigationLink {
@@ -45,10 +45,10 @@ struct ModuleCardView: View {
                     VStack(alignment: .leading, spacing: 6) {
                         Text(module.title)
                             .font(AppFont.subtitle(18))
-                            .foregroundColor(AppTheme.charcoal)
+                            .foregroundColor(AppTheme.text)
                         Text(module.subtitle)
                             .font(AppFont.body(13))
-                            .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                            .foregroundColor(AppTheme.muted)
                     }
                     Spacer()
                     if score > 0 {

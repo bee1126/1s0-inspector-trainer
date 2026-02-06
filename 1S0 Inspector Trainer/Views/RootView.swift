@@ -1,147 +1,116 @@
 import SwiftUI
 
 struct RootView: View {
-    @StateObject private var progress = ProgressStore()
-    @State private var showSplash = true
-    @State private var selectedTab: RootTab = .home
+    @EnvironmentObject private var progress: ProgressStore
+    @State private var selectedTab: Int = 0
     @State private var showRoleSelection = false
+
     private let swipeThreshold: CGFloat = 120
 
     var body: some View {
         ZStack {
+            AppTheme.bg.ignoresSafeArea()
+
             TabView(selection: $selectedTab) {
                 NavigationStack {
                     HomeView()
                 }
                 .tabItem {
-                    Label("Home", systemImage: "shield.lefthalf.filled")
+                    Label("HQ", systemImage: "shield.lefthalf.filled")
                 }
-                .tag(RootTab.home)
+                .tag(0)
 
                 NavigationStack {
                     ProgressDashboardView()
                 }
                 .tabItem {
-                    Label("Progress", systemImage: "chart.bar.xaxis")
+                    Label("Intel", systemImage: "chart.bar.xaxis")
                 }
-                .tag(RootTab.progress)
+                .tag(1)
 
                 NavigationStack {
                     SourcesView()
                 }
                 .tabItem {
-                    Label("Sources", systemImage: "book")
+                    Label("Refs", systemImage: "book")
                 }
-                .tag(RootTab.sources)
+                .tag(2)
 
                 NavigationStack {
                     ToolsView()
                 }
                 .tabItem {
-                    Label("Feedback", systemImage: "bubble.left.and.bubble.right")
+                    Label("Comms", systemImage: "bubble.left.and.bubble.right")
                 }
-                .tag(RootTab.feedback)
+                .tag(3)
             }
-            .tint(AppTheme.blue)
-            .environmentObject(progress)
+            .tint(AppTheme.primary)
             .simultaneousGesture(
-                DragGesture(minimumDistance: 20)
+                DragGesture(minimumDistance: 30)
                     .onEnded { value in
-                        handleTabSwipe(value)
+                        let horizontal = value.translation.width
+                        guard abs(horizontal) > swipeThreshold else { return }
+                        withAnimation {
+                            if horizontal < 0 {
+                                selectedTab = min(selectedTab + 1, 3)
+                            } else {
+                                selectedTab = max(selectedTab - 1, 0)
+                            }
+                        }
                     }
             )
-
-            if showSplash {
-                SplashView(title: progress.selectedRole?.appTitle ?? "Inspector Trainer")
-                    .transition(.opacity)
-                    .zIndex(10)
-            }
         }
         .onAppear {
-            progress.refreshForNewDayIfNeeded()
+            configureTacticalTabBar()
             if progress.selectedRole == nil {
                 showRoleSelection = true
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
-                withAnimation(.easeOut(duration: 0.45)) {
-                    showSplash = false
-                }
-            }
+            progress.refreshForNewDayIfNeeded()
         }
         .fullScreenCover(isPresented: $showRoleSelection) {
             RoleSelectionView(
-                title: "Choose Your Role",
-                subtitle: "We'll tailor lessons and questions to your program.",
+                title: "Select Your Role",
+                subtitle: "Choose the training path for your position.",
                 onSelect: { role in
                     progress.setRole(role)
                     showRoleSelection = false
                 }
             )
-            .interactiveDismissDisabled()
         }
+        .preferredColorScheme(.dark)
     }
 
-    private func handleTabSwipe(_ value: DragGesture.Value) {
-        let horizontal = value.translation.width
-        let vertical = value.translation.height
-        guard abs(horizontal) > abs(vertical) else { return }
-        guard abs(horizontal) > swipeThreshold else { return }
+    private func configureTacticalTabBar() {
+        let tabBarAppearance = UITabBarAppearance()
+        tabBarAppearance.configureWithOpaqueBackground()
+        tabBarAppearance.backgroundColor = UIColor(AppTheme.surface)
 
-        let allTabs = RootTab.allCases
-        guard let currentIndex = allTabs.firstIndex(of: selectedTab) else { return }
+        let normalColor = UIColor(AppTheme.muted)
+        let selectedColor = UIColor(AppTheme.primary)
 
-        if horizontal < 0, currentIndex < allTabs.count - 1 {
-            selectedTab = allTabs[currentIndex + 1]
-        } else if horizontal > 0, currentIndex > 0 {
-            selectedTab = allTabs[currentIndex - 1]
-        }
-    }
-}
+        let itemAppearance = UITabBarItemAppearance()
+        itemAppearance.normal.iconColor = normalColor
+        itemAppearance.normal.titleTextAttributes = [.foregroundColor: normalColor]
+        itemAppearance.selected.iconColor = selectedColor
+        itemAppearance.selected.titleTextAttributes = [.foregroundColor: selectedColor]
 
-enum RootTab: Int, CaseIterable {
-    case home
-    case progress
-    case sources
-    case feedback
-}
+        tabBarAppearance.stackedLayoutAppearance = itemAppearance
+        tabBarAppearance.inlineLayoutAppearance = itemAppearance
+        tabBarAppearance.compactInlineLayoutAppearance = itemAppearance
 
-struct SplashView: View {
-    let title: String
+        UITabBar.appearance().standardAppearance = tabBarAppearance
+        UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
 
-    var body: some View {
-        ZStack {
-            AppTheme.backgroundGradient
-                .overlay(
-                    RadialGradient(
-                        gradient: Gradient(colors: [Color.white.opacity(0.25), Color.clear]),
-                        center: .topTrailing,
-                        startRadius: 10,
-                        endRadius: 220
-                    )
-                )
-                .ignoresSafeArea()
+        // Navigation bar
+        let navAppearance = UINavigationBarAppearance()
+        navAppearance.configureWithOpaqueBackground()
+        navAppearance.backgroundColor = UIColor(AppTheme.surface)
+        navAppearance.titleTextAttributes = [.foregroundColor: UIColor(AppTheme.text)]
+        navAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor(AppTheme.text)]
 
-            VStack(spacing: 16) {
-                ZStack {
-                    Circle()
-                        .fill(Color.white.opacity(0.15))
-                        .frame(width: 110, height: 110)
-                    Circle()
-                        .stroke(Color.white.opacity(0.5), lineWidth: 2)
-                        .frame(width: 110, height: 110)
-                    Image(systemName: "checkmark.shield.fill")
-                        .font(.system(size: 46))
-                        .foregroundColor(.white)
-                }
-
-                Text(title)
-                    .font(AppFont.title(24))
-                    .foregroundColor(.white)
-
-                Text("Daily missions, XP, and streaks")
-                    .font(AppFont.body(14))
-                    .foregroundColor(Color.white.opacity(0.8))
-            }
-        }
+        UINavigationBar.appearance().standardAppearance = navAppearance
+        UINavigationBar.appearance().scrollEdgeAppearance = navAppearance
+        UINavigationBar.appearance().compactAppearance = navAppearance
+        UINavigationBar.appearance().tintColor = UIColor(AppTheme.primary)
     }
 }

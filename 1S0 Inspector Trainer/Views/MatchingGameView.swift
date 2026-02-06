@@ -77,28 +77,31 @@ struct MatchingGameView: View {
                         Text("Back")
                     }
                     .font(AppFont.mono(12))
-                    .foregroundColor(.white)
+                    .foregroundColor(AppTheme.text)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 6)
                     .background(
-                        Capsule().fill(Color.white.opacity(0.18))
+                        Capsule().fill(AppTheme.surface)
+                    )
+                    .overlay(
+                        Capsule().stroke(AppTheme.border, lineWidth: 1)
                     )
                 }
 
                 Spacer()
                 Text("\(pairsMatched)/\(totalPairs) matched")
                     .font(AppFont.mono(12))
-                    .foregroundColor(Color.white.opacity(0.8))
+                    .foregroundColor(AppTheme.muted)
             }
 
             Text(deckTitle)
                 .font(AppFont.subtitle(18))
-                .foregroundColor(.white)
+                .foregroundColor(AppTheme.text)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             Text("Match each prompt to the correct answer. Tap a prompt, then tap its answer.")
                 .font(AppFont.body(13))
-                .foregroundColor(Color.white.opacity(0.85))
+                .foregroundColor(AppTheme.muted)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             ScrollView {
@@ -116,9 +119,9 @@ struct MatchingGameView: View {
 
             HStack(alignment: .top, spacing: columnSpacing) {
                 VStack(alignment: .leading, spacing: 12) {
-                    Text("Prompts")
+                    Text("PROMPTS")
                         .font(AppFont.mono(12))
-                        .foregroundColor(Color.white.opacity(0.7))
+                        .foregroundColor(AppTheme.muted)
                     ForEach(termCards) { card in
                         MatchCardView(
                             card: card,
@@ -134,9 +137,9 @@ struct MatchingGameView: View {
                 }
 
                 VStack(alignment: .leading, spacing: 12) {
-                    Text("Answers")
+                    Text("ANSWERS")
                         .font(AppFont.mono(12))
-                        .foregroundColor(Color.white.opacity(0.7))
+                        .foregroundColor(AppTheme.muted)
                     ForEach(definitionCards) { card in
                         MatchCardView(
                             card: card,
@@ -174,7 +177,7 @@ struct MatchingGameView: View {
                     control1: CGPoint(x: start.x + 40, y: start.y),
                     control2: CGPoint(x: end.x - 40, y: end.y)
                 )
-                context.stroke(path, with: .color(AppTheme.safetyGreen.opacity(0.8)), lineWidth: 3)
+                context.stroke(path, with: .color(AppTheme.primary.opacity(0.8)), lineWidth: 3)
             }
 
         }
@@ -185,15 +188,15 @@ struct MatchingGameView: View {
             VStack(alignment: .leading, spacing: AppSpacing.section) {
                 Text("Sprint Complete")
                     .font(AppFont.title(24))
-                    .foregroundColor(.white)
+                    .foregroundColor(AppTheme.text)
 
                 Text("Pairs matched: \(pairsMatched)/\(totalPairs)")
                     .font(AppFont.body(14))
-                    .foregroundColor(Color.white.opacity(0.85))
+                    .foregroundColor(AppTheme.muted)
 
                 Text("Mistakes: \(mistakeCount)")
                     .font(AppFont.body(14))
-                    .foregroundColor(Color.white.opacity(0.85))
+                    .foregroundColor(AppTheme.muted)
 
                 if let rewardSummary {
                     RewardSummaryCard(summary: rewardSummary, xpToNextLevel: progress.xpToNextLevel)
@@ -201,18 +204,18 @@ struct MatchingGameView: View {
 
                 GlassCard {
                     VStack(alignment: .leading, spacing: 10) {
-                        Text("Pairs")
-                            .font(AppFont.subtitle(16))
-                            .foregroundColor(AppTheme.charcoal)
+                        Text("PAIRS")
+                            .font(AppFont.mono(11))
+                            .foregroundColor(AppTheme.muted)
 
                         ForEach(pairsSnapshot) { pair in
                             VStack(alignment: .leading, spacing: 6) {
                                 Text(pair.term)
                                     .font(AppFont.body(14))
-                                    .foregroundColor(AppTheme.charcoal)
+                                    .foregroundColor(AppTheme.text)
                                 Text(pair.definition)
                                     .font(AppFont.body(13))
-                                    .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                                    .foregroundColor(AppTheme.muted)
                             }
                             .padding(.vertical, 4)
                         }
@@ -221,23 +224,23 @@ struct MatchingGameView: View {
 
                 GlassCard {
                     VStack(alignment: .leading, spacing: 10) {
-                        Text("Mistakes")
-                            .font(AppFont.subtitle(16))
-                            .foregroundColor(AppTheme.charcoal)
+                        Text("MISTAKES")
+                            .font(AppFont.mono(11))
+                            .foregroundColor(AppTheme.muted)
 
                         if mistakes.isEmpty {
                             Text("No mistakes this round.")
                                 .font(AppFont.body(13))
-                                .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                                .foregroundColor(AppTheme.muted)
                         } else {
                             ForEach(mistakes) { mistake in
                                 VStack(alignment: .leading, spacing: 6) {
                                     Text("\(mistake.firstKind.label): \(mistake.firstText)")
                                         .font(AppFont.body(13))
-                                        .foregroundColor(AppTheme.charcoal)
+                                        .foregroundColor(AppTheme.text)
                                     Text("\(mistake.secondKind.label): \(mistake.secondText)")
                                         .font(AppFont.body(13))
-                                        .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                                        .foregroundColor(AppTheme.muted)
                                 }
                                 .padding(.vertical, 4)
                             }
@@ -441,13 +444,13 @@ struct MatchingDeckSelectionView: View {
 
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: AppSpacing.section) {
-                    Text("Match Sprint")
+                    Text("MATCH SPRINT")
                         .font(AppFont.title(26))
-                        .foregroundColor(.white)
+                        .foregroundColor(AppTheme.text)
 
                     Text("Choose a module to start a matching sprint.")
                         .font(AppFont.body(14))
-                        .foregroundColor(Color.white.opacity(0.85))
+                        .foregroundColor(AppTheme.muted)
 
                     VStack(alignment: .leading, spacing: 12) {
                         ForEach(deckOptions) { option in
@@ -485,14 +488,14 @@ private struct MatchDeckCard: View {
                 HStack(alignment: .center, spacing: 10) {
                     Text(option.title)
                         .font(AppFont.subtitle(17))
-                        .foregroundColor(AppTheme.charcoal)
+                        .foregroundColor(AppTheme.text)
                     Spacer()
                     TagPill(text: "\(option.questionCount) Qs")
                 }
 
                 Text(option.detail)
                     .font(AppFont.body(13))
-                    .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                    .foregroundColor(AppTheme.muted)
             }
         }
     }
@@ -504,14 +507,15 @@ private struct MatchPair: Hashable {
     let definition: String
 }
 
-private struct MatchCard: Identifiable, Hashable {
+// Internal (non-private) so MatchCardView in Components.swift can reference them
+struct MatchCard: Identifiable, Hashable {
     let id: UUID
     let pairId: UUID
     let text: String
     let kind: MatchCardKind
 }
 
-private enum MatchCardKind {
+enum MatchCardKind {
     case term
     case definition
 }
@@ -530,15 +534,9 @@ private struct MatchMistake: Identifiable {
     let secondKind: MatchCardKind
 }
 
-private struct CardFramePreferenceKey: PreferenceKey {
-    static var defaultValue: [UUID: CGRect] = [:]
+// CardFramePreferenceKey is defined in Components.swift
 
-    static func reduce(value: inout [UUID: CGRect], nextValue: () -> [UUID: CGRect]) {
-        value.merge(nextValue(), uniquingKeysWith: { $1 })
-    }
-}
-
-private extension MatchCardKind {
+extension MatchCardKind {
     var label: String {
         switch self {
         case .term:
@@ -546,91 +544,5 @@ private extension MatchCardKind {
         case .definition:
             return "Answer"
         }
-    }
-}
-
-private struct MatchCardView: View {
-    let card: MatchCard
-    let isSelected: Bool
-    let isMatched: Bool
-    let isMismatched: Bool
-
-    var body: some View {
-        ZStack(alignment: .topTrailing) {
-            VStack(alignment: .leading, spacing: 6) {
-                Text(card.kind == .term ? "Prompt" : "Answer")
-                    .font(AppFont.mono(10))
-                    .foregroundColor(labelColor)
-
-                Text(card.text)
-                    .font(AppFont.body(13))
-                    .foregroundColor(AppTheme.charcoal)
-                    .lineLimit(4)
-                    .minimumScaleFactor(0.85)
-                    .multilineTextAlignment(.leading)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-            .padding(12)
-            .frame(maxWidth: .infinity, minHeight: 84, alignment: .leading)
-            .background(
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(backgroundColor)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .stroke(borderColor, lineWidth: 1)
-            )
-            .opacity(isMatched ? 0.55 : 1.0)
-
-            if isMatched {
-                Image(systemName: "checkmark.circle.fill")
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundColor(AppTheme.safetyGreen)
-                    .padding(10)
-            }
-        }
-        .background(
-            GeometryReader { proxy in
-                Color.clear
-                    .preference(key: CardFramePreferenceKey.self, value: [card.id: proxy.frame(in: .named("matchGrid"))])
-            }
-        )
-        .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-    }
-
-    private var backgroundColor: Color {
-        if isMatched {
-            return AppTheme.mint.opacity(0.7)
-        }
-        if isMismatched {
-            return Color.red.opacity(0.12)
-        }
-        if isSelected {
-            return AppTheme.sky.opacity(0.35)
-        }
-        return Color.white.opacity(0.92)
-    }
-
-    private var borderColor: Color {
-        if isMatched {
-            return AppTheme.safetyGreen.opacity(0.8)
-        }
-        if isMismatched {
-            return Color.red.opacity(0.6)
-        }
-        if isSelected {
-            return AppTheme.blue.opacity(0.6)
-        }
-        return Color.white.opacity(0.4)
-    }
-
-    private var labelColor: Color {
-        if isMatched {
-            return AppTheme.safetyGreen
-        }
-        if isSelected {
-            return AppTheme.blue
-        }
-        return AppTheme.charcoal.opacity(0.5)
     }
 }

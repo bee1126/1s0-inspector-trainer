@@ -36,14 +36,14 @@ struct QuizFlowView: View {
                     HStack {
                         Text("Quick Check")
                             .font(AppFont.mono(12))
-                            .foregroundColor(AppTheme.charcoal.opacity(0.6))
+                            .foregroundColor(AppTheme.muted)
                         Spacer()
                         if showsHearts {
                             HeartsView(hearts: progress.hearts, maxHearts: progress.maxHearts, compact: true, onDark: false)
                         }
                         Text("\(index + 1)/\(filtered.count)")
                             .font(AppFont.mono(12))
-                            .foregroundColor(AppTheme.charcoal.opacity(0.6))
+                            .foregroundColor(AppTheme.muted)
                     }
 
                     if let imageName = question.imageName {
@@ -56,7 +56,7 @@ struct QuizFlowView: View {
 
                     Text(question.prompt)
                         .font(AppFont.subtitle(18))
-                        .foregroundColor(AppTheme.charcoal)
+                        .foregroundColor(AppTheme.text)
 
                     VStack(spacing: 10) {
                         ForEach(question.choices, id: \.id) { choice in

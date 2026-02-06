@@ -44,37 +44,40 @@ struct RacSortView: View {
                             Text("Back")
                         }
                         .font(AppFont.mono(12))
-                        .foregroundColor(.white)
+                        .foregroundColor(AppTheme.text)
                         .padding(.horizontal, 10)
                         .padding(.vertical, 6)
                         .background(
-                            Capsule().fill(Color.white.opacity(0.18))
+                            Capsule().fill(AppTheme.surface)
+                        )
+                        .overlay(
+                            Capsule().stroke(AppTheme.border, lineWidth: 1)
                         )
                     }
                     Spacer()
                     Text("\(sortedCount)/\(totalCount) sorted")
                         .font(AppFont.mono(12))
-                        .foregroundColor(Color.white.opacity(0.8))
+                        .foregroundColor(AppTheme.muted)
                 }
 
-                Text("RAC Sort")
+                Text("RAC SORT")
                     .font(AppFont.title(26))
-                    .foregroundColor(.white)
+                    .foregroundColor(AppTheme.text)
 
                 Text("Drag hazards into the correct Risk Assessment Code bucket.")
                     .font(AppFont.body(14))
-                    .foregroundColor(Color.white.opacity(0.85))
+                    .foregroundColor(AppTheme.muted)
 
                 GlassCard {
                     VStack(alignment: .leading, spacing: 12) {
-                        Text("Unsorted Hazards")
-                            .font(AppFont.subtitle(16))
-                            .foregroundColor(AppTheme.charcoal)
+                        Text("UNSORTED HAZARDS")
+                            .font(AppFont.mono(11))
+                            .foregroundColor(AppTheme.muted)
 
                         if unassigned.isEmpty {
                             Text("All hazards are sorted. Score the run below.")
                                 .font(AppFont.body(13))
-                                .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                                .foregroundColor(AppTheme.muted)
                         } else {
                             LazyVGrid(columns: hazardColumns, spacing: 12) {
                                 ForEach(unassigned) { hazard in
@@ -111,7 +114,7 @@ struct RacSortView: View {
                 } else {
                     Text("\(unassigned.count) hazards remaining")
                         .font(AppFont.body(12))
-                        .foregroundColor(Color.white.opacity(0.75))
+                        .foregroundColor(AppTheme.muted)
                 }
             }
             .padding(AppSpacing.screenPadding)
@@ -124,11 +127,11 @@ struct RacSortView: View {
             VStack(alignment: .leading, spacing: AppSpacing.section) {
                 Text("RAC Sort Complete")
                     .font(AppFont.title(24))
-                    .foregroundColor(.white)
+                    .foregroundColor(AppTheme.text)
 
                 Text("Score: \(score)/\(totalCount)")
                     .font(AppFont.body(14))
-                    .foregroundColor(Color.white.opacity(0.85))
+                    .foregroundColor(AppTheme.muted)
 
                 if let rewardSummary {
                     RewardSummaryCard(summary: rewardSummary, xpToNextLevel: progress.xpToNextLevel)
@@ -136,23 +139,23 @@ struct RacSortView: View {
 
                 GlassCard {
                     VStack(alignment: .leading, spacing: 10) {
-                        Text("Missed Hazards")
-                            .font(AppFont.subtitle(16))
-                            .foregroundColor(AppTheme.charcoal)
+                        Text("MISSED HAZARDS")
+                            .font(AppFont.mono(11))
+                            .foregroundColor(AppTheme.muted)
 
                         if mistakes.isEmpty {
                             Text("No misses this round.")
                                 .font(AppFont.body(13))
-                                .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                                .foregroundColor(AppTheme.muted)
                         } else {
                             ForEach(mistakes) { mistake in
                                 VStack(alignment: .leading, spacing: 6) {
                                     Text(mistake.hazard.title)
                                         .font(AppFont.body(13))
-                                        .foregroundColor(AppTheme.charcoal)
+                                        .foregroundColor(AppTheme.text)
                                     Text("Placed: \(mistake.selected.rawValue) • Correct: \(mistake.hazard.rac.rawValue)")
                                         .font(AppFont.body(12))
-                                        .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                                        .foregroundColor(AppTheme.muted)
                                 }
                                 .padding(.vertical, 4)
                             }
@@ -186,13 +189,13 @@ struct RacSortView: View {
     private func tint(for category: RacCategory) -> Color {
         switch category {
         case .rac1:
-            return AppTheme.heartRed
+            return AppTheme.danger
         case .rac2:
-            return AppTheme.xpGold
+            return AppTheme.accent
         case .rac3:
-            return AppTheme.blue
+            return AppTheme.info
         case .rac4:
-            return AppTheme.mint
+            return AppTheme.primary.opacity(0.3)
         }
     }
 
@@ -278,21 +281,21 @@ private struct RacHazardCard: View {
         VStack(alignment: .leading, spacing: 6) {
             Text(hazard.title)
                 .font(AppFont.subtitle(13))
-                .foregroundColor(AppTheme.charcoal)
+                .foregroundColor(AppTheme.text)
             Text(hazard.detail)
                 .font(AppFont.body(12))
-                .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                .foregroundColor(AppTheme.muted)
                 .lineLimit(compact ? 2 : 3)
         }
         .padding(12)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
-            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                .fill(Color.white.opacity(0.92))
+            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                .fill(AppTheme.surface)
         )
         .overlay(
-            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                .stroke(Color.white.opacity(0.4), lineWidth: 1)
+            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                .stroke(AppTheme.border, lineWidth: 1)
         )
     }
 }
@@ -309,7 +312,7 @@ private struct RacBucketView: View {
             HStack(spacing: 8) {
                 Text(category.rawValue)
                     .font(AppFont.subtitle(15))
-                    .foregroundColor(AppTheme.charcoal)
+                    .foregroundColor(AppTheme.text)
                 Text(category.severity)
                     .font(AppFont.mono(11))
                     .foregroundColor(tint)
@@ -320,12 +323,12 @@ private struct RacBucketView: View {
 
             Text(category.description)
                 .font(AppFont.body(12))
-                .foregroundColor(AppTheme.charcoal.opacity(0.65))
+                .foregroundColor(AppTheme.muted)
 
             if hazards.isEmpty {
                 Text("Drop hazards here")
                     .font(AppFont.body(12))
-                    .foregroundColor(AppTheme.charcoal.opacity(0.5))
+                    .foregroundColor(AppTheme.muted)
                     .padding(.vertical, 4)
             } else {
                 VStack(spacing: 8) {
@@ -341,12 +344,12 @@ private struct RacBucketView: View {
         .padding(12)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .fill(Color.white.opacity(0.88))
+            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                .fill(AppTheme.surface)
         )
         .overlay(
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .stroke(isTargeted ? tint.opacity(0.9) : Color.white.opacity(0.4), lineWidth: 1.5)
+            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                .stroke(isTargeted ? tint.opacity(0.9) : AppTheme.border, lineWidth: isTargeted ? 2 : 1)
         )
         .onDrop(of: [UTType.text], isTargeted: $isTargeted, perform: onDrop)
     }
@@ -363,13 +366,13 @@ struct SequenceBuilderSelectionView: View {
 
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: AppSpacing.section) {
-                    Text("Sequence Builder")
+                    Text("SEQUENCE BUILDER")
                         .font(AppFont.title(26))
-                        .foregroundColor(.white)
+                        .foregroundColor(AppTheme.text)
 
                     Text("Reorder the steps until the sequence is correct.")
                         .font(AppFont.body(14))
-                        .foregroundColor(Color.white.opacity(0.85))
+                        .foregroundColor(AppTheme.muted)
 
                     VStack(alignment: .leading, spacing: 12) {
                         ForEach(sequences) { sequence in
@@ -408,17 +411,17 @@ struct SequenceBuilderView: View {
                 VStack(alignment: .leading, spacing: AppSpacing.section) {
                     Text(sequence.title)
                         .font(AppFont.title(24))
-                        .foregroundColor(.white)
+                        .foregroundColor(AppTheme.text)
 
                     Text(sequence.detail)
                         .font(AppFont.body(14))
-                        .foregroundColor(Color.white.opacity(0.85))
+                        .foregroundColor(AppTheme.muted)
 
                     GlassCard {
                         VStack(alignment: .leading, spacing: 10) {
-                            Text("Drag to reorder")
-                                .font(AppFont.subtitle(15))
-                                .foregroundColor(AppTheme.charcoal)
+                            Text("DRAG TO REORDER")
+                                .font(AppFont.mono(11))
+                                .foregroundColor(AppTheme.muted)
 
                             List {
                                 ForEach(steps) { step in
@@ -438,7 +441,7 @@ struct SequenceBuilderView: View {
                     if showResults {
                         Text("Correct positions: \(score)/\(steps.count)")
                             .font(AppFont.body(13))
-                            .foregroundColor(Color.white.opacity(0.85))
+                            .foregroundColor(AppTheme.muted)
 
                         if let rewardSummary {
                             RewardSummaryCard(summary: rewardSummary, xpToNextLevel: progress.xpToNextLevel)
@@ -523,25 +526,29 @@ private struct SequenceRow: View {
         HStack(alignment: .top, spacing: 10) {
             Text("\(index + 1)")
                 .font(AppFont.mono(12))
-                .foregroundColor(AppTheme.blue)
+                .foregroundColor(AppTheme.info)
                 .frame(width: 24, alignment: .leading)
 
             Text(step.text)
                 .font(AppFont.body(13))
-                .foregroundColor(AppTheme.charcoal)
+                .foregroundColor(AppTheme.text)
                 .fixedSize(horizontal: false, vertical: true)
 
             Spacer()
 
             if let isCorrect {
                 Image(systemName: isCorrect ? "checkmark.circle.fill" : "xmark.circle.fill")
-                    .foregroundColor(isCorrect ? AppTheme.safetyGreen : Color.red.opacity(0.7))
+                    .foregroundColor(isCorrect ? AppTheme.primary : AppTheme.danger)
             }
         }
         .padding(10)
         .background(
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(Color.white.opacity(0.9))
+            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                .fill(AppTheme.surface)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                .stroke(AppTheme.border, lineWidth: 1)
         )
     }
 }
@@ -554,13 +561,13 @@ private struct SequenceCard: View {
             VStack(alignment: .leading, spacing: 6) {
                 Text(sequence.title)
                     .font(AppFont.subtitle(17))
-                    .foregroundColor(AppTheme.charcoal)
+                    .foregroundColor(AppTheme.text)
                 Text(sequence.detail)
                     .font(AppFont.body(13))
-                    .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                    .foregroundColor(AppTheme.muted)
                 Text("\(sequence.steps.count) steps")
                     .font(AppFont.mono(11))
-                    .foregroundColor(AppTheme.blue)
+                    .foregroundColor(AppTheme.info)
             }
         }
     }
@@ -617,40 +624,40 @@ struct TrueFalseBlitzView: View {
                     if questions.isEmpty {
                         Text("No questions available.")
                             .font(AppFont.subtitle(18))
-                            .foregroundColor(AppTheme.charcoal)
+                            .foregroundColor(AppTheme.text)
                         Text("Add more True/False questions to run a blitz.")
                             .font(AppFont.body(13))
-                            .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                            .foregroundColor(AppTheme.muted)
                     } else {
                         let question = questions[index]
 
                         HStack {
-                            Text("Blitz")
+                            Text("BLITZ")
                                 .font(AppFont.mono(12))
-                                .foregroundColor(AppTheme.charcoal.opacity(0.6))
+                                .foregroundColor(AppTheme.muted)
                             Spacer()
-                            HeartsView(hearts: progress.hearts, maxHearts: progress.maxHearts, compact: true, onDark: false)
+                            HeartsView(hearts: progress.hearts, maxHearts: progress.maxHearts, compact: true, onDark: true)
                             Text("\(index + 1)/\(questions.count)")
                                 .font(AppFont.mono(12))
-                                .foregroundColor(AppTheme.charcoal.opacity(0.6))
+                                .foregroundColor(AppTheme.muted)
                         }
 
                         HStack {
-                            Text("Time")
+                            Text("TIME")
                                 .font(AppFont.mono(12))
-                                .foregroundColor(AppTheme.charcoal.opacity(0.6))
+                                .foregroundColor(AppTheme.muted)
                             Text("\(timeLeft)s")
                                 .font(AppFont.subtitle(14))
-                                .foregroundColor(timeLeft <= 3 ? Color.red.opacity(0.8) : AppTheme.charcoal)
+                                .foregroundColor(timeLeft <= 3 ? AppTheme.danger : AppTheme.text)
                             Spacer()
                             Toggle("Time Pressure", isOn: $timerActive)
                                 .labelsHidden()
-                                .tint(AppTheme.blue)
+                                .tint(AppTheme.info)
                         }
 
                         Text(question.statement)
                             .font(AppFont.subtitle(18))
-                            .foregroundColor(AppTheme.charcoal)
+                            .foregroundColor(AppTheme.text)
 
                         VStack(spacing: 10) {
                             OptionRow(
@@ -700,11 +707,11 @@ struct TrueFalseBlitzView: View {
             VStack(alignment: .leading, spacing: AppSpacing.section) {
                 Text("Blitz Complete")
                     .font(AppFont.title(24))
-                    .foregroundColor(.white)
+                    .foregroundColor(AppTheme.text)
 
                 Text("Score: \(correctCount)/\(questions.count)")
                     .font(AppFont.body(14))
-                    .foregroundColor(Color.white.opacity(0.85))
+                    .foregroundColor(AppTheme.muted)
 
                 if let rewardSummary {
                     RewardSummaryCard(summary: rewardSummary, xpToNextLevel: progress.xpToNextLevel)
@@ -788,13 +795,13 @@ struct MicroDrillSelectionView: View {
 
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: AppSpacing.section) {
-                    Text("Micro-Drills")
+                    Text("MICRO-DRILLS")
                         .font(AppFont.title(26))
-                        .foregroundColor(.white)
+                        .foregroundColor(AppTheme.text)
 
                     Text("Short, role-specific drills focused on a single topic.")
                         .font(AppFont.body(14))
-                        .foregroundColor(Color.white.opacity(0.85))
+                        .foregroundColor(AppTheme.muted)
 
                     VStack(alignment: .leading, spacing: 12) {
                         ForEach(topics) { topic in
@@ -847,11 +854,11 @@ struct MicroDrillSessionView: View {
                         VStack(alignment: .leading, spacing: 12) {
                             Text("Micro-Drill Complete")
                                 .font(AppFont.title(22))
-                                .foregroundColor(AppTheme.charcoal)
+                                .foregroundColor(AppTheme.text)
 
                             Text("Score: \(result.score)/\(result.total)")
                                 .font(AppFont.subtitle(16))
-                                .foregroundColor(AppTheme.charcoal)
+                                .foregroundColor(AppTheme.text)
 
                             if let rewardSummary {
                                 RewardSummaryCard(summary: rewardSummary, xpToNextLevel: progress.xpToNextLevel)
@@ -877,10 +884,10 @@ struct MicroDrillSessionView: View {
                         VStack(alignment: .leading, spacing: 10) {
                             Text("No questions available")
                                 .font(AppFont.subtitle(18))
-                                .foregroundColor(AppTheme.charcoal)
+                                .foregroundColor(AppTheme.text)
                             Text("This drill needs more questions. Try another topic.")
                                 .font(AppFont.body(13))
-                                .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                                .foregroundColor(AppTheme.muted)
                             Button("Back") {
                                 dismiss()
                             }
@@ -927,13 +934,13 @@ private struct MicroDrillCard: View {
                 HStack {
                     Text(topic.title)
                         .font(AppFont.subtitle(17))
-                        .foregroundColor(AppTheme.charcoal)
+                        .foregroundColor(AppTheme.text)
                     Spacer()
                     TagPill(text: "\(questionCount) Qs")
                 }
                 Text(topic.detail)
                     .font(AppFont.body(13))
-                    .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                    .foregroundColor(AppTheme.muted)
             }
         }
     }
@@ -961,19 +968,19 @@ struct OnboardingPathView: View {
 
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: AppSpacing.section) {
-                    Text("Starter Program")
+                    Text("STARTER PROGRAM")
                         .font(AppFont.title(26))
-                        .foregroundColor(.white)
+                        .foregroundColor(AppTheme.text)
 
                     if progress.onboardingStartDate == nil {
                         GlassCard {
                             VStack(alignment: .leading, spacing: 10) {
                                 Text("7-Day Starter Path")
                                     .font(AppFont.subtitle(18))
-                                    .foregroundColor(AppTheme.charcoal)
+                                    .foregroundColor(AppTheme.text)
                                 Text("Complete one short check-in each day to build momentum.")
                                     .font(AppFont.body(13))
-                                    .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                                    .foregroundColor(AppTheme.muted)
                                 Button("Start Program") {
                                     progress.startOnboardingIfNeeded()
                                 }
@@ -983,21 +990,21 @@ struct OnboardingPathView: View {
                     } else {
                         GlassCard {
                             VStack(alignment: .leading, spacing: 12) {
-                                Text("Progress")
-                                    .font(AppFont.subtitle(18))
-                                    .foregroundColor(AppTheme.charcoal)
+                                Text("PROGRESS")
+                                    .font(AppFont.mono(11))
+                                    .foregroundColor(AppTheme.muted)
 
                                 ProgressView(value: progressValue)
-                                    .tint(AppTheme.safetyGreen)
+                                    .tint(AppTheme.primary)
 
                                 Text("\(completedCount)/\(totalDays) check-ins")
                                     .font(AppFont.body(13))
-                                    .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                                    .foregroundColor(AppTheme.muted)
 
                                 if let dayNumber = currentDayNumber {
                                     Text("Day \(dayNumber) of \(totalDays)")
                                         .font(AppFont.subtitle(15))
-                                        .foregroundColor(AppTheme.blue)
+                                        .foregroundColor(AppTheme.info)
                                 }
 
                                 if canCheckIn, let dayNumber = currentDayNumber {
@@ -1008,7 +1015,7 @@ struct OnboardingPathView: View {
                                 } else {
                                     Text("Check-in complete for today.")
                                         .font(AppFont.body(12))
-                                        .foregroundColor(AppTheme.charcoal.opacity(0.6))
+                                        .foregroundColor(AppTheme.muted)
                                 }
                             }
                         }
@@ -1026,38 +1033,38 @@ struct OnboardingPathView: View {
                                 HStack {
                                     Text("Day \(day.id)")
                                         .font(AppFont.mono(12))
-                                        .foregroundColor(AppTheme.blue)
+                                        .foregroundColor(AppTheme.info)
                                     if isComplete {
                                         Text("Complete")
                                             .font(AppFont.mono(11))
-                                            .foregroundColor(AppTheme.safetyGreen)
+                                            .foregroundColor(AppTheme.primary)
                                             .padding(.horizontal, 8)
                                             .padding(.vertical, 4)
-                                            .background(Capsule().fill(AppTheme.mint.opacity(0.6)))
+                                            .background(Capsule().fill(AppTheme.primary.opacity(0.15)))
                                     } else if isCurrent {
                                         Text("Today")
                                             .font(AppFont.mono(11))
-                                            .foregroundColor(AppTheme.xpGold)
+                                            .foregroundColor(AppTheme.accent)
                                             .padding(.horizontal, 8)
                                             .padding(.vertical, 4)
-                                            .background(Capsule().fill(AppTheme.xpGold.opacity(0.2)))
+                                            .background(Capsule().fill(AppTheme.accent.opacity(0.2)))
                                     }
                                     Spacer()
                                 }
 
                                 Text(day.title)
                                     .font(AppFont.subtitle(17))
-                                    .foregroundColor(AppTheme.charcoal)
+                                    .foregroundColor(AppTheme.text)
 
                                 Text(day.summary)
                                     .font(AppFont.body(13))
-                                    .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                                    .foregroundColor(AppTheme.muted)
 
                                 VStack(alignment: .leading, spacing: 4) {
                                     ForEach(day.tasks, id: \.self) { task in
                                         Text("• \(task)")
                                             .font(AppFont.body(12))
-                                            .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                                            .foregroundColor(AppTheme.muted)
                                     }
                                 }
 
@@ -1153,4 +1160,3 @@ struct OnboardingPathView: View {
         }
     }
 }
-

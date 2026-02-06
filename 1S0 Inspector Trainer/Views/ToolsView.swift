@@ -12,7 +12,7 @@ struct ToolsView: View {
                 LazyVStack(alignment: .leading, spacing: AppSpacing.stack) {
                     Text("Feedback")
                         .font(AppFont.title(26))
-                        .foregroundColor(.white)
+                        .foregroundColor(AppTheme.text)
 
                     ToolSection(title: "Feedback") {
                         NavigationLink { BugReportView() } label: {
@@ -81,9 +81,9 @@ struct ToolSection<Content: View>: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text(title)
-                .font(AppFont.subtitle(18))
-                .foregroundColor(.white)
+            Text(title.uppercased())
+                .font(AppFont.mono(11))
+                .foregroundColor(AppTheme.muted)
             content
         }
     }
@@ -98,10 +98,10 @@ struct ToolCard: View {
             VStack(alignment: .leading, spacing: 6) {
                 Text(title)
                     .font(AppFont.subtitle(17))
-                    .foregroundColor(AppTheme.charcoal)
+                    .foregroundColor(AppTheme.text)
                 Text(detail)
                     .font(AppFont.body(13))
-                    .foregroundColor(AppTheme.charcoal.opacity(0.7))
+                    .foregroundColor(AppTheme.muted)
             }
         }
     }
@@ -124,7 +124,7 @@ struct BugReportView: View {
                     VStack(alignment: .leading, spacing: AppSpacing.item) {
                         Text("Bug Fix Report")
                             .font(AppFont.title(22))
-                            .foregroundColor(AppTheme.charcoal)
+                            .foregroundColor(AppTheme.text)
 
                         FormFieldLabel(text: "Short title")
                         AppTextField(placeholder: "Brief summary", text: $title)
@@ -181,7 +181,7 @@ struct FeatureRequestView: View {
                     VStack(alignment: .leading, spacing: AppSpacing.item) {
                         Text("Feature Request")
                             .font(AppFont.title(22))
-                            .foregroundColor(AppTheme.charcoal)
+                            .foregroundColor(AppTheme.text)
 
                         FormFieldLabel(text: "Feature title")
                         AppTextField(placeholder: "Short descriptive title", text: $title)

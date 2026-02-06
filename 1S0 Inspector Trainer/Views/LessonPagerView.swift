@@ -26,34 +26,34 @@ struct LessonPagerView: View {
                     HStack(spacing: 12) {
                         Text("Lesson")
                             .font(AppFont.mono(12))
-                            .foregroundColor(AppTheme.charcoal.opacity(0.6))
+                            .foregroundColor(AppTheme.muted)
                         Spacer()
                         if let onSkip {
                             Button("Skip Lesson") {
                                 onSkip()
                             }
                             .font(AppFont.mono(12))
-                            .foregroundColor(AppTheme.blue)
+                            .foregroundColor(AppTheme.info)
                         }
                         Text("\(index + 1)/\(pages.count)")
                             .font(AppFont.mono(12))
-                            .foregroundColor(AppTheme.charcoal.opacity(0.6))
+                            .foregroundColor(AppTheme.muted)
                     }
 
                     Text(pages[index].title)
                         .font(AppFont.title(22))
-                        .foregroundColor(AppTheme.charcoal)
+                        .foregroundColor(AppTheme.text)
 
                     VStack(alignment: .leading, spacing: 10) {
                         ForEach(pages[index].bullets, id: \.self) { bullet in
                             HStack(alignment: .top, spacing: 8) {
                                 Circle()
-                                    .fill(AppTheme.safetyGreen)
+                                    .fill(AppTheme.primary)
                                     .frame(width: 6, height: 6)
                                     .padding(.top, 6)
                                 Text(bullet)
                                     .font(AppFont.body(14))
-                                    .foregroundColor(AppTheme.charcoal.opacity(0.85))
+                                    .foregroundColor(AppTheme.text)
                             }
                         }
                     }
