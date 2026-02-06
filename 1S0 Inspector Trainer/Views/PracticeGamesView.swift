@@ -660,27 +660,31 @@ struct TrueFalseBlitzView: View {
                             .foregroundColor(AppTheme.text)
 
                         VStack(spacing: 10) {
-                            OptionRow(
-                                text: "True",
-                                isSelected: selectedAnswer == true,
-                                isCorrect: question.answer,
-                                isLocked: selectedAnswer != nil,
-                                revealCorrect: true
-                            )
-                            .onTapGesture {
+                            Button {
                                 answer(true)
+                            } label: {
+                                OptionRow(
+                                    text: "True",
+                                    isSelected: selectedAnswer == true,
+                                    isCorrect: question.answer,
+                                    isLocked: selectedAnswer != nil,
+                                    revealCorrect: true
+                                )
                             }
+                            .buttonStyle(.plain)
 
-                            OptionRow(
-                                text: "False",
-                                isSelected: selectedAnswer == false,
-                                isCorrect: !question.answer,
-                                isLocked: selectedAnswer != nil,
-                                revealCorrect: true
-                            )
-                            .onTapGesture {
+                            Button {
                                 answer(false)
+                            } label: {
+                                OptionRow(
+                                    text: "False",
+                                    isSelected: selectedAnswer == false,
+                                    isCorrect: !question.answer,
+                                    isLocked: selectedAnswer != nil,
+                                    revealCorrect: true
+                                )
                             }
+                            .buttonStyle(.plain)
                         }
 
                         if showFeedback {

@@ -123,15 +123,17 @@ struct MatchingGameView: View {
                         .font(AppFont.mono(12))
                         .foregroundColor(AppTheme.muted)
                     ForEach(termCards) { card in
-                        MatchCardView(
-                            card: card,
-                            isSelected: selectedTermId == card.id,
-                            isMatched: matchedPairIds.contains(card.pairId),
-                            isMismatched: mismatchCardIds.contains(card.id)
-                        )
-                        .onTapGesture {
+                        Button {
                             handleTap(card)
+                        } label: {
+                            MatchCardView(
+                                card: card,
+                                isSelected: selectedTermId == card.id,
+                                isMatched: matchedPairIds.contains(card.pairId),
+                                isMismatched: mismatchCardIds.contains(card.id)
+                            )
                         }
+                        .buttonStyle(.plain)
                         .animation(.spring(response: 0.25, dampingFraction: 0.8), value: matchedPairIds)
                     }
                 }
@@ -141,15 +143,17 @@ struct MatchingGameView: View {
                         .font(AppFont.mono(12))
                         .foregroundColor(AppTheme.muted)
                     ForEach(definitionCards) { card in
-                        MatchCardView(
-                            card: card,
-                            isSelected: selectedDefinitionId == card.id,
-                            isMatched: matchedPairIds.contains(card.pairId),
-                            isMismatched: mismatchCardIds.contains(card.id)
-                        )
-                        .onTapGesture {
+                        Button {
                             handleTap(card)
+                        } label: {
+                            MatchCardView(
+                                card: card,
+                                isSelected: selectedDefinitionId == card.id,
+                                isMatched: matchedPairIds.contains(card.pairId),
+                                isMismatched: mismatchCardIds.contains(card.id)
+                            )
                         }
+                        .buttonStyle(.plain)
                         .animation(.spring(response: 0.25, dampingFraction: 0.8), value: matchedPairIds)
                     }
                 }

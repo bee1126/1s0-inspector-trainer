@@ -60,14 +60,7 @@ struct QuizFlowView: View {
 
                     VStack(spacing: 10) {
                         ForEach(question.choices, id: \.id) { choice in
-                            OptionRow(
-                                text: choice.text,
-                                isSelected: selectedChoiceId == choice.id,
-                                isCorrect: choice.isCorrect,
-                                isLocked: selectedChoiceId != nil,
-                                revealCorrect: true
-                            )
-                            .onTapGesture {
+                            Button {
                                 guard selectedChoiceId == nil else { return }
                                 selectedChoiceId = choice.id
                                 if choice.isCorrect {
@@ -83,7 +76,16 @@ struct QuizFlowView: View {
                                 withAnimation(.easeInOut(duration: 0.2)) {
                                     showFeedback = true
                                 }
+                            } label: {
+                                OptionRow(
+                                    text: choice.text,
+                                    isSelected: selectedChoiceId == choice.id,
+                                    isCorrect: choice.isCorrect,
+                                    isLocked: selectedChoiceId != nil,
+                                    revealCorrect: true
+                                )
                             }
+                            .buttonStyle(.plain)
                         }
                     }
 

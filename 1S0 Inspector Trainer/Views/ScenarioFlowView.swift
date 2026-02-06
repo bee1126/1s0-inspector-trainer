@@ -75,14 +75,7 @@ struct ScenarioFlowView: View {
 
                     VStack(spacing: 10) {
                         ForEach(options, id: \.id) { option in
-                            OptionRow(
-                                text: option.text,
-                                isSelected: selectedOptionId == option.id,
-                                isCorrect: option.isCorrect,
-                                isLocked: selectedOptionId != nil,
-                                revealCorrect: true
-                            )
-                            .onTapGesture {
+                            Button {
                                 guard selectedOptionId == nil else { return }
                                 selectedOptionId = option.id
                                 answeredCount += 1
@@ -96,7 +89,16 @@ struct ScenarioFlowView: View {
                                 withAnimation(.easeInOut(duration: 0.2)) {
                                     showFeedback = true
                                 }
+                            } label: {
+                                OptionRow(
+                                    text: option.text,
+                                    isSelected: selectedOptionId == option.id,
+                                    isCorrect: option.isCorrect,
+                                    isLocked: selectedOptionId != nil,
+                                    revealCorrect: true
+                                )
                             }
+                            .buttonStyle(.plain)
                         }
                     }
 
