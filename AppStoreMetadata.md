@@ -37,13 +37,13 @@ safety,inspector,1s0,air force,osha,lockout,tagout,fall protection,risk,training
 Education
 
 ## Support URL
-Host `docs/support.html` (GitHub Pages or any static host) and paste the HTTPS URL here.
+https://bee1126.github.io/1s0-inspector-trainer/support.html
 
 ## Marketing URL
-Host `docs/index.html` (GitHub Pages or any static host) and paste the HTTPS URL here.
+https://bee1126.github.io/1s0-inspector-trainer/
 
 ## Privacy Policy URL
-Host `docs/privacy.html` (GitHub Pages or any static host) and paste the HTTPS URL here.
+https://bee1126.github.io/1s0-inspector-trainer/privacy.html
 
 ## App Review Notes
 No login or account required. All data stored on-device only. No analytics, advertising, or third-party SDKs. Content is aligned with publicly available OSHA standards and Air Force safety guidance. This is not an official Air Force product.
