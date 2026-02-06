@@ -24,6 +24,10 @@ final class ProgressStore: ObservableObject {
     @Published private(set) var onboardingCheckIns: Set<Int> = []
     let maxHearts: Int = 5
 
+    private let defaults: UserDefaults
+    private let calendar: Calendar
+    private let dateProvider: () -> Date
+
     private let completedKey = "completedModules"
     private let scoresKey = "bestScores"
     private let completedDatesKey = "completedDates"
@@ -45,13 +49,16 @@ final class ProgressStore: ObservableObject {
     private let onboardingStartKey = "onboardingStartDate"
     private let onboardingCheckInsKey = "onboardingCheckIns"
 
-    init() {
+    init(defaults: UserDefaults = .standard, calendar: Calendar = .current, dateProvider: @escaping () -> Date = Date.init) {
+        self.defaults = defaults
+        self.calendar = calendar
+        self.dateProvider = dateProvider
         load()
     }
 
     func markCompleted(moduleId: String, score: Int, scenarioPerfect: Bool, quizPerfect: Bool) {
         completedModules.insert(moduleId)
-        lastCompleted[moduleId] = Date()
+        lastCompleted[moduleId] = dateProvider()
         if scenarioPerfect { perfectScenario.insert(moduleId) }
         if quizPerfect { perfectQuiz.insert(moduleId) }
         let current = bestScores[moduleId] ?? 0
@@ -116,7 +123,6 @@ final class ProgressStore: ObservableObject {
     }
 
     private func load() {
-        let defaults = UserDefaults.standard
         if let data = defaults.data(forKey: completedKey),
            let decoded = try? JSONDecoder().decode([String].self, from: data) {
             completedModules = Set(decoded)
@@ -177,7 +183,6 @@ final class ProgressStore: ObservableObject {
     }
 
     private func save() {
-        let defaults = UserDefaults.standard
         if let data = try? JSONEncoder().encode(Array(completedModules)) {
             defaults.set(data, forKey: completedKey)
         }
@@ -223,19 +228,19 @@ final class ProgressStore: ObservableObject {
     }
 
     func refreshForNewDayIfNeeded() {
-        let today = Calendar.current.startOfDay(for: Date())
+        let today = calendar.startOfDay(for: dateProvider())
         guard let lastReset = lastDailyReset else {
             lastDailyReset = today
             save()
             return
         }
-        if !Calendar.current.isDate(lastReset, inSameDayAs: today) {
+        if !calendar.isDate(lastReset, inSameDayAs: today) {
             dailyXp = 0
             hearts = maxHearts
             lastDailyReset = today
             if let lastGoal = lastDailyGoalDate {
-                let lastGoalDay = Calendar.current.startOfDay(for: lastGoal)
-                let diff = Calendar.current.dateComponents([.day], from: lastGoalDay, to: today).day ?? 0
+                let lastGoalDay = calendar.startOfDay(for: lastGoal)
+                let diff = calendar.dateComponents([.day], from: lastGoalDay, to: today).day ?? 0
                 if diff > 1 {
                     dailyStreak = 0
                 }
@@ -267,6 +272,7 @@ final class ProgressStore: ObservableObject {
         save()
     }
 
+    #if DEBUG
     func debugMaxRank(modules: [TrainingModule]) {
         for module in modules {
             markCompleted(moduleId: module.id, score: 100, scenarioPerfect: true, quizPerfect: true)
@@ -275,6 +281,7 @@ final class ProgressStore: ObservableObject {
         dailyXp = max(dailyXp, dailyGoal)
         save()
     }
+    #endif
 
     func completeModule(moduleId: String, score: Int, scenarioResult: AssessmentResult, quizResult: AssessmentResult, quizMultiplier: Double = 1.0) -> RewardSummary {
         markCompleted(
@@ -321,11 +328,11 @@ final class ProgressStore: ObservableObject {
         dailyXp += amount
 
         var streakIncreased = false
-        let today = Calendar.current.startOfDay(for: Date())
+        let today = calendar.startOfDay(for: dateProvider())
         if dailyXp >= dailyGoal {
             if let lastGoalDate = lastDailyGoalDate {
-                let lastGoalDay = Calendar.current.startOfDay(for: lastGoalDate)
-                let diff = Calendar.current.dateComponents([.day], from: lastGoalDay, to: today).day ?? 0
+                let lastGoalDay = calendar.startOfDay(for: lastGoalDate)
+                let diff = calendar.dateComponents([.day], from: lastGoalDay, to: today).day ?? 0
                 if diff == 0 {
                     // Already counted today
                 } else if diff == 1 {
@@ -350,10 +357,10 @@ final class ProgressStore: ObservableObject {
     private let levelStep: Int = 120
 
     func recordDailyFive(score: Int, total: Int) {
-        let today = Calendar.current.startOfDay(for: Date())
+        let today = calendar.startOfDay(for: dateProvider())
         if let lastDate = lastDailyFiveDate {
-            let lastDay = Calendar.current.startOfDay(for: lastDate)
-            let diff = Calendar.current.dateComponents([.day], from: lastDay, to: today).day ?? 0
+            let lastDay = calendar.startOfDay(for: lastDate)
+            let diff = calendar.dateComponents([.day], from: lastDay, to: today).day ?? 0
             if diff == 1 {
                 dailyFiveStreak += 1
             } else if diff > 1 {
@@ -377,7 +384,7 @@ final class ProgressStore: ObservableObject {
             stage: stage,
             lessonIndex: currentLessonIndex,
             quizState: currentQuiz,
-            updatedAt: Date()
+            updatedAt: dateProvider()
         )
         save()
     }
@@ -395,27 +402,28 @@ final class ProgressStore: ObservableObject {
 
     func startOnboardingIfNeeded() {
         if onboardingStartDate == nil {
-            onboardingStartDate = Calendar.current.startOfDay(for: Date())
+            onboardingStartDate = calendar.startOfDay(for: dateProvider())
             onboardingCheckIns = []
             save()
         }
     }
 
     func restartOnboarding() {
-        onboardingStartDate = Calendar.current.startOfDay(for: Date())
+        onboardingStartDate = calendar.startOfDay(for: dateProvider())
         onboardingCheckIns = []
         save()
     }
 
-    func onboardingDayIndex(for date: Date = Date()) -> Int? {
+    func onboardingDayIndex(for date: Date? = nil) -> Int? {
         guard let start = onboardingStartDate else { return nil }
-        let startDay = Calendar.current.startOfDay(for: start)
-        let targetDay = Calendar.current.startOfDay(for: date)
-        let diff = Calendar.current.dateComponents([.day], from: startDay, to: targetDay).day ?? 0
+        let targetDate = date ?? dateProvider()
+        let startDay = calendar.startOfDay(for: start)
+        let targetDay = calendar.startOfDay(for: targetDate)
+        let diff = calendar.dateComponents([.day], from: startDay, to: targetDay).day ?? 0
         return min(max(diff, 0), 6)
     }
 
-    func onboardingDayNumber(for date: Date = Date()) -> Int? {
+    func onboardingDayNumber(for date: Date? = nil) -> Int? {
         guard let index = onboardingDayIndex(for: date) else { return nil }
         return index + 1
     }

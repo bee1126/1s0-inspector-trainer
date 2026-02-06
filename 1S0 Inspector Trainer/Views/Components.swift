@@ -45,24 +45,6 @@ struct TagPill: View {
     }
 }
 
-// MARK: - Stat Pill
-
-struct StatPill: View {
-    let title: String
-    let value: String
-
-    var body: some View {
-        VStack(spacing: 2) {
-            Text(title)
-                .font(AppFont.mono(9))
-                .foregroundColor(AppTheme.muted)
-            Text(value)
-                .font(AppFont.mono(15))
-                .foregroundColor(AppTheme.accent)
-        }
-    }
-}
-
 // MARK: - Score Badge
 
 struct ScoreBadge: View {

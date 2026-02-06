@@ -16,6 +16,7 @@
 		385B0547EA624ED4980254F0 /* InspectorTrainerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F24684BB97641B9BDE038CA /* InspectorTrainerApp.swift */; };
 		3E4AB0E655E94B92BBFC3B33 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19302FDEB72143C5A663AE4E /* BackgroundView.swift */; };
 		3F977012712F1F26857E1093 /* MatchingGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73524C141A3F5AB2EFF99FE1 /* MatchingGameView.swift */; };
+		E1FFCA2A98184C7DA61D1BFBEFAC71DD /* ProgressStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC3C1F7388CF4E83A784B145B4C85FFB /* ProgressStoreTests.swift */; };
 		7EE70027C2504F5DACDF4651 /* PracticeGamesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BB159C4A5742E59988F9D4 /* PracticeGamesView.swift */; };
 		577F87A126C14A529F911618 /* ModuleListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F4C994046BF462DB2E96042 /* ModuleListView.swift */; };
 		67F52C395D294862B5195B86 /* ModuleFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072153175F864C95A13A7416 /* ModuleFlowView.swift */; };
@@ -38,6 +39,16 @@
 		341C4143A1854184A3CE936A /* RoleSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B40D56892E1473CAECAC983 /* RoleSelectionView.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		52CE497420DC4C93975D2D712DBC867D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 95B39E2595954573BF1B2650 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EBB4F50E21FC4E5D918D0003;
+			remoteInfo = "1S0 Inspector Trainer";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		0468BD1193644207B5426AC2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		072153175F864C95A13A7416 /* ModuleFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleFlowView.swift; sourceTree = "<group>"; };
@@ -49,6 +60,7 @@
 		2B40D56892E1473CAECAC983 /* RoleSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoleSelectionView.swift; sourceTree = "<group>"; };
 		32BAAD5C65C74C7C981FD78C /* QuizFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizFlowView.swift; sourceTree = "<group>"; };
 		40AEBFFBDDE847C4A5C225B5 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
+		AC3C1F7388CF4E83A784B145B4C85FFB /* ProgressStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStoreTests.swift; sourceTree = "<group>"; };
 		534B8049CF904994B419DE7D /* ProgressStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStore.swift; sourceTree = "<group>"; };
 		5D6583B73C5E4CA089EA252A /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
 		5F897A880F5B4B02A81A8BDE /* PracticeContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeContent.swift; sourceTree = "<group>"; };
@@ -64,6 +76,7 @@
 		A561485258DE42A4B11F142F /* QuizBank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizBank.swift; sourceTree = "<group>"; };
 		B82A650A0B65431196F5A0F8 /* ModuleDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleDetailView.swift; sourceTree = "<group>"; };
 		C506A214268B476AB97AFCF9 /* 1S0 Inspector Trainer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = "1S0 Inspector Trainer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		745F612C42314496B474DCAD3B30A012 /* 1S0 Inspector TrainerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = "1S0 Inspector TrainerTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBA413EE88AF47A68BE9CA46 /* ProgressDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressDashboardView.swift; sourceTree = "<group>"; };
 		D84B5E74DAD64241A4C71C85 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		E0C3EDD2069644FCA0930019 /* TrainingRole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingRole.swift; sourceTree = "<group>"; };
@@ -80,6 +93,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7774D923742E48DFB6B11FA63BDE9238 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -89,6 +109,14 @@
 				6F24684BB97641B9BDE038CA /* InspectorTrainerApp.swift */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		2A26C8A311474A2881B559F9D3F1501B /* 1S0 Inspector TrainerTests */ = {
+			isa = PBXGroup;
+			children = (
+				AC3C1F7388CF4E83A784B145B4C85FFB /* ProgressStoreTests.swift */,
+			);
+			path = "1S0 Inspector TrainerTests";
 			sourceTree = "<group>";
 		};
 		39EFCE7531DD4B2190B0B359 /* Resources */ = {
@@ -116,6 +144,7 @@
 			isa = PBXGroup;
 			children = (
 				C506A214268B476AB97AFCF9 /* 1S0 Inspector Trainer.app */,
+				745F612C42314496B474DCAD3B30A012 /* 1S0 Inspector TrainerTests.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -148,6 +177,7 @@
 			isa = PBXGroup;
 			children = (
 				3C642D13FB8F405FAE878EF0 /* 1S0 Inspector Trainer */,
+				2A26C8A311474A2881B559F9D3F1501B /* 1S0 Inspector TrainerTests */,
 				80242FCCE50E4387A7C830B9,
 			);
 			sourceTree = "<group>";
@@ -187,6 +217,24 @@
 			productReference = C506A214268B476AB97AFCF9 /* 1S0 Inspector Trainer.app */;
 			productType = "com.apple.product-type.application";
 		};
+		6B9DF976ADDB412281C53AAACD2F21B7 /* 1S0 Inspector TrainerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8AC8F0C403A54B098BB79B440A089255 /* Build configuration list for PBXNativeTarget "1S0 Inspector TrainerTests" */;
+			buildPhases = (
+				C3116512918F4FB68E27203BD0E6C557 /* Sources */,
+				7774D923742E48DFB6B11FA63BDE9238 /* Frameworks */,
+				859A19845C834A4B92A95EA0B0E00CB9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A379C922698A4D34A1F6E3DC59F9572D /* PBXTargetDependency */,
+			);
+			name = "1S0 Inspector TrainerTests";
+			productName = "1S0 Inspector TrainerTests";
+			productReference = 745F612C42314496B474DCAD3B30A012 /* 1S0 Inspector TrainerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -199,6 +247,10 @@
 				TargetAttributes = {
 					EBB4F50E21FC4E5D918D0003 = {
 						CreatedOnToolsVersion = 26.2;
+					};
+					6B9DF976ADDB412281C53AAACD2F21B7 = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = EBB4F50E21FC4E5D918D0003;
 					};
 				};
 			};
@@ -216,6 +268,7 @@
 			projectRoot = "";
 			targets = (
 				EBB4F50E21FC4E5D918D0003 /* 1S0 Inspector Trainer */,
+				6B9DF976ADDB412281C53AAACD2F21B7 /* 1S0 Inspector TrainerTests */,
 			);
 		};
 /* End PBXProject section */
@@ -227,6 +280,13 @@
 			files = (
 				9C9CB5AC29954FB895B07BB2 /* Assets.xcassets in Resources */,
 				05913B87B18360AF583623ED /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		859A19845C834A4B92A95EA0B0E00CB9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,7 +328,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C3116512918F4FB68E27203BD0E6C557 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E1FFCA2A98184C7DA61D1BFBEFAC71DD /* ProgressStoreTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A379C922698A4D34A1F6E3DC59F9572D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EBB4F50E21FC4E5D918D0003 /* 1S0 Inspector Trainer */;
+			targetProxy = 52CE497420DC4C93975D2D712DBC867D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		138E3FD2A8674A778A3C7A28 /* Debug */ = {
@@ -331,7 +407,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.safetyinspector;
+				PRODUCT_BUNDLE_IDENTIFIER = com.abdoulbah.1s0-inspector-trainer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -354,7 +430,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.safetyinspector;
+				PRODUCT_BUNDLE_IDENTIFIER = com.abdoulbah.1s0-inspector-trainer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_VERSION = 5.0;
@@ -405,6 +481,40 @@
 			};
 			name = Release;
 		};
+		98641C2417C04263868987EBA4B64E5E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.abdoulbah.1s0-inspector-trainerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/1S0 Inspector Trainer.app/1S0 Inspector Trainer";
+			};
+			name = Debug;
+		};
+		9E711167026E46FF8F2EB4C363172410 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.abdoulbah.1s0-inspector-trainerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/1S0 Inspector Trainer.app/1S0 Inspector Trainer";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -413,6 +523,15 @@
 			buildConfigurations = (
 				5FCA106D7D0445B39A0A7246 /* Debug */,
 				1A9426F6DF7F4717AE1CECAD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8AC8F0C403A54B098BB79B440A089255 /* Build configuration list for PBXNativeTarget "1S0 Inspector TrainerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				98641C2417C04263868987EBA4B64E5E /* Debug */,
+				9E711167026E46FF8F2EB4C363172410 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

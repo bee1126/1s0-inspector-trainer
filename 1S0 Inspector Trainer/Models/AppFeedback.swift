@@ -12,21 +12,6 @@ enum AppFeedback {
         play(.incorrect)
     }
 
-    static func complete() {
-        haptic(.success)
-        play(.complete)
-    }
-
-    static func levelUp() {
-        haptic(.success)
-        play(.levelUp)
-    }
-
-    static func badge() {
-        haptic(.success)
-        play(.badge)
-    }
-
     private static func haptic(_ type: UINotificationFeedbackGenerator.FeedbackType) {
         let generator = UINotificationFeedbackGenerator()
         generator.prepare()
@@ -40,8 +25,5 @@ enum AppFeedback {
     private enum Sound: SystemSoundID {
         case correct = 1104
         case incorrect = 1053
-        case complete = 1001
-        case levelUp = 1025
-        case badge = 1013
     }
 }

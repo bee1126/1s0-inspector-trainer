@@ -1,10 +1,10 @@
 # App Store Submission Checklist
 
 ## 1) Project settings (Xcode)
-- Bundle ID: change `com.example.safetyinspector` to your App ID bundle identifier.
+- Bundle ID: `com.abdoulbah.1s0-inspector-trainer` (already configured).
 - Versioning: bump `MARKETING_VERSION` (e.g., `1.0.1`) and `CURRENT_PROJECT_VERSION` (build number).
 - Deployment target: confirm the minimum iOS version you want to support.
-- Devices: the project is currently `iPhone + iPad` (`TARGETED_DEVICE_FAMILY = 1,2`). If you want **iPhone-only**, switch it to `1` to avoid iPad screenshot requirements.
+- Devices: the project is **iPhone-only** (`TARGETED_DEVICE_FAMILY = 1`). To add iPad support, change it to `1,2` (this will require iPad screenshots).
 
 ## 2) Required web links (App Store Connect)
 App Store Connect requires HTTPS links for:
