@@ -155,18 +155,7 @@ struct QuizFlowView: View {
             let questionMap = Dictionary(uniqueKeysWithValues: questions.map { ($0.id, $0) })
             let ordered = resumeState.questionIds.compactMap { questionMap[$0] }
             if !ordered.isEmpty {
-                preparedQuestions = ordered.map { question in
-                    let order = resumeState.choiceOrder[question.id]
-                    let choicesById = Dictionary(uniqueKeysWithValues: question.choices.map { ($0.id, $0) })
-                    let orderedChoices = order?.compactMap { choicesById[$0] } ?? question.choices
-                    return QuizQuestion(
-                        id: question.id,
-                        prompt: question.prompt,
-                        difficulty: question.difficulty,
-                        imageName: question.imageName,
-                        choices: orderedChoices
-                    )
-                }
+                preparedQuestions = randomizedQuestions(from: ordered)
                 index = min(resumeState.index, max(0, preparedQuestions.count - 1))
                 correctCount = resumeState.correctCount
                 updateState()
@@ -181,17 +170,46 @@ struct QuizFlowView: View {
         if let maxQuestions {
             list = Array(list.prefix(maxQuestions))
         }
-        list = list.map { question in
-            QuizQuestion(
-                id: question.id,
-                prompt: question.prompt,
-                difficulty: question.difficulty,
-                imageName: question.imageName,
-                choices: question.choices.shuffled()
-            )
-        }
-        preparedQuestions = list
+        preparedQuestions = randomizedQuestions(from: list)
         updateState()
+    }
+
+    private func shuffleChoices(for question: QuizQuestion) -> QuizQuestion {
+        QuizQuestion(
+            id: question.id,
+            prompt: question.prompt,
+            difficulty: question.difficulty,
+            imageName: question.imageName,
+            choices: question.choices.shuffled()
+        )
+    }
+
+    private func allCorrectIndicesSame(in list: [QuizQuestion]) -> Bool {
+        guard list.count >= 2 else { return false }
+        var targetIndex: Int? = nil
+        for question in list {
+            guard let correctIndex = question.choices.firstIndex(where: { $0.isCorrect }) else {
+                return false
+            }
+            if let targetIndex {
+                if correctIndex != targetIndex { return false }
+            } else {
+                targetIndex = correctIndex
+            }
+        }
+        return targetIndex != nil
+    }
+
+    private func randomizedQuestions(from list: [QuizQuestion]) -> [QuizQuestion] {
+        guard !list.isEmpty else { return [] }
+        let maxAttempts = 6
+        var attempts = 0
+        var shuffled = list.map { shuffleChoices(for: $0) }
+        while attempts < maxAttempts && allCorrectIndicesSame(in: shuffled) {
+            shuffled = list.map { shuffleChoices(for: $0) }
+            attempts += 1
+        }
+        return shuffled
     }
 
     private func registerCorrectAnswer() {

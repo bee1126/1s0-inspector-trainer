@@ -26,10 +26,7 @@ struct ScenarioFlowView: View {
         self.showsHearts = showsHearts
         self.onComplete = onComplete
         _currentStepId = State(initialValue: scenario.startStepId)
-        let startStep = scenario.steps.first(where: { $0.id == scenario.startStepId })
-        _shuffledOptionsByStepId = State(initialValue: [
-            scenario.startStepId: (startStep?.options ?? []).shuffled()
-        ])
+        _shuffledOptionsByStepId = State(initialValue: Self.buildShuffledOptions(for: scenario))
     }
 
     var body: some View {
@@ -193,6 +190,38 @@ struct ScenarioFlowView: View {
         if horizontal < 0 {
             advance(from: step)
         }
+    }
+
+    private static func buildShuffledOptions(for scenario: Scenario) -> [String: [ScenarioOption]] {
+        let maxAttempts = 6
+        var attempts = 0
+        var optionsByStepId = shuffleOptionsMap(for: scenario.steps)
+        while attempts < maxAttempts && allCorrectIndicesSame(steps: scenario.steps, optionsByStepId: optionsByStepId) {
+            optionsByStepId = shuffleOptionsMap(for: scenario.steps)
+            attempts += 1
+        }
+        return optionsByStepId
+    }
+
+    private static func shuffleOptionsMap(for steps: [ScenarioStep]) -> [String: [ScenarioOption]] {
+        Dictionary(uniqueKeysWithValues: steps.map { ($0.id, $0.options.shuffled()) })
+    }
+
+    private static func allCorrectIndicesSame(steps: [ScenarioStep], optionsByStepId: [String: [ScenarioOption]]) -> Bool {
+        guard steps.count >= 2 else { return false }
+        var targetIndex: Int? = nil
+        for step in steps {
+            guard let options = optionsByStepId[step.id],
+                  let correctIndex = options.firstIndex(where: { $0.isCorrect }) else {
+                return false
+            }
+            if let targetIndex {
+                if correctIndex != targetIndex { return false }
+            } else {
+                targetIndex = correctIndex
+            }
+        }
+        return targetIndex != nil
     }
 }
 
