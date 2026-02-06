@@ -1,26 +1,37 @@
-# App Store Metadata (Draft)
+# App Store Metadata
 
 ## App Name
 1S0 Inspector Trainer
 
 ## Subtitle
-Interactive safety training for Air Force inspectors
+AF Safety Inspector Prep & XP
+
+## Promotional Text
+Train like you inspect. 14 interactive modules covering LOTO, fall protection, risk management, confined space, and more. Earn XP, keep your streak, level up your proficiency.
 
 ## Description
-1S0 Inspector Trainer is a mission-ready training companion for Air Force safety inspectors. It blends standards-aligned lessons with scenario-based learning, quick checks, and on-device progress tracking plus XP, levels, streaks, and hearts so you can build and sustain inspection proficiency.
+Build and sustain inspection proficiency with scenario-based training aligned to OSHA standards and Air Force safety guidance. Designed for 1S0 safety professionals and Unit Safety Representatives who need to stay sharp between real-world inspections.
 
-Features:
-- Interactive modules for Lockout/Tagout, Fall Protection, Risk Management, Roles & Responsibilities, Hazard Abatement, RAC System, Confined Space, Hot Work, Hearing Conservation, Mishap Reporting, Investigation Basics, JHA Fundamentals, Safety Briefing, and PPE Decision
-- Scenario-based decision training with instant feedback and timed pressure mode
-- Quick checks with difficulty selection and completion summaries
-- XP, levels, daily goals, streaks, hearts, and badges
-- Shareable bug reports and feature requests (feedback)
-- On-device storage with no default analytics or data sharing
+WHAT YOU GET
+• 14 interactive modules — Lockout/Tagout, Fall Protection, Risk Management, Confined Space, Hot Work, Hearing Conservation, Mishap Reporting, Investigation Basics, JHA Fundamentals, Safety Briefing, PPE Decision, Roles & Responsibilities, Hazard Abatement, and RAC System
+• Scenario-driven decision paths with instant feedback and timed pressure mode
+• Quick-check quizzes with Easy / Medium / Hard difficulty and randomized answers
+• Pass/fail assessments with completion summaries
 
-Disclaimer: This app is not an official Air Force product. It is a training aid intended to reinforce published guidance and OSHA standards. Always follow unit-specific procedures and the most current official publications.
+STAY MOTIVATED
+• XP, levels, daily goals, streaks, hearts, and badges — Duolingo-style progression
+• On-device progress tracking — pick up where you left off
+
+BUILT FOR PRIVACY
+• No account required
+• No ads, no analytics, no data collection
+• Everything stays on your device
+
+DISCLAIMER
+This app is not an official Department of the Air Force product. It is a supplemental training aid intended to reinforce published guidance and OSHA standards. Always follow unit-specific procedures and the most current official publications.
 
 ## Keywords
-safety,inspection,air force,1s0,lockout tagout,fall protection,risk management,training,streaks,xp,gamified
+safety,inspector,1s0,air force,osha,lockout,tagout,fall protection,risk,training,quiz,USR,hazard,ppe
 
 ## Category
 Education
@@ -35,6 +46,4 @@ Host `docs/index.html` (GitHub Pages or any static host) and paste the HTTPS URL
 Host `docs/privacy.html` (GitHub Pages or any static host) and paste the HTTPS URL here.
 
 ## App Review Notes
-- On-device only. No accounts required.
-- No analytics or advertising SDKs included.
-- Content aligned with official OSHA and Air Force safety publications.
+No login or account required. All data stored on-device only. No analytics, advertising, or third-party SDKs. Content is aligned with publicly available OSHA standards and Air Force safety guidance. This is not an official Air Force product.
