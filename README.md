@@ -11,7 +11,7 @@ This folder contains the SwiftUI source for a native iOS training app tailored t
 - Interactive modules for Lockout/Tagout, Fall Protection, Risk Management, Roles & Responsibilities, Hazard Abatement, and RAC System
 - Additional modules for Confined Space, Hot Work, Hearing Conservation, Mishap Reporting, Investigation Basics, JHA Fundamentals, Safety Briefing, and PPE Decision
 - Scenario-driven decision paths and quick-check quizzes (with randomized answer order)
-- Quiz difficulty selector (Easy / Medium / Hard / All)
+- Quick-check quizzes with randomized answer order
 - Pass/fail assessments with completion summaries
 - XP, levels, daily goals, streaks, and hearts (Duolingo-style loop)
 - Progress tracking and badges (on-device)

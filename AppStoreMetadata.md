@@ -15,7 +15,7 @@ Build and sustain inspection proficiency with scenario-based training aligned to
 WHAT YOU GET
 • 14 interactive modules — Lockout/Tagout, Fall Protection, Risk Management, Confined Space, Hot Work, Hearing Conservation, Mishap Reporting, Investigation Basics, JHA Fundamentals, Safety Briefing, PPE Decision, Roles & Responsibilities, Hazard Abatement, and RAC System
 • Scenario-driven decision paths with instant feedback and timed pressure mode
-• Quick-check quizzes with Easy / Medium / Hard difficulty and randomized answers
+• Quick-check quizzes with randomized answers
 • Pass/fail assessments with completion summaries
 
 STAY MOTIVATED
