@@ -5,31 +5,31 @@ enum PracticeContent {
         RacHazard(
             id: "rac-h1",
             title: "Unprotected 30-ft roof edge",
-            detail: "Maintenance crews are working within 3 feet of the edge without fall protection.",
+            detail: "Crew works within 3 ft of roof edge with no fall arrest.",
             rac: .rac1
         ),
         RacHazard(
             id: "rac-h2",
             title: "Open 480V panel",
-            detail: "Electrical panel is open with exposed energized conductors and no barrier.",
+            detail: "Panel is open with energized conductors exposed and no barrier.",
             rac: .rac1
         ),
         RacHazard(
             id: "rac-h3",
             title: "Confined space entry without permit",
-            detail: "Entry planned with no attendant or documented permit.",
+            detail: "Entry planned with no attendant or permit controls in place.",
             rac: .rac2
         ),
         RacHazard(
             id: "rac-h4",
             title: "Missing machine guard",
-            detail: "Rotating shaft guard removed while equipment is operating.",
+            detail: "Rotating shaft guard removed while equipment remains in operation.",
             rac: .rac2
         ),
         RacHazard(
             id: "rac-h5",
             title: "Forklift seatbelt not used",
-            detail: "Operator is not wearing a seatbelt in a busy pedestrian area.",
+            detail: "Operator drives unbelted in mixed vehicle-pedestrian traffic area.",
             rac: .rac2
         ),
         RacHazard(
@@ -47,7 +47,7 @@ enum PracticeContent {
         RacHazard(
             id: "rac-h8",
             title: "Unsecured ladder",
-            detail: "Extension ladder on uneven surface with no tie-off or spotter.",
+            detail: "Extension ladder on uneven surface with no tie-off in use.",
             rac: .rac3
         ),
         RacHazard(
@@ -60,6 +60,42 @@ enum PracticeContent {
             id: "rac-h10",
             title: "Minor spill pending cleanup",
             detail: "Small spill in low-traffic area marked for later cleanup.",
+            rac: .rac4
+        ),
+        RacHazard(
+            id: "rac-h11",
+            title: "Worn crane sling in daily use",
+            detail: "Frayed sling lifts 2-ton loads each shift on overhead crane.",
+            rac: .rac1
+        ),
+        RacHazard(
+            id: "rac-h12",
+            title: "Bypassed press interlock",
+            detail: "Interlock is taped down; operator exposed at point of operation.",
+            rac: .rac1
+        ),
+        RacHazard(
+            id: "rac-h13",
+            title: "Blocked hangar fire exit",
+            detail: "Equipment blocks egress route during shift peak (borderline RAC 2/3).",
+            rac: .rac2
+        ),
+        RacHazard(
+            id: "rac-h14",
+            title: "Eyewash checks undocumented",
+            detail: "Station works, but monthly test logs missing 6 months (borderline 2/3).",
+            rac: .rac3
+        ),
+        RacHazard(
+            id: "rac-h15",
+            title: "Damaged safety poster",
+            detail: "Poster torn but readable; minor awareness loss (borderline RAC 3/4).",
+            rac: .rac4
+        ),
+        RacHazard(
+            id: "rac-h16",
+            title: "Worn floor tape markings",
+            detail: "Aisle markings faded in low-traffic corner (borderline RAC 3/4).",
             rac: .rac4
         )
     ]
@@ -230,6 +266,90 @@ enum PracticeContent {
             statement: "If equipment is off, you can skip LOTO.",
             answer: false,
             explanation: "Off is not isolated. LOTO is required when hazardous energy is present."
+        ),
+        TrueFalseQuestion(
+            id: "tf-15",
+            statement: "A group LOTO transfer is compliant if the lead lock stays on at shift change.",
+            answer: false,
+            explanation: "Oncoming workers apply personal locks before outgoing locks are removed."
+        ),
+        TrueFalseQuestion(
+            id: "tf-16",
+            statement: "If combustible gas reads zero once, permit-space entry can start immediately.",
+            answer: false,
+            explanation: "Atmosphere testing follows permit requirements and monitoring may be continuous."
+        ),
+        TrueFalseQuestion(
+            id: "tf-17",
+            statement: "A JHA should be updated when tools, scope, or environment changes.",
+            answer: true,
+            explanation: "Changes alter hazards and can invalidate existing controls."
+        ),
+        TrueFalseQuestion(
+            id: "tf-18",
+            statement: "A fire watch may leave as soon as welding stops and tools are secured.",
+            answer: false,
+            explanation: "Fire watch remains for the required post-work monitoring period."
+        ),
+        TrueFalseQuestion(
+            id: "tf-19",
+            statement: "Risk acceptance authority depends on residual RAC, not schedule pressure.",
+            answer: true,
+            explanation: "Mission urgency does not override delegated risk-acceptance thresholds."
+        ),
+        TrueFalseQuestion(
+            id: "tf-20",
+            statement: "Near misses are optional to document if supervisors already know about them.",
+            answer: false,
+            explanation: "Near misses need formal documentation for trend analysis and follow-up."
+        ),
+        TrueFalseQuestion(
+            id: "tf-21",
+            statement: "Hearing protection alone is not a substitute for feasible engineering controls.",
+            answer: true,
+            explanation: "Controls should follow the hierarchy; PPE is not the first control choice."
+        ),
+        TrueFalseQuestion(
+            id: "tf-22",
+            statement: "PPE can be selected by AFSC when a hazard assessment is unavailable.",
+            answer: false,
+            explanation: "PPE selection must be based on identified hazards, not job title."
+        ),
+        TrueFalseQuestion(
+            id: "tf-23",
+            statement: "Tagout-only never needs extra measures if the tag is signed and dated.",
+            answer: false,
+            explanation: "Tagout-only requires additional measures to provide equivalent protection."
+        ),
+        TrueFalseQuestion(
+            id: "tf-24",
+            statement: "Abatement is incomplete until corrective action is verified in the field.",
+            answer: true,
+            explanation: "Verification confirms the control works as intended at point of use."
+        ),
+        TrueFalseQuestion(
+            id: "tf-25",
+            statement: "A supervisor may remove any employee lock if production is delayed.",
+            answer: false,
+            explanation: "Lock removal requires formal verification and employee notification steps."
+        ),
+        TrueFalseQuestion(
+            id: "tf-26",
+            statement: "RAC can be assigned from severity alone when probability is uncertain.",
+            answer: false,
+            explanation: "RAC requires both severity and probability to support risk decisions."
+        ),
+        TrueFalseQuestion(
+            id: "tf-27",
+            statement: "Investigation quality improves when system factors are analyzed, not just errors.",
+            answer: true,
+            explanation: "System analysis finds latent causes and prevents repeat mishaps."
+        ),
+        TrueFalseQuestion(
+            id: "tf-28",
+            statement: "Briefing signatures alone prove an effective safety brief occurred.",
+            answer: false,
+            explanation: "Effectiveness depends on relevant hazards, controls, and worker understanding."
         )
     ]
 
@@ -305,6 +425,30 @@ enum PracticeContent {
             statement: "Once funding is approved for a fix, the hazard is automatically closed.",
             answer: false,
             explanation: "Funding approval is not closure; corrective action still needs verification."
+        ),
+        TrueFalseQuestion(
+            id: "usr-tf-13",
+            statement: "If a hazard is in tracking, interim controls are optional until funding arrives.",
+            answer: false,
+            explanation: "Interim controls reduce exposure while permanent abatement is pending."
+        ),
+        TrueFalseQuestion(
+            id: "usr-tf-14",
+            statement: "USR weekly updates should include open hazards, OPRs, and suspense status.",
+            answer: true,
+            explanation: "Leaders need ownership and timeline data to drive timely closure."
+        ),
+        TrueFalseQuestion(
+            id: "usr-tf-15",
+            statement: "A repeat finding can be closed if the wording is changed in the report.",
+            answer: false,
+            explanation: "Repeat findings remain open until root causes are corrected and verified."
+        ),
+        TrueFalseQuestion(
+            id: "usr-tf-16",
+            statement: "If risk exceeds local authority, the USR should elevate through supervision.",
+            answer: true,
+            explanation: "Elevation keeps acceptance decisions at the proper command level."
         )
     ]
 

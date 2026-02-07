@@ -71,7 +71,7 @@ enum TrainingContent {
                 steps: [
                     ScenarioStep(
                         id: "step-1",
-                        prompt: "What is your first action?",
+                        prompt: "Conveyor guard replacement: first action?",
                         options: [
                             ScenarioOption(
                                 id: "step-1-a",
@@ -1194,7 +1194,7 @@ enum TrainingContent {
                             ),
                             ScenarioOption(
                                 id: "hw-step-1-b",
-                                text: "Start immediately to save time.",
+                                text: "Pause work, apply controls, then resume.",
                                 feedback: "Incorrect. Hot work requires controls before starting.",
                                 isCorrect: false,
                                 nextStepId: "hw-step-2"
@@ -1387,7 +1387,7 @@ enum TrainingContent {
                 steps: [
                     ScenarioStep(
                         id: "mr-step-1",
-                        prompt: "What should you do first?",
+                        prompt: "Worker injury is reported. What should happen first?",
                         options: [
                             ScenarioOption(
                                 id: "mr-step-1-a",
@@ -1849,7 +1849,7 @@ enum TrainingContent {
                         options: [
                             ScenarioOption(
                                 id: "usr-pf-step-1-a",
-                                text: "Meet with the unit supervisor to understand current hazards, training gaps, and expectations.",
+                                text: "Meet with the unit supervisor to understand current hazards",
                                 feedback: "Correct. Start by aligning with leadership and understanding the current state.",
                                 isCorrect: true,
                                 nextStepId: "usr-pf-step-2"
@@ -1917,7 +1917,7 @@ enum TrainingContent {
                         options: [
                             ScenarioOption(
                                 id: "usr-pf-step-3-a",
-                                text: "Highlight the risk, propose controls, and elevate acceptance to the right authority.",
+                                text: "Highlight the risk, propose controls, and elevate acceptance to the right",
                                 feedback: "Correct. Support the decision process and document it.",
                                 isCorrect: true,
                                 nextStepId: nil
@@ -2080,7 +2080,7 @@ enum TrainingContent {
                         options: [
                             ScenarioOption(
                                 id: "usr-roles-step-3-a",
-                                text: "Document it, apply interim controls, and elevate risk acceptance through the chain.",
+                                text: "Document it, apply interim controls, and elevate risk acceptance through the",
                                 feedback: "Correct. Track the hazard and elevate risk decisions to the proper authority.",
                                 isCorrect: true,
                                 nextStepId: nil
@@ -2172,7 +2172,7 @@ enum TrainingContent {
                 steps: [
                     ScenarioStep(
                         id: "usr-hazard-step-1",
-                        prompt: "What should you do first?",
+                        prompt: "Unmarked hazard found in shop. First USR action?",
                         options: [
                             ScenarioOption(
                                 id: "usr-hazard-step-1-a",
@@ -2500,7 +2500,7 @@ enum TrainingContent {
                 steps: [
                     ScenarioStep(
                         id: "usr-spot-step-1",
-                        prompt: "What should you do first?",
+                        prompt: "Spot inspection begins now. What should happen first?",
                         options: [
                             ScenarioOption(
                                 id: "usr-spot-step-1-a",
@@ -2511,7 +2511,7 @@ enum TrainingContent {
                             ),
                             ScenarioOption(
                                 id: "usr-spot-step-1-b",
-                                text: "Ignore it because it was already reported.",
+                                text: "Re-check controls and keep tracking until verified closed.",
                                 feedback: "Incorrect. Repeat findings indicate ineffective controls.",
                                 isCorrect: false,
                                 nextStepId: "usr-spot-step-2"
@@ -2666,7 +2666,7 @@ enum TrainingContent {
                         options: [
                             ScenarioOption(
                                 id: "usr-training-step-1-a",
-                                text: "Notify the supervisor and pause the task until training is completed or controls are updated.",
+                                text: "Notify the supervisor and pause the task until training is completed or",
                                 feedback: "Correct. Training gaps must be addressed before exposure.",
                                 isCorrect: true,
                                 nextStepId: "usr-training-step-2"
@@ -2826,7 +2826,7 @@ enum TrainingContent {
                 steps: [
                     ScenarioStep(
                         id: "usr-mishap-step-1",
-                        prompt: "What should happen first?",
+                        prompt: "Near miss occurs on shift. First USR action?",
                         options: [
                             ScenarioOption(
                                 id: "usr-mishap-step-1-a",
@@ -2988,7 +2988,7 @@ enum TrainingContent {
                 steps: [
                     ScenarioStep(
                         id: "usr-abate-step-1",
-                        prompt: "What should you do first?",
+                        prompt: "Abatement is delayed by funding. What happens first?",
                         options: [
                             ScenarioOption(
                                 id: "usr-abate-step-1-a",
