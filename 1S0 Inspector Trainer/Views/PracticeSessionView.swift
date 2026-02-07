@@ -16,7 +16,26 @@ struct PracticeSessionView: View {
     @State private var priorDailyScore: Int = 0
 
     private var questionPool: [QuizQuestion] {
-        TrainingContent.allQuizQuestions(for: progress.selectedRole)
+        let allQuestions = TrainingContent.allQuizQuestions(for: progress.selectedRole)
+        progress.initializeSRCardsIfNeeded(allQuestions: allQuestions)
+
+        let questionMap = Dictionary(uniqueKeysWithValues: allQuestions.map { ($0.id, $0) })
+        let overdueCards = progress.overdueCards()
+        let overdueQuestions = overdueCards.compactMap { questionMap[$0.questionId] }
+        let targetCount = mode == .dailyFive ? 5 : 6
+
+        var selected = weightedOverdueSelection(from: overdueQuestions, targetCount: targetCount)
+
+        if selected.count < targetCount {
+            let selectedIds = Set(selected.map { $0.id })
+            let overdueIds = Set(overdueQuestions.map { $0.id })
+            let filler = allQuestions
+                .filter { !overdueIds.contains($0.id) && !selectedIds.contains($0.id) }
+                .shuffled()
+            selected.append(contentsOf: filler.prefix(targetCount - selected.count))
+        }
+
+        return Array(selected.prefix(targetCount))
     }
 
     init(mode: PracticeMode = .practice) {
@@ -108,5 +127,46 @@ struct PracticeSessionView: View {
         result = nil
         rewardSummary = nil
         sessionId = UUID()
+    }
+
+    private func weightedOverdueSelection(from overdueQuestions: [QuizQuestion], targetCount: Int) -> [QuizQuestion] {
+        guard !overdueQuestions.isEmpty else { return [] }
+
+        var groupedQuestions = Dictionary(grouping: overdueQuestions) { modulePrefix(for: $0.id) }
+            .mapValues { $0.shuffled() }
+        var selected: [QuizQuestion] = []
+
+        while selected.count < targetCount {
+            let availableModules = groupedQuestions
+                .filter { !$0.value.isEmpty }
+                .map { (moduleId: $0.key, weight: progress.selectionWeight(for: $0.key)) }
+            guard let chosenModule = chooseWeightedModule(from: availableModules) else { break }
+            guard var questions = groupedQuestions[chosenModule], !questions.isEmpty else { continue }
+            selected.append(questions.removeFirst())
+            groupedQuestions[chosenModule] = questions
+        }
+
+        return selected
+    }
+
+    private func chooseWeightedModule(from modules: [(moduleId: String, weight: Double)]) -> String? {
+        guard !modules.isEmpty else { return nil }
+        let totalWeight = modules.reduce(0.0) { $0 + max(0.1, $1.weight) }
+        guard totalWeight > 0 else { return modules.randomElement()?.moduleId }
+
+        var threshold = Double.random(in: 0..<totalWeight)
+        for module in modules {
+            threshold -= max(0.1, module.weight)
+            if threshold <= 0 {
+                return module.moduleId
+            }
+        }
+        return modules.last?.moduleId
+    }
+
+    private func modulePrefix(for questionId: String) -> String {
+        let parts = questionId.split(separator: "-")
+        guard parts.count > 1 else { return questionId }
+        return parts.dropLast().joined(separator: "-")
     }
 }

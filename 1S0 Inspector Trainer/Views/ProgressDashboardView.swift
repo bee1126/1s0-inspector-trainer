@@ -66,6 +66,22 @@ struct ProgressDashboardView: View {
                         }
                     }
 
+                    // MARK: - Review Queue
+                    GlassCard {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("REVIEW QUEUE")
+                                .font(AppFont.mono(11))
+                                .foregroundColor(AppTheme.muted)
+                                .tracking(1.5)
+                            Text("\(progress.overdueCount())")
+                                .font(AppFont.title(28))
+                                .foregroundColor(AppTheme.accent)
+                            Text("cards due for review")
+                                .font(AppFont.body(13))
+                                .foregroundColor(AppTheme.accent)
+                        }
+                    }
+
                     // MARK: - Overall Readiness Card
                     GlassCard(glow: AppTheme.primary.opacity(0.3)) {
                         VStack(alignment: .leading, spacing: 12) {
@@ -149,6 +165,41 @@ struct ProgressDashboardView: View {
                         }
                     }
 
+                    // MARK: - Module Proficiency
+                    GlassCard {
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("MODULE PROFICIENCY")
+                                .font(AppFont.mono(11))
+                                .foregroundColor(AppTheme.muted)
+                                .tracking(1.5)
+
+                            ForEach(moduleProficiencyRows) { row in
+                                VStack(alignment: .leading, spacing: 6) {
+                                    HStack {
+                                        Text(row.title)
+                                            .font(AppFont.body(13))
+                                            .foregroundColor(AppTheme.text)
+                                        Spacer()
+                                        Text("\(Int(round(row.recentAccuracy * 100)))%")
+                                            .font(AppFont.mono(11))
+                                            .foregroundColor(proficiencyColor(for: row.recentAccuracy))
+                                    }
+
+                                    GeometryReader { geometry in
+                                        ZStack(alignment: .leading) {
+                                            RoundedRectangle(cornerRadius: 4, style: .continuous)
+                                                .fill(AppTheme.border)
+                                            RoundedRectangle(cornerRadius: 4, style: .continuous)
+                                                .fill(proficiencyColor(for: row.recentAccuracy))
+                                                .frame(width: geometry.size.width * min(max(row.recentAccuracy, 0), 1))
+                                        }
+                                    }
+                                    .frame(height: 8)
+                                }
+                            }
+                        }
+                    }
+
                     // MARK: - Badges
                     VStack(alignment: .leading, spacing: 10) {
                         Text("BADGES")
@@ -193,6 +244,16 @@ struct ProgressDashboardView: View {
     private var completionRate: Double {
         guard !modules.isEmpty else { return 0 }
         return Double(completedCount) / Double(modules.count)
+    }
+
+    private var moduleProficiencyRows: [ModuleProficiencyRow] {
+        modules
+            .map { module in
+                let prefix = modulePrefix(for: module.quiz.first?.id ?? module.id)
+                let recentAccuracy = progress.moduleProficiency[prefix]?.recentAccuracy ?? 0
+                return ModuleProficiencyRow(id: prefix, title: module.title, recentAccuracy: recentAccuracy)
+            }
+            .sorted { $0.recentAccuracy < $1.recentAccuracy }
     }
 
     private var badges: [BadgeState] {
@@ -287,6 +348,22 @@ struct ProgressDashboardView: View {
             return "Safety Advisor"
         }
     }
+
+    private func proficiencyColor(for accuracy: Double) -> Color {
+        if accuracy >= 0.7 {
+            return AppTheme.primary
+        }
+        if accuracy >= 0.5 {
+            return AppTheme.accent
+        }
+        return AppTheme.danger
+    }
+
+    private func modulePrefix(for questionId: String) -> String {
+        let components = questionId.split(separator: "-")
+        guard components.count > 1 else { return questionId }
+        return components.dropLast().joined(separator: "-")
+    }
 }
 
 struct BadgeState: Identifiable {
@@ -295,4 +372,10 @@ struct BadgeState: Identifiable {
     let title: String
     let detail: String
     let isEarned: Bool
+}
+
+struct ModuleProficiencyRow: Identifiable {
+    let id: String
+    let title: String
+    let recentAccuracy: Double
 }

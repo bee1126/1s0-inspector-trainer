@@ -1,9 +1,16 @@
 import SwiftUI
 
+enum HomeDeepLinkDestination: Hashable {
+    case dailyFive
+    case module(String)
+}
+
 struct RootView: View {
     @EnvironmentObject private var progress: ProgressStore
+    @EnvironmentObject private var deepLinkRouter: DeepLinkRouter
     @State private var selectedTab: Int = 0
     @State private var showRoleSelection = false
+    @State private var homePath: [HomeDeepLinkDestination] = []
 
     private let swipeThreshold: CGFloat = 120
 
@@ -12,8 +19,21 @@ struct RootView: View {
             AppTheme.bg.ignoresSafeArea()
 
             TabView(selection: $selectedTab) {
-                NavigationStack {
+                NavigationStack(path: $homePath) {
                     HomeView()
+                        .navigationDestination(for: HomeDeepLinkDestination.self) { destination in
+                            switch destination {
+                            case .dailyFive:
+                                PracticeSessionView(mode: .dailyFive)
+                            case .module(let moduleId):
+                                if let module = TrainingContent.modules(for: progress.selectedRole)
+                                    .first(where: { $0.id == moduleId }) {
+                                    ModuleDetailView(module: module)
+                                } else {
+                                    ModuleUnavailableView(moduleId: moduleId)
+                                }
+                            }
+                        }
                 }
                 .tabItem {
                     Label("HQ", systemImage: "shield.lefthalf.filled")
@@ -66,6 +86,10 @@ struct RootView: View {
                 showRoleSelection = true
             }
             progress.refreshForNewDayIfNeeded()
+            handleDeepLinkTarget(deepLinkRouter.target)
+        }
+        .onChange(of: deepLinkRouter.target) { target in
+            handleDeepLinkTarget(target)
         }
         .fullScreenCover(isPresented: $showRoleSelection) {
             RoleSelectionView(
@@ -112,5 +136,48 @@ struct RootView: View {
         UINavigationBar.appearance().scrollEdgeAppearance = navAppearance
         UINavigationBar.appearance().compactAppearance = navAppearance
         UINavigationBar.appearance().tintColor = UIColor(AppTheme.primary)
+    }
+
+    private func handleDeepLinkTarget(_ target: AppDeepLink?) {
+        guard let target else { return }
+
+        switch target {
+        case .home:
+            selectedTab = 0
+            homePath = []
+        case .dailyFive:
+            selectedTab = 0
+            homePath = [.dailyFive]
+        case .module(let moduleId):
+            selectedTab = 0
+            homePath = [.module(moduleId)]
+        }
+
+        DispatchQueue.main.async {
+            deepLinkRouter.target = nil
+        }
+    }
+}
+
+private struct ModuleUnavailableView: View {
+    let moduleId: String
+
+    var body: some View {
+        ZStack {
+            BackgroundView()
+            GlassCard {
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("Module Unavailable")
+                        .font(AppFont.subtitle(18))
+                        .foregroundColor(AppTheme.text)
+                    Text("No module found for id: \(moduleId)")
+                        .font(AppFont.body(13))
+                        .foregroundColor(AppTheme.muted)
+                }
+            }
+            .padding(AppSpacing.screenPadding)
+        }
+        .navigationTitle("Module")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }

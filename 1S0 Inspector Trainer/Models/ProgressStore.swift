@@ -1,5 +1,52 @@
 import Foundation
 import SwiftUI
+import WidgetKit
+
+struct SRCard: Codable, Identifiable {
+    var id: String { questionId }
+    let questionId: String
+    var easeFactor: Double
+    var interval: Int
+    var repetitions: Int
+    var nextReviewDate: Date
+    var lastQuality: Int
+}
+
+struct ModuleProficiency: Codable {
+    let moduleId: String
+    var totalAttempts: Int
+    var correctAttempts: Int
+    var lastAttemptDate: Date
+    var accuracyHistory: [Double]
+
+    var accuracy: Double {
+        totalAttempts > 0 ? Double(correctAttempts) / Double(totalAttempts) : 0
+    }
+
+    var recentAccuracy: Double {
+        guard !accuracyHistory.isEmpty else { return 0 }
+        let recent = accuracyHistory.suffix(10)
+        return recent.reduce(0, +) / Double(recent.count)
+    }
+
+    var needsWork: Bool {
+        recentAccuracy < 0.7
+    }
+
+    init(
+        moduleId: String,
+        totalAttempts: Int = 0,
+        correctAttempts: Int = 0,
+        lastAttemptDate: Date = .distantPast,
+        accuracyHistory: [Double] = []
+    ) {
+        self.moduleId = moduleId
+        self.totalAttempts = totalAttempts
+        self.correctAttempts = correctAttempts
+        self.lastAttemptDate = lastAttemptDate
+        self.accuracyHistory = accuracyHistory
+    }
+}
 
 final class ProgressStore: ObservableObject {
     private struct RoleOnboardingState: Codable {
@@ -27,6 +74,8 @@ final class ProgressStore: ObservableObject {
     @Published private(set) var selectedRole: TrainingRole? = nil
     @Published private(set) var onboardingStartDate: Date? = nil
     @Published private(set) var onboardingCheckIns: Set<Int> = []
+    @Published private(set) var srCards: [String: SRCard] = [:]
+    @Published private(set) var moduleProficiency: [String: ModuleProficiency] = [:]
     let maxHearts: Int = 5
 
     private let defaults: UserDefaults
@@ -54,6 +103,8 @@ final class ProgressStore: ObservableObject {
     private let onboardingStartKey = "onboardingStartDate"
     private let onboardingCheckInsKey = "onboardingCheckIns"
     private let onboardingByRoleKey = "onboardingByRole"
+    private let srCardsKey = "sr_cards_v1"
+    private let proficiencyKey = "module_proficiency_v1"
     private var onboardingStateByRole: [String: RoleOnboardingState] = [:]
 
     init(defaults: UserDefaults = .standard, calendar: Calendar = .current, dateProvider: @escaping () -> Date = Date.init) {
@@ -107,6 +158,8 @@ final class ProgressStore: ObservableObject {
         hearts = maxHearts
         onboardingStartDate = nil
         onboardingCheckIns = []
+        srCards = [:]
+        moduleProficiency = [:]
         onboardingStateByRole = [:]
         save()
     }
@@ -128,6 +181,96 @@ final class ProgressStore: ObservableObject {
     var dailyGoalProgress: Double {
         guard dailyGoal > 0 else { return 0 }
         return min(1, Double(dailyXp) / Double(dailyGoal))
+    }
+
+    func initializeSRCardsIfNeeded(allQuestions: [QuizQuestion]) {
+        guard srCards.isEmpty else { return }
+        let initialCards = allQuestions.map {
+            SRCard(
+                questionId: $0.id,
+                easeFactor: 2.5,
+                interval: 0,
+                repetitions: 0,
+                nextReviewDate: .distantPast,
+                lastQuality: 0
+            )
+        }
+        srCards = Dictionary(uniqueKeysWithValues: initialCards.map { ($0.questionId, $0) })
+        save()
+    }
+
+    func updateSRCard(questionId: String, quality: Int) {
+        var card = srCards[questionId] ?? SRCard(
+            questionId: questionId,
+            easeFactor: 2.5,
+            interval: 0,
+            repetitions: 0,
+            nextReviewDate: .distantPast,
+            lastQuality: 0
+        )
+        if quality >= 3 {
+            switch card.repetitions {
+            case 0:
+                card.interval = 1
+            case 1:
+                card.interval = 6
+            default:
+                card.interval = Int(round(Double(card.interval) * card.easeFactor))
+            }
+            card.repetitions += 1
+        } else {
+            card.repetitions = 0
+            card.interval = 1
+        }
+        card.easeFactor = max(
+            1.3,
+            card.easeFactor + (
+                0.1 - Double(5 - quality) * (0.08 + Double(5 - quality) * 0.02)
+            )
+        )
+        card.nextReviewDate = Calendar.current.date(byAdding: .day, value: card.interval, to: Date()) ?? Date()
+        card.lastQuality = quality
+        srCards[questionId] = card
+        save()
+    }
+
+    func overdueCards() -> [SRCard] {
+        srCards.values
+            .filter { $0.nextReviewDate <= Date() }
+            .sorted { $0.nextReviewDate < $1.nextReviewDate }
+    }
+
+    func overdueCount() -> Int {
+        srCards.values.filter { $0.nextReviewDate <= Date() }.count
+    }
+
+    func overdueCount(for modulePrefix: String) -> Int {
+        srCards.values.filter {
+            $0.questionId.hasPrefix(modulePrefix) && $0.nextReviewDate <= Date()
+        }.count
+    }
+
+    func recordModuleAnswer(moduleId: String, correct: Bool) {
+        var prof = moduleProficiency[moduleId] ?? ModuleProficiency(moduleId: moduleId)
+        prof.totalAttempts += 1
+        if correct {
+            prof.correctAttempts += 1
+        }
+        prof.lastAttemptDate = Date()
+        prof.accuracyHistory.append(correct ? 1.0 : 0.0)
+        if prof.accuracyHistory.count > 20 {
+            prof.accuracyHistory.removeFirst()
+        }
+        moduleProficiency[moduleId] = prof
+        save()
+    }
+
+    func selectionWeight(for moduleId: String) -> Double {
+        guard let prof = moduleProficiency[moduleId] else { return 1.0 }
+        let accuracyWeight = 1.0 - prof.recentAccuracy
+        let daysSince = Calendar.current.dateComponents([.day], from: prof.lastAttemptDate, to: Date()).day ?? 0
+        let recencyBonus = min(Double(daysSince) * 0.05, 0.3)
+        return max(0.1, accuracyWeight + recencyBonus)
     }
 
     private func load() {
@@ -180,6 +323,14 @@ final class ProgressStore: ObservableObject {
         if let rawRole = defaults.string(forKey: selectedRoleKey),
            let role = TrainingRole(rawValue: rawRole) {
             selectedRole = role
+        }
+        if let data = defaults.data(forKey: srCardsKey),
+           let decoded = try? JSONDecoder().decode([String: SRCard].self, from: data) {
+            srCards = decoded
+        }
+        if let data = defaults.data(forKey: proficiencyKey),
+           let decoded = try? JSONDecoder().decode([String: ModuleProficiency].self, from: data) {
+            moduleProficiency = decoded
         }
 
         if let data = defaults.data(forKey: onboardingByRoleKey),
@@ -240,6 +391,12 @@ final class ProgressStore: ObservableObject {
         }
         defaults.set(hearts, forKey: heartsKey)
         defaults.set(selectedRole?.rawValue, forKey: selectedRoleKey)
+        if let data = try? JSONEncoder().encode(srCards) {
+            defaults.set(data, forKey: srCardsKey)
+        }
+        if let data = try? JSONEncoder().encode(moduleProficiency) {
+            defaults.set(data, forKey: proficiencyKey)
+        }
         if let data = try? JSONEncoder().encode(onboardingStateByRole) {
             defaults.set(data, forKey: onboardingByRoleKey)
         }
@@ -248,6 +405,25 @@ final class ProgressStore: ObservableObject {
         if let data = try? JSONEncoder().encode(Array(onboardingCheckIns).sorted()) {
             defaults.set(data, forKey: onboardingCheckInsKey)
         }
+
+        let snapshot = SharedProgressData(
+            xp: xp,
+            level: level,
+            dailyXp: dailyXp,
+            dailyGoal: dailyGoal,
+            dailyStreak: dailyStreak,
+            hearts: hearts,
+            maxHearts: maxHearts,
+            completedModuleCount: completedModules.count,
+            totalModuleCount: 14,
+            overdueReviewCount: overdueCount(),
+            lastUpdated: Date()
+        )
+        if let data = try? JSONEncoder().encode(snapshot),
+           let suite = UserDefaults(suiteName: SharedProgressData.suiteName) {
+            suite.set(data, forKey: SharedProgressData.key)
+        }
+        WidgetCenter.shared.reloadAllTimelines()
     }
 
     func setRole(_ role: TrainingRole) {

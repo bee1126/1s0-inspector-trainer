@@ -63,7 +63,8 @@ struct QuizFlowView: View {
                             Button {
                                 guard selectedChoiceId == nil else { return }
                                 selectedChoiceId = choice.id
-                                if choice.isCorrect {
+                                let isCorrect = choice.isCorrect
+                                if isCorrect {
                                     correctCount += 1
                                     registerCorrectAnswer()
                                     AppFeedback.correct()
@@ -72,6 +73,8 @@ struct QuizFlowView: View {
                                     registerIncorrectAnswer()
                                     AppFeedback.incorrect()
                                 }
+                                progress.updateSRCard(questionId: question.id, quality: isCorrect ? 4 : 1)
+                                progress.recordModuleAnswer(moduleId: modulePrefix(for: question.id), correct: isCorrect)
                                 updateState()
                                 withAnimation(.easeInOut(duration: 0.2)) {
                                     showFeedback = true
@@ -277,5 +280,11 @@ struct QuizFlowView: View {
                 correctCount: correctCount
             )
         )
+    }
+
+    private func modulePrefix(for questionId: String) -> String {
+        let components = questionId.split(separator: "-")
+        guard components.count > 1 else { return questionId }
+        return components.dropLast().joined(separator: "-")
     }
 }
