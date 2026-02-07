@@ -330,7 +330,7 @@ struct HomeView: View {
     // MARK: - Computed Properties
 
     private var onboardingTotal: Int {
-        PracticeContent.onboardingDays.count
+        PracticeContent.onboardingDays(for: progress.selectedRole).count
     }
 
     private var onboardingCompleted: Int {

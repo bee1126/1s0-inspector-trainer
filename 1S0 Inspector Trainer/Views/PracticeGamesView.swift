@@ -358,7 +358,8 @@ private struct RacBucketView: View {
 // MARK: - Sequence Builder
 
 struct SequenceBuilderSelectionView: View {
-    private let sequences = PracticeContent.sequenceSets
+    @EnvironmentObject private var progress: ProgressStore
+    private var sequences: [SequenceSet] { PracticeContent.sequenceSets(for: progress.selectedRole) }
 
     var body: some View {
         ZStack {
@@ -732,8 +733,9 @@ struct TrueFalseBlitzView: View {
     }
 
     private func prepareQuestions() {
-        let count = min(10, PracticeContent.trueFalseQuestions.count)
-        questions = Array(PracticeContent.trueFalseQuestions.shuffled().prefix(count))
+        let questionPool = PracticeContent.trueFalseQuestions(for: progress.selectedRole)
+        let count = min(10, questionPool.count)
+        questions = Array(questionPool.shuffled().prefix(count))
         index = 0
         selectedAnswer = nil
         correctCount = 0
@@ -790,7 +792,7 @@ struct TrueFalseBlitzView: View {
 struct MicroDrillSelectionView: View {
     @EnvironmentObject private var progress: ProgressStore
 
-    private var topics: [MicroDrillTopic] { PracticeContent.microDrillTopics }
+    private var topics: [MicroDrillTopic] { PracticeContent.microDrillTopics(for: progress.selectedRole) }
     private var modules: [TrainingModule] { TrainingContent.modules(for: progress.selectedRole) }
 
     var body: some View {
@@ -957,7 +959,7 @@ struct OnboardingPathView: View {
     @State private var rewardSummary: RewardSummary? = nil
     @State private var showRestartAlert = false
 
-    private var days: [OnboardingDay] { PracticeContent.onboardingDays }
+    private var days: [OnboardingDay] { PracticeContent.onboardingDays(for: progress.selectedRole) }
     private var completedCount: Int { progress.onboardingCheckIns.count }
     private var totalDays: Int { days.count }
     private var progressValue: Double {

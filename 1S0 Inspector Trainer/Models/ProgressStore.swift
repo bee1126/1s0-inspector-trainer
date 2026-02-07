@@ -2,6 +2,11 @@ import Foundation
 import SwiftUI
 
 final class ProgressStore: ObservableObject {
+    private struct RoleOnboardingState: Codable {
+        let startDate: Date?
+        let checkIns: [Int]
+    }
+
     @Published private(set) var completedModules: Set<String> = []
     @Published private(set) var bestScores: [String: Int] = [:]
     @Published private(set) var lastCompleted: [String: Date] = [:]
@@ -48,6 +53,8 @@ final class ProgressStore: ObservableObject {
     private let selectedRoleKey = "selectedRole"
     private let onboardingStartKey = "onboardingStartDate"
     private let onboardingCheckInsKey = "onboardingCheckIns"
+    private let onboardingByRoleKey = "onboardingByRole"
+    private var onboardingStateByRole: [String: RoleOnboardingState] = [:]
 
     init(defaults: UserDefaults = .standard, calendar: Calendar = .current, dateProvider: @escaping () -> Date = Date.init) {
         self.defaults = defaults
@@ -100,6 +107,7 @@ final class ProgressStore: ObservableObject {
         hearts = maxHearts
         onboardingStartDate = nil
         onboardingCheckIns = []
+        onboardingStateByRole = [:]
         save()
     }
 
@@ -173,16 +181,32 @@ final class ProgressStore: ObservableObject {
            let role = TrainingRole(rawValue: rawRole) {
             selectedRole = role
         }
-        if let date = defaults.object(forKey: onboardingStartKey) as? Date {
-            onboardingStartDate = date
+
+        if let data = defaults.data(forKey: onboardingByRoleKey),
+           let decoded = try? JSONDecoder().decode([String: RoleOnboardingState].self, from: data) {
+            onboardingStateByRole = decoded
+        } else {
+            var legacyStartDate: Date? = nil
+            var legacyCheckIns: Set<Int> = []
+            if let date = defaults.object(forKey: onboardingStartKey) as? Date {
+                legacyStartDate = date
+            }
+            if let data = defaults.data(forKey: onboardingCheckInsKey),
+               let decoded = try? JSONDecoder().decode([Int].self, from: data) {
+                legacyCheckIns = Set(decoded)
+            }
+            if legacyStartDate != nil || !legacyCheckIns.isEmpty {
+                onboardingStateByRole[roleKey(for: selectedRole)] = RoleOnboardingState(
+                    startDate: legacyStartDate,
+                    checkIns: Array(legacyCheckIns).sorted()
+                )
+            }
         }
-        if let data = defaults.data(forKey: onboardingCheckInsKey),
-           let decoded = try? JSONDecoder().decode([Int].self, from: data) {
-            onboardingCheckIns = Set(decoded)
-        }
+        applyOnboardingState(for: selectedRole)
     }
 
     private func save() {
+        persistCurrentOnboardingState()
         if let data = try? JSONEncoder().encode(Array(completedModules)) {
             defaults.set(data, forKey: completedKey)
         }
@@ -216,15 +240,38 @@ final class ProgressStore: ObservableObject {
         }
         defaults.set(hearts, forKey: heartsKey)
         defaults.set(selectedRole?.rawValue, forKey: selectedRoleKey)
+        if let data = try? JSONEncoder().encode(onboardingStateByRole) {
+            defaults.set(data, forKey: onboardingByRoleKey)
+        }
+        // Keep legacy keys for backward compatibility with older app versions.
         defaults.set(onboardingStartDate, forKey: onboardingStartKey)
-        if let data = try? JSONEncoder().encode(Array(onboardingCheckIns)) {
+        if let data = try? JSONEncoder().encode(Array(onboardingCheckIns).sorted()) {
             defaults.set(data, forKey: onboardingCheckInsKey)
         }
     }
 
     func setRole(_ role: TrainingRole) {
+        persistCurrentOnboardingState()
         selectedRole = role
+        applyOnboardingState(for: selectedRole)
         save()
+    }
+
+    private func roleKey(for role: TrainingRole?) -> String {
+        (role ?? .oneS0).rawValue
+    }
+
+    private func persistCurrentOnboardingState() {
+        onboardingStateByRole[roleKey(for: selectedRole)] = RoleOnboardingState(
+            startDate: onboardingStartDate,
+            checkIns: Array(onboardingCheckIns).sorted()
+        )
+    }
+
+    private func applyOnboardingState(for role: TrainingRole?) {
+        let state = onboardingStateByRole[roleKey(for: role)] ?? RoleOnboardingState(startDate: nil, checkIns: [])
+        onboardingStartDate = state.startDate
+        onboardingCheckIns = Set(state.checkIns)
     }
 
     func refreshForNewDayIfNeeded() {

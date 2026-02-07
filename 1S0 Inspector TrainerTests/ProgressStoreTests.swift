@@ -79,4 +79,25 @@ final class ProgressStoreTests: XCTestCase {
         _ = store.completePractice(score: 10, total: 10)
         XCTAssertEqual(store.dailyStreak, 1)
     }
+
+    func testOnboardingProgressIsSeparatedByRole() {
+        let now = Date(timeIntervalSince1970: 0)
+        let store = ProgressStore(defaults: defaults, calendar: calendar, dateProvider: { now })
+
+        store.setRole(.usr)
+        store.startOnboardingIfNeeded()
+        _ = store.checkInOnboardingDay()
+        XCTAssertEqual(store.onboardingCheckIns, [1])
+
+        store.setRole(.oneS0)
+        XCTAssertNil(store.onboardingStartDate)
+        XCTAssertTrue(store.onboardingCheckIns.isEmpty)
+
+        store.startOnboardingIfNeeded()
+        _ = store.checkInOnboardingDay()
+        XCTAssertEqual(store.onboardingCheckIns, [1])
+
+        store.setRole(.usr)
+        XCTAssertEqual(store.onboardingCheckIns, [1])
+    }
 }

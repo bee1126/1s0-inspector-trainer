@@ -2383,4 +2383,924 @@ enum QuizBank {
             ]
         )
     ]
+
+    // MARK: USR Program Fundamentals
+
+    static let usrProgramFundamentals: [QuizQuestion] = [
+        QuizQuestion(
+            id: "usr-pf-q1",
+            prompt: "The USR role is best described as:",
+            difficulty: .easy,
+            choices: [
+                QuizChoice(id: "usr-pf-q1-a", text: "Supporting commanders and supervisors by tracking, advising, and following up", isCorrect: true),
+                QuizChoice(id: "usr-pf-q1-b", text: "Replacing supervisor responsibility for safety", isCorrect: false),
+                QuizChoice(id: "usr-pf-q1-c", text: "Owning all hazard fixes and funding", isCorrect: false),
+                QuizChoice(id: "usr-pf-q1-d", text: "Only writing reports and avoiding the field", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-pf-q2",
+            prompt: "Which set best represents core unit safety program elements a USR supports?",
+            difficulty: .easy,
+            choices: [
+                QuizChoice(id: "usr-pf-q2-a", text: "Hazard reporting, training, spot inspections, mishap reporting", isCorrect: true),
+                QuizChoice(id: "usr-pf-q2-b", text: "Only administrative paperwork reviews", isCorrect: false),
+                QuizChoice(id: "usr-pf-q2-c", text: "Exclusive focus on engineering projects", isCorrect: false),
+                QuizChoice(id: "usr-pf-q2-d", text: "Only external agency coordination", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-pf-q3",
+            prompt: "A key reason to maintain a hazard log is to:",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-pf-q3-a", text: "Provide visibility, accountability, and follow-up to closure", isCorrect: true),
+                QuizChoice(id: "usr-pf-q3-b", text: "Prove the unit is unsafe", isCorrect: false),
+                QuizChoice(id: "usr-pf-q3-c", text: "Replace supervisor enforcement", isCorrect: false),
+                QuizChoice(id: "usr-pf-q3-d", text: "Avoid reporting to leadership", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-pf-q4",
+            prompt: "When should a USR elevate a safety concern?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-pf-q4-a", text: "When risk exceeds local authority or imminent danger exists", isCorrect: true),
+                QuizChoice(id: "usr-pf-q4-b", text: "Only after the annual inspection", isCorrect: false),
+                QuizChoice(id: "usr-pf-q4-c", text: "Only if a mishap already happened", isCorrect: false),
+                QuizChoice(id: "usr-pf-q4-d", text: "Never; USRs should not elevate issues", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-pf-q5",
+            prompt: "Which statement about USR authority is most accurate?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-pf-q5-a", text: "USRs can stop/limit exposure to imminent danger and notify supervision", isCorrect: true),
+                QuizChoice(id: "usr-pf-q5-b", text: "USRs approve all risk acceptance decisions", isCorrect: false),
+                QuizChoice(id: "usr-pf-q5-c", text: "USRs own funding for hazard abatement", isCorrect: false),
+                QuizChoice(id: "usr-pf-q5-d", text: "USRs are exempt from documentation requirements", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-pf-q6",
+            prompt: "The best USR communication style for hazards is:",
+            difficulty: .easy,
+            choices: [
+                QuizChoice(id: "usr-pf-q6-a", text: "Objective, fact-based, and focused on risk and controls", isCorrect: true),
+                QuizChoice(id: "usr-pf-q6-b", text: "Blame-focused to drive quick fixes", isCorrect: false),
+                QuizChoice(id: "usr-pf-q6-c", text: "Informal only; no written details", isCorrect: false),
+                QuizChoice(id: "usr-pf-q6-d", text: "Technical jargon without context", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-pf-q7",
+            prompt: "Which action best supports leadership decision-making?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-pf-q7-a", text: "Provide risk level, control options, and status of open items", isCorrect: true),
+                QuizChoice(id: "usr-pf-q7-b", text: "Only report perfect compliance", isCorrect: false),
+                QuizChoice(id: "usr-pf-q7-c", text: "Avoid reporting negative trends", isCorrect: false),
+                QuizChoice(id: "usr-pf-q7-d", text: "Focus only on equipment purchases", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-pf-q8",
+            prompt: "A USR notices no recent self-assessments. What is the best next step?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-pf-q8-a", text: "Coordinate with supervisors to schedule spot inspections and track results", isCorrect: true),
+                QuizChoice(id: "usr-pf-q8-b", text: "Wait for the safety office to perform all inspections", isCorrect: false),
+                QuizChoice(id: "usr-pf-q8-c", text: "Ignore it because it is not required", isCorrect: false),
+                QuizChoice(id: "usr-pf-q8-d", text: "Conduct inspections without informing supervisors", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-pf-q9",
+            prompt: "Which item is most appropriate for a USR weekly update?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-pf-q9-a", text: "Open hazards with OPRs/suspenses and training gaps", isCorrect: true),
+                QuizChoice(id: "usr-pf-q9-b", text: "Only personal opinions about shop performance", isCorrect: false),
+                QuizChoice(id: "usr-pf-q9-c", text: "Only mission production metrics", isCorrect: false),
+                QuizChoice(id: "usr-pf-q9-d", text: "Only completed actions; omit open items", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-pf-q10",
+            prompt: "Which relationship statement is most accurate?",
+            difficulty: .easy,
+            choices: [
+                QuizChoice(id: "usr-pf-q10-a", text: "Safety office provides oversight and guidance; unit leaders own execution", isCorrect: true),
+                QuizChoice(id: "usr-pf-q10-b", text: "Safety office owns all shop-level corrections once a USR is appointed", isCorrect: false),
+                QuizChoice(id: "usr-pf-q10-c", text: "USRs are only accountable to the safety office", isCorrect: false),
+                QuizChoice(id: "usr-pf-q10-d", text: "Supervisors are not responsible for safety if a USR exists", isCorrect: false)
+            ]
+        )
+    ]
+
+    // MARK: USR Roles & Responsibilities
+
+    static let usrRolesResponsibilities: [QuizQuestion] = [
+        QuizQuestion(
+            id: "usr-roles-q1",
+            prompt: "Who owns day-to-day enforcement of safe procedures in the unit?",
+            difficulty: .easy,
+            choices: [
+                QuizChoice(id: "usr-roles-q1-a", text: "Supervisors and commanders", isCorrect: true),
+                QuizChoice(id: "usr-roles-q1-b", text: "USR only", isCorrect: false),
+                QuizChoice(id: "usr-roles-q1-c", text: "Safety office only", isCorrect: false),
+                QuizChoice(id: "usr-roles-q1-d", text: "Workers only", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-roles-q2",
+            prompt: "A worker identifies a hazard with no easy fix. The USR should ensure:",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-roles-q2-a", text: "The hazard is documented, interim controls are applied, and it is tracked with an OPR", isCorrect: true),
+                QuizChoice(id: "usr-roles-q2-b", text: "The hazard is handled informally without tracking", isCorrect: false),
+                QuizChoice(id: "usr-roles-q2-c", text: "It is closed once a request is submitted", isCorrect: false),
+                QuizChoice(id: "usr-roles-q2-d", text: "It is deferred until the annual inspection", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-roles-q3",
+            prompt: "Which is a supervisor responsibility that USRs should verify?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-roles-q3-a", text: "Training, procedures/JHA, PPE enforcement, and hazard follow-up", isCorrect: true),
+                QuizChoice(id: "usr-roles-q3-b", text: "Only ensuring the shop looks clean for inspections", isCorrect: false),
+                QuizChoice(id: "usr-roles-q3-c", text: "Only reporting mishaps to external agencies", isCorrect: false),
+                QuizChoice(id: "usr-roles-q3-d", text: "Delegating safety tasks to new workers", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-roles-q4",
+            prompt: "Which statement best describes the safety office role?",
+            difficulty: .easy,
+            choices: [
+                QuizChoice(id: "usr-roles-q4-a", text: "Provide oversight, guidance, and inspections without replacing unit responsibility", isCorrect: true),
+                QuizChoice(id: "usr-roles-q4-b", text: "Own all hazard fixes in the unit", isCorrect: false),
+                QuizChoice(id: "usr-roles-q4-c", text: "Replace supervisor authority", isCorrect: false),
+                QuizChoice(id: "usr-roles-q4-d", text: "Operate independently without coordination", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-roles-q5",
+            prompt: "An imminent danger is identified. The correct immediate action is to:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "usr-roles-q5-a", text: "Stop/limit exposure, notify supervision, and control the area", isCorrect: true),
+                QuizChoice(id: "usr-roles-q5-b", text: "Document it and let the job finish to avoid delays", isCorrect: false),
+                QuizChoice(id: "usr-roles-q5-c", text: "Wait to elevate at the weekly meeting", isCorrect: false),
+                QuizChoice(id: "usr-roles-q5-d", text: "Ask the worker to be careful and continue", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-roles-q6",
+            prompt: "Which best describes a worker responsibility?",
+            difficulty: .easy,
+            choices: [
+                QuizChoice(id: "usr-roles-q6-a", text: "Follow procedures, use PPE, and report hazards early", isCorrect: true),
+                QuizChoice(id: "usr-roles-q6-b", text: "Only report hazards after an injury", isCorrect: false),
+                QuizChoice(id: "usr-roles-q6-c", text: "Fix hazards without telling anyone", isCorrect: false),
+                QuizChoice(id: "usr-roles-q6-d", text: "Decide risk acceptance without supervision", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-roles-q7",
+            prompt: "A contractor is working in the unit. A key host responsibility is to:",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-roles-q7-a", text: "Coordinate hazards/rules and ensure safe integration into the worksite", isCorrect: true),
+                QuizChoice(id: "usr-roles-q7-b", text: "Assume the contractor program covers everything", isCorrect: false),
+                QuizChoice(id: "usr-roles-q7-c", text: "Prohibit contractor hazard reporting to the host", isCorrect: false),
+                QuizChoice(id: "usr-roles-q7-d", text: "Allow work without briefings if a COR is present", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-roles-q8",
+            prompt: "The strongest influence tool for sustained change is:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "usr-roles-q8-a", text: "Clear findings with actionable recommendations and accountable suspense/OPR", isCorrect: true),
+                QuizChoice(id: "usr-roles-q8-b", text: "Publicly calling out individuals", isCorrect: false),
+                QuizChoice(id: "usr-roles-q8-c", text: "Only informal verbal feedback", isCorrect: false),
+                QuizChoice(id: "usr-roles-q8-d", text: "Letting the shop decide if the finding matters", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-roles-q9",
+            prompt: "If a supervisor disputes a finding, the best USR response is to:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "usr-roles-q9-a", text: "Restate objective criteria, describe risk, and elevate through the chain if needed", isCorrect: true),
+                QuizChoice(id: "usr-roles-q9-b", text: "Close the finding to preserve relationships", isCorrect: false),
+                QuizChoice(id: "usr-roles-q9-c", text: "Argue until the supervisor agrees", isCorrect: false),
+                QuizChoice(id: "usr-roles-q9-d", text: "Document disagreement and take no further action", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-roles-q10",
+            prompt: "From an accountability standpoint, who ensures workers are trained and standards enforced?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-roles-q10-a", text: "Supervisors and commanders; USRs advise and track", isCorrect: true),
+                QuizChoice(id: "usr-roles-q10-b", text: "Safety office only", isCorrect: false),
+                QuizChoice(id: "usr-roles-q10-c", text: "Workers only", isCorrect: false),
+                QuizChoice(id: "usr-roles-q10-d", text: "Contractors only", isCorrect: false)
+            ]
+        )
+    ]
+
+    // MARK: USR Hazard Reporting & Tracking
+
+    static let usrHazardReporting: [QuizQuestion] = [
+        QuizQuestion(
+            id: "usr-hz-q1",
+            prompt: "A near miss is best described as:",
+            difficulty: .easy,
+            choices: [
+                QuizChoice(id: "usr-hz-q1-a", text: "An unplanned event that could have caused injury or damage but did not", isCorrect: true),
+                QuizChoice(id: "usr-hz-q1-b", text: "An event that always includes injury", isCorrect: false),
+                QuizChoice(id: "usr-hz-q1-c", text: "A minor issue that should not be reported", isCorrect: false),
+                QuizChoice(id: "usr-hz-q1-d", text: "Only a paperwork error", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-hz-q2",
+            prompt: "Which report detail is most important for action?",
+            difficulty: .easy,
+            choices: [
+                QuizChoice(id: "usr-hz-q2-a", text: "Location, condition, exposure, and missing controls", isCorrect: true),
+                QuizChoice(id: "usr-hz-q2-b", text: "Only the name of the reporter", isCorrect: false),
+                QuizChoice(id: "usr-hz-q2-c", text: "General statements like 'unsafe area'", isCorrect: false),
+                QuizChoice(id: "usr-hz-q2-d", text: "Only a photo without written detail", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-hz-q3",
+            prompt: "A hazard is closed when:",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-hz-q3-a", text: "Corrective action is completed and verified effective", isCorrect: true),
+                QuizChoice(id: "usr-hz-q3-b", text: "A work order is submitted", isCorrect: false),
+                QuizChoice(id: "usr-hz-q3-c", text: "Funding is approved", isCorrect: false),
+                QuizChoice(id: "usr-hz-q3-d", text: "The next inspection is scheduled", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-hz-q4",
+            prompt: "If imminent danger is identified, the USR should:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "usr-hz-q4-a", text: "Stop/limit exposure and notify supervision immediately", isCorrect: true),
+                QuizChoice(id: "usr-hz-q4-b", text: "Wait for the next staff meeting", isCorrect: false),
+                QuizChoice(id: "usr-hz-q4-c", text: "Document it after the task is complete", isCorrect: false),
+                QuizChoice(id: "usr-hz-q4-d", text: "Assume someone else will handle it", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-hz-q5",
+            prompt: "Interim controls are best described as:",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-hz-q5-a", text: "Temporary measures that reduce exposure until permanent fixes are in place", isCorrect: true),
+                QuizChoice(id: "usr-hz-q5-b", text: "Permanent abatement", isCorrect: false),
+                QuizChoice(id: "usr-hz-q5-c", text: "Optional steps that do not require tracking", isCorrect: false),
+                QuizChoice(id: "usr-hz-q5-d", text: "Actions that close hazards immediately", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-hz-q6",
+            prompt: "A hazard requires funding and will take time. The USR should:",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-hz-q6-a", text: "Apply interim controls, assign an OPR and suspense, and track to closure", isCorrect: true),
+                QuizChoice(id: "usr-hz-q6-b", text: "Close it once a plan is written", isCorrect: false),
+                QuizChoice(id: "usr-hz-q6-c", text: "Remove it from tracking to avoid attention", isCorrect: false),
+                QuizChoice(id: "usr-hz-q6-d", text: "Wait for the next annual inspection", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-hz-q7",
+            prompt: "The best time to report a hazard is:",
+            difficulty: .easy,
+            choices: [
+                QuizChoice(id: "usr-hz-q7-a", text: "As soon as it is identified", isCorrect: true),
+                QuizChoice(id: "usr-hz-q7-b", text: "Only after an injury occurs", isCorrect: false),
+                QuizChoice(id: "usr-hz-q7-c", text: "During the next inspection only", isCorrect: false),
+                QuizChoice(id: "usr-hz-q7-d", text: "Only when paperwork is convenient", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-hz-q8",
+            prompt: "Which item most helps prevent repeat findings?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-hz-q8-a", text: "Verify corrective actions and document effectiveness", isCorrect: true),
+                QuizChoice(id: "usr-hz-q8-b", text: "Close hazards once a plan exists", isCorrect: false),
+                QuizChoice(id: "usr-hz-q8-c", text: "Avoid documenting small issues", isCorrect: false),
+                QuizChoice(id: "usr-hz-q8-d", text: "Only use verbal feedback", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-hz-q9",
+            prompt: "A strong hazard report avoids:",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-hz-q9-a", text: "Blame language and speculation", isCorrect: true),
+                QuizChoice(id: "usr-hz-q9-b", text: "Specific locations and details", isCorrect: false),
+                QuizChoice(id: "usr-hz-q9-c", text: "Recommendations for controls", isCorrect: false),
+                QuizChoice(id: "usr-hz-q9-d", text: "Photos and measurements", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-hz-q10",
+            prompt: "If a supervisor is not acting on a high-risk hazard, the USR should:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "usr-hz-q10-a", text: "Elevate through the chain and involve safety office as needed", isCorrect: true),
+                QuizChoice(id: "usr-hz-q10-b", text: "Close the hazard to avoid conflict", isCorrect: false),
+                QuizChoice(id: "usr-hz-q10-c", text: "Wait indefinitely", isCorrect: false),
+                QuizChoice(id: "usr-hz-q10-d", text: "Handle the repair personally without coordination", isCorrect: false)
+            ]
+        )
+    ]
+
+    // MARK: USR Risk Management Basics
+
+    static let usrRiskManagement: [QuizQuestion] = [
+        QuizQuestion(
+            id: "usr-rm-q1",
+            prompt: "The correct order of the five-step RM process is:",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-rm-q1-a", text: "Identify, assess, develop controls/make decisions, implement, supervise/evaluate", isCorrect: true),
+                QuizChoice(id: "usr-rm-q1-b", text: "Assess, identify, implement, develop controls, supervise", isCorrect: false),
+                QuizChoice(id: "usr-rm-q1-c", text: "Identify, implement, assess, supervise, develop controls", isCorrect: false),
+                QuizChoice(id: "usr-rm-q1-d", text: "Develop controls, identify, assess, implement, supervise", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-rm-q2",
+            prompt: "Risk is best defined as:",
+            difficulty: .easy,
+            choices: [
+                QuizChoice(id: "usr-rm-q2-a", text: "The combination of severity and probability after considering exposure and controls", isCorrect: true),
+                QuizChoice(id: "usr-rm-q2-b", text: "The same as hazard", isCorrect: false),
+                QuizChoice(id: "usr-rm-q2-c", text: "Only the probability of an event", isCorrect: false),
+                QuizChoice(id: "usr-rm-q2-d", text: "Only the severity of an injury", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-rm-q3",
+            prompt: "Which control is highest in the hierarchy?",
+            difficulty: .easy,
+            choices: [
+                QuizChoice(id: "usr-rm-q3-a", text: "Elimination or substitution", isCorrect: true),
+                QuizChoice(id: "usr-rm-q3-b", text: "PPE", isCorrect: false),
+                QuizChoice(id: "usr-rm-q3-c", text: "Warning signs", isCorrect: false),
+                QuizChoice(id: "usr-rm-q3-d", text: "Administrative checklists", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-rm-q4",
+            prompt: "If residual risk remains high after controls, the correct action is to:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "usr-rm-q4-a", text: "Elevate acceptance to the appropriate authority", isCorrect: true),
+                QuizChoice(id: "usr-rm-q4-b", text: "Accept the risk at the worker level", isCorrect: false),
+                QuizChoice(id: "usr-rm-q4-c", text: "Proceed without documentation", isCorrect: false),
+                QuizChoice(id: "usr-rm-q4-d", text: "Delay the decision until after the task", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-rm-q5",
+            prompt: "Which example is an administrative control?",
+            difficulty: .easy,
+            choices: [
+                QuizChoice(id: "usr-rm-q5-a", text: "Limiting exposure time through a work-rest schedule", isCorrect: true),
+                QuizChoice(id: "usr-rm-q5-b", text: "Installing a machine guard", isCorrect: false),
+                QuizChoice(id: "usr-rm-q5-c", text: "Removing the hazard entirely", isCorrect: false),
+                QuizChoice(id: "usr-rm-q5-d", text: "Replacing a chemical with a safer one", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-rm-q6",
+            prompt: "A strong RM worksheet includes:",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-rm-q6-a", text: "Hazards, controls, residual risk, and acceptance authority", isCorrect: true),
+                QuizChoice(id: "usr-rm-q6-b", text: "Only the mission schedule", isCorrect: false),
+                QuizChoice(id: "usr-rm-q6-c", text: "Only PPE requirements", isCorrect: false),
+                QuizChoice(id: "usr-rm-q6-d", text: "Only injury history", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-rm-q7",
+            prompt: "Supervision and evaluation in RM means:",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-rm-q7-a", text: "Verify controls are working and adjust as needed", isCorrect: true),
+                QuizChoice(id: "usr-rm-q7-b", text: "Assume controls are effective once written", isCorrect: false),
+                QuizChoice(id: "usr-rm-q7-c", text: "Only review after a mishap", isCorrect: false),
+                QuizChoice(id: "usr-rm-q7-d", text: "Avoid checking to save time", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-rm-q8",
+            prompt: "Which statement about real-time RM is most accurate?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-rm-q8-a", text: "It still requires hazard identification, assessment, controls, and communication", isCorrect: true),
+                QuizChoice(id: "usr-rm-q8-b", text: "It replaces the need for pre-task planning", isCorrect: false),
+                QuizChoice(id: "usr-rm-q8-c", text: "It is only used after incidents", isCorrect: false),
+                QuizChoice(id: "usr-rm-q8-d", text: "It does not require documentation", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-rm-q9",
+            prompt: "If a control significantly reduces mission output, the best next step is to:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "usr-rm-q9-a", text: "Evaluate alternatives and elevate the residual risk decision", isCorrect: true),
+                QuizChoice(id: "usr-rm-q9-b", text: "Reject the control without discussion", isCorrect: false),
+                QuizChoice(id: "usr-rm-q9-c", text: "Implement the control without coordination", isCorrect: false),
+                QuizChoice(id: "usr-rm-q9-d", text: "Ignore the risk to meet deadlines", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-rm-q10",
+            prompt: "The USR best supports RM by:",
+            difficulty: .easy,
+            choices: [
+                QuizChoice(id: "usr-rm-q10-a", text: "Helping teams document hazards, controls, and approvals", isCorrect: true),
+                QuizChoice(id: "usr-rm-q10-b", text: "Approving risk acceptance for high hazards", isCorrect: false),
+                QuizChoice(id: "usr-rm-q10-c", text: "Replacing supervisor decision-making", isCorrect: false),
+                QuizChoice(id: "usr-rm-q10-d", text: "Focusing only on paperwork, not field verification", isCorrect: false)
+            ]
+        )
+    ]
+
+    // MARK: USR Spot Inspections & Self-Assessments
+
+    static let usrSpotInspections: [QuizQuestion] = [
+        QuizQuestion(
+            id: "usr-spot-q1",
+            prompt: "The best way to prioritize spot inspections is to:",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-spot-q1-a", text: "Focus on high-risk tasks, new processes, and repeat findings", isCorrect: true),
+                QuizChoice(id: "usr-spot-q1-b", text: "Inspect only the easiest areas", isCorrect: false),
+                QuizChoice(id: "usr-spot-q1-c", text: "Inspect the same area every week regardless of risk", isCorrect: false),
+                QuizChoice(id: "usr-spot-q1-d", text: "Only inspect areas after a mishap", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-spot-q2",
+            prompt: "Before a spot inspection, the USR should:",
+            difficulty: .easy,
+            choices: [
+                QuizChoice(id: "usr-spot-q2-a", text: "Brief the supervisor on scope and expectations", isCorrect: true),
+                QuizChoice(id: "usr-spot-q2-b", text: "Avoid coordination to keep the inspection a surprise", isCorrect: false),
+                QuizChoice(id: "usr-spot-q2-c", text: "Only brief the safety office", isCorrect: false),
+                QuizChoice(id: "usr-spot-q2-d", text: "Wait until after the inspection to inform anyone", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-spot-q3",
+            prompt: "A spot inspection should focus primarily on:",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-spot-q3-a", text: "Observed work practices and controls in use", isCorrect: true),
+                QuizChoice(id: "usr-spot-q3-b", text: "Only administrative paperwork", isCorrect: false),
+                QuizChoice(id: "usr-spot-q3-c", text: "Only facility cleanliness", isCorrect: false),
+                QuizChoice(id: "usr-spot-q3-d", text: "Only equipment serial numbers", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-spot-q4",
+            prompt: "Which documentation is most effective?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-spot-q4-a", text: "Clear findings with location, risk, and recommended controls", isCorrect: true),
+                QuizChoice(id: "usr-spot-q4-b", text: "General statements like 'needs improvement'", isCorrect: false),
+                QuizChoice(id: "usr-spot-q4-c", text: "Only verbal feedback", isCorrect: false),
+                QuizChoice(id: "usr-spot-q4-d", text: "Only a photo with no details", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-spot-q5",
+            prompt: "A repeat finding indicates the corrective action was:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "usr-spot-q5-a", text: "Ineffective, not sustained, or not implemented as intended", isCorrect: true),
+                QuizChoice(id: "usr-spot-q5-b", text: "Automatically acceptable if the shop is busy", isCorrect: false),
+                QuizChoice(id: "usr-spot-q5-c", text: "Only a documentation problem", isCorrect: false),
+                QuizChoice(id: "usr-spot-q5-d", text: "Evidence the USR is too strict", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-spot-q6",
+            prompt: "Which action best supports a positive safety culture during inspections?",
+            difficulty: .easy,
+            choices: [
+                QuizChoice(id: "usr-spot-q6-a", text: "Recognize good practices while documenting deficiencies", isCorrect: true),
+                QuizChoice(id: "usr-spot-q6-b", text: "Only point out failures", isCorrect: false),
+                QuizChoice(id: "usr-spot-q6-c", text: "Avoid any feedback", isCorrect: false),
+                QuizChoice(id: "usr-spot-q6-d", text: "Publicly call out individuals", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-spot-q7",
+            prompt: "If a supervisor asks for extra time to fix a hazard, the best response is to:",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-spot-q7-a", text: "Set a realistic suspense with interim controls and follow up", isCorrect: true),
+                QuizChoice(id: "usr-spot-q7-b", text: "Close the finding to avoid conflict", isCorrect: false),
+                QuizChoice(id: "usr-spot-q7-c", text: "Allow an open-ended delay", isCorrect: false),
+                QuizChoice(id: "usr-spot-q7-d", text: "Ignore interim controls", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-spot-q8",
+            prompt: "Which is the best use of a spot inspection checklist?",
+            difficulty: .easy,
+            choices: [
+                QuizChoice(id: "usr-spot-q8-a", text: "Keep it short and tailored to the task and hazards", isCorrect: true),
+                QuizChoice(id: "usr-spot-q8-b", text: "Include every possible standard regardless of relevance", isCorrect: false),
+                QuizChoice(id: "usr-spot-q8-c", text: "Avoid checklists because they slow down inspections", isCorrect: false),
+                QuizChoice(id: "usr-spot-q8-d", text: "Use only for paperwork review", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-spot-q9",
+            prompt: "After corrective actions are completed, the USR should:",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-spot-q9-a", text: "Verify the fix and document closure", isCorrect: true),
+                QuizChoice(id: "usr-spot-q9-b", text: "Assume it is fixed if a plan existed", isCorrect: false),
+                QuizChoice(id: "usr-spot-q9-c", text: "Close without verifying", isCorrect: false),
+                QuizChoice(id: "usr-spot-q9-d", text: "Wait for the next inspection", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-spot-q10",
+            prompt: "The USR should coordinate inspections primarily to:",
+            difficulty: .easy,
+            choices: [
+                QuizChoice(id: "usr-spot-q10-a", text: "Build shared understanding and reduce surprises", isCorrect: true),
+                QuizChoice(id: "usr-spot-q10-b", text: "Avoid documenting issues", isCorrect: false),
+                QuizChoice(id: "usr-spot-q10-c", text: "Eliminate supervisor involvement", isCorrect: false),
+                QuizChoice(id: "usr-spot-q10-d", text: "Bypass the unit chain of command", isCorrect: false)
+            ]
+        )
+    ]
+
+    // MARK: USR Safety Training & Briefings
+
+    static let usrTrainingBriefings: [QuizQuestion] = [
+        QuizQuestion(
+            id: "usr-train-q1",
+            prompt: "The most important purpose of training records is to:",
+            difficulty: .easy,
+            choices: [
+                QuizChoice(id: "usr-train-q1-a", text: "Show who is trained and identify gaps before exposure", isCorrect: true),
+                QuizChoice(id: "usr-train-q1-b", text: "Replace the need for supervision", isCorrect: false),
+                QuizChoice(id: "usr-train-q1-c", text: "Avoid giving briefings", isCorrect: false),
+                QuizChoice(id: "usr-train-q1-d", text: "Reduce hazard reporting", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-train-q2",
+            prompt: "A pre-task safety briefing should include:",
+            difficulty: .easy,
+            choices: [
+                QuizChoice(id: "usr-train-q2-a", text: "Task steps, hazards, controls, and roles", isCorrect: true),
+                QuizChoice(id: "usr-train-q2-b", text: "Only the schedule and deadlines", isCorrect: false),
+                QuizChoice(id: "usr-train-q2-c", text: "General safety slogans only", isCorrect: false),
+                QuizChoice(id: "usr-train-q2-d", text: "Only PPE requirements", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-train-q3",
+            prompt: "When is retraining most clearly required?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-train-q3-a", text: "After a near miss or observed unsafe behavior", isCorrect: true),
+                QuizChoice(id: "usr-train-q3-b", text: "Only at the worker’s request", isCorrect: false),
+                QuizChoice(id: "usr-train-q3-c", text: "Only after a new supervisor arrives", isCorrect: false),
+                QuizChoice(id: "usr-train-q3-d", text: "Never; initial training is enough", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-train-q4",
+            prompt: "If required training is missing for a task, the best USR action is to:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "usr-train-q4-a", text: "Notify the supervisor and pause the task until training or controls are addressed", isCorrect: true),
+                QuizChoice(id: "usr-train-q4-b", text: "Allow work to proceed and document later", isCorrect: false),
+                QuizChoice(id: "usr-train-q4-c", text: "Assume prior experience is enough", isCorrect: false),
+                QuizChoice(id: "usr-train-q4-d", text: "Ignore it to avoid delaying the mission", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-train-q5",
+            prompt: "Which documentation detail is most important after a briefing?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-train-q5-a", text: "Date, topic, and attendees", isCorrect: true),
+                QuizChoice(id: "usr-train-q5-b", text: "Only the location", isCorrect: false),
+                QuizChoice(id: "usr-train-q5-c", text: "Only the supervisor signature", isCorrect: false),
+                QuizChoice(id: "usr-train-q5-d", text: "No documentation needed if the briefing was short", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-train-q6",
+            prompt: "Training gaps should be communicated to supervisors because:",
+            difficulty: .easy,
+            choices: [
+                QuizChoice(id: "usr-train-q6-a", text: "Supervisors must ensure workers are trained before exposure", isCorrect: true),
+                QuizChoice(id: "usr-train-q6-b", text: "USRs can remove training requirements", isCorrect: false),
+                QuizChoice(id: "usr-train-q6-c", text: "Training is optional for experienced workers", isCorrect: false),
+                QuizChoice(id: "usr-train-q6-d", text: "Only the safety office manages training", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-train-q7",
+            prompt: "Which is a strong indicator a briefing was effective?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-train-q7-a", text: "Workers can restate hazards and controls in their own words", isCorrect: true),
+                QuizChoice(id: "usr-train-q7-b", text: "The briefing was very long", isCorrect: false),
+                QuizChoice(id: "usr-train-q7-c", text: "No questions were asked", isCorrect: false),
+                QuizChoice(id: "usr-train-q7-d", text: "Only the supervisor spoke", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-train-q8",
+            prompt: "A good training tracker should:",
+            difficulty: .easy,
+            choices: [
+                QuizChoice(id: "usr-train-q8-a", text: "Show current status, due dates, and overdue items", isCorrect: true),
+                QuizChoice(id: "usr-train-q8-b", text: "List only who already completed training", isCorrect: false),
+                QuizChoice(id: "usr-train-q8-c", text: "Exclude new hires", isCorrect: false),
+                QuizChoice(id: "usr-train-q8-d", text: "Only include optional courses", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-train-q9",
+            prompt: "Which statement about briefings is most accurate?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-train-q9-a", text: "Briefings should be task-specific and updated when conditions change", isCorrect: true),
+                QuizChoice(id: "usr-train-q9-b", text: "A single annual briefing covers all tasks", isCorrect: false),
+                QuizChoice(id: "usr-train-q9-c", text: "Briefings are only required for high-risk jobs", isCorrect: false),
+                QuizChoice(id: "usr-train-q9-d", text: "Briefings are optional if the team is experienced", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-train-q10",
+            prompt: "The USR’s role in training is to:",
+            difficulty: .easy,
+            choices: [
+                QuizChoice(id: "usr-train-q10-a", text: "Track training status and support supervisors in closing gaps", isCorrect: true),
+                QuizChoice(id: "usr-train-q10-b", text: "Replace the supervisor as trainer for all tasks", isCorrect: false),
+                QuizChoice(id: "usr-train-q10-c", text: "Ignore training because it is not safety-related", isCorrect: false),
+                QuizChoice(id: "usr-train-q10-d", text: "Only keep records for inspections", isCorrect: false)
+            ]
+        )
+    ]
+
+    // MARK: USR Mishap & Near-Miss Reporting
+
+    static let usrMishapReporting: [QuizQuestion] = [
+        QuizQuestion(
+            id: "usr-mr-q1",
+            prompt: "The first priority after a mishap is to:",
+            difficulty: .easy,
+            choices: [
+                QuizChoice(id: "usr-mr-q1-a", text: "Care for personnel and secure the scene", isCorrect: true),
+                QuizChoice(id: "usr-mr-q1-b", text: "Complete the report paperwork", isCorrect: false),
+                QuizChoice(id: "usr-mr-q1-c", text: "Assign blame", isCorrect: false),
+                QuizChoice(id: "usr-mr-q1-d", text: "Wait for the next shift", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-mr-q2",
+            prompt: "Near misses should be reported because they:",
+            difficulty: .easy,
+            choices: [
+                QuizChoice(id: "usr-mr-q2-a", text: "Reveal hazards before injuries occur", isCorrect: true),
+                QuizChoice(id: "usr-mr-q2-b", text: "Are only required for paperwork", isCorrect: false),
+                QuizChoice(id: "usr-mr-q2-c", text: "Do not need follow-up", isCorrect: false),
+                QuizChoice(id: "usr-mr-q2-d", text: "Only matter if equipment is damaged", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-mr-q3",
+            prompt: "Which is the most appropriate documentation approach?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-mr-q3-a", text: "Record objective facts: time, location, conditions, and what occurred", isCorrect: true),
+                QuizChoice(id: "usr-mr-q3-b", text: "Speculate on causes to speed closure", isCorrect: false),
+                QuizChoice(id: "usr-mr-q3-c", text: "Document only injuries, not conditions", isCorrect: false),
+                QuizChoice(id: "usr-mr-q3-d", text: "Delay documentation until the investigation ends", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-mr-q4",
+            prompt: "Preserving evidence means:",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-mr-q4-a", text: "Protecting the scene and not altering conditions unless needed for safety", isCorrect: true),
+                QuizChoice(id: "usr-mr-q4-b", text: "Cleaning up quickly to resume work", isCorrect: false),
+                QuizChoice(id: "usr-mr-q4-c", text: "Only taking photos and then changing the scene", isCorrect: false),
+                QuizChoice(id: "usr-mr-q4-d", text: "Waiting for the annual inspection", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-mr-q5",
+            prompt: "Which notification path is most appropriate for a mishap?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-mr-q5-a", text: "Notify supervision and the safety office immediately per local guidance", isCorrect: true),
+                QuizChoice(id: "usr-mr-q5-b", text: "Only inform coworkers", isCorrect: false),
+                QuizChoice(id: "usr-mr-q5-c", text: "Wait until the end of the week", isCorrect: false),
+                QuizChoice(id: "usr-mr-q5-d", text: "Only report if hospitalization occurred", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-mr-q6",
+            prompt: "Which item should be included in a mishap report?",
+            difficulty: .easy,
+            choices: [
+                QuizChoice(id: "usr-mr-q6-a", text: "Equipment involved and environmental conditions", isCorrect: true),
+                QuizChoice(id: "usr-mr-q6-b", text: "Personal opinions on blame", isCorrect: false),
+                QuizChoice(id: "usr-mr-q6-c", text: "Only the final corrective action", isCorrect: false),
+                QuizChoice(id: "usr-mr-q6-d", text: "Only the schedule impacts", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-mr-q7",
+            prompt: "The USR’s follow-up role after a mishap is to:",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-mr-q7-a", text: "Track corrective actions and share lessons learned", isCorrect: true),
+                QuizChoice(id: "usr-mr-q7-b", text: "Close the report once submitted", isCorrect: false),
+                QuizChoice(id: "usr-mr-q7-c", text: "Assume safety office will handle everything", isCorrect: false),
+                QuizChoice(id: "usr-mr-q7-d", text: "Avoid discussing the event", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-mr-q8",
+            prompt: "Which is the best way to prevent future mishaps?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-mr-q8-a", text: "Address root causes and verify corrective actions are effective", isCorrect: true),
+                QuizChoice(id: "usr-mr-q8-b", text: "Only remind workers to be careful", isCorrect: false),
+                QuizChoice(id: "usr-mr-q8-c", text: "Close issues quickly to move on", isCorrect: false),
+                QuizChoice(id: "usr-mr-q8-d", text: "Avoid documenting near misses", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-mr-q9",
+            prompt: "When documenting, the most professional tone is:",
+            difficulty: .easy,
+            choices: [
+                QuizChoice(id: "usr-mr-q9-a", text: "Objective and factual without speculation", isCorrect: true),
+                QuizChoice(id: "usr-mr-q9-b", text: "Emotional to convey urgency", isCorrect: false),
+                QuizChoice(id: "usr-mr-q9-c", text: "Focused on blame", isCorrect: false),
+                QuizChoice(id: "usr-mr-q9-d", text: "Informal and incomplete", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-mr-q10",
+            prompt: "A near miss should be entered into tracking because:",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-mr-q10-a", text: "It identifies hazards and trends that require action", isCorrect: true),
+                QuizChoice(id: "usr-mr-q10-b", text: "Only injuries are worth tracking", isCorrect: false),
+                QuizChoice(id: "usr-mr-q10-c", text: "Tracking near misses is optional", isCorrect: false),
+                QuizChoice(id: "usr-mr-q10-d", text: "It avoids the need for corrective actions", isCorrect: false)
+            ]
+        )
+    ]
+
+    // MARK: USR Hazard Abatement & Interim Controls
+
+    static let usrHazardAbatement: [QuizQuestion] = [
+        QuizQuestion(
+            id: "usr-abate-q1",
+            prompt: "An interim control is best described as:",
+            difficulty: .easy,
+            choices: [
+                QuizChoice(id: "usr-abate-q1-a", text: "A temporary measure to reduce risk until a permanent fix is complete", isCorrect: true),
+                QuizChoice(id: "usr-abate-q1-b", text: "A permanent solution that closes the hazard", isCorrect: false),
+                QuizChoice(id: "usr-abate-q1-c", text: "A control that requires no follow-up", isCorrect: false),
+                QuizChoice(id: "usr-abate-q1-d", text: "A control used only for paperwork", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-abate-q2",
+            prompt: "The most important element of an abatement suspense is that it is:",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-abate-q2-a", text: "Owned by an OPR with authority to fix the issue", isCorrect: true),
+                QuizChoice(id: "usr-abate-q2-b", text: "Assigned to any available person", isCorrect: false),
+                QuizChoice(id: "usr-abate-q2-c", text: "Left open-ended to avoid pressure", isCorrect: false),
+                QuizChoice(id: "usr-abate-q2-d", text: "Only set after the next inspection", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-abate-q3",
+            prompt: "A hazard is closed when:",
+            difficulty: .easy,
+            choices: [
+                QuizChoice(id: "usr-abate-q3-a", text: "Corrective action is completed and verified effective", isCorrect: true),
+                QuizChoice(id: "usr-abate-q3-b", text: "A work order is submitted", isCorrect: false),
+                QuizChoice(id: "usr-abate-q3-c", text: "Funding is approved", isCorrect: false),
+                QuizChoice(id: "usr-abate-q3-d", text: "The next inspection is scheduled", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-abate-q4",
+            prompt: "Which statement about interim controls is most accurate?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-abate-q4-a", text: "They reduce exposure but do not eliminate the hazard", isCorrect: true),
+                QuizChoice(id: "usr-abate-q4-b", text: "They automatically close the hazard", isCorrect: false),
+                QuizChoice(id: "usr-abate-q4-c", text: "They replace the need for follow-up", isCorrect: false),
+                QuizChoice(id: "usr-abate-q4-d", text: "They are only needed for low-risk hazards", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-abate-q5",
+            prompt: "A repeat finding most likely means:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "usr-abate-q5-a", text: "Corrective action was ineffective or not sustained", isCorrect: true),
+                QuizChoice(id: "usr-abate-q5-b", text: "The inspection is too strict", isCorrect: false),
+                QuizChoice(id: "usr-abate-q5-c", text: "The hazard is acceptable if repeated", isCorrect: false),
+                QuizChoice(id: "usr-abate-q5-d", text: "Documentation alone solves the issue", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-abate-q6",
+            prompt: "Which detail strengthens abatement documentation?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-abate-q6-a", text: "Clear hazard description with location and standard reference", isCorrect: true),
+                QuizChoice(id: "usr-abate-q6-b", text: "Only the name of the reporter", isCorrect: false),
+                QuizChoice(id: "usr-abate-q6-c", text: "Only a suspense date with no description", isCorrect: false),
+                QuizChoice(id: "usr-abate-q6-d", text: "Only a photo without details", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-abate-q7",
+            prompt: "If interim controls become the long-term solution, the program risk is:",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "usr-abate-q7-a", text: "Normalization of deviance (risk accepted by habit, not decision)", isCorrect: true),
+                QuizChoice(id: "usr-abate-q7-b", text: "Too many inspections", isCorrect: false),
+                QuizChoice(id: "usr-abate-q7-c", text: "Over-documentation", isCorrect: false),
+                QuizChoice(id: "usr-abate-q7-d", text: "Excessive engineering controls", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-abate-q8",
+            prompt: "Which action best verifies closure?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-abate-q8-a", text: "Field check that the corrective action works as intended", isCorrect: true),
+                QuizChoice(id: "usr-abate-q8-b", text: "Closing the item when funding is approved", isCorrect: false),
+                QuizChoice(id: "usr-abate-q8-c", text: "Assuming completion once the OPR reports done", isCorrect: false),
+                QuizChoice(id: "usr-abate-q8-d", text: "Waiting until the next inspection cycle", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-abate-q9",
+            prompt: "The best reason to assign an OPR is to:",
+            difficulty: .easy,
+            choices: [
+                QuizChoice(id: "usr-abate-q9-a", text: "Ensure accountability for corrective action and timelines", isCorrect: true),
+                QuizChoice(id: "usr-abate-q9-b", text: "Avoid documenting the hazard", isCorrect: false),
+                QuizChoice(id: "usr-abate-q9-c", text: "Transfer all responsibility to the safety office", isCorrect: false),
+                QuizChoice(id: "usr-abate-q9-d", text: "Delay action until the next inspection", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "usr-abate-q10",
+            prompt: "Which statement about abatement is most accurate?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "usr-abate-q10-a", text: "Abatement requires tracking, interim controls when needed, and verification", isCorrect: true),
+                QuizChoice(id: "usr-abate-q10-b", text: "A written plan alone closes the hazard", isCorrect: false),
+                QuizChoice(id: "usr-abate-q10-c", text: "Only the safety office is responsible for abatement", isCorrect: false),
+                QuizChoice(id: "usr-abate-q10-d", text: "Abatement is optional for low-risk hazards", isCorrect: false)
+            ]
+        )
+    ]
 }
