@@ -14,10 +14,10 @@ struct PracticeSessionView: View {
     @State private var rewardSummary: RewardSummary? = nil
     @State private var sessionId = UUID()
     @State private var priorDailyScore: Int = 0
+    @State private var initializedSR: Bool = false
 
     private var questionPool: [QuizQuestion] {
         let allQuestions = TrainingContent.allQuizQuestions(for: progress.selectedRole)
-        progress.initializeSRCardsIfNeeded(allQuestions: allQuestions)
 
         let questionMap = Dictionary(uniqueKeysWithValues: allQuestions.map { ($0.id, $0) })
         let overdueCards = progress.overdueCards()
@@ -119,6 +119,11 @@ struct PracticeSessionView: View {
         .navigationTitle(mode == .dailyFive ? "Daily 5" : "Practice")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
+            if !initializedSR {
+                let allQuestions = TrainingContent.allQuizQuestions(for: progress.selectedRole)
+                progress.initializeSRCardsIfNeeded(allQuestions: allQuestions)
+                initializedSR = true
+            }
             progress.refreshForNewDayIfNeeded()
         }
     }
