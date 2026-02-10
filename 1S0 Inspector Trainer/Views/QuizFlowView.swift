@@ -3,6 +3,7 @@ import SwiftUI
 
 struct QuizFlowView: View {
     @EnvironmentObject private var progress: ProgressStore
+    @EnvironmentObject private var adaptiveManager: AdaptiveDifficultyManager
     let questions: [QuizQuestion]
     var onWrongAnswer: (() -> Void)? = nil
     let onComplete: (AssessmentResult, QuizStreakSummary) -> Void
@@ -16,7 +17,6 @@ struct QuizFlowView: View {
     @State private var selectedChoiceId: String? = nil
     @State private var correctCount = 0
     @State private var showFeedback = false
-    @State private var selectedDifficulty: QuizDifficulty = .hard
     @State private var preparedQuestions: [QuizQuestion] = []
     @State private var streakCount = 0
     @State private var bestStreakCount = 0
@@ -28,83 +28,101 @@ struct QuizFlowView: View {
 
     var body: some View {
         let filtered = preparedQuestions.isEmpty ? filteredQuestions : preparedQuestions
-        let question = filtered[index]
 
         ScrollView {
             GlassCard {
-                VStack(alignment: .leading, spacing: AppSpacing.stack) {
-                    HStack {
+                if filtered.isEmpty {
+                    VStack(alignment: .leading, spacing: AppSpacing.stack) {
                         Text("Quick Check")
                             .font(AppFont.mono(12))
                             .foregroundColor(AppTheme.muted)
-                        Spacer()
-                        if showsHearts {
-                            HeartsView(hearts: progress.hearts, maxHearts: progress.maxHearts, compact: true, onDark: false)
-                        }
-                        Text("\(index + 1)/\(filtered.count)")
-                            .font(AppFont.mono(12))
-                            .foregroundColor(AppTheme.muted)
+                        Text("No medium or hard questions are available.")
+                            .font(AppFont.subtitle(18))
+                            .foregroundColor(AppTheme.text)
                     }
+                } else {
+                    let safeIndex = min(index, filtered.count - 1)
+                    let question = filtered[safeIndex]
 
-                    if let imageName = question.imageName {
-                        Image(imageName)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(maxHeight: 180)
-                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-                    }
-
-                    Text(question.prompt)
-                        .font(AppFont.subtitle(18))
-                        .foregroundColor(AppTheme.text)
-
-                    VStack(spacing: 10) {
-                        ForEach(question.choices, id: \.id) { choice in
-                            Button {
-                                guard selectedChoiceId == nil else { return }
-                                selectedChoiceId = choice.id
-                                let isCorrect = choice.isCorrect
-                                if isCorrect {
-                                    correctCount += 1
-                                    registerCorrectAnswer()
-                                    AppFeedback.correct()
-                                } else {
-                                    onWrongAnswer?()
-                                    registerIncorrectAnswer()
-                                    AppFeedback.incorrect()
-                                }
-                                progress.updateSRCard(questionId: question.id, quality: isCorrect ? 4 : 1)
-                                progress.recordModuleAnswer(moduleId: modulePrefix(for: question.id), correct: isCorrect)
-                                updateState()
-                                withAnimation(.easeInOut(duration: 0.2)) {
-                                    showFeedback = true
-                                }
-                            } label: {
-                                OptionRow(
-                                    text: choice.text,
-                                    isSelected: selectedChoiceId == choice.id,
-                                    isCorrect: choice.isCorrect,
-                                    isLocked: selectedChoiceId != nil,
-                                    revealCorrect: true
-                                )
+                    VStack(alignment: .leading, spacing: AppSpacing.stack) {
+                        HStack {
+                            Text("Quick Check")
+                                .font(AppFont.mono(12))
+                                .foregroundColor(AppTheme.muted)
+                            Spacer()
+                            if showsHearts {
+                                HeartsView(hearts: progress.hearts, maxHearts: progress.maxHearts, compact: true, onDark: false)
                             }
-                            .buttonStyle(.plain)
+                            Text("\(safeIndex + 1)/\(filtered.count)")
+                                .font(AppFont.mono(12))
+                                .foregroundColor(AppTheme.muted)
+                            Text(adaptiveLabelText)
+                                .font(AppFont.mono(11))
+                                .foregroundColor(adaptiveLabelColor)
                         }
-                    }
 
-                    if let selectedId = selectedChoiceId,
-                       let selected = question.choices.first(where: { $0.id == selectedId }) {
-                        FeedbackView(
-                            text: selected.isCorrect ? "Correct." : "Not quite. Review the lesson and try again.",
-                            isCorrect: selected.isCorrect
-                        )
-                    }
-
-                    if showFeedback {
-                        Button(index == filtered.count - 1 ? "Finish Quiz" : "Next Question") {
-                            advance()
+                        if let imageName = question.imageName {
+                            Image(imageName)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(maxHeight: 180)
+                                .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                         }
-                        .buttonStyle(PrimaryButtonStyle())
+
+                        Text(question.prompt)
+                            .font(AppFont.subtitle(18))
+                            .foregroundColor(AppTheme.text)
+
+                        VStack(spacing: 10) {
+                            ForEach(question.choices, id: \.id) { choice in
+                                Button {
+                                    guard selectedChoiceId == nil else { return }
+                                    selectedChoiceId = choice.id
+                                    let isCorrect = choice.isCorrect
+                                    if isCorrect {
+                                        correctCount += 1
+                                        registerCorrectAnswer()
+                                        adaptiveManager.recordCorrect()
+                                        AppFeedback.correct()
+                                    } else {
+                                        onWrongAnswer?()
+                                        registerIncorrectAnswer()
+                                        adaptiveManager.recordWrong()
+                                        AppFeedback.incorrect()
+                                    }
+                                    progress.updateSRCard(questionId: question.id, quality: isCorrect ? 4 : 1)
+                                    progress.recordModuleAnswer(moduleId: modulePrefix(for: question.id), correct: isCorrect)
+                                    updateState()
+                                    withAnimation(.easeInOut(duration: 0.2)) {
+                                        showFeedback = true
+                                    }
+                                } label: {
+                                    OptionRow(
+                                        text: choice.text,
+                                        isSelected: selectedChoiceId == choice.id,
+                                        isCorrect: choice.isCorrect,
+                                        isLocked: selectedChoiceId != nil,
+                                        revealCorrect: true
+                                    )
+                                }
+                                .buttonStyle(.plain)
+                            }
+                        }
+
+                        if let selectedId = selectedChoiceId,
+                           let selected = question.choices.first(where: { $0.id == selectedId }) {
+                            FeedbackView(
+                                text: selected.isCorrect ? "Correct." : "Not quite. Review the lesson and try again.",
+                                isCorrect: selected.isCorrect
+                            )
+                        }
+
+                        if showFeedback {
+                            Button(safeIndex == filtered.count - 1 ? "Finish Quiz" : "Next Question") {
+                                advance()
+                            }
+                            .buttonStyle(PrimaryButtonStyle())
+                        }
                     }
                 }
             }
@@ -131,6 +149,7 @@ struct QuizFlowView: View {
 
     private func advance() {
         let list = preparedQuestions.isEmpty ? filteredQuestions : preparedQuestions
+        guard !list.isEmpty else { return }
         if index == list.count - 1 {
             let summary = QuizStreakSummary(
                 maxStreak: bestStreakCount,
@@ -146,10 +165,36 @@ struct QuizFlowView: View {
     }
 
     private var filteredQuestions: [QuizQuestion] {
-        let filtered = questions.filter { question in
-            question.difficulty == selectedDifficulty
+        let medium = questions.filter { $0.difficulty == .medium }
+        let hard = questions.filter { $0.difficulty == .hard }
+
+        switch adaptiveManager.currentDifficulty {
+        case .hard:
+            if !hard.isEmpty {
+                return hard
+            }
+            if !medium.isEmpty {
+                return medium
+            }
+        case .medium:
+            if !medium.isEmpty {
+                return medium
+            }
+            if !hard.isEmpty {
+                return hard
+            }
+        case .easy, .all:
+            break
         }
-        return filtered.isEmpty ? questions : filtered
+        return []
+    }
+
+    private var adaptiveLabelText: String {
+        adaptiveManager.currentDifficulty == .hard ? "● HARD" : "● STANDARD"
+    }
+
+    private var adaptiveLabelColor: Color {
+        adaptiveManager.currentDifficulty == .hard ? AppTheme.accent : AppTheme.muted
     }
 
     private func prepareQuestions() {

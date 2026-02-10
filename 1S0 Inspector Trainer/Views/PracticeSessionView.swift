@@ -7,6 +7,7 @@ enum PracticeMode {
 
 struct PracticeSessionView: View {
     @EnvironmentObject private var progress: ProgressStore
+    @EnvironmentObject private var adaptiveManager: AdaptiveDifficultyManager
     @Environment(\.dismiss) private var dismiss
     let mode: PracticeMode
 

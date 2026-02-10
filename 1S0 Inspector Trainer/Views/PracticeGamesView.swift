@@ -578,6 +578,7 @@ private struct SequenceCard: View {
 
 struct TrueFalseBlitzView: View {
     @EnvironmentObject private var progress: ProgressStore
+    @EnvironmentObject private var adaptiveManager: AdaptiveDifficultyManager
 
     @State private var questions: [TrueFalseQuestion] = []
     @State private var index = 0
@@ -750,8 +751,10 @@ struct TrueFalseBlitzView: View {
         selectedAnswer = value
         if value == questions[index].answer {
             correctCount += 1
+            adaptiveManager.recordCorrect()
             AppFeedback.correct()
         } else {
+            adaptiveManager.recordWrong()
             AppFeedback.incorrect()
         }
         showFeedback = true
@@ -778,6 +781,7 @@ struct TrueFalseBlitzView: View {
         if !questions.isEmpty {
             selectedAnswer = !questions[index].answer
         }
+        adaptiveManager.recordWrong()
         AppFeedback.incorrect()
         showFeedback = true
     }

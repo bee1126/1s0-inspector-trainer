@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ScenarioFlowView: View {
     @EnvironmentObject private var progress: ProgressStore
+    @EnvironmentObject private var adaptiveManager: AdaptiveDifficultyManager
     let scenario: Scenario
     var onWrongAnswer: (() -> Void)? = nil
     let onComplete: (AssessmentResult) -> Void
@@ -78,9 +79,11 @@ struct ScenarioFlowView: View {
                                 answeredCount += 1
                                 if option.isCorrect {
                                     correctCount += 1
+                                    adaptiveManager.recordCorrect()
                                     AppFeedback.correct()
                                 } else {
                                     onWrongAnswer?()
+                                    adaptiveManager.recordWrong()
                                     AppFeedback.incorrect()
                                 }
                                 withAnimation(.easeInOut(duration: 0.2)) {
@@ -166,6 +169,7 @@ struct ScenarioFlowView: View {
             selectedOptionId = fallback.id
             answeredCount += 1
             onWrongAnswer?()
+            adaptiveManager.recordWrong()
             AppFeedback.incorrect()
             showFeedback = true
         }

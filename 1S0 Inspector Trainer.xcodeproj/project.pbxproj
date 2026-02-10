@@ -21,6 +21,8 @@
 		385B0547EA624ED4980254F0 /* InspectorTrainerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F24684BB97641B9BDE038CA /* InspectorTrainerApp.swift */; };
 		3E4AB0E655E94B92BBFC3B33 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19302FDEB72143C5A663AE4E /* BackgroundView.swift */; };
 		3F977012712F1F26857E1093 /* MatchingGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73524C141A3F5AB2EFF99FE1 /* MatchingGameView.swift */; };
+		A4D8E8B91F234C5AA7B81234 /* AdaptiveDifficultyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F9C0D21A3344558899AABB /* AdaptiveDifficultyManager.swift */; };
+		C4E5F60718293A4B5C6D7E8F /* AdaptiveDifficultyManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A6B7C8D9E0F11223344556 /* AdaptiveDifficultyManagerTests.swift */; };
 		E1FFCA2A98184C7DA61D1BFBEFAC71DD /* ProgressStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC3C1F7388CF4E83A784B145B4C85FFB /* ProgressStoreTests.swift */; };
 		7EE70027C2504F5DACDF4651 /* PracticeGamesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BB159C4A5742E59988F9D4 /* PracticeGamesView.swift */; };
 		577F87A126C14A529F911618 /* ModuleListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F4C994046BF462DB2E96042 /* ModuleListView.swift */; };
@@ -92,6 +94,7 @@
 		32BAAD5C65C74C7C981FD78C /* QuizFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizFlowView.swift; sourceTree = "<group>"; };
 		40AEBFFBDDE847C4A5C225B5 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
 		AC3C1F7388CF4E83A784B145B4C85FFB /* ProgressStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStoreTests.swift; sourceTree = "<group>"; };
+		D5A6B7C8D9E0F11223344556 /* AdaptiveDifficultyManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveDifficultyManagerTests.swift; sourceTree = "<group>"; };
 		534B8049CF904994B419DE7D /* ProgressStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStore.swift; sourceTree = "<group>"; };
 		5D6583B73C5E4CA089EA252A /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
 		5F897A880F5B4B02A81A8BDE /* PracticeContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeContent.swift; sourceTree = "<group>"; };
@@ -105,6 +108,7 @@
 		92ACBA60D36B4E208BEAA126 /* TrainingRole+Content.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TrainingRole+Content.swift"; sourceTree = "<group>"; };
 		9B985BD79A7D2983D60E5E5A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A561485258DE42A4B11F142F /* QuizBank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizBank.swift; sourceTree = "<group>"; };
+		B3F9C0D21A3344558899AABB /* AdaptiveDifficultyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveDifficultyManager.swift; sourceTree = "<group>"; };
 		B82A650A0B65431196F5A0F8 /* ModuleDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleDetailView.swift; sourceTree = "<group>"; };
 		C506A214268B476AB97AFCF9 /* 1S0 Inspector Trainer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = "1S0 Inspector Trainer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		745F612C42314496B474DCAD3B30A012 /* 1S0 Inspector TrainerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = "1S0 Inspector TrainerTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -152,6 +156,7 @@
 		2A26C8A311474A2881B559F9D3F1501B /* 1S0 Inspector TrainerTests */ = {
 			isa = PBXGroup;
 			children = (
+				D5A6B7C8D9E0F11223344556 /* AdaptiveDifficultyManagerTests.swift */,
 				AC3C1F7388CF4E83A784B145B4C85FFB /* ProgressStoreTests.swift */,
 			);
 			path = "1S0 Inspector TrainerTests";
@@ -236,6 +241,7 @@
 			isa = PBXGroup;
 			children = (
 				23300B9FDEF1494197E818B3 /* AppFeedback.swift */,
+				B3F9C0D21A3344558899AABB /* AdaptiveDifficultyManager.swift */,
 				534B8049CF904994B419DE7D /* ProgressStore.swift */,
 				A1B2C3D4E5F60718293A4B5C /* SharedProgressData.swift */,
 				A561485258DE42A4B11F142F /* QuizBank.swift */,
@@ -381,6 +387,7 @@
 			files = (
 				385B0547EA624ED4980254F0 /* InspectorTrainerApp.swift in Sources */,
 				1D415B7895434BCF904189C3 /* AppFeedback.swift in Sources */,
+				A4D8E8B91F234C5AA7B81234 /* AdaptiveDifficultyManager.swift in Sources */,
 				70C498755F3A439EA025734C /* ProgressStore.swift in Sources */,
 				A1B2C3D4E5F60718293A4B5D /* SharedProgressData.swift in Sources */,
 				C67DC6A217DA4697B1D7A8AA /* TrainingContent.swift in Sources */,
@@ -424,6 +431,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4E5F60718293A4B5C6D7E8F /* AdaptiveDifficultyManagerTests.swift in Sources */,
 				E1FFCA2A98184C7DA61D1BFBEFAC71DD /* ProgressStoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

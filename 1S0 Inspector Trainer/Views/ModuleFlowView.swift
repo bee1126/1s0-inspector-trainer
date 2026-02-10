@@ -3,6 +3,7 @@ import UIKit
 
 struct ModuleFlowView: View {
     @EnvironmentObject private var progress: ProgressStore
+    @EnvironmentObject private var adaptiveManager: AdaptiveDifficultyManager
     @Environment(\.dismiss) private var dismiss
     let module: TrainingModule
 
@@ -143,6 +144,7 @@ struct ModuleFlowView: View {
         .sheet(isPresented: $showPracticeSheet) {
             PracticeSessionView()
                 .environmentObject(progress)
+                .environmentObject(adaptiveManager)
         }
     }
 

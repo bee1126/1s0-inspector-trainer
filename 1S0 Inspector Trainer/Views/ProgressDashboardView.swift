@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ProgressDashboardView: View {
     @EnvironmentObject private var progress: ProgressStore
+    @EnvironmentObject private var adaptiveManager: AdaptiveDifficultyManager
     private var modules: [TrainingModule] {
         TrainingContent.modules(for: progress.selectedRole)
     }
@@ -62,6 +63,15 @@ struct ProgressDashboardView: View {
                                     .foregroundColor(AppTheme.accent)
                                 Spacer()
                                 HeartsView(hearts: progress.hearts, maxHearts: progress.maxHearts, onDark: true)
+                            }
+
+                            HStack(spacing: 6) {
+                                Text("Adaptive Level:")
+                                    .font(AppFont.body(12))
+                                    .foregroundColor(AppTheme.muted)
+                                Text(adaptiveManager.currentDifficulty == .hard ? "Hard" : "Standard")
+                                    .font(AppFont.mono(12))
+                                    .foregroundColor(adaptiveManager.currentDifficulty == .hard ? AppTheme.accent : AppTheme.muted)
                             }
                         }
                     }

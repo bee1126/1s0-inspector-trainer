@@ -2,6 +2,7 @@ import SwiftUI
 
 struct MatchingGameView: View {
     @EnvironmentObject private var progress: ProgressStore
+    @EnvironmentObject private var adaptiveManager: AdaptiveDifficultyManager
     @Environment(\.dismiss) private var dismiss
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
@@ -315,12 +316,14 @@ struct MatchingGameView: View {
 
         if term.pairId == definition.pairId {
             matchedPairIds.insert(term.pairId)
+            adaptiveManager.recordCorrect()
             AppFeedback.correct()
             if pairsMatched == totalPairs {
                 finishGame()
             }
         } else {
             mistakeCount += 1
+            adaptiveManager.recordWrong()
             AppFeedback.incorrect()
             mistakes.append(
                 MatchMistake(
