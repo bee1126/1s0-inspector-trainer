@@ -1,7 +1,6 @@
 import Foundation
 import Combine
 import SwiftUI
-import WidgetKit
 
 struct SRCard: Codable, Identifiable {
     var id: String { questionId }
@@ -428,24 +427,6 @@ final class ProgressStore: ObservableObject {
             defaults.set(data, forKey: onboardingCheckInsKey)
         }
 
-        let snapshot = SharedProgressData(
-            xp: xp,
-            level: level,
-            dailyXp: dailyXp,
-            dailyGoal: dailyGoal,
-            dailyStreak: dailyStreak,
-            hearts: hearts,
-            maxHearts: maxHearts,
-            completedModuleCount: completedModules.count,
-            totalModuleCount: 14,
-            overdueReviewCount: overdueCount(),
-            lastUpdated: Date()
-        )
-        if let data = try? JSONEncoder().encode(snapshot),
-           let suite = UserDefaults(suiteName: SharedProgressData.suiteName) {
-            suite.set(data, forKey: SharedProgressData.key)
-        }
-        WidgetCenter.shared.reloadAllTimelines()
     }
 
     func setRole(_ role: TrainingRole) {
