@@ -117,6 +117,7 @@ struct RacSortView: View {
                         .foregroundColor(AppTheme.muted)
                 }
             }
+            .tacticalReadableWidth()
             .padding(AppSpacing.screenPadding)
         }
         .scrollIndicators(.hidden)
@@ -173,6 +174,7 @@ struct RacSortView: View {
                 }
                 .buttonStyle(OutlineButtonStyle())
             }
+            .tacticalReadableWidth()
             .padding(AppSpacing.screenPadding)
         }
         .scrollIndicators(.hidden)
@@ -424,6 +426,7 @@ struct ProcedureDrillLobbyView: View {
                             .foregroundColor(AppTheme.muted)
                     }
                 }
+                .tacticalReadableWidth()
                 .padding(AppSpacing.screenPadding)
             }
             .scrollIndicators(.hidden)
@@ -675,6 +678,7 @@ struct ProcedureDrillRunView: View {
                 }
                 .buttonStyle(PrimaryButtonStyle())
             }
+            .tacticalReadableWidth()
             .padding(AppSpacing.screenPadding)
         }
         .scrollIndicators(.hidden)
@@ -754,6 +758,7 @@ struct ProcedureDrillRunView: View {
                     .buttonStyle(OutlineButtonStyle())
                 }
             }
+            .tacticalReadableWidth()
             .padding(AppSpacing.screenPadding)
         }
         .scrollIndicators(.hidden)
@@ -800,6 +805,7 @@ struct ProcedureDrillRunView: View {
                 }
                 .buttonStyle(PrimaryButtonStyle())
             }
+            .tacticalReadableWidth()
             .padding(AppSpacing.screenPadding)
         }
         .scrollIndicators(.hidden)
@@ -821,6 +827,7 @@ struct ProcedureDrillRunView: View {
                     .buttonStyle(OutlineButtonStyle())
                 }
             }
+            .tacticalReadableWidth()
             .padding(AppSpacing.screenPadding)
         }
         .scrollIndicators(.hidden)
@@ -1198,6 +1205,7 @@ struct TrueFalseBlitzView: View {
                     }
                 }
             }
+            .tacticalReadableWidth()
             .padding(AppSpacing.screenPadding)
         }
         .scrollIndicators(.hidden)
@@ -1223,6 +1231,7 @@ struct TrueFalseBlitzView: View {
                 }
                 .buttonStyle(PrimaryButtonStyle())
             }
+            .tacticalReadableWidth()
             .padding(AppSpacing.screenPadding)
         }
         .scrollIndicators(.hidden)
@@ -1319,6 +1328,7 @@ struct MicroDrillSelectionView: View {
                         }
                     }
                 }
+                .tacticalReadableWidth()
                 .padding(AppSpacing.screenPadding)
             }
             .scrollIndicators(.hidden)
@@ -1380,6 +1390,7 @@ struct MicroDrillSessionView: View {
                             .buttonStyle(OutlineButtonStyle())
                         }
                     }
+                    .tacticalReadableWidth()
                     .padding(AppSpacing.screenPadding)
                 }
                 .scrollIndicators(.hidden)
@@ -1399,6 +1410,7 @@ struct MicroDrillSessionView: View {
                             .buttonStyle(OutlineButtonStyle())
                         }
                     }
+                    .tacticalReadableWidth()
                     .padding(AppSpacing.screenPadding)
                 } else {
                     QuizFlowView(
@@ -1596,6 +1608,7 @@ struct OnboardingPathView: View {
                         .buttonStyle(OutlineButtonStyle())
                     }
                 }
+                .tacticalReadableWidth()
                 .padding(AppSpacing.screenPadding)
             }
             .scrollIndicators(.hidden)

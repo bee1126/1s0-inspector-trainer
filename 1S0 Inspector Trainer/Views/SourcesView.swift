@@ -61,6 +61,7 @@ struct SourcesView: View {
                         }
                     }
                 }
+                .tacticalReadableWidth()
                 .padding(AppSpacing.screenPadding)
             }
             .scrollIndicators(.hidden)

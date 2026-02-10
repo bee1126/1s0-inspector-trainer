@@ -82,6 +82,7 @@ struct LessonPagerView: View {
                     }
                 }
             }
+            .tacticalReadableWidth()
             .padding(.horizontal, AppSpacing.screenPadding)
         }
         .scrollIndicators(.hidden)

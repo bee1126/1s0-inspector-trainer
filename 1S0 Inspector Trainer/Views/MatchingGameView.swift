@@ -111,6 +111,7 @@ struct MatchingGameView: View {
             }
             .scrollIndicators(.hidden)
         }
+        .tacticalReadableWidth()
         .padding(AppSpacing.screenPadding)
     }
 
@@ -263,6 +264,7 @@ struct MatchingGameView: View {
                 }
                 .buttonStyle(OutlineButtonStyle())
             }
+            .tacticalReadableWidth()
             .padding(AppSpacing.screenPadding)
         }
         .scrollIndicators(.hidden)
@@ -470,6 +472,7 @@ struct MatchingDeckSelectionView: View {
                         }
                     }
                 }
+                .tacticalReadableWidth()
                 .padding(AppSpacing.screenPadding)
             }
             .scrollIndicators(.hidden)

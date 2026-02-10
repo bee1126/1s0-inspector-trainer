@@ -21,7 +21,7 @@
     <key>UILaunchScreen</key>
     <dict/>
     <key>UIRequiresFullScreen</key>
-    <true/>
+    <false/>
     <key>UIApplicationSceneManifest</key>
     <dict>
         <key>UIApplicationSupportsMultipleScenes</key>

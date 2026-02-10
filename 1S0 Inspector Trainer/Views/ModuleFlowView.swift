@@ -96,6 +96,7 @@ struct ModuleFlowView: View {
                 }
                 Spacer()
             }
+            .tacticalReadableWidth()
             .padding(.bottom, AppSpacing.screenPadding)
             .opacity(appeared ? 1 : 0)
             .offset(y: appeared ? 0 : 12)
@@ -317,7 +318,8 @@ struct CompletionView: View {
                     }
                 }
             }
-            .padding(.horizontal, 20)
+            .tacticalReadableWidth()
+            .padding(.horizontal, AppSpacing.screenPadding)
         }
         .scrollIndicators(.hidden)
         .sheet(isPresented: $showShareSheet) {
@@ -334,42 +336,10 @@ struct ShareSheet: UIViewControllerRepresentable {
     let activityItems: [Any]
 
     func makeUIViewController(context: Context) -> UIActivityViewController {
-        let controller = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
-        if let popover = controller.popoverPresentationController {
-            // Prefer the key window's root view as the anchor if available; otherwise, fall back to the controller's view.
-            let sourceView: UIView
-            if let keyWindowView = UIApplication.shared.keyWindow?.rootViewController?.view {
-                sourceView = keyWindowView
-            } else if let controllerView = controller.view {
-                sourceView = controllerView
-            } else {
-                // As a last resort, create a temporary view to satisfy popover requirements.
-                sourceView = UIView(frame: .zero)
-            }
-
-            popover.sourceView = sourceView
-            let rect = sourceView.bounds
-            popover.sourceRect = CGRect(
-                x: rect.midX,
-                y: rect.midY,
-                width: 1,
-                height: 1
-            )
-            popover.permittedArrowDirections = []
-        }
-        return controller
+        UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
     }
 
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
-}
-
-private extension UIApplication {
-    var keyWindow: UIWindow? {
-        connectedScenes
-            .compactMap { $0 as? UIWindowScene }
-            .flatMap { $0.windows }
-            .first { $0.isKeyWindow }
-    }
 }
 
 enum CompletionSummaryPDF {

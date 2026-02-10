@@ -115,6 +115,7 @@ struct ScenarioFlowView: View {
                     }
                 }
             }
+            .tacticalReadableWidth()
             .padding(.horizontal, AppSpacing.screenPadding)
         }
         .scrollIndicators(.hidden)

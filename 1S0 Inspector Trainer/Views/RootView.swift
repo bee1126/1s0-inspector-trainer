@@ -175,6 +175,7 @@ private struct ModuleUnavailableView: View {
                         .foregroundColor(AppTheme.muted)
                 }
             }
+            .tacticalReadableWidth()
             .padding(AppSpacing.screenPadding)
         }
         .navigationTitle("Module")

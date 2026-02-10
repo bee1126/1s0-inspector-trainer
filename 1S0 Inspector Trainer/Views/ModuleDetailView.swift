@@ -95,6 +95,7 @@ struct ModuleDetailView: View {
                         }
                     }
                 }
+                .tacticalReadableWidth()
                 .padding(AppSpacing.screenPadding)
             }
             .scrollIndicators(.hidden)

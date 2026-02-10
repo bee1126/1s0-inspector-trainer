@@ -126,6 +126,7 @@ struct QuizFlowView: View {
                     }
                 }
             }
+            .tacticalReadableWidth()
             .padding(.horizontal, AppSpacing.screenPadding)
             .overlay(alignment: .top) {
                 if showStreakPopup, let streakPopupText {

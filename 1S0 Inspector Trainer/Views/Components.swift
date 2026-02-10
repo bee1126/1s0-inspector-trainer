@@ -27,6 +27,26 @@ struct GlassCard<Content: View>: View {
     }
 }
 
+struct TacticalReadableWidthModifier: ViewModifier {
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    let regularMaxWidth: CGFloat
+
+    func body(content: Content) -> some View {
+        content
+            .frame(
+                maxWidth: horizontalSizeClass == .regular ? regularMaxWidth : .infinity,
+                alignment: .leading
+            )
+            .frame(maxWidth: .infinity, alignment: .center)
+    }
+}
+
+extension View {
+    func tacticalReadableWidth(_ maxWidth: CGFloat = 860) -> some View {
+        modifier(TacticalReadableWidthModifier(regularMaxWidth: maxWidth))
+    }
+}
+
 // MARK: - Tag Pill
 
 struct TagPill: View {

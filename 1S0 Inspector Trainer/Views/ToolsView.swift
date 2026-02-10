@@ -37,6 +37,7 @@ struct ToolsView: View {
                         .buttonStyle(.plain)
                     }
                 }
+                .tacticalReadableWidth()
                 .padding(AppSpacing.screenPadding)
             }
             .scrollIndicators(.hidden)
@@ -93,13 +94,17 @@ struct ToolCard: View {
     }
 }
 
+private struct SharePayload: Identifiable {
+    let id = UUID()
+    let text: String
+}
+
 struct BugReportView: View {
     @State private var title = ""
     @State private var steps = ""
     @State private var expected = ""
     @State private var actual = ""
-    @State private var shareItems: [Any] = []
-    @State private var showShare = false
+    @State private var sharePayload: SharePayload? = nil
 
     var body: some View {
         ZStack {
@@ -132,19 +137,19 @@ Steps: \(steps)
 Expected: \(expected)
 Actual: \(actual)
 """
-                            shareItems = [text]
-                            showShare = true
+                            sharePayload = SharePayload(text: text)
                         }
                         .buttonStyle(PrimaryButtonStyle())
                     }
                 }
+                .tacticalReadableWidth()
                 .padding(AppSpacing.screenPadding)
             }
             .scrollIndicators(.hidden)
             .scrollDismissesKeyboard(.interactively)
         }
-        .sheet(isPresented: $showShare) {
-            ShareSheet(activityItems: shareItems)
+        .sheet(item: $sharePayload) { payload in
+            ShareSheet(activityItems: [payload.text])
         }
         .navigationTitle("Bug Report")
         .navigationBarTitleDisplayMode(.inline)
@@ -155,8 +160,7 @@ struct FeatureRequestView: View {
     @State private var title = ""
     @State private var value = ""
     @State private var details = ""
-    @State private var shareItems: [Any] = []
-    @State private var showShare = false
+    @State private var sharePayload: SharePayload? = nil
 
     var body: some View {
         ZStack {
@@ -185,19 +189,19 @@ Title: \(title)
 Why it helps: \(value)
 Details: \(details)
 """
-                            shareItems = [text]
-                            showShare = true
+                            sharePayload = SharePayload(text: text)
                         }
                         .buttonStyle(PrimaryButtonStyle())
                     }
                 }
+                .tacticalReadableWidth()
                 .padding(AppSpacing.screenPadding)
             }
             .scrollIndicators(.hidden)
             .scrollDismissesKeyboard(.interactively)
         }
-        .sheet(isPresented: $showShare) {
-            ShareSheet(activityItems: shareItems)
+        .sheet(item: $sharePayload) { payload in
+            ShareSheet(activityItems: [payload.text])
         }
         .navigationTitle("Feature")
         .navigationBarTitleDisplayMode(.inline)

@@ -97,6 +97,7 @@ struct PracticeSessionView: View {
                             .buttonStyle(OutlineButtonStyle())
                         }
                     }
+                    .tacticalReadableWidth()
                     .padding(AppSpacing.screenPadding)
                 }
                 .scrollIndicators(.hidden)

@@ -25,6 +25,7 @@ struct ModuleListView: View {
                         .buttonStyle(.plain)
                     }
                 }
+                .tacticalReadableWidth()
                 .padding(AppSpacing.screenPadding)
             }
             .scrollIndicators(.hidden)

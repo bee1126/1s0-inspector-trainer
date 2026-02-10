@@ -228,6 +228,7 @@ struct HomeView: View {
                         .foregroundColor(AppTheme.muted)
                         .padding(.top, AppSpacing.item)
                 }
+                .tacticalReadableWidth()
                 .padding(AppSpacing.screenPadding)
             }
             .scrollIndicators(.hidden)
