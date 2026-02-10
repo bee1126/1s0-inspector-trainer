@@ -49,7 +49,7 @@
 			remoteGlobalIDString = EBB4F50E21FC4E5D918D0003;
 			remoteInfo = "1S0 Inspector Trainer";
 		};
-	/* End PBXContainerItemProxy section */
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		0468BD1193644207B5426AC2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -104,7 +104,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-	/* End PBXFrameworksBuildPhase section */
+/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		104EAB322CA54DCF95BC57E0 /* App */ = {
@@ -296,7 +296,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-	/* End PBXResourcesBuildPhase section */
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		ABBE7ABD78E84A50A3C3A40B /* Sources */ = {
@@ -343,7 +343,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-	/* End PBXSourcesBuildPhase section */
+/* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
 		A379C922698A4D34A1F6E3DC59F9572D /* PBXTargetDependency */ = {
@@ -351,7 +351,7 @@
 			target = EBB4F50E21FC4E5D918D0003 /* 1S0 Inspector Trainer */;
 			targetProxy = 52CE497420DC4C93975D2D712DBC867D /* PBXContainerItemProxy */;
 		};
-	/* End PBXTargetDependency section */
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		138E3FD2A8674A778A3C7A28 /* Debug */ = {
@@ -413,7 +413,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.abdoulbah.1s0-inspector-trainer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -436,7 +436,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.abdoulbah.1s0-inspector-trainer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -522,7 +522,7 @@
 			};
 			name = Release;
 		};
-	/* End XCBuildConfiguration section */
+/* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
 		177928223580487486D8EAD5 /* Build configuration list for PBXNativeTarget "1S0 Inspector Trainer" */ = {
@@ -552,7 +552,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-	/* End XCConfigurationList section */
+/* End XCConfigurationList section */
 	};
 	rootObject = 95B39E2595954573BF1B2650 /* Project object */;
 }
