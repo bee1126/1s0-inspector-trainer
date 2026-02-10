@@ -355,11 +355,16 @@ private struct RacBucketView: View {
     }
 }
 
-// MARK: - Sequence Builder
+// MARK: - Procedure Drill
 
-struct SequenceBuilderSelectionView: View {
+struct ProcedureDrillLobbyView: View {
     @EnvironmentObject private var progress: ProgressStore
-    private var sequences: [SequenceSet] { PracticeContent.sequenceSets(for: progress.selectedRole) }
+
+    @State private var resumableRun: ProcedureDrillRunState? = nil
+    @State private var launchRun: ProcedureDrillRunState? = nil
+    @State private var navigateToRun = false
+
+    private var procedures: [ProcedureSet] { PracticeContent.procedureSets(for: progress.selectedRole) }
 
     var body: some View {
         ZStack {
@@ -367,161 +372,651 @@ struct SequenceBuilderSelectionView: View {
 
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: AppSpacing.section) {
-                    Text("SEQUENCE BUILDER")
+                    Text("PROCEDURE DRILL")
                         .font(AppFont.title(26))
                         .foregroundColor(AppTheme.text)
 
-                    Text("Reorder the steps until the sequence is correct.")
-                        .font(AppFont.body(14))
-                        .foregroundColor(AppTheme.muted)
-
-                    VStack(alignment: .leading, spacing: 12) {
-                        ForEach(sequences) { sequence in
-                            NavigationLink {
-                                SequenceBuilderView(sequence: sequence)
-                            } label: {
-                                SequenceCard(sequence: sequence)
-                            }
-                            .buttonStyle(.plain)
-                        }
-                    }
-                }
-                .padding(AppSpacing.screenPadding)
-            }
-            .scrollIndicators(.hidden)
-        }
-        .navigationTitle("Sequence Builder")
-        .navigationBarTitleDisplayMode(.inline)
-    }
-}
-
-struct SequenceBuilderView: View {
-    @EnvironmentObject private var progress: ProgressStore
-    let sequence: SequenceSet
-
-    @State private var steps: [SequenceStep] = []
-    @State private var score: Int = 0
-    @State private var showResults = false
-    @State private var rewardSummary: RewardSummary? = nil
-
-    var body: some View {
-        ZStack {
-            BackgroundView()
-
-            ScrollView {
-                VStack(alignment: .leading, spacing: AppSpacing.section) {
-                    Text(sequence.title)
-                        .font(AppFont.title(24))
-                        .foregroundColor(AppTheme.text)
-
-                    Text(sequence.detail)
+                    Text("Run a 3-round mission. Use checkpoints for hints, then submit each round for final scoring.")
                         .font(AppFont.body(14))
                         .foregroundColor(AppTheme.muted)
 
                     GlassCard {
                         VStack(alignment: .leading, spacing: 10) {
-                            Text("DRAG TO REORDER")
+                            Text("MISSION BRIEF")
                                 .font(AppFont.mono(11))
                                 .foregroundColor(AppTheme.muted)
-
-                            List {
-                                ForEach(steps) { step in
-                                    SequenceRow(step: step, index: indexForStep(step), isCorrect: isCorrect(step: step))
-                                        .listRowBackground(Color.clear)
-                                        .listRowSeparator(.hidden)
-                                }
-                                .onMove(perform: move)
-                            }
-                            .frame(height: listHeight)
-                            .scrollContentBackground(.hidden)
-                            .environment(\.editMode, .constant(.active))
-                            .listStyle(.plain)
+                            Text("Each run pulls 3 random procedures for your role. You get up to 3 checkpoints per round before auto-submit.")
+                                .font(AppFont.body(13))
+                                .foregroundColor(AppTheme.text)
+                            Text("Scoring: exact placements minus failed checkpoints.")
+                                .font(AppFont.body(12))
+                                .foregroundColor(AppTheme.muted)
                         }
                     }
 
-                    if showResults {
-                        Text("Correct positions: \(score)/\(steps.count)")
-                            .font(AppFont.body(13))
-                            .foregroundColor(AppTheme.muted)
-
-                        if let rewardSummary {
-                            RewardSummaryCard(summary: rewardSummary, xpToNextLevel: progress.xpToNextLevel)
+                    VStack(alignment: .leading, spacing: 12) {
+                        ForEach(procedures) { procedure in
+                            ProcedureSetCard(procedure: procedure)
                         }
                     }
 
-                    Button(showResults ? "Shuffle & Retry" : "Check Sequence") {
-                        if showResults {
-                            resetSequence()
-                        } else {
-                            checkSequence()
-                        }
+                    Button("Start 3-Round Run") {
+                        startNewRun()
                     }
                     .buttonStyle(PrimaryButtonStyle())
+
+                    if let resumableRun {
+                        Button("Resume Run (Round \(resumableRun.currentRoundIndex + 1))") {
+                            launchRun = resumableRun
+                            navigateToRun = true
+                        }
+                        .buttonStyle(OutlineButtonStyle())
+
+                        Button("Restart Run") {
+                            startNewRun()
+                        }
+                        .buttonStyle(OutlineButtonStyle())
+                    }
+
+                    if procedures.count < 3 {
+                        Text("Add at least 3 procedure sets to run this mode.")
+                            .font(AppFont.body(12))
+                            .foregroundColor(AppTheme.muted)
+                    }
                 }
                 .padding(AppSpacing.screenPadding)
             }
             .scrollIndicators(.hidden)
+
         }
-        .navigationTitle("Sequence Builder")
+        .navigationTitle("Procedure Drill")
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear {
-            progress.refreshForNewDayIfNeeded()
-            resetSequence()
-        }
-    }
-
-    private var listHeight: CGFloat {
-        let rowHeight: CGFloat = 66
-        let maxHeight: CGFloat = 360
-        return min(maxHeight, CGFloat(steps.count) * rowHeight)
-    }
-
-    private func resetSequence() {
-        steps = sequence.steps.enumerated().map { index, text in
-            SequenceStep(id: UUID(), text: text, correctIndex: index)
-        }.shuffled()
-        score = 0
-        showResults = false
-        rewardSummary = nil
-    }
-
-    private func move(from source: IndexSet, to destination: Int) {
-        steps.move(fromOffsets: source, toOffset: destination)
-    }
-
-    private func checkSequence() {
-        var correctPositions = 0
-        for (index, step) in steps.enumerated() {
-            if step.correctIndex == index {
-                correctPositions += 1
+        .navigationDestination(isPresented: $navigateToRun) {
+            if let launchRun {
+                ProcedureDrillRunView(initialRun: launchRun)
             }
         }
-        score = correctPositions
-        rewardSummary = progress.completePractice(score: correctPositions, total: steps.count)
-        showResults = true
+        .onAppear {
+            progress.refreshForNewDayIfNeeded()
+            refreshResumableRun()
+        }
+        .onChange(of: progress.selectedRole) { _ in
+            refreshResumableRun()
+        }
     }
 
-    private func indexForStep(_ step: SequenceStep) -> Int {
-        steps.firstIndex(where: { $0.id == step.id }) ?? 0
+    private func refreshResumableRun() {
+        guard var saved = progress.procedureDrillRun(for: progress.selectedRole) else {
+            resumableRun = nil
+            return
+        }
+
+        guard let firstIncomplete = saved.rounds.firstIndex(where: { !$0.isComplete }) else {
+            progress.clearProcedureDrillRun(for: progress.selectedRole)
+            resumableRun = nil
+            return
+        }
+
+        if saved.currentRoundIndex != firstIncomplete {
+            saved.currentRoundIndex = firstIncomplete
+            progress.saveProcedureDrillRun(saved, for: progress.selectedRole)
+        }
+        resumableRun = saved
     }
 
-    private func isCorrect(step: SequenceStep) -> Bool? {
-        guard showResults else { return nil }
-        let index = indexForStep(step)
-        return step.correctIndex == index
+    private func startNewRun() {
+        guard let run = buildRun() else { return }
+        progress.saveProcedureDrillRun(run, for: progress.selectedRole)
+        resumableRun = run
+        launchRun = run
+        navigateToRun = true
+    }
+
+    private func buildRun() -> ProcedureDrillRunState? {
+        guard procedures.count >= 3 else { return nil }
+        let selectedSets = Array(procedures.shuffled().prefix(3))
+        let now = Date()
+        let rounds = selectedSets.map { procedure in
+            ProcedureDrillRoundState(
+                setId: procedure.id,
+                currentOrder: Array(procedure.steps.indices).shuffled(),
+                failedChecks: 0,
+                finalCorrectPlacements: nil,
+                finalScore: nil,
+                didAutoSubmit: false,
+                isComplete: false
+            )
+        }
+        return ProcedureDrillRunState(
+            roundSetIds: selectedSets.map(\.id),
+            rounds: rounds,
+            currentRoundIndex: 0,
+            startedAt: now,
+            updatedAt: now
+        )
     }
 }
 
-private struct SequenceStep: Identifiable, Hashable {
-    let id: UUID
-    let text: String
-    let correctIndex: Int
+struct ProcedureDrillRunView: View {
+    @EnvironmentObject private var progress: ProgressStore
+    @Environment(\.dismiss) private var dismiss
+
+    let initialRun: ProcedureDrillRunState
+
+    @State private var run: ProcedureDrillRunState
+    @State private var checkpointCorrectPositions: Set<Int> = []
+    @State private var checkpointIncorrectPositions: Set<Int> = []
+    @State private var checkpointMessage: String? = nil
+    @State private var replayRoundIndex: Int? = nil
+    @State private var replayHighlightIndex: Int = -1
+    @State private var replayComplete = false
+    @State private var replayTask: Task<Void, Never>? = nil
+    @State private var rewardSummary: RewardSummary? = nil
+    @State private var runResult: AssessmentResult? = nil
+
+    private let maxChecks = 3
+
+    init(initialRun: ProcedureDrillRunState) {
+        self.initialRun = initialRun
+        _run = State(initialValue: initialRun)
+    }
+
+    private var procedureLookup: [String: ProcedureSet] {
+        Dictionary(uniqueKeysWithValues: PracticeContent.procedureSets(for: progress.selectedRole).map { ($0.id, $0) })
+    }
+
+    private var currentRound: ProcedureDrillRoundState? {
+        guard run.currentRoundIndex >= 0, run.currentRoundIndex < run.rounds.count else { return nil }
+        return run.rounds[run.currentRoundIndex]
+    }
+
+    private var currentProcedure: ProcedureSet? {
+        guard let currentRound else { return nil }
+        return procedureLookup[currentRound.setId]
+    }
+
+    var body: some View {
+        ZStack {
+            BackgroundView()
+
+            if let runResult {
+                resultsView(result: runResult)
+            } else if let replayRoundIndex,
+                      replayRoundIndex < run.rounds.count,
+                      let procedure = procedureLookup[run.rounds[replayRoundIndex].setId] {
+                replayView(
+                    round: run.rounds[replayRoundIndex],
+                    procedure: procedure,
+                    roundNumber: replayRoundIndex + 1
+                )
+            } else if let currentRound,
+                      let currentProcedure {
+                activeRoundView(round: currentRound, procedure: currentProcedure)
+            } else {
+                unavailableView
+            }
+        }
+        .navigationTitle("Procedure Drill")
+        .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            bootstrapRun()
+        }
+        .onDisappear {
+            replayTask?.cancel()
+            replayTask = nil
+        }
+    }
+
+    private func bootstrapRun() {
+        progress.refreshForNewDayIfNeeded()
+        let source = progress.procedureDrillRun(for: progress.selectedRole) ?? initialRun
+        let normalized = normalizeRun(source)
+        run = normalized
+
+        if let firstIncomplete = normalized.rounds.firstIndex(where: { !$0.isComplete }) {
+            if normalized.currentRoundIndex != firstIncomplete {
+                run.currentRoundIndex = firstIncomplete
+            }
+            progress.saveProcedureDrillRun(run, for: progress.selectedRole)
+            clearCheckpointFeedback()
+            return
+        }
+
+        runResult = aggregateResult(for: normalized)
+        progress.clearProcedureDrillRun(for: progress.selectedRole)
+    }
+
+    private func normalizeRun(_ source: ProcedureDrillRunState) -> ProcedureDrillRunState {
+        var normalized = source
+
+        for index in normalized.rounds.indices {
+            guard let procedure = procedureLookup[normalized.rounds[index].setId] else { continue }
+            let expectedOrder = Array(procedure.steps.indices)
+            if normalized.rounds[index].currentOrder.sorted() != expectedOrder {
+                normalized.rounds[index].currentOrder = expectedOrder.shuffled()
+                normalized.rounds[index].failedChecks = 0
+                normalized.rounds[index].finalCorrectPlacements = nil
+                normalized.rounds[index].finalScore = nil
+                normalized.rounds[index].didAutoSubmit = false
+                normalized.rounds[index].isComplete = false
+            }
+        }
+
+        if let firstIncomplete = normalized.rounds.firstIndex(where: { !$0.isComplete }) {
+            normalized.currentRoundIndex = firstIncomplete
+        } else {
+            normalized.currentRoundIndex = normalized.rounds.count
+        }
+        return normalized
+    }
+
+    private func activeRoundView(round: ProcedureDrillRoundState, procedure: ProcedureSet) -> some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: AppSpacing.section) {
+                HStack {
+                    Text("ROUND \(run.currentRoundIndex + 1)/\(run.rounds.count)")
+                        .font(AppFont.mono(12))
+                        .foregroundColor(AppTheme.info)
+                    Spacer()
+                    HeartsView(hearts: progress.hearts, maxHearts: progress.maxHearts, compact: true, onDark: true)
+                }
+
+                Text(procedure.title)
+                    .font(AppFont.title(24))
+                    .foregroundColor(AppTheme.text)
+
+                Text(procedure.detail)
+                    .font(AppFont.body(14))
+                    .foregroundColor(AppTheme.muted)
+
+                GlassCard {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("DRAG TO REORDER")
+                            .font(AppFont.mono(11))
+                            .foregroundColor(AppTheme.muted)
+
+                        List {
+                            ForEach(Array(round.currentOrder.enumerated()), id: \.element) { position, stepIndex in
+                                ProcedureDrillRow(
+                                    index: position,
+                                    text: procedure.steps[stepIndex],
+                                    marker: markerForCheckpoint(position: position)
+                                )
+                                .listRowBackground(Color.clear)
+                                .listRowSeparator(.hidden)
+                            }
+                            .onMove(perform: moveCurrentRound)
+                        }
+                        .frame(height: listHeight(for: procedure.steps.count))
+                        .scrollContentBackground(.hidden)
+                        .environment(\.editMode, .constant(.active))
+                        .listStyle(.plain)
+                    }
+                }
+
+                Text("Checkpoint attempts used: \(round.failedChecks)/\(maxChecks)")
+                    .font(AppFont.body(12))
+                    .foregroundColor(AppTheme.muted)
+
+                if let checkpointMessage {
+                    Text(checkpointMessage)
+                        .font(AppFont.body(13))
+                        .foregroundColor(AppTheme.text)
+                }
+
+                Button("Checkpoint (\(max(0, maxChecks - round.failedChecks)) left)") {
+                    runCheckpoint(round: round, procedure: procedure)
+                }
+                .buttonStyle(OutlineButtonStyle())
+                .disabled(round.failedChecks >= maxChecks)
+
+                Button("Submit Round") {
+                    finalizeCurrentRound(autoSubmitted: false, procedure: procedure)
+                }
+                .buttonStyle(PrimaryButtonStyle())
+            }
+            .padding(AppSpacing.screenPadding)
+        }
+        .scrollIndicators(.hidden)
+    }
+
+    private func replayView(round: ProcedureDrillRoundState, procedure: ProcedureSet, roundNumber: Int) -> some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: AppSpacing.section) {
+                Text("Round \(roundNumber) Replay")
+                    .font(AppFont.title(24))
+                    .foregroundColor(AppTheme.text)
+
+                Text("Review the correct order. Positions highlight one at a time.")
+                    .font(AppFont.body(14))
+                    .foregroundColor(AppTheme.muted)
+
+                GlassCard {
+                    VStack(alignment: .leading, spacing: 10) {
+                        List {
+                            ForEach(Array(round.currentOrder.enumerated()), id: \.element) { position, stepIndex in
+                                ProcedureDrillRow(
+                                    index: position,
+                                    text: procedure.steps[stepIndex],
+                                    marker: markerForReplay(position: position)
+                                )
+                                .listRowBackground(Color.clear)
+                                .listRowSeparator(.hidden)
+                            }
+                        }
+                        .frame(height: listHeight(for: procedure.steps.count))
+                        .scrollContentBackground(.hidden)
+                        .listStyle(.plain)
+
+                        if replayHighlightIndex >= 0, replayHighlightIndex < procedure.steps.count {
+                            Text("Position \(replayHighlightIndex + 1): \(procedure.steps[replayHighlightIndex])")
+                                .font(AppFont.body(13))
+                                .foregroundColor(AppTheme.info)
+                        }
+                    }
+                }
+
+                if replayComplete {
+                    GlassCard {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("ROUND SUMMARY")
+                                .font(AppFont.mono(11))
+                                .foregroundColor(AppTheme.muted)
+
+                            Text("Correct placements: \(round.finalCorrectPlacements ?? 0)/\(procedure.steps.count)")
+                                .font(AppFont.body(13))
+                                .foregroundColor(AppTheme.text)
+
+                            Text("Failed checkpoints: \(round.failedChecks)")
+                                .font(AppFont.body(13))
+                                .foregroundColor(AppTheme.text)
+
+                            Text("Round score: \(round.finalScore ?? 0)/\(procedure.steps.count)")
+                                .font(AppFont.body(13))
+                                .foregroundColor(AppTheme.text)
+
+                            if round.didAutoSubmit {
+                                Text("Auto-submitted after 3 failed checkpoints.")
+                                    .font(AppFont.body(12))
+                                    .foregroundColor(AppTheme.muted)
+                            }
+                        }
+                    }
+
+                    Button(roundNumber == run.rounds.count ? "Finish Run" : "Continue to Round \(roundNumber + 1)") {
+                        advanceAfterReplay()
+                    }
+                    .buttonStyle(PrimaryButtonStyle())
+                } else {
+                    Button("Skip Replay") {
+                        skipReplay(stepCount: procedure.steps.count)
+                    }
+                    .buttonStyle(OutlineButtonStyle())
+                }
+            }
+            .padding(AppSpacing.screenPadding)
+        }
+        .scrollIndicators(.hidden)
+    }
+
+    private func resultsView(result: AssessmentResult) -> some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: AppSpacing.section) {
+                Text("Procedure Drill Complete")
+                    .font(AppFont.title(24))
+                    .foregroundColor(AppTheme.text)
+
+                Text("Mission score: \(result.score)/\(result.total)")
+                    .font(AppFont.body(14))
+                    .foregroundColor(AppTheme.muted)
+
+                if let rewardSummary {
+                    RewardSummaryCard(summary: rewardSummary, xpToNextLevel: progress.xpToNextLevel)
+                }
+
+                GlassCard {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("ROUND BREAKDOWN")
+                            .font(AppFont.mono(11))
+                            .foregroundColor(AppTheme.muted)
+
+                        ForEach(Array(run.rounds.enumerated()), id: \.offset) { roundIndex, round in
+                            if let procedure = procedureLookup[round.setId] {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text("Round \(roundIndex + 1): \(procedure.title)")
+                                        .font(AppFont.body(13))
+                                        .foregroundColor(AppTheme.text)
+                                    Text("Score \(round.finalScore ?? 0)/\(procedure.steps.count) • \(round.failedChecks) failed checkpoints")
+                                        .font(AppFont.body(12))
+                                        .foregroundColor(AppTheme.muted)
+                                }
+                            }
+                        }
+                    }
+                }
+
+                Button("Back to Procedure Drill") {
+                    dismiss()
+                }
+                .buttonStyle(PrimaryButtonStyle())
+            }
+            .padding(AppSpacing.screenPadding)
+        }
+        .scrollIndicators(.hidden)
+    }
+
+    private var unavailableView: some View {
+        ScrollView {
+            GlassCard {
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("Run unavailable")
+                        .font(AppFont.subtitle(18))
+                        .foregroundColor(AppTheme.text)
+                    Text("Procedure data changed. Start a new run from the briefing.")
+                        .font(AppFont.body(13))
+                        .foregroundColor(AppTheme.muted)
+                    Button("Back") {
+                        dismiss()
+                    }
+                    .buttonStyle(OutlineButtonStyle())
+                }
+            }
+            .padding(AppSpacing.screenPadding)
+        }
+        .scrollIndicators(.hidden)
+    }
+
+    private func listHeight(for stepCount: Int) -> CGFloat {
+        let rowHeight: CGFloat = 70
+        let maxHeight: CGFloat = 420
+        return min(maxHeight, CGFloat(stepCount) * rowHeight)
+    }
+
+    private func markerForCheckpoint(position: Int) -> ProcedureRowMarker {
+        if checkpointIncorrectPositions.contains(position) { return .incorrect }
+        if checkpointCorrectPositions.contains(position) { return .correct }
+        return .neutral
+    }
+
+    private func markerForReplay(position: Int) -> ProcedureRowMarker {
+        guard replayHighlightIndex >= 0, position <= replayHighlightIndex else { return .neutral }
+        return .replay
+    }
+
+    private func moveCurrentRound(from source: IndexSet, to destination: Int) {
+        guard let _ = currentRound else { return }
+        run.rounds[run.currentRoundIndex].currentOrder.move(fromOffsets: source, toOffset: destination)
+        clearCheckpointFeedback()
+        progress.saveProcedureDrillRun(run, for: progress.selectedRole)
+    }
+
+    private func runCheckpoint(round: ProcedureDrillRoundState, procedure: ProcedureSet) {
+        let correctPositions = correctPositions(for: round.currentOrder)
+        let totalSteps = procedure.steps.count
+        checkpointCorrectPositions = correctPositions
+        checkpointIncorrectPositions = Set(0..<totalSteps).subtracting(correctPositions)
+
+        if correctPositions.count == totalSteps {
+            checkpointMessage = "All positions are correct. Submit round when ready."
+            AppFeedback.correct()
+            return
+        }
+
+        run.rounds[run.currentRoundIndex].failedChecks += 1
+        let failedChecks = run.rounds[run.currentRoundIndex].failedChecks
+        checkpointMessage = "\(correctPositions.count)/\(totalSteps) positions correct."
+        AppFeedback.incorrect()
+
+        if failedChecks >= maxChecks {
+            checkpointMessage = "Checkpoint limit reached. Auto-submitting round."
+            finalizeCurrentRound(autoSubmitted: true, procedure: procedure)
+            return
+        }
+
+        progress.saveProcedureDrillRun(run, for: progress.selectedRole)
+    }
+
+    private func finalizeCurrentRound(autoSubmitted: Bool, procedure: ProcedureSet) {
+        guard var round = currentRound else { return }
+        let correctCount = correctPositions(for: round.currentOrder).count
+        let finalScore = ProcedureDrillScoring.roundScore(
+            correctPlacements: correctCount,
+            failedChecks: round.failedChecks,
+            totalSteps: procedure.steps.count
+        )
+
+        round.finalCorrectPlacements = correctCount
+        round.finalScore = finalScore
+        round.didAutoSubmit = autoSubmitted
+        round.isComplete = true
+
+        run.rounds[run.currentRoundIndex] = round
+        progress.saveProcedureDrillRun(run, for: progress.selectedRole)
+
+        startReplay(roundIndex: run.currentRoundIndex, stepCount: procedure.steps.count)
+    }
+
+    private func correctPositions(for order: [Int]) -> Set<Int> {
+        Set(order.enumerated().compactMap { index, stepIndex in
+            stepIndex == index ? index : nil
+        })
+    }
+
+    private func startReplay(roundIndex: Int, stepCount: Int) {
+        replayTask?.cancel()
+        replayRoundIndex = roundIndex
+        replayHighlightIndex = -1
+        replayComplete = false
+        clearCheckpointFeedback()
+
+        replayTask = Task {
+            for index in 0..<stepCount {
+                if Task.isCancelled { return }
+                try? await Task.sleep(nanoseconds: 600_000_000)
+                await MainActor.run {
+                    replayHighlightIndex = index
+                }
+            }
+            await MainActor.run {
+                replayComplete = true
+                replayTask = nil
+            }
+        }
+    }
+
+    private func skipReplay(stepCount: Int) {
+        replayTask?.cancel()
+        replayTask = nil
+        replayHighlightIndex = stepCount > 0 ? stepCount - 1 : -1
+        replayComplete = true
+    }
+
+    private func advanceAfterReplay() {
+        replayTask?.cancel()
+        replayTask = nil
+        replayRoundIndex = nil
+        replayHighlightIndex = -1
+        replayComplete = false
+        clearCheckpointFeedback()
+
+        if run.currentRoundIndex < run.rounds.count - 1 {
+            run.currentRoundIndex += 1
+            progress.saveProcedureDrillRun(run, for: progress.selectedRole)
+            return
+        }
+
+        let result = aggregateResult(for: run)
+        runResult = result
+        rewardSummary = progress.completePractice(score: result.score, total: result.total)
+        progress.clearProcedureDrillRun(for: progress.selectedRole)
+    }
+
+    private func aggregateResult(for run: ProcedureDrillRunState) -> AssessmentResult {
+        let outcomes = run.rounds.compactMap { round -> ProcedureDrillRoundOutcome? in
+            guard let procedure = procedureLookup[round.setId] else { return nil }
+            let correct = round.finalCorrectPlacements ?? correctPositions(for: round.currentOrder).count
+            return ProcedureDrillRoundOutcome(
+                correctPlacements: correct,
+                failedChecks: round.failedChecks,
+                totalSteps: procedure.steps.count
+            )
+        }
+        return ProcedureDrillScoring.aggregateScore(rounds: outcomes)
+    }
+
+    private func clearCheckpointFeedback() {
+        checkpointCorrectPositions = []
+        checkpointIncorrectPositions = []
+        checkpointMessage = nil
+    }
 }
 
-private struct SequenceRow: View {
-    let step: SequenceStep
+private enum ProcedureRowMarker {
+    case neutral
+    case correct
+    case incorrect
+    case replay
+}
+
+private struct ProcedureDrillRow: View {
     let index: Int
-    let isCorrect: Bool?
+    let text: String
+    let marker: ProcedureRowMarker
+
+    private var markerColor: Color {
+        switch marker {
+        case .neutral:
+            return AppTheme.border
+        case .correct:
+            return AppTheme.primary
+        case .incorrect:
+            return AppTheme.danger
+        case .replay:
+            return AppTheme.info
+        }
+    }
+
+    private var markerIcon: String? {
+        switch marker {
+        case .neutral:
+            return nil
+        case .correct:
+            return "checkmark.circle.fill"
+        case .incorrect:
+            return "xmark.circle.fill"
+        case .replay:
+            return "play.circle.fill"
+        }
+    }
+
+    private var borderWidth: CGFloat {
+        switch marker {
+        case .neutral:
+            return 1
+        case .correct, .incorrect, .replay:
+            return 2
+        }
+    }
 
     var body: some View {
         HStack(alignment: .top, spacing: 10) {
@@ -530,16 +1025,16 @@ private struct SequenceRow: View {
                 .foregroundColor(AppTheme.info)
                 .frame(width: 24, alignment: .leading)
 
-            Text(step.text)
+            Text(text)
                 .font(AppFont.body(13))
                 .foregroundColor(AppTheme.text)
                 .fixedSize(horizontal: false, vertical: true)
 
             Spacer()
 
-            if let isCorrect {
-                Image(systemName: isCorrect ? "checkmark.circle.fill" : "xmark.circle.fill")
-                    .foregroundColor(isCorrect ? AppTheme.primary : AppTheme.danger)
+            if let markerIcon {
+                Image(systemName: markerIcon)
+                    .foregroundColor(markerColor)
             }
         }
         .padding(10)
@@ -549,24 +1044,24 @@ private struct SequenceRow: View {
         )
         .overlay(
             RoundedRectangle(cornerRadius: 8, style: .continuous)
-                .stroke(AppTheme.border, lineWidth: 1)
+                .stroke(markerColor, lineWidth: borderWidth)
         )
     }
 }
 
-private struct SequenceCard: View {
-    let sequence: SequenceSet
+private struct ProcedureSetCard: View {
+    let procedure: ProcedureSet
 
     var body: some View {
         GlassCard {
             VStack(alignment: .leading, spacing: 6) {
-                Text(sequence.title)
+                Text(procedure.title)
                     .font(AppFont.subtitle(17))
                     .foregroundColor(AppTheme.text)
-                Text(sequence.detail)
+                Text(procedure.detail)
                     .font(AppFont.body(13))
                     .foregroundColor(AppTheme.muted)
-                Text("\(sequence.steps.count) steps")
+                Text("\(procedure.steps.count) steps")
                     .font(AppFont.mono(11))
                     .foregroundColor(AppTheme.info)
             }
@@ -1141,8 +1636,8 @@ struct OnboardingPathView: View {
             MatchingDeckSelectionView()
         case .racSort:
             RacSortView()
-        case .sequenceBuilder:
-            SequenceBuilderSelectionView()
+        case .procedureDrill:
+            ProcedureDrillLobbyView()
         case .trueFalseBlitz:
             TrueFalseBlitzView()
         case .microDrill:
@@ -1161,8 +1656,8 @@ struct OnboardingPathView: View {
             return "Start Match Sprint"
         case .racSort:
             return "Open RAC Sort"
-        case .sequenceBuilder:
-            return "Open Sequence Builder"
+        case .procedureDrill:
+            return "Open Procedure Drill"
         case .trueFalseBlitz:
             return "Start True/False Blitz"
         case .microDrill:

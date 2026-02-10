@@ -108,3 +108,50 @@ struct ModuleResumeState: Codable, Hashable {
     let quizState: QuizResumeState?
     let updatedAt: Date
 }
+
+struct ProcedureDrillRoundState: Codable, Hashable {
+    let setId: String
+    var currentOrder: [Int]
+    var failedChecks: Int
+    var finalCorrectPlacements: Int?
+    var finalScore: Int?
+    var didAutoSubmit: Bool
+    var isComplete: Bool
+}
+
+struct ProcedureDrillRunState: Codable, Hashable {
+    let roundSetIds: [String]
+    var rounds: [ProcedureDrillRoundState]
+    var currentRoundIndex: Int
+    let startedAt: Date
+    var updatedAt: Date
+}
+
+struct ProcedureDrillRoundOutcome: Hashable {
+    let correctPlacements: Int
+    let failedChecks: Int
+    let totalSteps: Int
+}
+
+enum ProcedureDrillScoring {
+    static func roundScore(correctPlacements: Int, failedChecks: Int, totalSteps: Int) -> Int {
+        let boundedSteps = max(0, totalSteps)
+        let boundedCorrect = max(0, min(correctPlacements, boundedSteps))
+        let penalty = max(0, failedChecks)
+        return max(0, boundedCorrect - penalty)
+    }
+
+    static func aggregateScore(rounds: [ProcedureDrillRoundOutcome]) -> AssessmentResult {
+        let total = rounds.reduce(0) { partial, round in
+            partial + max(0, round.totalSteps)
+        }
+        let score = rounds.reduce(0) { partial, round in
+            partial + roundScore(
+                correctPlacements: round.correctPlacements,
+                failedChecks: round.failedChecks,
+                totalSteps: round.totalSteps
+            )
+        }
+        return AssessmentResult(score: score, total: total)
+    }
+}

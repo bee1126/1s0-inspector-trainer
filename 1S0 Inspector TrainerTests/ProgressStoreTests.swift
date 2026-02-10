@@ -100,4 +100,83 @@ final class ProgressStoreTests: XCTestCase {
         store.setRole(.usr)
         XCTAssertEqual(store.onboardingCheckIns, [1])
     }
+
+    func testProcedureDrillRunPersistsSameDay() {
+        var now = Date(timeIntervalSince1970: 0)
+        let store = ProgressStore(defaults: defaults, calendar: calendar, dateProvider: { now })
+        let run = makeProcedureDrillRun(setId: "proc-loto-deenergize", updatedAt: now)
+
+        store.saveProcedureDrillRun(run, for: .oneS0)
+
+        let loaded = store.procedureDrillRun(for: .oneS0)
+        XCTAssertEqual(loaded?.roundSetIds, run.roundSetIds)
+        XCTAssertEqual(loaded?.rounds.first?.currentOrder, run.rounds.first?.currentOrder)
+        XCTAssertEqual(loaded?.currentRoundIndex, 0)
+    }
+
+    func testProcedureDrillRunExpiresAfterDayChange() {
+        var now = Date(timeIntervalSince1970: 0)
+        let store = ProgressStore(defaults: defaults, calendar: calendar, dateProvider: { now })
+        let run = makeProcedureDrillRun(setId: "proc-rm-five-step", updatedAt: now)
+
+        store.saveProcedureDrillRun(run, for: .oneS0)
+        XCTAssertNotNil(store.procedureDrillRun(for: .oneS0))
+
+        now = calendar.date(byAdding: .day, value: 1, to: now)!
+        XCTAssertNil(store.procedureDrillRun(for: .oneS0))
+    }
+
+    func testProcedureDrillRunSeparatedByRole() {
+        let now = Date(timeIntervalSince1970: 0)
+        let store = ProgressStore(defaults: defaults, calendar: calendar, dateProvider: { now })
+
+        store.saveProcedureDrillRun(makeProcedureDrillRun(setId: "proc-hot-work-cycle", updatedAt: now), for: .oneS0)
+        store.saveProcedureDrillRun(makeProcedureDrillRun(setId: "usr-proc-spot-inspection", updatedAt: now), for: .usr)
+
+        XCTAssertEqual(store.procedureDrillRun(for: .oneS0)?.roundSetIds.first, "proc-hot-work-cycle")
+        XCTAssertEqual(store.procedureDrillRun(for: .usr)?.roundSetIds.first, "usr-proc-spot-inspection")
+    }
+
+    func testProcedureDrillRoundScoreAppliesFailedCheckPenalty() {
+        let score = ProcedureDrillScoring.roundScore(correctPlacements: 5, failedChecks: 2, totalSteps: 8)
+        XCTAssertEqual(score, 3)
+    }
+
+    func testProcedureDrillRoundScoreClampsAtZero() {
+        let score = ProcedureDrillScoring.roundScore(correctPlacements: 1, failedChecks: 4, totalSteps: 6)
+        XCTAssertEqual(score, 0)
+    }
+
+    func testProcedureDrillAggregateScoreUsesWeightedTotals() {
+        let rounds = [
+            ProcedureDrillRoundOutcome(correctPlacements: 5, failedChecks: 1, totalSteps: 8),
+            ProcedureDrillRoundOutcome(correctPlacements: 3, failedChecks: 0, totalSteps: 5),
+            ProcedureDrillRoundOutcome(correctPlacements: 4, failedChecks: 2, totalSteps: 7)
+        ]
+
+        let result = ProcedureDrillScoring.aggregateScore(rounds: rounds)
+
+        XCTAssertEqual(result.score, 9)
+        XCTAssertEqual(result.total, 20)
+    }
+
+    private func makeProcedureDrillRun(setId: String, updatedAt: Date) -> ProcedureDrillRunState {
+        ProcedureDrillRunState(
+            roundSetIds: [setId, setId, setId],
+            rounds: [
+                ProcedureDrillRoundState(
+                    setId: setId,
+                    currentOrder: [0, 1, 2],
+                    failedChecks: 0,
+                    finalCorrectPlacements: nil,
+                    finalScore: nil,
+                    didAutoSubmit: false,
+                    isComplete: false
+                )
+            ],
+            currentRoundIndex: 0,
+            startedAt: updatedAt,
+            updatedAt: updatedAt
+        )
+    }
 }

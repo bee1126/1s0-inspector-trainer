@@ -188,9 +188,9 @@ struct HomeView: View {
                         )
                         practiceTile(
                             icon: "arrow.up.arrow.down.square",
-                            label: "Sequence",
+                            label: "Procedure Drill",
                             tint: AppTheme.primary,
-                            destination: AnyView(SequenceBuilderSelectionView())
+                            destination: AnyView(ProcedureDrillLobbyView())
                         )
                         practiceTile(
                             icon: "square.grid.2x2",

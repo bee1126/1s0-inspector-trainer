@@ -118,58 +118,173 @@ enum PracticeContent {
         }
     }
 
-    static func sequenceSets(for role: TrainingRole?) -> [SequenceSet] {
+    static func procedureSets(for role: TrainingRole?) -> [ProcedureSet] {
         switch role {
         case .usr:
-            let hazardSteps = lessonBullets(moduleId: "usr-hazard-reporting", pageId: "usr-hazard-steps", role: .usr)
-            let inspectionSteps = lessonBullets(moduleId: "usr-spot-inspections", pageId: "usr-spot-steps", role: .usr)
-            let mishapSteps = lessonBullets(moduleId: "usr-mishap-reporting", pageId: "usr-mishap-steps", role: .usr)
-
             return [
-                SequenceSet(
-                    id: "usr-seq-hazard-reporting",
-                    title: "Hazard Reporting Flow",
-                    detail: "Order the USR hazard reporting and tracking steps.",
-                    steps: hazardSteps
+                ProcedureSet(
+                    id: "usr-proc-hazard-report-track",
+                    title: "Hazard Report and Tracking Flow",
+                    detail: "Anchor: Hazard Reporting & Tracking",
+                    steps: [
+                        "Identify unsafe condition and stop work if imminent danger exists.",
+                        "Notify supervisor and affected personnel immediately.",
+                        "Enter hazard in unit tracking system with location and risk details.",
+                        "Recommend interim controls and assign responsible office.",
+                        "Establish suspense date and required corrective actions.",
+                        "Follow up on status updates and escalate overdue actions.",
+                        "Verify abatement in place and close hazard documentation."
+                    ]
                 ),
-                SequenceSet(
-                    id: "usr-seq-spot-inspection",
-                    title: "Spot Inspection Flow",
-                    detail: "Put the USR spot inspection actions in order.",
-                    steps: inspectionSteps
+                ProcedureSet(
+                    id: "usr-proc-spot-inspection",
+                    title: "Spot Inspection Execution Cycle",
+                    detail: "Anchor: Spot Inspections & Self-Assessments",
+                    steps: [
+                        "Select inspection area and review last discrepancy log.",
+                        "Conduct walk-through using unit checklist standards.",
+                        "Document hazards with photos, facts, and exact locations.",
+                        "Brief supervisor on immediate fixes and interim controls.",
+                        "Enter findings into tracking log with owners and suspense dates.",
+                        "Reinspect corrective actions and record closure evidence."
+                    ]
                 ),
-                SequenceSet(
-                    id: "usr-seq-mishap-reporting",
-                    title: "Mishap Reporting Flow",
-                    detail: "Order the immediate USR mishap reporting actions.",
-                    steps: mishapSteps
+                ProcedureSet(
+                    id: "usr-proc-rm-escalation",
+                    title: "Unit RM Escalation Path",
+                    detail: "Anchor: Risk Management Basics",
+                    steps: [
+                        "Identify task hazard and assess initial severity and probability.",
+                        "Confirm controls already in place at work-center level.",
+                        "Determine if residual risk exceeds unit authority.",
+                        "Escalate risk decision through chain with supporting facts.",
+                        "Communicate approved controls and monitor execution."
+                    ]
+                ),
+                ProcedureSet(
+                    id: "usr-proc-training-brief",
+                    title: "Safety Training and Briefing Loop",
+                    detail: "Anchor: Safety Training & Briefings",
+                    steps: [
+                        "Identify audience, hazard topic, and required learning outcome.",
+                        "Build briefing outline with policy references and key controls.",
+                        "Deliver concise briefing with scenario-based examples.",
+                        "Verify understanding with questions or quick knowledge checks.",
+                        "Record attendance and unresolved questions.",
+                        "Schedule follow-up training for gaps or new hazards."
+                    ]
+                ),
+                ProcedureSet(
+                    id: "usr-proc-mishap-nearmiss",
+                    title: "Mishap and Near-Miss Immediate Actions",
+                    detail: "Anchor: Mishap & Near-Miss Reporting",
+                    steps: [
+                        "Ensure medical response and scene safety first.",
+                        "Notify supervisor and USR focal points without delay.",
+                        "Capture who, what, when, and where facts for mishap or near miss.",
+                        "Submit initial report through unit and safety channels.",
+                        "Track immediate corrective actions and leadership notifications.",
+                        "Review event at next briefing to reinforce prevention controls."
+                    ]
+                ),
+                ProcedureSet(
+                    id: "usr-proc-abatement-followup",
+                    title: "Hazard Abatement Follow-Up",
+                    detail: "Anchor: Hazard Abatement & Interim Controls",
+                    steps: [
+                        "Review open hazard log and prioritize by RAC.",
+                        "Confirm interim controls remain effective while awaiting fix.",
+                        "Coordinate with responsible office on corrective action progress.",
+                        "Validate funding, parts, or work-order blockers.",
+                        "Update leadership on overdue or elevated-risk items.",
+                        "Verify corrective action completion in the work area.",
+                        "Close hazard in tracker with evidence and date."
+                    ]
                 )
-            ].filter { !$0.steps.isEmpty }
+            ]
         case .oneS0, .none:
-            let lotoSteps = lessonBullets(moduleId: "loto", pageId: "loto-3", role: .oneS0)
-            let rmSteps = lessonBullets(moduleId: "risk-management", pageId: "rm-1", role: .oneS0)
-            let mishapSteps = lessonBullets(moduleId: "mishap-reporting", pageId: "mr-2", role: .oneS0)
-
             return [
-                SequenceSet(
-                    id: "seq-loto",
-                    title: "LOTO Sequence",
-                    detail: "Order the OSHA lockout/tagout steps.",
-                    steps: lotoSteps
+                ProcedureSet(
+                    id: "proc-loto-deenergize",
+                    title: "LOTO De-Energize Sequence",
+                    detail: "Anchor: Lockout / Tagout",
+                    steps: [
+                        "Notify affected personnel and review written energy control procedure.",
+                        "Identify every electrical, mechanical, hydraulic, pneumatic, and thermal energy source.",
+                        "Shut down equipment using normal stopping controls.",
+                        "Isolate all energy sources at disconnects, valves, and breakers.",
+                        "Apply personal lockout or tagout devices at each isolation point.",
+                        "Release or block stored energy through bleed down, venting, blocking, or grounding.",
+                        "Verify zero-energy state with try-out and instrument check.",
+                        "Perform work, then clear tools, remove personal locks, and notify affected personnel before restart."
+                    ]
                 ),
-                SequenceSet(
-                    id: "seq-rm",
-                    title: "Risk Management Steps",
-                    detail: "Put the five RM steps in order.",
-                    steps: rmSteps
+                ProcedureSet(
+                    id: "proc-rm-five-step",
+                    title: "RM Five-Step Cycle",
+                    detail: "Anchor: Risk Management",
+                    steps: [
+                        "Identify hazards tied to mission task and environment.",
+                        "Assess each hazard for severity and probability.",
+                        "Develop control measures and make risk decisions.",
+                        "Implement controls with clear responsibilities and timelines.",
+                        "Supervise execution and evaluate control effectiveness."
+                    ]
                 ),
-                SequenceSet(
-                    id: "seq-reporting",
-                    title: "Mishap Reporting Actions",
-                    detail: "Order the immediate reporting actions.",
-                    steps: mishapSteps
+                ProcedureSet(
+                    id: "proc-rac-assessment",
+                    title: "RAC Assignment Workflow",
+                    detail: "Anchor: RAC System",
+                    steps: [
+                        "Define the specific hazard condition and who is exposed.",
+                        "Determine worst credible mishap outcome severity.",
+                        "Estimate probability using exposure frequency and history.",
+                        "Use the RAC matrix to assign the initial code.",
+                        "Validate code against existing controls and residual risk.",
+                        "Record RAC and elevation recommendations in inspection notes."
+                    ]
+                ),
+                ProcedureSet(
+                    id: "proc-confined-entry",
+                    title: "Confined Space Entry Controls",
+                    detail: "Anchor: Confined Space",
+                    steps: [
+                        "Confirm space classification and permit requirements.",
+                        "Isolate and lockout all hazardous energy and lines.",
+                        "Test atmosphere for oxygen, flammables, and toxics.",
+                        "Complete permit with entrant, attendant, and supervisor roles.",
+                        "Brief rescue plan, communications, and retrieval equipment.",
+                        "Authorize entry and maintain continuous atmospheric monitoring.",
+                        "Close permit, account for personnel, and return space to service."
+                    ]
+                ),
+                ProcedureSet(
+                    id: "proc-hot-work-cycle",
+                    title: "Hot Work Permit to Closeout",
+                    detail: "Anchor: Hot Work",
+                    steps: [
+                        "Survey worksite and remove combustibles within required radius.",
+                        "Verify extinguishers, alarms, and suppression systems are ready.",
+                        "Issue hot work permit with scope, time window, and controls.",
+                        "Assign fire watch and brief stop-work triggers.",
+                        "Conduct cutting or welding while monitoring sparks and heat spread.",
+                        "Complete fire watch period, close permit, and document conditions."
+                    ]
+                ),
+                ProcedureSet(
+                    id: "proc-mishap-initial",
+                    title: "Mishap Initial Reporting Actions",
+                    detail: "Anchor: Mishap Reporting",
+                    steps: [
+                        "Render emergency aid and activate emergency response.",
+                        "Secure scene to prevent secondary injuries.",
+                        "Notify chain of command and safety office immediately.",
+                        "Capture factual details, witnesses, and initial conditions.",
+                        "Submit required initial mishap report within timelines.",
+                        "Initiate follow-up actions and preserve records for investigation."
+                    ]
                 )
-            ].filter { !$0.steps.isEmpty }
+            ]
         }
     }
 
@@ -567,13 +682,13 @@ enum PracticeContent {
         ),
         OnboardingDay(
             id: 6,
-            title: "Sequence Builder",
-            summary: "Lock in step-by-step procedures.",
+            title: "Procedure Drill",
+            summary: "Run mission-style procedural reps.",
             tasks: [
-                "Build one sequence correctly",
-                "Run a second sequence if time allows"
+                "Complete one 3-round Procedure Drill run",
+                "Review replay highlights for any weak steps"
             ],
-            action: .sequenceBuilder
+            action: .procedureDrill
         ),
         OnboardingDay(
             id: 7,
@@ -640,13 +755,13 @@ enum PracticeContent {
         ),
         OnboardingDay(
             id: 6,
-            title: "Process Sequence",
-            summary: "Lock in USR process order and follow-up.",
+            title: "Procedure Drill",
+            summary: "Run mission-style USR process reps.",
             tasks: [
-                "Build one sequence correctly",
-                "Run a second sequence if time allows"
+                "Complete one 3-round Procedure Drill run",
+                "Review replay highlights for any weak steps"
             ],
-            action: .sequenceBuilder
+            action: .procedureDrill
         ),
         OnboardingDay(
             id: 7,
@@ -660,11 +775,6 @@ enum PracticeContent {
         )
     ]
 
-    private static func lessonBullets(moduleId: String, pageId: String, role: TrainingRole?) -> [String] {
-        guard let module = TrainingContent.modules(for: role).first(where: { $0.id == moduleId }) else { return [] }
-        guard let page = module.lessonPages.first(where: { $0.id == pageId }) else { return [] }
-        return page.bullets.filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
-    }
 }
 
 struct RacHazard: Identifiable, Hashable {
@@ -708,7 +818,7 @@ struct TrueFalseQuestion: Identifiable, Hashable {
     let explanation: String
 }
 
-struct SequenceSet: Identifiable, Hashable {
+struct ProcedureSet: Identifiable, Hashable {
     let id: String
     let title: String
     let detail: String
@@ -736,7 +846,7 @@ enum OnboardingAction: Hashable {
     case dailyFive
     case matchSprint
     case racSort
-    case sequenceBuilder
+    case procedureDrill
     case trueFalseBlitz
     case microDrill
 }

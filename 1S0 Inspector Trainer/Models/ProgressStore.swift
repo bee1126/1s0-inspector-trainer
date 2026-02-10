@@ -107,7 +107,9 @@ final class ProgressStore: ObservableObject {
     private let onboardingByRoleKey = "onboardingByRole"
     private let srCardsKey = "sr_cards_v1"
     private let proficiencyKey = "module_proficiency_v1"
+    private let procedureDrillRunsByRoleKey = "procedure_drill_runs_by_role_v1"
     private var onboardingStateByRole: [String: RoleOnboardingState] = [:]
+    private var procedureDrillRunByRole: [String: ProcedureDrillRunState] = [:]
 
     init(defaults: UserDefaults = .standard, calendar: Calendar = .current, dateProvider: @escaping () -> Date = Date.init) {
         self.defaults = defaults
@@ -172,6 +174,7 @@ final class ProgressStore: ObservableObject {
         srCards = [:]
         moduleProficiency = [:]
         onboardingStateByRole = [:]
+        procedureDrillRunByRole = [:]
         save()
     }
 
@@ -343,6 +346,10 @@ final class ProgressStore: ObservableObject {
            let decoded = try? JSONDecoder().decode([String: ModuleProficiency].self, from: data) {
             moduleProficiency = decoded
         }
+        if let data = defaults.data(forKey: procedureDrillRunsByRoleKey),
+           let decoded = try? JSONDecoder().decode([String: ProcedureDrillRunState].self, from: data) {
+            procedureDrillRunByRole = decoded
+        }
 
         if let data = defaults.data(forKey: onboardingByRoleKey),
            let decoded = try? JSONDecoder().decode([String: RoleOnboardingState].self, from: data) {
@@ -365,6 +372,7 @@ final class ProgressStore: ObservableObject {
             }
         }
         applyOnboardingState(for: selectedRole)
+        _ = purgeExpiredProcedureDrillRuns(referenceDay: calendar.startOfDay(for: dateProvider()))
     }
 
     private func save() {
@@ -407,6 +415,9 @@ final class ProgressStore: ObservableObject {
         }
         if let data = try? JSONEncoder().encode(moduleProficiency) {
             defaults.set(data, forKey: proficiencyKey)
+        }
+        if let data = try? JSONEncoder().encode(procedureDrillRunByRole) {
+            defaults.set(data, forKey: procedureDrillRunsByRoleKey)
         }
         if let data = try? JSONEncoder().encode(onboardingStateByRole) {
             defaults.set(data, forKey: onboardingByRoleKey)
@@ -461,8 +472,48 @@ final class ProgressStore: ObservableObject {
         onboardingCheckIns = Set(state.checkIns)
     }
 
+    func procedureDrillRun(for role: TrainingRole?) -> ProcedureDrillRunState? {
+        let key = roleKey(for: role)
+        guard let run = procedureDrillRunByRole[key] else { return nil }
+        let today = calendar.startOfDay(for: dateProvider())
+        guard calendar.isDate(run.updatedAt, inSameDayAs: today) else {
+            procedureDrillRunByRole.removeValue(forKey: key)
+            save()
+            return nil
+        }
+        return run
+    }
+
+    func saveProcedureDrillRun(_ run: ProcedureDrillRunState?, for role: TrainingRole?) {
+        let key = roleKey(for: role)
+        if var run {
+            run.updatedAt = dateProvider()
+            procedureDrillRunByRole[key] = run
+        } else {
+            procedureDrillRunByRole.removeValue(forKey: key)
+        }
+        save()
+    }
+
+    func clearProcedureDrillRun(for role: TrainingRole?) {
+        let key = roleKey(for: role)
+        guard procedureDrillRunByRole[key] != nil else { return }
+        procedureDrillRunByRole.removeValue(forKey: key)
+        save()
+    }
+
+    @discardableResult
+    private func purgeExpiredProcedureDrillRuns(referenceDay: Date) -> Bool {
+        let originalCount = procedureDrillRunByRole.count
+        procedureDrillRunByRole = procedureDrillRunByRole.filter { _, run in
+            calendar.isDate(run.updatedAt, inSameDayAs: referenceDay)
+        }
+        return procedureDrillRunByRole.count != originalCount
+    }
+
     func refreshForNewDayIfNeeded() {
         let today = calendar.startOfDay(for: dateProvider())
+        let removedExpiredRuns = purgeExpiredProcedureDrillRuns(referenceDay: today)
         guard let lastReset = lastDailyReset else {
             lastDailyReset = today
             save()
@@ -479,6 +530,8 @@ final class ProgressStore: ObservableObject {
                     dailyStreak = 0
                 }
             }
+            save()
+        } else if removedExpiredRuns {
             save()
         }
     }
