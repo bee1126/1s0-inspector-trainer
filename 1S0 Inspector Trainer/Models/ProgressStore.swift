@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 import SwiftUI
 import WidgetKit
 
@@ -81,6 +82,7 @@ final class ProgressStore: ObservableObject {
     private let defaults: UserDefaults
     private let calendar: Calendar
     private let dateProvider: () -> Date
+    private var autoSaveCancellable: AnyCancellable?
 
     private let completedKey = "completedModules"
     private let scoresKey = "bestScores"
@@ -112,6 +114,15 @@ final class ProgressStore: ObservableObject {
         self.calendar = calendar
         self.dateProvider = dateProvider
         load()
+        configureAutomaticSaving()
+    }
+
+    private func configureAutomaticSaving() {
+        autoSaveCancellable = objectWillChange
+            .debounce(for: .milliseconds(250), scheduler: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.save()
+            }
     }
 
     func markCompleted(moduleId: String, score: Int, scenarioPerfect: Bool, quizPerfect: Bool) {
