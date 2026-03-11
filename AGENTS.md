@@ -45,4 +45,5 @@ All new UI must use these exactly:
 - All persistence through ProgressStore → UserDefaults.
 - All new views use BackgroundView + GlassCard pattern.
 - Keep ProgressStore.save() private — add public methods for mutations.
-- Run `xcodebuild -scheme "1S0 Inspector Trainer" -project "1S0 Inspector Trainer.xcodeproj" -destination "platform=iOS Simulator,name=iPhone 17" test` to verify after changes.
+- Run `xcodebuild -scheme "1S0 Inspector Trainer" -project "1S0 Inspector Trainer.xcodeproj" -destination "platform=iOS Simulator,name=iPhone 17 Pro" test` to verify after changes.
+- If simulator test execution is unstable, run `xcodebuild -scheme "1S0 Inspector Trainer" -project "1S0 Inspector Trainer.xcodeproj" -destination "generic/platform=iOS Simulator" build` as a fallback compile check.

@@ -19,10 +19,18 @@ struct ProgressDashboardView: View {
 
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: AppSpacing.section) {
-                    Text("PROGRESS")
+                    Text("MISSION READINESS")
                         .font(AppFont.mono(13))
                         .foregroundColor(AppTheme.muted)
                         .tracking(2)
+
+                    GlassCard {
+                        HStack(spacing: 16) {
+                            readinessMetric(title: "Modules", value: "\(completedCount)/\(modules.count)", tint: AppTheme.primary)
+                            readinessMetric(title: "Review Due", value: "\(progress.overdueCount())", tint: AppTheme.accent)
+                            readinessMetric(title: "Streak", value: "\(progress.dailyStreak)d", tint: AppTheme.accent)
+                        }
+                    }
 
                     // MARK: - Level / XP Card
                     GlassCard {
@@ -56,6 +64,9 @@ struct ProgressDashboardView: View {
                                 .foregroundColor(AppTheme.text)
                             ProgressView(value: progress.dailyGoalProgress)
                                 .tint(AppTheme.accent)
+                                .accessibilityElement(children: .ignore)
+                                .accessibilityLabel(AccessibilityCopy.progressLabel(name: "Daily goal", current: progress.dailyXp, total: progress.dailyGoal))
+                                .accessibilityValue(AccessibilityCopy.progressValue(current: progress.dailyXp, total: progress.dailyGoal))
 
                             HStack {
                                 Text("Streak: \(progress.dailyStreak) days")
@@ -101,6 +112,9 @@ struct ProgressDashboardView: View {
                                 .tracking(1.5)
                             ProgressView(value: completionRate)
                                 .tint(AppTheme.primary)
+                                .accessibilityElement(children: .ignore)
+                                .accessibilityLabel(AccessibilityCopy.progressLabel(name: "Overall readiness", current: completedCount, total: modules.count))
+                                .accessibilityValue(AccessibilityCopy.progressValue(current: completedCount, total: modules.count))
                             Text("\(completedCount) of \(modules.count) modules completed")
                                 .font(AppFont.body(13))
                                 .foregroundColor(AppTheme.text)
@@ -141,8 +155,8 @@ struct ProgressDashboardView: View {
                                 .foregroundColor(AppTheme.muted)
                                 .tracking(1.5)
 
-                            ForEach(modules.indices, id: \.self) { index in
-                                let module = modules[index]
+                            ForEach(prioritizedModules.indices, id: \.self) { index in
+                                let module = prioritizedModules[index]
                                 HStack {
                                     VStack(alignment: .leading, spacing: 4) {
                                         Text(module.title)
@@ -166,11 +180,16 @@ struct ProgressDashboardView: View {
                                         ScoreBadge(score: progress.bestScore(for: module.id))
                                     }
                                 }
-                                if index < modules.count - 1 {
+                                if index < prioritizedModules.count - 1 {
                                     Divider()
                                         .background(AppTheme.border)
                                         .opacity(0.5)
                                 }
+                            }
+                            if modules.count > prioritizedModules.count {
+                                Text("Showing \(prioritizedModules.count) of \(modules.count) modules")
+                                    .font(AppFont.body(12))
+                                    .foregroundColor(AppTheme.muted)
                             }
                         }
                     }
@@ -205,6 +224,9 @@ struct ProgressDashboardView: View {
                                         }
                                     }
                                     .frame(height: 8)
+                                    .accessibilityElement(children: .ignore)
+                                    .accessibilityLabel("Module proficiency")
+                                    .accessibilityValue("\(Int(round(row.recentAccuracy * 100))) percent")
                                 }
                             }
                         }
@@ -265,6 +287,16 @@ struct ProgressDashboardView: View {
                 return ModuleProficiencyRow(id: prefix, title: module.title, recentAccuracy: recentAccuracy)
             }
             .sorted { $0.recentAccuracy < $1.recentAccuracy }
+    }
+
+    private var prioritizedModules: [TrainingModule] {
+        let sorted = modules.sorted { lhs, rhs in
+            let lhsCompleted = progress.isCompleted(lhs.id)
+            let rhsCompleted = progress.isCompleted(rhs.id)
+            if lhsCompleted == rhsCompleted { return lhs.title < rhs.title }
+            return !lhsCompleted && rhsCompleted
+        }
+        return Array(sorted.prefix(8))
     }
 
     private var badges: [BadgeState] {
@@ -374,6 +406,18 @@ struct ProgressDashboardView: View {
         let components = questionId.split(separator: "-")
         guard components.count > 1 else { return questionId }
         return components.dropLast().joined(separator: "-")
+    }
+
+    private func readinessMetric(title: String, value: String, tint: Color) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(title.uppercased())
+                .font(AppFont.mono(10))
+                .foregroundColor(AppTheme.muted)
+            Text(value)
+                .font(AppFont.subtitle(18))
+                .foregroundColor(tint)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 

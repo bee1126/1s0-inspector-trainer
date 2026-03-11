@@ -3,6 +3,8 @@ import SwiftUI
 struct ScenarioFlowView: View {
     @EnvironmentObject private var progress: ProgressStore
     @EnvironmentObject private var adaptiveManager: AdaptiveDifficultyManager
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     let scenario: Scenario
     var onWrongAnswer: (() -> Void)? = nil
     let onComplete: (AssessmentResult) -> Void
@@ -31,85 +33,127 @@ struct ScenarioFlowView: View {
     }
 
     var body: some View {
-        let step = stepForCurrent()
-        let options = shuffledOptionsByStepId[step.id] ?? step.options
+        let currentStep = stepForCurrent()
 
         ScrollView {
             GlassCard {
-                VStack(alignment: .leading, spacing: AppSpacing.stack) {
-                    Text("Scenario")
-                        .font(AppFont.mono(12))
-                        .foregroundColor(AppTheme.muted)
+                if let step = currentStep {
+                    let options = shuffledOptionsByStepId[step.id] ?? step.options
 
-                    Text(scenario.title)
-                        .font(AppFont.title(22))
-                        .foregroundColor(AppTheme.text)
-
-                    Text(scenario.intro)
-                        .font(AppFont.body(14))
-                        .foregroundColor(AppTheme.muted)
-
-                    Divider().overlay(AppTheme.border)
-
-                    HStack {
-                        Text("Time")
+                    VStack(alignment: .leading, spacing: AppSpacing.stack) {
+                        Text("Scenario")
                             .font(AppFont.mono(12))
                             .foregroundColor(AppTheme.muted)
-                        Text("\(timeLeft)s")
-                            .font(AppFont.subtitle(14))
-                            .foregroundColor(timeLeft <= 5 ? AppTheme.danger : AppTheme.text)
-                        Spacer()
-                        if showsHearts {
-                            HeartsView(hearts: progress.hearts, maxHearts: progress.maxHearts, compact: true, onDark: false)
+
+                        Text(scenario.title)
+                            .font(AppFont.title(22))
+                            .foregroundColor(AppTheme.text)
+
+                        Text(scenario.intro)
+                            .font(AppFont.body(14))
+                            .foregroundColor(AppTheme.muted)
+
+                        if let stepPosition = stepPosition(for: step.id) {
+                            VStack(alignment: .leading, spacing: 6) {
+                                Text("Step \(stepPosition)/\(scenario.steps.count)")
+                                    .font(AppFont.mono(11))
+                                    .foregroundColor(AppTheme.muted)
+                                ProgressView(value: Double(stepPosition), total: Double(max(1, scenario.steps.count)))
+                                    .tint(AppTheme.info)
+                            }
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityLabel(AccessibilityCopy.progressLabel(name: "Scenario", current: stepPosition, total: scenario.steps.count))
+                            .accessibilityValue(AccessibilityCopy.progressValue(current: stepPosition, total: scenario.steps.count))
                         }
-                        Toggle("Time Pressure", isOn: $timerActive)
-                            .labelsHidden()
-                            .tint(AppTheme.primary)
-                    }
 
-                    Text(step.prompt)
-                        .font(AppFont.subtitle(17))
-                        .foregroundColor(AppTheme.text)
+                        Divider().overlay(AppTheme.border)
 
-                    VStack(spacing: 10) {
-                        ForEach(options, id: \.id) { option in
-                            Button {
-                                guard selectedOptionId == nil else { return }
-                                selectedOptionId = option.id
-                                answeredCount += 1
-                                if option.isCorrect {
-                                    correctCount += 1
-                                    adaptiveManager.recordCorrect()
-                                    AppFeedback.correct()
-                                } else {
-                                    onWrongAnswer?()
-                                    adaptiveManager.recordWrong()
-                                    AppFeedback.incorrect()
-                                }
-                                withAnimation(.easeInOut(duration: 0.2)) {
-                                    showFeedback = true
-                                }
-                            } label: {
-                                OptionRow(
-                                    text: option.text,
-                                    isSelected: selectedOptionId == option.id,
-                                    isCorrect: option.isCorrect,
-                                    isLocked: selectedOptionId != nil,
-                                    revealCorrect: true
+                        HStack {
+                            Text("Time")
+                                .font(AppFont.mono(12))
+                                .foregroundColor(AppTheme.muted)
+                            Text("\(timeLeft)s")
+                                .font(AppFont.subtitle(14))
+                                .foregroundColor(timeLeft <= 5 ? AppTheme.danger : AppTheme.text)
+                            Spacer()
+                            if showsHearts {
+                                HeartsView(
+                                    hearts: progress.hearts,
+                                    maxHearts: progress.maxHearts,
+                                    compact: true,
+                                    onDark: false
                                 )
                             }
-                            .buttonStyle(.plain)
+                            Toggle("Time Pressure", isOn: $timerActive)
+                                .labelsHidden()
+                                .tint(AppTheme.primary)
+                                .accessibilityLabel("Time pressure")
+                        }
+
+                        Text(step.prompt)
+                            .font(AppFont.subtitle(17))
+                            .foregroundColor(AppTheme.text)
+
+                        Text("Choose the best response.")
+                            .font(AppFont.body(13))
+                            .foregroundColor(AppTheme.muted)
+
+                        VStack(spacing: 10) {
+                            ForEach(options, id: \.id) { option in
+                                Button {
+                                    guard selectedOptionId == nil else { return }
+                                    selectedOptionId = option.id
+                                    answeredCount += 1
+                                    if option.isCorrect {
+                                        correctCount += 1
+                                        adaptiveManager.recordCorrect()
+                                        AppFeedback.correct()
+                                    } else {
+                                        onWrongAnswer?()
+                                        adaptiveManager.recordWrong()
+                                        AppFeedback.incorrect()
+                                    }
+                                    revealFeedback()
+                                } label: {
+                                    OptionRow(
+                                        text: option.text,
+                                        isSelected: selectedOptionId == option.id,
+                                        isCorrect: option.isCorrect,
+                                        isLocked: selectedOptionId != nil,
+                                        revealCorrect: true,
+                                        accessibilityValue: optionAccessibilityValue(option)
+                                    )
+                                }
+                                .buttonStyle(.plain)
+                            }
+                        }
+
+                        if let selectedId = selectedOptionId,
+                           let option = step.options.first(where: { $0.id == selectedId }) {
+                            FeedbackView(text: option.feedback, isCorrect: option.isCorrect)
+                                .transition(.move(edge: .bottom).combined(with: .opacity))
+                        }
+
+                        if showFeedback {
+                            Button(step.nextStepId(for: selectedOptionId) == nil ? "Finish Scenario" : "Continue") {
+                                advance(from: step)
+                            }
+                            .buttonStyle(PrimaryButtonStyle())
                         }
                     }
-
-                    if let selectedId = selectedOptionId, let option = step.options.first(where: { $0.id == selectedId }) {
-                        FeedbackView(text: option.feedback, isCorrect: option.isCorrect)
-                            .transition(.move(edge: .bottom).combined(with: .opacity))
-                    }
-
-                    if showFeedback {
-                        Button(step.nextStepId(for: selectedOptionId) == nil ? "Finish Scenario" : "Continue") {
-                            advance(from: step)
+                } else {
+                    VStack(alignment: .leading, spacing: AppSpacing.stack) {
+                        Text("Scenario")
+                            .font(AppFont.mono(12))
+                            .foregroundColor(AppTheme.muted)
+                        Text("Scenario Unavailable")
+                            .font(AppFont.subtitle(18))
+                            .foregroundColor(AppTheme.text)
+                        Text("This scenario has no steps. Complete the stage and continue.")
+                            .font(AppFont.body(14))
+                            .foregroundColor(AppTheme.muted)
+                        Button("Finish Scenario") {
+                            onComplete(AssessmentResult(score: 0, total: 0))
                         }
                         .buttonStyle(PrimaryButtonStyle())
                     }
@@ -122,14 +166,16 @@ struct ScenarioFlowView: View {
         .simultaneousGesture(
             DragGesture(minimumDistance: 20)
                 .onEnded { value in
-                    handleSwipe(value, step: step)
+                    if let step = currentStep {
+                        handleSwipe(value, step: step)
+                    }
                 }
         )
-        .onChange(of: currentStepId) { newValue in
+        .onChange(of: currentStepId) { _, newValue in
             ensureOptions(for: newValue)
         }
         .onReceive(timer) { _ in
-            guard timerActive, selectedOptionId == nil else { return }
+            guard timerActive, selectedOptionId == nil, let step = stepForCurrent() else { return }
             if timeLeft > 0 {
                 timeLeft -= 1
             } else {
@@ -142,8 +188,31 @@ struct ScenarioFlowView: View {
         }
     }
 
-    private func stepForCurrent() -> ScenarioStep {
-        scenario.steps.first(where: { $0.id == currentStepId }) ?? scenario.steps[0]
+    private func stepForCurrent() -> ScenarioStep? {
+        scenario.steps.first(where: { $0.id == currentStepId })
+    }
+
+    private func stepPosition(for stepId: String) -> Int? {
+        guard let index = scenario.steps.firstIndex(where: { $0.id == stepId }) else { return nil }
+        return index + 1
+    }
+
+    private func optionAccessibilityValue(_ option: ScenarioOption) -> String {
+        guard selectedOptionId != nil else { return "Not selected" }
+        if selectedOptionId == option.id {
+            return option.isCorrect ? "Selected, correct" : "Selected, incorrect"
+        }
+        return option.isCorrect ? "Correct answer" : "Not selected"
+    }
+
+    private func revealFeedback() {
+        if reduceMotion {
+            showFeedback = true
+        } else {
+            withAnimation(.easeInOut(duration: 0.2)) {
+                showFeedback = true
+            }
+        }
     }
 
     private func advance(from step: ScenarioStep) {
@@ -172,7 +241,7 @@ struct ScenarioFlowView: View {
             onWrongAnswer?()
             adaptiveManager.recordWrong()
             AppFeedback.incorrect()
-            showFeedback = true
+            revealFeedback()
         }
     }
 

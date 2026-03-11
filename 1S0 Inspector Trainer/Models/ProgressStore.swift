@@ -71,7 +71,7 @@ final class ProgressStore: ObservableObject {
     @Published private(set) var lastDailyFiveScore: Int = 0
     @Published private(set) var resumeState: ModuleResumeState? = nil
     @Published private(set) var hearts: Int = 5
-    @Published private(set) var selectedRole: TrainingRole? = nil
+    @Published private(set) var selectedRole: TrainingRole? = .oneS0
     @Published private(set) var onboardingStartDate: Date? = nil
     @Published private(set) var onboardingCheckIns: Set<Int> = []
     @Published private(set) var srCards: [String: SRCard] = [:]
@@ -82,6 +82,9 @@ final class ProgressStore: ObservableObject {
     private let calendar: Calendar
     private let dateProvider: () -> Date
     private var autoSaveCancellable: AnyCancellable?
+    private var hasPendingChanges = false
+    private var mutationTransactionDepth = 0
+    private var saveRequestedInTransaction = false
 
     private let completedKey = "completedModules"
     private let scoresKey = "bestScores"
@@ -120,10 +123,41 @@ final class ProgressStore: ObservableObject {
 
     private func configureAutomaticSaving() {
         autoSaveCancellable = objectWillChange
+            .handleEvents(receiveOutput: { [weak self] _ in
+                self?.hasPendingChanges = true
+            })
             .debounce(for: .milliseconds(250), scheduler: RunLoop.main)
             .sink { [weak self] _ in
-                self?.save()
+                self?.persistIfNeeded()
             }
+    }
+
+    @discardableResult
+    private func performMutationTransaction<T>(_ updates: () -> T) -> T {
+        mutationTransactionDepth += 1
+        defer {
+            mutationTransactionDepth -= 1
+            if mutationTransactionDepth == 0 && saveRequestedInTransaction {
+                saveRequestedInTransaction = false
+                persistIfNeeded()
+            }
+        }
+        return updates()
+    }
+
+    private func requestSave() {
+        hasPendingChanges = true
+        if mutationTransactionDepth > 0 {
+            saveRequestedInTransaction = true
+            return
+        }
+        persistIfNeeded()
+    }
+
+    private func persistIfNeeded() {
+        guard hasPendingChanges, mutationTransactionDepth == 0 else { return }
+        hasPendingChanges = false
+        persistToDefaults()
     }
 
     func markCompleted(moduleId: String, score: Int, scenarioPerfect: Bool, quizPerfect: Bool) {
@@ -333,9 +367,8 @@ final class ProgressStore: ObservableObject {
         } else {
             hearts = defaults.integer(forKey: heartsKey)
         }
-        if let rawRole = defaults.string(forKey: selectedRoleKey),
-           let role = TrainingRole(rawValue: rawRole) {
-            selectedRole = role
+        if let rawRole = defaults.string(forKey: selectedRoleKey) {
+            selectedRole = TrainingRole(rawValue: rawRole) ?? .oneS0
         }
         if let data = defaults.data(forKey: srCardsKey),
            let decoded = try? JSONDecoder().decode([String: SRCard].self, from: data) {
@@ -375,6 +408,10 @@ final class ProgressStore: ObservableObject {
     }
 
     private func save() {
+        requestSave()
+    }
+
+    private func persistToDefaults() {
         persistCurrentOnboardingState()
         if let data = try? JSONEncoder().encode(Array(completedModules)) {
             defaults.set(data, forKey: completedKey)
@@ -426,7 +463,6 @@ final class ProgressStore: ObservableObject {
         if let data = try? JSONEncoder().encode(Array(onboardingCheckIns).sorted()) {
             defaults.set(data, forKey: onboardingCheckInsKey)
         }
-
     }
 
     func setRole(_ role: TrainingRole) {
@@ -518,71 +554,83 @@ final class ProgressStore: ObservableObject {
     }
 
     func consumeHeart() {
-        refreshForNewDayIfNeeded()
-        guard hearts > 0 else { return }
-        hearts -= 1
-        save()
+        performMutationTransaction {
+            refreshForNewDayIfNeeded()
+            guard hearts > 0 else { return }
+            hearts -= 1
+            save()
+        }
     }
 
     @discardableResult
     func restoreHearts(_ amount: Int) -> Int {
-        refreshForNewDayIfNeeded()
-        guard amount > 0 else { return 0 }
-        let before = hearts
-        hearts = min(maxHearts, hearts + amount)
-        save()
-        return max(0, hearts - before)
+        performMutationTransaction {
+            refreshForNewDayIfNeeded()
+            guard amount > 0 else { return 0 }
+            let before = hearts
+            hearts = min(maxHearts, hearts + amount)
+            save()
+            return max(0, hearts - before)
+        }
     }
 
     func restoreAllHearts() {
-        refreshForNewDayIfNeeded()
-        hearts = maxHearts
-        save()
+        performMutationTransaction {
+            refreshForNewDayIfNeeded()
+            hearts = maxHearts
+            save()
+        }
     }
 
     #if DEBUG
     func debugMaxRank(modules: [TrainingModule]) {
-        for module in modules {
-            markCompleted(moduleId: module.id, score: 100, scenarioPerfect: true, quizPerfect: true)
+        performMutationTransaction {
+            for module in modules {
+                markCompleted(moduleId: module.id, score: 100, scenarioPerfect: true, quizPerfect: true)
+            }
+            xp = max(xp, levelStep * 20)
+            dailyXp = max(dailyXp, dailyGoal)
+            save()
         }
-        xp = max(xp, levelStep * 20)
-        dailyXp = max(dailyXp, dailyGoal)
-        save()
     }
     #endif
 
     func completeModule(moduleId: String, score: Int, scenarioResult: AssessmentResult, quizResult: AssessmentResult, quizMultiplier: Double = 1.0) -> RewardSummary {
-        markCompleted(
-            moduleId: moduleId,
-            score: score,
-            scenarioPerfect: scenarioResult.score == scenarioResult.total && scenarioResult.total > 0,
-            quizPerfect: quizResult.score == quizResult.total && quizResult.total > 0
-        )
+        performMutationTransaction {
+            markCompleted(
+                moduleId: moduleId,
+                score: score,
+                scenarioPerfect: scenarioResult.score == scenarioResult.total && scenarioResult.total > 0,
+                quizPerfect: quizResult.score == quizResult.total && quizResult.total > 0
+            )
 
-        let lessonXp = 12
-        let scenarioXp = scenarioResult.score * 8
-        let quizXp = Int(round(Double(quizResult.score * 6) * quizMultiplier))
-        let passBonus = score >= 80 ? 20 : 0
-        let perfectBonus = score == 100 ? 10 : 0
-        let totalXp = lessonXp + scenarioXp + quizXp + passBonus + perfectBonus
-        return earnXp(totalXp, heartsRestored: 0, streakMultiplier: quizMultiplier)
+            let lessonXp = 12
+            let scenarioXp = scenarioResult.score * 8
+            let quizXp = Int(round(Double(quizResult.score * 6) * quizMultiplier))
+            let passBonus = score >= 80 ? 20 : 0
+            let perfectBonus = score == 100 ? 10 : 0
+            let totalXp = lessonXp + scenarioXp + quizXp + passBonus + perfectBonus
+            return earnXp(totalXp, heartsRestored: 0, streakMultiplier: quizMultiplier)
+        }
     }
 
     func completePractice(score: Int, total: Int, streakMultiplier: Double = 1.0) -> RewardSummary {
-        refreshForNewDayIfNeeded()
-        let accuracy = total > 0 ? Double(score) / Double(total) : 0
-        let baseXp = 10
-        let bonusXp = Int(round(accuracy * 25))
-        let earned = Int(round(Double(baseXp + bonusXp) * streakMultiplier))
-        var restored = 0
+        performMutationTransaction {
+            refreshForNewDayIfNeeded()
+            let accuracy = total > 0 ? Double(score) / Double(total) : 0
+            let baseXp = 10
+            let bonusXp = Int(round(accuracy * 25))
+            let earned = Int(round(Double(baseXp + bonusXp) * streakMultiplier))
+            var restored = 0
 
-        if accuracy >= 0.9 {
-            restored = restoreHearts(2)
-        } else if accuracy >= 0.7 {
-            restored = restoreHearts(1)
+            if accuracy >= 0.9 {
+                restored = restoreHearts(2)
+            } else if accuracy >= 0.7 {
+                restored = restoreHearts(1)
+            }
+
+            return earnXp(earned, heartsRestored: restored, streakMultiplier: streakMultiplier)
         }
-
-        return earnXp(earned, heartsRestored: restored, streakMultiplier: streakMultiplier)
     }
 
     private func earnXp(_ amount: Int, heartsRestored: Int, streakMultiplier: Double = 1.0) -> RewardSummary {
@@ -702,11 +750,13 @@ final class ProgressStore: ObservableObject {
 
     @discardableResult
     func checkInOnboardingDay() -> RewardSummary? {
-        guard let dayNumber = onboardingDayNumber() else { return nil }
-        guard !onboardingCheckIns.contains(dayNumber) else { return nil }
-        onboardingCheckIns.insert(dayNumber)
-        save()
-        return earnXp(8, heartsRestored: 0, streakMultiplier: 1.0)
+        performMutationTransaction {
+            guard let dayNumber = onboardingDayNumber() else { return nil }
+            guard !onboardingCheckIns.contains(dayNumber) else { return nil }
+            onboardingCheckIns.insert(dayNumber)
+            save()
+            return earnXp(8, heartsRestored: 0, streakMultiplier: 1.0)
+        }
     }
 }
 

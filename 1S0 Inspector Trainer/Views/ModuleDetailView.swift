@@ -3,6 +3,8 @@ import SwiftUI
 struct ModuleDetailView: View {
     @EnvironmentObject private var progress: ProgressStore
     let module: TrainingModule
+    private var integrityIssues: [ModuleIntegrityIssue] { module.integrityIssues }
+    private var canStartModule: Bool { integrityIssues.isEmpty }
 
     var body: some View {
         ZStack {
@@ -44,28 +46,45 @@ struct ModuleDetailView: View {
                         }
                     }
 
+                    if !canStartModule {
+                        GlassCard(glow: AppTheme.danger.opacity(0.5)) {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("MODULE INCOMPLETE")
+                                    .font(AppFont.mono(11))
+                                    .foregroundColor(AppTheme.danger)
+                                ForEach(integrityIssues) { issue in
+                                    Text("• \(issue.message)")
+                                        .font(AppFont.body(13))
+                                        .foregroundColor(AppTheme.muted)
+                                }
+                            }
+                        }
+                    }
+
                     NavigationLink {
                         ModuleFlowView(module: module)
                     } label: {
                         HStack {
-                            Text(progress.isCompleted(module.id) ? "Run Again" : "Start Module")
+                            Text(progress.isCompleted(module.id) ? "Run Training Again" : "Start Training Mission")
                             Spacer()
                             Image(systemName: "play.fill")
                         }
                     }
                     .buttonStyle(PrimaryButtonStyle())
+                    .disabled(!canStartModule)
 
                     if progress.resumeState(for: module.id) != nil {
                         NavigationLink {
                             ModuleFlowView(module: module)
                         } label: {
                             HStack {
-                                Text("Continue")
+                                Text("Resume Current Run")
                                 Spacer()
                                 Image(systemName: "arrow.right.circle.fill")
                             }
                         }
                         .buttonStyle(OutlineButtonStyle())
+                        .disabled(!canStartModule)
                     }
 
                     GlassCard {
@@ -80,6 +99,9 @@ struct ModuleDetailView: View {
                                 .font(AppFont.body(12))
                                 .foregroundColor(AppTheme.muted)
                         }
+                        .accessibilityElement(children: .combine)
+                        .accessibilityLabel("Rewards")
+                        .accessibilityValue("Up to \(maxXp) experience points")
                     }
 
                     if progress.isCompleted(module.id) {

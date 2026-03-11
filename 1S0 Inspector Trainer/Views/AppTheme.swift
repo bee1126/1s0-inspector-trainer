@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // TACTICAL DARK — Design System
@@ -41,23 +42,73 @@ enum AppSpacing {
     static let item: CGFloat = 10
     static let compact: CGFloat = 6
     static let cardPadding: CGFloat = 16
+    static let minTapTarget: CGFloat = 44
 }
 
 enum AppFont {
     static func title(_ size: CGFloat) -> Font {
-        .system(size: size, weight: .black, design: .default)
+        title(size, relativeTo: .title2)
+    }
+
+    static func title(_ size: CGFloat, relativeTo textStyle: UIFont.TextStyle) -> Font {
+        scaledSystemFont(
+            size: size,
+            weight: .black,
+            textStyle: textStyle
+        )
     }
 
     static func subtitle(_ size: CGFloat) -> Font {
-        .system(size: size, weight: .semibold, design: .default)
+        subtitle(size, relativeTo: .headline)
+    }
+
+    static func subtitle(_ size: CGFloat, relativeTo textStyle: UIFont.TextStyle) -> Font {
+        scaledSystemFont(
+            size: size,
+            weight: .semibold,
+            textStyle: textStyle
+        )
     }
 
     static func body(_ size: CGFloat) -> Font {
-        .system(size: size, weight: .regular, design: .default)
+        body(size, relativeTo: .body)
+    }
+
+    static func body(_ size: CGFloat, relativeTo textStyle: UIFont.TextStyle) -> Font {
+        scaledSystemFont(
+            size: size,
+            weight: .regular,
+            textStyle: textStyle
+        )
     }
 
     static func mono(_ size: CGFloat) -> Font {
-        .system(size: size, weight: .medium, design: .monospaced)
+        mono(size, relativeTo: .body)
+    }
+
+    static func mono(_ size: CGFloat, relativeTo textStyle: UIFont.TextStyle) -> Font {
+        scaledSystemFont(
+            size: size,
+            weight: .medium,
+            textStyle: textStyle,
+            design: .monospaced
+        )
+    }
+
+    private static func scaledSystemFont(
+        size: CGFloat,
+        weight: UIFont.Weight,
+        textStyle: UIFont.TextStyle,
+        design: UIFontDescriptor.SystemDesign? = nil
+    ) -> Font {
+        var descriptor = UIFont.systemFont(ofSize: size, weight: weight).fontDescriptor
+        if let design,
+           let designedDescriptor = descriptor.withDesign(design) {
+            descriptor = designedDescriptor
+        }
+        let baseFont = UIFont(descriptor: descriptor, size: size)
+        let scaledFont = UIFontMetrics(forTextStyle: textStyle).scaledFont(for: baseFont)
+        return Font(scaledFont)
     }
 }
 
@@ -68,6 +119,7 @@ struct PrimaryButtonStyle: ButtonStyle {
         configuration.label
             .font(AppFont.subtitle(14))
             .foregroundColor(AppTheme.bg)
+            .frame(minHeight: AppSpacing.minTapTarget)
             .padding(.vertical, 12)
             .padding(.horizontal, 20)
             .background(
@@ -85,6 +137,7 @@ struct OutlineButtonStyle: ButtonStyle {
         configuration.label
             .font(AppFont.subtitle(14))
             .foregroundColor(AppTheme.primary)
+            .frame(minHeight: AppSpacing.minTapTarget)
             .padding(.vertical, 10)
             .padding(.horizontal, 18)
             .background(

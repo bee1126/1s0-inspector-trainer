@@ -80,25 +80,20 @@ final class ProgressStoreTests: XCTestCase {
         XCTAssertEqual(store.dailyStreak, 1)
     }
 
-    func testOnboardingProgressIsSeparatedByRole() {
+    func testDefaultRoleIsOneS0() {
         let now = Date(timeIntervalSince1970: 0)
         let store = ProgressStore(defaults: defaults, calendar: calendar, dateProvider: { now })
 
-        store.setRole(.usr)
-        store.startOnboardingIfNeeded()
-        _ = store.checkInOnboardingDay()
-        XCTAssertEqual(store.onboardingCheckIns, [1])
+        XCTAssertEqual(store.selectedRole, .oneS0)
+    }
 
-        store.setRole(.oneS0)
-        XCTAssertNil(store.onboardingStartDate)
-        XCTAssertTrue(store.onboardingCheckIns.isEmpty)
+    func testLegacyUSRSelectionFallsBackToOneS0() {
+        defaults.set("USR", forKey: "selectedRole")
 
-        store.startOnboardingIfNeeded()
-        _ = store.checkInOnboardingDay()
-        XCTAssertEqual(store.onboardingCheckIns, [1])
+        let now = Date(timeIntervalSince1970: 0)
+        let store = ProgressStore(defaults: defaults, calendar: calendar, dateProvider: { now })
 
-        store.setRole(.usr)
-        XCTAssertEqual(store.onboardingCheckIns, [1])
+        XCTAssertEqual(store.selectedRole, .oneS0)
     }
 
     func testProcedureDrillRunPersistsSameDay() {
@@ -126,15 +121,15 @@ final class ProgressStoreTests: XCTestCase {
         XCTAssertNil(store.procedureDrillRun(for: .oneS0))
     }
 
-    func testProcedureDrillRunSeparatedByRole() {
+    func testProcedureDrillRunStoredUnderDefaultRoleKey() {
         let now = Date(timeIntervalSince1970: 0)
         let store = ProgressStore(defaults: defaults, calendar: calendar, dateProvider: { now })
 
         store.saveProcedureDrillRun(makeProcedureDrillRun(setId: "proc-hot-work-cycle", updatedAt: now), for: .oneS0)
-        store.saveProcedureDrillRun(makeProcedureDrillRun(setId: "usr-proc-spot-inspection", updatedAt: now), for: .usr)
+        store.saveProcedureDrillRun(makeProcedureDrillRun(setId: "proc-rm-five-step", updatedAt: now), for: nil)
 
-        XCTAssertEqual(store.procedureDrillRun(for: .oneS0)?.roundSetIds.first, "proc-hot-work-cycle")
-        XCTAssertEqual(store.procedureDrillRun(for: .usr)?.roundSetIds.first, "usr-proc-spot-inspection")
+        XCTAssertEqual(store.procedureDrillRun(for: .oneS0)?.roundSetIds.first, "proc-rm-five-step")
+        XCTAssertEqual(store.procedureDrillRun(for: nil)?.roundSetIds.first, "proc-rm-five-step")
     }
 
     func testProcedureDrillRoundScoreAppliesFailedCheckPenalty() {

@@ -10,7 +10,7 @@ AF Safety Inspector Prep & XP
 Train like you inspect. 14 interactive modules covering LOTO, fall protection, risk management, confined space, and more. Earn XP, keep your streak, level up your proficiency.
 
 ## Description
-Build and sustain inspection proficiency with scenario-based training aligned to OSHA standards and Air Force safety guidance. Designed for 1S0 safety professionals and Unit Safety Representatives who need to stay sharp between real-world inspections.
+Build and sustain inspection proficiency with scenario-based training aligned to OSHA standards and Air Force safety guidance. Designed for 1S0 safety professionals who need to stay sharp between real-world inspections.
 
 WHAT YOU GET
 • 14 interactive modules — Lockout/Tagout, Fall Protection, Risk Management, Confined Space, Hot Work, Hearing Conservation, Mishap Reporting, Investigation Basics, JHA Fundamentals, Safety Briefing, PPE Decision, Roles & Responsibilities, Hazard Abatement, and RAC System
@@ -31,7 +31,7 @@ DISCLAIMER
 This app is not an official Department of the Air Force product. It is a supplemental training aid intended to reinforce published guidance and OSHA standards. Always follow unit-specific procedures and the most current official publications.
 
 ## Keywords
-safety,inspector,1s0,air force,osha,lockout,tagout,fall protection,risk,training,quiz,USR,hazard,ppe
+safety,inspector,1s0,air force,osha,lockout,tagout,fall protection,risk,training,quiz,hazard,ppe
 
 ## Category
 Education

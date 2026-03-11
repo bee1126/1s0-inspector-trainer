@@ -12,6 +12,7 @@
 		184A33BE966D40AC984D48F9 /* TrainingRole.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0C3EDD2069644FCA0930019 /* TrainingRole.swift */; };
 		1D415B7895434BCF904189C3 /* AppFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23300B9FDEF1494197E818B3 /* AppFeedback.swift */; };
 		315750AB112441B1BEC0399C /* QuizFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BAAD5C65C74C7C981FD78C /* QuizFlowView.swift */; };
+		B22DD4668CAF5B8E9F723451 /* AccessibilityCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11CC3557B9E4A7D8F612340 /* AccessibilityCopy.swift */; };
 		341C4143A1854184A3CE936A /* RoleSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B40D56892E1473CAECAC983 /* RoleSelectionView.swift */; };
 		361FFA23D609407A81CF69EA /* LessonPagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5F88832E9C485CAD594876 /* LessonPagerView.swift */; };
 		385B0547EA624ED4980254F0 /* InspectorTrainerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F24684BB97641B9BDE038CA /* InspectorTrainerApp.swift */; };
@@ -37,6 +38,7 @@
 		D42EA7CFC48D481BA32AF055 /* ProgressDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA413EE88AF47A68BE9CA46 /* ProgressDashboardView.swift */; };
 		D9B3C1AD08F942C0BAAF87D9 /* ModuleDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82A650A0B65431196F5A0F8 /* ModuleDetailView.swift */; };
 		DCBA978527A74611BF0C7D6A /* ToolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B55B06176264F239FEAABC9 /* ToolsView.swift */; };
+		D44FF688AEC17DA0B1945673 /* TrainingContentIntegrityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33EE5779DB06C9FA0834562 /* TrainingContentIntegrityTests.swift */; };
 		E1FFCA2A98184C7DA61D1BFBEFAC71DD /* ProgressStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC3C1F7388CF4E83A784B145B4C85FFB /* ProgressStoreTests.swift */; };
 		E2C9A3B4F5D6A7B8C9D0E1F2 /* PracticeSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E2D3C4B5A69788796A5B4C /* PracticeSessionView.swift */; };
 /* End PBXBuildFile section */
@@ -61,6 +63,7 @@
 		2B40D56892E1473CAECAC983 /* RoleSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoleSelectionView.swift; sourceTree = "<group>"; };
 		2E5F88832E9C485CAD594876 /* LessonPagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonPagerView.swift; sourceTree = "<group>"; };
 		32BAAD5C65C74C7C981FD78C /* QuizFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizFlowView.swift; sourceTree = "<group>"; };
+		A11CC3557B9E4A7D8F612340 /* AccessibilityCopy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityCopy.swift; sourceTree = "<group>"; };
 		40AEBFFBDDE847C4A5C225B5 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
 		534B8049CF904994B419DE7D /* ProgressStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStore.swift; sourceTree = "<group>"; };
 		5D6583B73C5E4CA089EA252A /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
@@ -81,6 +84,7 @@
 		B82A650A0B65431196F5A0F8 /* ModuleDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleDetailView.swift; sourceTree = "<group>"; };
 		C506A214268B476AB97AFCF9 /* 1S0 Inspector Trainer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = "1S0 Inspector Trainer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBA413EE88AF47A68BE9CA46 /* ProgressDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressDashboardView.swift; sourceTree = "<group>"; };
+		C33EE5779DB06C9FA0834562 /* TrainingContentIntegrityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingContentIntegrityTests.swift; sourceTree = "<group>"; };
 		D5A6B7C8D9E0F11223344556 /* AdaptiveDifficultyManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveDifficultyManagerTests.swift; sourceTree = "<group>"; };
 		D84B5E74DAD64241A4C71C85 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		E0C3EDD2069644FCA0930019 /* TrainingRole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingRole.swift; sourceTree = "<group>"; };
@@ -120,6 +124,7 @@
 			children = (
 				D5A6B7C8D9E0F11223344556 /* AdaptiveDifficultyManagerTests.swift */,
 				AC3C1F7388CF4E83A784B145B4C85FFB /* ProgressStoreTests.swift */,
+				C33EE5779DB06C9FA0834562 /* TrainingContentIntegrityTests.swift */,
 			);
 			path = "1S0 Inspector TrainerTests";
 			sourceTree = "<group>";
@@ -156,6 +161,7 @@
 		A68CB731C9B34082B43DDC93 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A11CC3557B9E4A7D8F612340 /* AccessibilityCopy.swift */,
 				5D6583B73C5E4CA089EA252A /* AppTheme.swift */,
 				19302FDEB72143C5A663AE4E /* BackgroundView.swift */,
 				40AEBFFBDDE847C4A5C225B5 /* Components.swift */,
@@ -304,6 +310,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				385B0547EA624ED4980254F0 /* InspectorTrainerApp.swift in Sources */,
+				B22DD4668CAF5B8E9F723451 /* AccessibilityCopy.swift in Sources */,
 				1D415B7895434BCF904189C3 /* AppFeedback.swift in Sources */,
 				A4D8E8B91F234C5AA7B81234 /* AdaptiveDifficultyManager.swift in Sources */,
 				70C498755F3A439EA025734C /* ProgressStore.swift in Sources */,
@@ -338,6 +345,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D44FF688AEC17DA0B1945673 /* TrainingContentIntegrityTests.swift in Sources */,
 				C4E5F60718293A4B5C6D7E8F /* AdaptiveDifficultyManagerTests.swift in Sources */,
 				E1FFCA2A98184C7DA61D1BFBEFAC71DD /* ProgressStoreTests.swift in Sources */,
 			);
@@ -390,7 +398,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -408,7 +416,7 @@
 				INFOPLIST_FILE = "1S0 Inspector Trainer/Resources/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "1S0 Inspector Trainer";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -431,7 +439,7 @@
 				INFOPLIST_FILE = "1S0 Inspector Trainer/Resources/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "1S0 Inspector Trainer";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -480,7 +488,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				SDKROOT = iphoneos;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -493,7 +501,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -510,7 +518,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

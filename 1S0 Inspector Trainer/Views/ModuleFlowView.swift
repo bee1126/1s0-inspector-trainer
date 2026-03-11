@@ -5,6 +5,7 @@ struct ModuleFlowView: View {
     @EnvironmentObject private var progress: ProgressStore
     @EnvironmentObject private var adaptiveManager: AdaptiveDifficultyManager
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let module: TrainingModule
 
     @State private var stage: ModuleStage = .lesson
@@ -21,85 +22,103 @@ struct ModuleFlowView: View {
         ZStack {
             BackgroundView()
 
-            VStack(spacing: AppSpacing.stack) {
-                HStack(spacing: 12) {
-                    StageProgressView(stage: stage)
-                    Spacer()
-                    HeartsView(hearts: progress.hearts, maxHearts: progress.maxHearts)
-                }
-                .padding(.horizontal, AppSpacing.screenPadding)
-                .padding(.top, 8)
+            Group {
+                if module.isIntegrityValid {
+                    VStack(spacing: AppSpacing.stack) {
+                        HStack(spacing: 12) {
+                            StageProgressView(stage: stage)
+                            Spacer()
+                            HeartsView(hearts: progress.hearts, maxHearts: progress.maxHearts)
+                        }
+                        .padding(.horizontal, AppSpacing.screenPadding)
+                        .padding(.top, 8)
 
-                switch stage {
-                case .lesson:
-                    LessonPagerView(
-                        pages: module.lessonPages,
-                        onSkip: {
-                            withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
-                                stage = .scenario
+                        switch stage {
+                        case .lesson:
+                            LessonPagerView(
+                                pages: module.lessonPages,
+                                onSkip: {
+                                    transition(to: .scenario)
+                                },
+                                onComplete: {
+                                    transition(to: .scenario)
+                                },
+                                initialIndex: lessonIndex,
+                                onIndexChange: { newIndex in
+                                    lessonIndex = newIndex
+                                    progress.updateResume(moduleId: module.id, stage: .lesson, lessonIndex: newIndex)
+                                }
+                            )
+                        case .scenario:
+                            ScenarioFlowView(scenario: module.scenario, onWrongAnswer: {
+                                progress.consumeHeart()
+                            }, showsHearts: false) { result in
+                                scenarioResult = result
+                                transition(to: .quiz)
                             }
-                        },
-                        onComplete: {
-                            withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
-                                stage = .scenario
+                        case .quiz:
+                            QuizFlowView(questions: module.quiz, onWrongAnswer: {
+                                progress.consumeHeart()
+                            }, onComplete: { result, streak in
+                                quizResult = result
+                                quizStreakSummary = streak
+                                transition(to: .complete)
+                            }, showsHearts: false, shuffleQuestions: true, maxQuestions: 10, resumeState: progress.resumeState(for: module.id)?.quizState, onStateUpdate: { state in
+                                progress.updateResume(moduleId: module.id, stage: .quiz, quizState: state)
+                            })
+                        case .complete:
+                            CompletionView(
+                                moduleTitle: module.title,
+                                score: finalScore,
+                                scenarioResult: scenarioResult,
+                                quizResult: quizResult,
+                                showRacInput: module.id == "rac-system",
+                                racJustification: $racJustification
+                            ) {
+                                progress.completeModule(
+                                    moduleId: module.id,
+                                    score: finalScore,
+                                    scenarioResult: scenarioResult,
+                                    quizResult: quizResult,
+                                    quizMultiplier: quizStreakSummary.multiplier
+                                )
+                            } onRetry: {
+                                scenarioResult = AssessmentResult(score: 0, total: 0)
+                                quizResult = AssessmentResult(score: 0, total: 0)
+                                racJustification = ""
+                                transition(to: .lesson)
                             }
-                        },
-                        initialIndex: lessonIndex,
-                        onIndexChange: { newIndex in
-                            lessonIndex = newIndex
-                            progress.updateResume(moduleId: module.id, stage: .lesson, lessonIndex: newIndex)
                         }
-                    )
-                case .scenario:
-                    ScenarioFlowView(scenario: module.scenario, onWrongAnswer: {
-                        progress.consumeHeart()
-                    }, showsHearts: false) { result in
-                        scenarioResult = result
-                        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
-                            stage = .quiz
-                        }
+                        Spacer()
                     }
-                case .quiz:
-                    QuizFlowView(questions: module.quiz, onWrongAnswer: {
-                        progress.consumeHeart()
-                    }, onComplete: { result, streak in
-                        quizResult = result
-                        quizStreakSummary = streak
-                        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
-                            stage = .complete
+                    .tacticalReadableWidth()
+                    .padding(.bottom, AppSpacing.screenPadding)
+                    .opacity(appeared ? 1 : 0)
+                    .offset(y: appeared ? 0 : 12)
+                } else {
+                    ScrollView {
+                        GlassCard(glow: AppTheme.danger.opacity(0.5)) {
+                            VStack(alignment: .leading, spacing: 10) {
+                                Text("Module Unavailable")
+                                    .font(AppFont.subtitle(18))
+                                    .foregroundColor(AppTheme.text)
+                                ForEach(module.integrityIssues) { issue in
+                                    Text("• \(issue.message)")
+                                        .font(AppFont.body(13))
+                                        .foregroundColor(AppTheme.muted)
+                                }
+                                Button("Return to Modules") {
+                                    dismiss()
+                                }
+                                .buttonStyle(OutlineButtonStyle())
+                            }
                         }
-                    }, showsHearts: false, shuffleQuestions: true, maxQuestions: 10, resumeState: progress.resumeState(for: module.id)?.quizState, onStateUpdate: { state in
-                        progress.updateResume(moduleId: module.id, stage: .quiz, quizState: state)
-                    })
-                case .complete:
-                    CompletionView(
-                        moduleTitle: module.title,
-                        score: finalScore,
-                        scenarioResult: scenarioResult,
-                        quizResult: quizResult,
-                        showRacInput: module.id == "rac-system",
-                        racJustification: $racJustification
-                    ) {
-                        progress.completeModule(
-                            moduleId: module.id,
-                            score: finalScore,
-                            scenarioResult: scenarioResult,
-                            quizResult: quizResult,
-                            quizMultiplier: quizStreakSummary.multiplier
-                        )
-                    } onRetry: {
-                        scenarioResult = AssessmentResult(score: 0, total: 0)
-                        quizResult = AssessmentResult(score: 0, total: 0)
-                        racJustification = ""
-                        stage = .lesson
+                        .tacticalReadableWidth()
+                        .padding(AppSpacing.screenPadding)
                     }
+                    .scrollIndicators(.hidden)
                 }
-                Spacer()
             }
-            .tacticalReadableWidth()
-            .padding(.bottom, AppSpacing.screenPadding)
-            .opacity(appeared ? 1 : 0)
-            .offset(y: appeared ? 0 : 12)
             .onAppear {
                 progress.refreshForNewDayIfNeeded()
                 if !didApplyResume, let resume = progress.resumeState(for: module.id) {
@@ -114,11 +133,15 @@ struct ModuleFlowView: View {
                     }
                 }
                 didApplyResume = true
-                withAnimation(.easeOut(duration: 0.4)) {
+                if reduceMotion {
                     appeared = true
+                } else {
+                    withAnimation(.easeOut(duration: 0.4)) {
+                        appeared = true
+                    }
                 }
             }
-            .onChange(of: stage) { newStage in
+            .onChange(of: stage) { _, newStage in
                 switch newStage {
                 case .lesson:
                     progress.updateResume(moduleId: module.id, stage: .lesson, lessonIndex: lessonIndex)
@@ -149,6 +172,16 @@ struct ModuleFlowView: View {
         }
     }
 
+    private func transition(to destination: ModuleStage) {
+        if reduceMotion {
+            stage = destination
+        } else {
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                stage = destination
+            }
+        }
+    }
+
     private var finalScore: Int {
         let total = scenarioResult.total + quizResult.total
         guard total > 0 else { return 0 }
@@ -168,11 +201,34 @@ struct StageProgressView: View {
     let stage: ModuleStage
 
     var body: some View {
-        HStack(spacing: 8) {
-            StageChip(title: "Lesson", isActive: stage == .lesson)
-            StageChip(title: "Scenario", isActive: stage == .scenario)
-            StageChip(title: "Quiz", isActive: stage == .quiz)
-            StageChip(title: "Complete", isActive: stage == .complete)
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 8) {
+                StageChip(title: "Lesson", isActive: stage == .lesson)
+                StageChip(title: "Scenario", isActive: stage == .scenario)
+                StageChip(title: "Quiz", isActive: stage == .quiz)
+                StageChip(title: "Complete", isActive: stage == .complete)
+            }
+            ProgressView(value: Double(currentStep), total: 4)
+                .tint(AppTheme.primary)
+            Text("Stage \(currentStep) of 4")
+                .font(AppFont.mono(11))
+                .foregroundColor(AppTheme.muted)
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Training stage")
+        .accessibilityValue("Stage \(currentStep) of 4")
+    }
+
+    private var currentStep: Int {
+        switch stage {
+        case .lesson:
+            return 1
+        case .scenario:
+            return 2
+        case .quiz:
+            return 3
+        case .complete:
+            return 4
         }
     }
 }

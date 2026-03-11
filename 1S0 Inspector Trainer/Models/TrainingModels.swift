@@ -13,6 +13,65 @@ struct TrainingModule: Identifiable, Hashable {
     let quiz: [QuizQuestion]
 }
 
+enum ModuleIntegrityIssue: Hashable, Identifiable {
+    case missingTitle
+    case missingSubtitle
+    case missingLessonPages
+    case missingScenarioSteps
+    case invalidScenarioStart
+    case missingQuizQuestions
+
+    var id: String { message }
+
+    var message: String {
+        switch self {
+        case .missingTitle:
+            return "Module title is missing."
+        case .missingSubtitle:
+            return "Module subtitle is missing."
+        case .missingLessonPages:
+            return "Lesson pages are missing."
+        case .missingScenarioSteps:
+            return "Scenario steps are missing."
+        case .invalidScenarioStart:
+            return "Scenario start step does not match available steps."
+        case .missingQuizQuestions:
+            return "Quiz questions are missing."
+        }
+    }
+}
+
+extension TrainingModule {
+    var integrityIssues: [ModuleIntegrityIssue] {
+        var issues: [ModuleIntegrityIssue] = []
+        if title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            issues.append(.missingTitle)
+        }
+        if subtitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            issues.append(.missingSubtitle)
+        }
+        if lessonPages.isEmpty {
+            issues.append(.missingLessonPages)
+        }
+        if scenario.steps.isEmpty {
+            issues.append(.missingScenarioSteps)
+        } else {
+            let stepIds = Set(scenario.steps.map(\.id))
+            if !stepIds.contains(scenario.startStepId) {
+                issues.append(.invalidScenarioStart)
+            }
+        }
+        if quiz.isEmpty {
+            issues.append(.missingQuizQuestions)
+        }
+        return issues
+    }
+
+    var isIntegrityValid: Bool {
+        integrityIssues.isEmpty
+    }
+}
+
 struct LessonPage: Identifiable, Hashable {
     let id: String
     let title: String

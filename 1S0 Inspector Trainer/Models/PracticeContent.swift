@@ -101,200 +101,100 @@ enum PracticeContent {
     ]
 
     static func trueFalseQuestions(for role: TrainingRole?) -> [TrueFalseQuestion] {
-        switch role {
-        case .usr:
-            return usrTrueFalseQuestions
-        case .oneS0, .none:
-            return oneS0TrueFalseQuestions
-        }
+        oneS0TrueFalseQuestions
     }
 
     static func microDrillTopics(for role: TrainingRole?) -> [MicroDrillTopic] {
-        switch role {
-        case .usr:
-            return usrMicroDrillTopics
-        case .oneS0, .none:
-            return oneS0MicroDrillTopics
-        }
+        oneS0MicroDrillTopics
     }
 
     static func procedureSets(for role: TrainingRole?) -> [ProcedureSet] {
-        switch role {
-        case .usr:
-            return [
-                ProcedureSet(
-                    id: "usr-proc-hazard-report-track",
-                    title: "Hazard Report and Tracking Flow",
-                    detail: "Anchor: Hazard Reporting & Tracking",
-                    steps: [
-                        "Identify unsafe condition and stop work if imminent danger exists.",
-                        "Notify supervisor and affected personnel immediately.",
-                        "Enter hazard in unit tracking system with location and risk details.",
-                        "Recommend interim controls and assign responsible office.",
-                        "Establish suspense date and required corrective actions.",
-                        "Follow up on status updates and escalate overdue actions.",
-                        "Verify abatement in place and close hazard documentation."
-                    ]
-                ),
-                ProcedureSet(
-                    id: "usr-proc-spot-inspection",
-                    title: "Spot Inspection Execution Cycle",
-                    detail: "Anchor: Spot Inspections & Self-Assessments",
-                    steps: [
-                        "Select inspection area and review last discrepancy log.",
-                        "Conduct walk-through using unit checklist standards.",
-                        "Document hazards with photos, facts, and exact locations.",
-                        "Brief supervisor on immediate fixes and interim controls.",
-                        "Enter findings into tracking log with owners and suspense dates.",
-                        "Reinspect corrective actions and record closure evidence."
-                    ]
-                ),
-                ProcedureSet(
-                    id: "usr-proc-rm-escalation",
-                    title: "Unit RM Escalation Path",
-                    detail: "Anchor: Risk Management Basics",
-                    steps: [
-                        "Identify task hazard and assess initial severity and probability.",
-                        "Confirm controls already in place at work-center level.",
-                        "Determine if residual risk exceeds unit authority.",
-                        "Escalate risk decision through chain with supporting facts.",
-                        "Communicate approved controls and monitor execution."
-                    ]
-                ),
-                ProcedureSet(
-                    id: "usr-proc-training-brief",
-                    title: "Safety Training and Briefing Loop",
-                    detail: "Anchor: Safety Training & Briefings",
-                    steps: [
-                        "Identify audience, hazard topic, and required learning outcome.",
-                        "Build briefing outline with policy references and key controls.",
-                        "Deliver concise briefing with scenario-based examples.",
-                        "Verify understanding with questions or quick knowledge checks.",
-                        "Record attendance and unresolved questions.",
-                        "Schedule follow-up training for gaps or new hazards."
-                    ]
-                ),
-                ProcedureSet(
-                    id: "usr-proc-mishap-nearmiss",
-                    title: "Mishap and Near-Miss Immediate Actions",
-                    detail: "Anchor: Mishap & Near-Miss Reporting",
-                    steps: [
-                        "Ensure medical response and scene safety first.",
-                        "Notify supervisor and USR focal points without delay.",
-                        "Capture who, what, when, and where facts for mishap or near miss.",
-                        "Submit initial report through unit and safety channels.",
-                        "Track immediate corrective actions and leadership notifications.",
-                        "Review event at next briefing to reinforce prevention controls."
-                    ]
-                ),
-                ProcedureSet(
-                    id: "usr-proc-abatement-followup",
-                    title: "Hazard Abatement Follow-Up",
-                    detail: "Anchor: Hazard Abatement & Interim Controls",
-                    steps: [
-                        "Review open hazard log and prioritize by RAC.",
-                        "Confirm interim controls remain effective while awaiting fix.",
-                        "Coordinate with responsible office on corrective action progress.",
-                        "Validate funding, parts, or work-order blockers.",
-                        "Update leadership on overdue or elevated-risk items.",
-                        "Verify corrective action completion in the work area.",
-                        "Close hazard in tracker with evidence and date."
-                    ]
-                )
-            ]
-        case .oneS0, .none:
-            return [
-                ProcedureSet(
-                    id: "proc-loto-deenergize",
-                    title: "LOTO De-Energize Sequence",
-                    detail: "Anchor: Lockout / Tagout",
-                    steps: [
-                        "Notify affected personnel and review written energy control procedure.",
-                        "Identify every electrical, mechanical, hydraulic, pneumatic, and thermal energy source.",
-                        "Shut down equipment using normal stopping controls.",
-                        "Isolate all energy sources at disconnects, valves, and breakers.",
-                        "Apply personal lockout or tagout devices at each isolation point.",
-                        "Release or block stored energy through bleed down, venting, blocking, or grounding.",
-                        "Verify zero-energy state with try-out and instrument check.",
-                        "Perform work, then clear tools, remove personal locks, and notify affected personnel before restart."
-                    ]
-                ),
-                ProcedureSet(
-                    id: "proc-rm-five-step",
-                    title: "RM Five-Step Cycle",
-                    detail: "Anchor: Risk Management",
-                    steps: [
-                        "Identify hazards tied to mission task and environment.",
-                        "Assess each hazard for severity and probability.",
-                        "Develop control measures and make risk decisions.",
-                        "Implement controls with clear responsibilities and timelines.",
-                        "Supervise execution and evaluate control effectiveness."
-                    ]
-                ),
-                ProcedureSet(
-                    id: "proc-rac-assessment",
-                    title: "RAC Assignment Workflow",
-                    detail: "Anchor: RAC System",
-                    steps: [
-                        "Define the specific hazard condition and who is exposed.",
-                        "Determine worst credible mishap outcome severity.",
-                        "Estimate probability using exposure frequency and history.",
-                        "Use the RAC matrix to assign the initial code.",
-                        "Validate code against existing controls and residual risk.",
-                        "Record RAC and elevation recommendations in inspection notes."
-                    ]
-                ),
-                ProcedureSet(
-                    id: "proc-confined-entry",
-                    title: "Confined Space Entry Controls",
-                    detail: "Anchor: Confined Space",
-                    steps: [
-                        "Confirm space classification and permit requirements.",
-                        "Isolate and lockout all hazardous energy and lines.",
-                        "Test atmosphere for oxygen, flammables, and toxics.",
-                        "Complete permit with entrant, attendant, and supervisor roles.",
-                        "Brief rescue plan, communications, and retrieval equipment.",
-                        "Authorize entry and maintain continuous atmospheric monitoring.",
-                        "Close permit, account for personnel, and return space to service."
-                    ]
-                ),
-                ProcedureSet(
-                    id: "proc-hot-work-cycle",
-                    title: "Hot Work Permit to Closeout",
-                    detail: "Anchor: Hot Work",
-                    steps: [
-                        "Survey worksite and remove combustibles within required radius.",
-                        "Verify extinguishers, alarms, and suppression systems are ready.",
-                        "Issue hot work permit with scope, time window, and controls.",
-                        "Assign fire watch and brief stop-work triggers.",
-                        "Conduct cutting or welding while monitoring sparks and heat spread.",
-                        "Complete fire watch period, close permit, and document conditions."
-                    ]
-                ),
-                ProcedureSet(
-                    id: "proc-mishap-initial",
-                    title: "Mishap Initial Reporting Actions",
-                    detail: "Anchor: Mishap Reporting",
-                    steps: [
-                        "Render emergency aid and activate emergency response.",
-                        "Secure scene to prevent secondary injuries.",
-                        "Notify chain of command and safety office immediately.",
-                        "Capture factual details, witnesses, and initial conditions.",
-                        "Submit required initial mishap report within timelines.",
-                        "Initiate follow-up actions and preserve records for investigation."
-                    ]
-                )
-            ]
-        }
+        [
+            ProcedureSet(
+                id: "proc-loto-deenergize",
+                title: "LOTO De-Energize Sequence",
+                detail: "Anchor: Lockout / Tagout",
+                steps: [
+                    "Notify affected personnel and review written energy control procedure.",
+                    "Identify every electrical, mechanical, hydraulic, pneumatic, and thermal energy source.",
+                    "Shut down equipment using normal stopping controls.",
+                    "Isolate all energy sources at disconnects, valves, and breakers.",
+                    "Apply personal lockout or tagout devices at each isolation point.",
+                    "Release or block stored energy through bleed down, venting, blocking, or grounding.",
+                    "Verify zero-energy state with try-out and instrument check.",
+                    "Perform work, then clear tools, remove personal locks, and notify affected personnel before restart."
+                ]
+            ),
+            ProcedureSet(
+                id: "proc-rm-five-step",
+                title: "RM Five-Step Cycle",
+                detail: "Anchor: Risk Management",
+                steps: [
+                    "Identify hazards tied to mission task and environment.",
+                    "Assess each hazard for severity and probability.",
+                    "Develop control measures and make risk decisions.",
+                    "Implement controls with clear responsibilities and timelines.",
+                    "Supervise execution and evaluate control effectiveness."
+                ]
+            ),
+            ProcedureSet(
+                id: "proc-rac-assessment",
+                title: "RAC Assignment Workflow",
+                detail: "Anchor: RAC System",
+                steps: [
+                    "Define the specific hazard condition and who is exposed.",
+                    "Determine worst credible mishap outcome severity.",
+                    "Estimate probability using exposure frequency and history.",
+                    "Use the RAC matrix to assign the initial code.",
+                    "Validate code against existing controls and residual risk.",
+                    "Record RAC and elevation recommendations in inspection notes."
+                ]
+            ),
+            ProcedureSet(
+                id: "proc-confined-entry",
+                title: "Confined Space Entry Controls",
+                detail: "Anchor: Confined Space",
+                steps: [
+                    "Confirm space classification and permit requirements.",
+                    "Isolate and lockout all hazardous energy and lines.",
+                    "Test atmosphere for oxygen, flammables, and toxics.",
+                    "Complete permit with entrant, attendant, and supervisor roles.",
+                    "Brief rescue plan, communications, and retrieval equipment.",
+                    "Authorize entry and maintain continuous atmospheric monitoring.",
+                    "Close permit, account for personnel, and return space to service."
+                ]
+            ),
+            ProcedureSet(
+                id: "proc-hot-work-cycle",
+                title: "Hot Work Permit to Closeout",
+                detail: "Anchor: Hot Work",
+                steps: [
+                    "Survey worksite and remove combustibles within required radius.",
+                    "Verify extinguishers, alarms, and suppression systems are ready.",
+                    "Issue hot work permit with scope, time window, and controls.",
+                    "Assign fire watch and brief stop-work triggers.",
+                    "Conduct cutting or welding while monitoring sparks and heat spread.",
+                    "Complete fire watch period, close permit, and document conditions."
+                ]
+            ),
+            ProcedureSet(
+                id: "proc-mishap-initial",
+                title: "Mishap Initial Reporting Actions",
+                detail: "Anchor: Mishap Reporting",
+                steps: [
+                    "Render emergency aid and activate emergency response.",
+                    "Secure scene to prevent secondary injuries.",
+                    "Notify chain of command and safety office immediately.",
+                    "Capture factual details, witnesses, and initial conditions.",
+                    "Submit required initial mishap report within timelines.",
+                    "Initiate follow-up actions and preserve records for investigation."
+                ]
+            )
+        ]
     }
 
     static func onboardingDays(for role: TrainingRole?) -> [OnboardingDay] {
-        switch role {
-        case .usr:
-            return usrOnboardingDays
-        case .oneS0, .none:
-            return oneS0OnboardingDays
-        }
+        oneS0OnboardingDays
     }
 
     private static let oneS0TrueFalseQuestions: [TrueFalseQuestion] = [
@@ -468,105 +368,6 @@ enum PracticeContent {
         )
     ]
 
-    private static let usrTrueFalseQuestions: [TrueFalseQuestion] = [
-        TrueFalseQuestion(
-            id: "usr-tf-1",
-            statement: "The USR replaces supervisor responsibility for day-to-day safety enforcement.",
-            answer: false,
-            explanation: "Supervisors remain responsible for daily execution; the USR supports and tracks."
-        ),
-        TrueFalseQuestion(
-            id: "usr-tf-2",
-            statement: "Near misses should be reported even if no one is injured.",
-            answer: true,
-            explanation: "Near-miss reporting helps identify hazards before injuries occur."
-        ),
-        TrueFalseQuestion(
-            id: "usr-tf-3",
-            statement: "Hazards can be closed once a plan is written, even if controls are not implemented.",
-            answer: false,
-            explanation: "Hazards close only after corrective action is complete and verified."
-        ),
-        TrueFalseQuestion(
-            id: "usr-tf-4",
-            statement: "A strong hazard report includes location, observed condition, and exposure details.",
-            answer: true,
-            explanation: "Clear details make corrective action and follow-up possible."
-        ),
-        TrueFalseQuestion(
-            id: "usr-tf-5",
-            statement: "Interim controls are temporary measures until permanent abatement is completed.",
-            answer: true,
-            explanation: "Interim controls reduce risk while the long-term fix is developed and implemented."
-        ),
-        TrueFalseQuestion(
-            id: "usr-tf-6",
-            statement: "If residual risk stays high, the USR should accept the risk to avoid mission delay.",
-            answer: false,
-            explanation: "High residual risk must be elevated to the proper acceptance authority."
-        ),
-        TrueFalseQuestion(
-            id: "usr-tf-7",
-            statement: "Spot inspections should prioritize high-risk tasks and repeat findings.",
-            answer: true,
-            explanation: "Risk-based prioritization is the most effective use of limited inspection capacity."
-        ),
-        TrueFalseQuestion(
-            id: "usr-tf-8",
-            statement: "Safety briefing records are optional if the briefing was short.",
-            answer: false,
-            explanation: "Briefings should be documented with date, topic, and attendees."
-        ),
-        TrueFalseQuestion(
-            id: "usr-tf-9",
-            statement: "The safety office can advise and inspect, but unit leadership still owns execution.",
-            answer: true,
-            explanation: "Safety staff support and verify; command responsibility remains in the unit."
-        ),
-        TrueFalseQuestion(
-            id: "usr-tf-10",
-            statement: "If no injury occurred, a mishap or near miss does not need to be tracked.",
-            answer: false,
-            explanation: "Tracking near misses supports trend analysis and prevention."
-        ),
-        TrueFalseQuestion(
-            id: "usr-tf-11",
-            statement: "The USR should use objective, fact-based language in reports.",
-            answer: true,
-            explanation: "Objective reports are easier to act on and defend."
-        ),
-        TrueFalseQuestion(
-            id: "usr-tf-12",
-            statement: "Once funding is approved for a fix, the hazard is automatically closed.",
-            answer: false,
-            explanation: "Funding approval is not closure; corrective action still needs verification."
-        ),
-        TrueFalseQuestion(
-            id: "usr-tf-13",
-            statement: "If a hazard is in tracking, interim controls are optional until funding arrives.",
-            answer: false,
-            explanation: "Interim controls reduce exposure while permanent abatement is pending."
-        ),
-        TrueFalseQuestion(
-            id: "usr-tf-14",
-            statement: "USR weekly updates should include open hazards, OPRs, and suspense status.",
-            answer: true,
-            explanation: "Leaders need ownership and timeline data to drive timely closure."
-        ),
-        TrueFalseQuestion(
-            id: "usr-tf-15",
-            statement: "A repeat finding can be closed if the wording is changed in the report.",
-            answer: false,
-            explanation: "Repeat findings remain open until root causes are corrected and verified."
-        ),
-        TrueFalseQuestion(
-            id: "usr-tf-16",
-            statement: "If risk exceeds local authority, the USR should elevate through supervision.",
-            answer: true,
-            explanation: "Elevation keeps acceptance decisions at the proper command level."
-        )
-    ]
-
     private static let oneS0MicroDrillTopics: [MicroDrillTopic] = [
         MicroDrillTopic(
             id: "micro-loto",
@@ -594,37 +395,6 @@ enum PracticeContent {
             title: "Mishap Reporting Micro-Drill",
             detail: "Test reporting steps and documentation basics.",
             moduleIds: ["mishap-reporting"],
-            maxQuestions: 5
-        )
-    ]
-
-    private static let usrMicroDrillTopics: [MicroDrillTopic] = [
-        MicroDrillTopic(
-            id: "usr-micro-fundamentals",
-            title: "USR Fundamentals Drill",
-            detail: "Quick checks on core USR duties and boundaries.",
-            moduleIds: ["usr-program-fundamentals", "usr-roles-responsibilities"],
-            maxQuestions: 5
-        ),
-        MicroDrillTopic(
-            id: "usr-micro-hazard",
-            title: "Hazard Tracking Drill",
-            detail: "Practice hazard reporting and follow-up actions.",
-            moduleIds: ["usr-hazard-reporting", "usr-hazard-abatement"],
-            maxQuestions: 5
-        ),
-        MicroDrillTopic(
-            id: "usr-micro-rm",
-            title: "USR RM Drill",
-            detail: "Apply RM basics and risk elevation decisions.",
-            moduleIds: ["usr-risk-management"],
-            maxQuestions: 5
-        ),
-        MicroDrillTopic(
-            id: "usr-micro-briefings",
-            title: "Briefings Drill",
-            detail: "Review training, briefing, and mishap reporting decisions.",
-            moduleIds: ["usr-training-briefings", "usr-mishap-reporting"],
             maxQuestions: 5
         )
     ]
@@ -699,79 +469,6 @@ enum PracticeContent {
                 "Submit one feedback item"
             ],
             action: .module("mishap-reporting")
-        )
-    ]
-
-    private static let usrOnboardingDays: [OnboardingDay] = [
-        OnboardingDay(
-            id: 1,
-            title: "USR Start",
-            summary: "Learn the USR role and program structure.",
-            tasks: [
-                "Start the USR Program Fundamentals module",
-                "Review role boundaries and responsibilities"
-            ],
-            action: .module("usr-program-fundamentals")
-        ),
-        OnboardingDay(
-            id: 2,
-            title: "Tracking Habit",
-            summary: "Build consistency with daily practice.",
-            tasks: [
-                "Complete a Daily 5 session",
-                "Run a True/False Blitz"
-            ],
-            action: .trueFalseBlitz
-        ),
-        OnboardingDay(
-            id: 3,
-            title: "Pattern Recognition",
-            summary: "Reinforce core USR decision points.",
-            tasks: [
-                "Complete one Match Sprint",
-                "Review two missed questions"
-            ],
-            action: .matchSprint
-        ),
-        OnboardingDay(
-            id: 4,
-            title: "RM Basics",
-            summary: "Practice risk decisions at the USR level.",
-            tasks: [
-                "Run a USR RM micro-drill",
-                "Identify one risk elevation trigger"
-            ],
-            action: .microDrill
-        ),
-        OnboardingDay(
-            id: 5,
-            title: "Hazard Tracking",
-            summary: "Practice reporting and follow-up discipline.",
-            tasks: [
-                "Complete one RAC Sort round",
-                "Review one open hazard and its suspense"
-            ],
-            action: .racSort
-        ),
-        OnboardingDay(
-            id: 6,
-            title: "Procedure Drill",
-            summary: "Run mission-style USR process reps.",
-            tasks: [
-                "Complete one 3-round Procedure Drill run",
-                "Review replay highlights for any weak steps"
-            ],
-            action: .procedureDrill
-        ),
-        OnboardingDay(
-            id: 7,
-            title: "USR Capstone",
-            summary: "Put reporting and follow-up together.",
-            tasks: [
-                "Complete the Mishap & Near-Miss Reporting module",
-                "Submit one feedback item"
-            ],
-            action: .module("usr-mishap-reporting")
         )
     ]
 

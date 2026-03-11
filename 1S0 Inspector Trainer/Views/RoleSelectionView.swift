@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct RoleSelectionView: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let title: String
     let subtitle: String
     let onSelect: (TrainingRole) -> Void
@@ -48,15 +49,20 @@ struct RoleSelectionView: View {
                     // ── Role Cards ────────────────────────────────
                     VStack(spacing: 14) {
                         ForEach(TrainingRole.allCases) { role in
-                            OnboardingRoleCard(
-                                role: role,
-                                isSelected: selectedRole == role
-                            )
-                            .onTapGesture {
-                                withAnimation(.easeInOut(duration: 0.2)) {
-                                    selectedRole = role
-                                }
+                            Button {
+                                selectRole(role)
+                            } label: {
+                                OnboardingRoleCard(
+                                    role: role,
+                                    isSelected: selectedRole == role
+                                )
                             }
+                            .buttonStyle(.plain)
+                            .frame(maxWidth: .infinity, minHeight: AppSpacing.minTapTarget, alignment: .leading)
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityLabel(role.displayName)
+                            .accessibilityValue(selectedRole == role ? "Selected" : "Not selected")
+                            .accessibilityHint("Double tap to choose this role.")
                         }
                     }
                     .padding(.horizontal, AppSpacing.screenPadding)
@@ -99,8 +105,22 @@ struct RoleSelectionView: View {
         }
         .opacity(appeared ? 1 : 0)
         .onAppear {
-            withAnimation(.easeIn(duration: 0.4)) {
+            if reduceMotion {
                 appeared = true
+            } else {
+                withAnimation(.easeIn(duration: 0.4)) {
+                    appeared = true
+                }
+            }
+        }
+    }
+
+    private func selectRole(_ role: TrainingRole) {
+        if reduceMotion {
+            selectedRole = role
+        } else {
+            withAnimation(.easeInOut(duration: 0.2)) {
+                selectedRole = role
             }
         }
     }
@@ -115,14 +135,12 @@ private struct OnboardingRoleCard: View {
     private var icon: String {
         switch role {
         case .oneS0: return "eye.trianglebadge.exclamationmark"
-        case .usr: return "person.badge.shield.checkmark"
         }
     }
 
     private var tagline: String {
         switch role {
         case .oneS0: return "Enterprise oversight & inspections"
-        case .usr: return "Unit-level hazard identification & support"
         }
     }
 

@@ -4,6 +4,8 @@ import SwiftUI
 struct QuizFlowView: View {
     @EnvironmentObject private var progress: ProgressStore
     @EnvironmentObject private var adaptiveManager: AdaptiveDifficultyManager
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     let questions: [QuizQuestion]
     var onWrongAnswer: (() -> Void)? = nil
     let onComplete: (AssessmentResult, QuizStreakSummary) -> Void
@@ -61,6 +63,12 @@ struct QuizFlowView: View {
                                 .foregroundColor(adaptiveLabelColor)
                         }
 
+                        ProgressView(value: Double(safeIndex + 1), total: Double(filtered.count))
+                            .tint(AppTheme.info)
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityLabel(AccessibilityCopy.progressLabel(name: "Quiz", current: safeIndex + 1, total: filtered.count))
+                            .accessibilityValue(AccessibilityCopy.progressValue(current: safeIndex + 1, total: filtered.count))
+
                         if let imageName = question.imageName {
                             Image(imageName)
                                 .resizable()
@@ -72,6 +80,10 @@ struct QuizFlowView: View {
                         Text(question.prompt)
                             .font(AppFont.subtitle(18))
                             .foregroundColor(AppTheme.text)
+
+                        Text("Select the best answer.")
+                            .font(AppFont.body(13))
+                            .foregroundColor(AppTheme.muted)
 
                         VStack(spacing: 10) {
                             ForEach(question.choices, id: \.id) { choice in
@@ -93,16 +105,15 @@ struct QuizFlowView: View {
                                     progress.updateSRCard(questionId: question.id, quality: isCorrect ? 4 : 1)
                                     progress.recordModuleAnswer(moduleId: modulePrefix(for: question.id), correct: isCorrect)
                                     updateState()
-                                    withAnimation(.easeInOut(duration: 0.2)) {
-                                        showFeedback = true
-                                    }
+                                    revealFeedback()
                                 } label: {
                                     OptionRow(
                                         text: choice.text,
                                         isSelected: selectedChoiceId == choice.id,
                                         isCorrect: choice.isCorrect,
                                         isLocked: selectedChoiceId != nil,
-                                        revealCorrect: true
+                                        revealCorrect: true,
+                                        accessibilityValue: choiceAccessibilityValue(choice)
                                     )
                                 }
                                 .buttonStyle(.plain)
@@ -146,6 +157,24 @@ struct QuizFlowView: View {
         .onAppear {
             prepareQuestions()
         }
+    }
+
+    private func revealFeedback() {
+        if reduceMotion {
+            showFeedback = true
+        } else {
+            withAnimation(.easeInOut(duration: 0.2)) {
+                showFeedback = true
+            }
+        }
+    }
+
+    private func choiceAccessibilityValue(_ choice: QuizChoice) -> String {
+        guard selectedChoiceId != nil else { return "Not selected" }
+        if selectedChoiceId == choice.id {
+            return choice.isCorrect ? "Selected, correct" : "Selected, incorrect"
+        }
+        return choice.isCorrect ? "Correct answer" : "Not selected"
     }
 
     private func advance() {
@@ -204,7 +233,9 @@ struct QuizFlowView: View {
             let questionMap = Dictionary(uniqueKeysWithValues: questions.map { ($0.id, $0) })
             let ordered = resumeState.questionIds.compactMap { questionMap[$0] }
             if !ordered.isEmpty {
-                preparedQuestions = randomizedQuestions(from: ordered)
+                preparedQuestions = ordered.map { question in
+                    questionWithChoiceOrder(question, choiceOrder: resumeState.choiceOrder[question.id])
+                }
                 index = min(resumeState.index, max(0, preparedQuestions.count - 1))
                 correctCount = resumeState.correctCount
                 updateState()
@@ -221,6 +252,24 @@ struct QuizFlowView: View {
         }
         preparedQuestions = randomizedQuestions(from: list)
         updateState()
+    }
+
+    private func questionWithChoiceOrder(_ question: QuizQuestion, choiceOrder: [String]?) -> QuizQuestion {
+        guard let choiceOrder, !choiceOrder.isEmpty else { return question }
+        let choiceMap = Dictionary(uniqueKeysWithValues: question.choices.map { ($0.id, $0) })
+        var ordered = choiceOrder.compactMap { choiceMap[$0] }
+        if ordered.count != question.choices.count {
+            let orderedIds = Set(ordered.map(\.id))
+            let remaining = question.choices.filter { !orderedIds.contains($0.id) }
+            ordered.append(contentsOf: remaining)
+        }
+        return QuizQuestion(
+            id: question.id,
+            prompt: question.prompt,
+            difficulty: question.difficulty,
+            imageName: question.imageName,
+            choices: ordered
+        )
     }
 
     private func shuffleChoices(for question: QuizQuestion) -> QuizQuestion {
@@ -291,12 +340,21 @@ struct QuizFlowView: View {
     private func showStreakPopup(for tier: Int) {
         let multiplier = 1.0 + Double(tier) * 0.1
         streakPopupText = "Streak x\(String(format: "%.1f", multiplier))"
-        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+        if reduceMotion {
             showStreakPopup = true
+        } else {
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                showStreakPopup = true
+            }
         }
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            withAnimation(.easeInOut(duration: 0.2)) {
+            if reduceMotion {
                 showStreakPopup = false
+            } else {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    showStreakPopup = false
+                }
             }
         }
     }

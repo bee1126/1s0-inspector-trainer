@@ -69,6 +69,9 @@ struct TagPill: View {
 
 struct ScoreBadge: View {
     let score: Int
+    var accessibilityLabel: String? = nil
+    var accessibilityValue: String? = nil
+    var accessibilityHint: String? = nil
 
     var body: some View {
         ZStack {
@@ -79,6 +82,10 @@ struct ScoreBadge: View {
                 .font(AppFont.mono(13))
                 .foregroundColor(badgeColor)
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(accessibilityLabel ?? AccessibilityCopy.scoreLabel(score: score))
+        .accessibilityValue(accessibilityValue ?? AccessibilityCopy.scoreValue(score: score))
+        .accessibilityHint(accessibilityHint ?? "")
     }
 
     private var badgeColor: Color {
@@ -93,6 +100,9 @@ struct HeartsView: View {
     let maxHearts: Int
     var compact: Bool = false
     var onDark: Bool = true
+    var accessibilityLabel: String? = nil
+    var accessibilityValue: String? = nil
+    var accessibilityHint: String? = nil
 
     var body: some View {
         HStack(spacing: compact ? 2 : 3) {
@@ -102,6 +112,10 @@ struct HeartsView: View {
                     .foregroundColor(i < hearts ? AppTheme.danger : AppTheme.muted)
             }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(accessibilityLabel ?? AccessibilityCopy.heartsLabel(hearts: hearts, maxHearts: maxHearts))
+        .accessibilityValue(accessibilityValue ?? AccessibilityCopy.heartsValue(hearts: hearts, maxHearts: maxHearts))
+        .accessibilityHint(accessibilityHint ?? AccessibilityCopy.heartsHint())
     }
 }
 
@@ -148,6 +162,9 @@ struct HeartsEmptyOverlay: View {
 struct XPProgressRing: View {
     let progress: Double
     let level: Int
+    var accessibilityLabel: String? = nil
+    var accessibilityValue: String? = nil
+    var accessibilityHint: String? = nil
 
     var body: some View {
         ZStack {
@@ -168,6 +185,10 @@ struct XPProgressRing: View {
             }
         }
         .frame(width: 60, height: 60)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(accessibilityLabel ?? AccessibilityCopy.xpRingLabel(level: level))
+        .accessibilityValue(accessibilityValue ?? AccessibilityCopy.xpRingValue(level: level, progress: progress))
+        .accessibilityHint(accessibilityHint ?? "")
     }
 }
 
@@ -177,6 +198,7 @@ struct MissionBadge: View {
     let icon: String
     let title: String
     let earned: Bool
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var animateIn = false
 
     var body: some View {
@@ -191,10 +213,12 @@ struct MissionBadge: View {
             }
             .scaleEffect(animateIn && earned ? 1.0 : 0.85)
             .onAppear {
-                if earned {
+                if earned, !reduceMotion {
                     withAnimation(.spring(response: 0.4, dampingFraction: 0.6).delay(0.2)) {
                         animateIn = true
                     }
+                } else {
+                    animateIn = true
                 }
             }
             Text(title)
@@ -276,6 +300,7 @@ struct RewardSummaryCard: View {
 // MARK: - Sparkle Burst
 
 struct SparkleBurstView: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var animate = false
 
     var body: some View {
@@ -290,6 +315,10 @@ struct SparkleBurstView: View {
             }
         }
         .onAppear {
+            guard !reduceMotion else {
+                animate = false
+                return
+            }
             withAnimation(.easeOut(duration: 0.6).repeatForever(autoreverses: true)) {
                 animate = true
             }
@@ -394,6 +423,9 @@ struct OptionRow: View {
     let isCorrect: Bool
     let isLocked: Bool
     var revealCorrect: Bool = false
+    var accessibilityLabel: String? = nil
+    var accessibilityValue: String? = nil
+    var accessibilityHint: String? = nil
 
     var body: some View {
         HStack(alignment: .top, spacing: 10) {
@@ -422,6 +454,10 @@ struct OptionRow: View {
         )
         .opacity(isLocked && !isSelected && !(revealCorrect && isCorrect) ? 0.5 : 1.0)
         .contentShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(accessibilityLabel ?? AccessibilityCopy.optionLabel(text: text))
+        .accessibilityValue(accessibilityValue ?? "")
+        .accessibilityHint(accessibilityHint ?? AccessibilityCopy.optionHint())
     }
 
     private var indicatorColor: Color {
@@ -460,6 +496,9 @@ struct OptionRow: View {
 struct FeedbackView: View {
     let text: String
     let isCorrect: Bool
+    var accessibilityLabel: String? = nil
+    var accessibilityValue: String? = nil
+    var accessibilityHint: String? = nil
 
     var body: some View {
         HStack(alignment: .top, spacing: 10) {
@@ -480,6 +519,10 @@ struct FeedbackView: View {
             RoundedRectangle(cornerRadius: 8, style: .continuous)
                 .fill(isCorrect ? AppTheme.primary.opacity(0.08) : AppTheme.danger.opacity(0.08))
         )
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(accessibilityLabel ?? AccessibilityCopy.feedbackLabel(isCorrect: isCorrect))
+        .accessibilityValue(accessibilityValue ?? text)
+        .accessibilityHint(accessibilityHint ?? "")
     }
 }
 

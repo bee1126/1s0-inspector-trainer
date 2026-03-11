@@ -443,7 +443,7 @@ struct ProcedureDrillLobbyView: View {
             progress.refreshForNewDayIfNeeded()
             refreshResumableRun()
         }
-        .onChange(of: progress.selectedRole) { _ in
+        .onChange(of: progress.selectedRole) { _, _ in
             refreshResumableRun()
         }
     }

@@ -22,63 +22,81 @@ struct LessonPagerView: View {
     var body: some View {
         ScrollView {
             GlassCard {
-                VStack(alignment: .leading, spacing: AppSpacing.stack) {
-                    HStack(spacing: 12) {
+                if pages.isEmpty {
+                    VStack(alignment: .leading, spacing: AppSpacing.stack) {
                         Text("Lesson")
                             .font(AppFont.mono(12))
                             .foregroundColor(AppTheme.muted)
-                        Spacer()
-                        if let onSkip {
-                            Button("Skip Lesson") {
-                                onSkip()
-                            }
-                            .font(AppFont.mono(12))
-                            .foregroundColor(AppTheme.info)
-                        }
-                        Text("\(index + 1)/\(pages.count)")
-                            .font(AppFont.mono(12))
+                        Text("Lesson Unavailable")
+                            .font(AppFont.subtitle(18))
+                            .foregroundColor(AppTheme.text)
+                        Text("This lesson has no pages. Continue to the next training stage.")
+                            .font(AppFont.body(14))
                             .foregroundColor(AppTheme.muted)
-                    }
-
-                    Text(pages[index].title)
-                        .font(AppFont.title(22))
-                        .foregroundColor(AppTheme.text)
-
-                    VStack(alignment: .leading, spacing: 10) {
-                        ForEach(pages[index].bullets, id: \.self) { bullet in
-                            HStack(alignment: .top, spacing: 8) {
-                                Circle()
-                                    .fill(AppTheme.primary)
-                                    .frame(width: 6, height: 6)
-                                    .padding(.top, 6)
-                                Text(bullet)
-                                    .font(AppFont.body(14))
-                                    .foregroundColor(AppTheme.text)
-                            }
+                        Button("Continue") {
+                            onComplete()
                         }
+                        .buttonStyle(PrimaryButtonStyle())
                     }
-
-                    HStack {
-                        Button("Back") {
-                            withAnimation(.easeInOut(duration: 0.2)) {
-                                index = max(0, index - 1)
+                } else {
+                    VStack(alignment: .leading, spacing: AppSpacing.stack) {
+                        HStack(spacing: 12) {
+                            Text("Lesson")
+                                .font(AppFont.mono(12))
+                                .foregroundColor(AppTheme.muted)
+                            Spacer()
+                            if let onSkip {
+                                Button("Skip Lesson") {
+                                    onSkip()
+                                }
+                                .font(AppFont.mono(12))
+                                .foregroundColor(AppTheme.info)
                             }
+                            Text("\(index + 1)/\(pages.count)")
+                                .font(AppFont.mono(12))
+                                .foregroundColor(AppTheme.muted)
                         }
-                        .buttonStyle(OutlineButtonStyle())
-                        .disabled(index == 0)
 
-                        Spacer()
+                        Text(pages[index].title)
+                            .font(AppFont.title(22))
+                            .foregroundColor(AppTheme.text)
 
-                        Button(index == pages.count - 1 ? "Continue" : "Next") {
-                            if index == pages.count - 1 {
-                                onComplete()
-                            } else {
-                                withAnimation(.easeInOut(duration: 0.2)) {
-                                    index += 1
+                        VStack(alignment: .leading, spacing: 10) {
+                            ForEach(pages[index].bullets, id: \.self) { bullet in
+                                HStack(alignment: .top, spacing: 8) {
+                                    Circle()
+                                        .fill(AppTheme.primary)
+                                        .frame(width: 6, height: 6)
+                                        .padding(.top, 6)
+                                    Text(bullet)
+                                        .font(AppFont.body(14))
+                                        .foregroundColor(AppTheme.text)
                                 }
                             }
                         }
-                        .buttonStyle(PrimaryButtonStyle())
+
+                        HStack {
+                            Button("Back") {
+                                withAnimation(.easeInOut(duration: 0.2)) {
+                                    index = max(0, index - 1)
+                                }
+                            }
+                            .buttonStyle(OutlineButtonStyle())
+                            .disabled(index == 0)
+
+                            Spacer()
+
+                            Button(index == pages.count - 1 ? "Continue" : "Next") {
+                                if index == pages.count - 1 {
+                                    onComplete()
+                                } else {
+                                    withAnimation(.easeInOut(duration: 0.2)) {
+                                        index += 1
+                                    }
+                                }
+                            }
+                            .buttonStyle(PrimaryButtonStyle())
+                        }
                     }
                 }
             }
@@ -92,12 +110,15 @@ struct LessonPagerView: View {
                     handleSwipe(value)
                 }
         )
-        .onChange(of: index) { newValue in
-            onIndexChange?(newValue)
+        .onChange(of: index) { oldValue, newValue in
+            if !pages.isEmpty {
+                onIndexChange?(newValue)
+            }
         }
     }
 
     private func handleSwipe(_ value: DragGesture.Value) {
+        guard !pages.isEmpty else { return }
         let horizontal = value.translation.width
         guard abs(horizontal) > swipeThreshold else { return }
         if horizontal < 0 {

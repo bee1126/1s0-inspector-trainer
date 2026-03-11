@@ -9,7 +9,6 @@ struct RootView: View {
     @EnvironmentObject private var progress: ProgressStore
     @EnvironmentObject private var deepLinkRouter: DeepLinkRouter
     @State private var selectedTab: Int = 0
-    @State private var showRoleSelection = false
     @State private var homePath: [HomeDeepLinkDestination] = []
 
     private let swipeThreshold: CGFloat = 120
@@ -37,6 +36,7 @@ struct RootView: View {
                 }
                 .tabItem {
                     Label("HQ", systemImage: "shield.lefthalf.filled")
+                        .accessibilityLabel("HQ Home")
                 }
                 .tag(0)
 
@@ -45,6 +45,7 @@ struct RootView: View {
                 }
                 .tabItem {
                     Label("Intel", systemImage: "chart.bar.xaxis")
+                        .accessibilityLabel("Intel Progress")
                 }
                 .tag(1)
 
@@ -53,6 +54,7 @@ struct RootView: View {
                 }
                 .tabItem {
                     Label("Refs", systemImage: "book")
+                        .accessibilityLabel("References")
                 }
                 .tag(2)
 
@@ -61,6 +63,7 @@ struct RootView: View {
                 }
                 .tabItem {
                     Label("Comms", systemImage: "bubble.left.and.bubble.right")
+                        .accessibilityLabel("Comms Feedback")
                 }
                 .tag(3)
             }
@@ -82,24 +85,11 @@ struct RootView: View {
         }
         .onAppear {
             configureTacticalTabBar()
-            if progress.selectedRole == nil {
-                showRoleSelection = true
-            }
             progress.refreshForNewDayIfNeeded()
             handleDeepLinkTarget(deepLinkRouter.target)
         }
-        .onChange(of: deepLinkRouter.target) { target in
+        .onChange(of: deepLinkRouter.target) { _, target in
             handleDeepLinkTarget(target)
-        }
-        .fullScreenCover(isPresented: $showRoleSelection) {
-            RoleSelectionView(
-                title: "Select Your Role",
-                subtitle: "Choose the training path for your position.",
-                onSelect: { role in
-                    progress.setRole(role)
-                    showRoleSelection = false
-                }
-            )
         }
         .preferredColorScheme(.dark)
     }
