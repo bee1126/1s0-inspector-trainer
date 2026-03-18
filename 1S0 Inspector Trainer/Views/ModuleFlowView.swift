@@ -16,7 +16,6 @@ struct ModuleFlowView: View {
     @State private var lessonIndex: Int = 0
     @State private var didApplyResume = false
     @State private var racJustification = ""
-    @State private var showPracticeSheet = false
 
     var body: some View {
         ZStack {
@@ -28,7 +27,6 @@ struct ModuleFlowView: View {
                         HStack(spacing: 12) {
                             StageProgressView(stage: stage)
                             Spacer()
-                            HeartsView(hearts: progress.hearts, maxHearts: progress.maxHearts)
                         }
                         .padding(.horizontal, AppSpacing.screenPadding)
                         .padding(.top, 8)
@@ -51,19 +49,23 @@ struct ModuleFlowView: View {
                             )
                         case .scenario:
                             ScenarioFlowView(scenario: module.scenario, onWrongAnswer: {
-                                progress.consumeHeart()
-                            }, showsHearts: false) { result in
+                            }) { result in
                                 scenarioResult = result
                                 transition(to: .quiz)
                             }
                         case .quiz:
                             QuizFlowView(questions: module.quiz, onWrongAnswer: {
-                                progress.consumeHeart()
                             }, onComplete: { result, streak in
                                 quizResult = result
                                 quizStreakSummary = streak
+                                progress.savePendingCompletion(
+                                    moduleId: module.id,
+                                    scenarioResult: scenarioResult,
+                                    quizResult: result,
+                                    quizStreakSummary: streak
+                                )
                                 transition(to: .complete)
-                            }, showsHearts: false, shuffleQuestions: true, maxQuestions: 10, resumeState: progress.resumeState(for: module.id)?.quizState, onStateUpdate: { state in
+                            }, shuffleQuestions: true, maxQuestions: 10, resumeState: progress.resumeState(for: module.id)?.quizState, onStateUpdate: { state in
                                 progress.updateResume(moduleId: module.id, stage: .quiz, quizState: state)
                             })
                         case .complete:
@@ -72,20 +74,26 @@ struct ModuleFlowView: View {
                                 score: finalScore,
                                 scenarioResult: scenarioResult,
                                 quizResult: quizResult,
-                                showRacInput: module.id == "rac-system",
+                                showRacInput: false,
                                 racJustification: $racJustification
                             ) {
-                                progress.completeModule(
+                                let reward = progress.completeModule(
                                     moduleId: module.id,
                                     score: finalScore,
                                     scenarioResult: scenarioResult,
                                     quizResult: quizResult,
                                     quizMultiplier: quizStreakSummary.multiplier
                                 )
+                                progress.clearPendingCompletion(for: module.id)
+                                progress.clearResume(for: module.id)
+                                return reward
                             } onRetry: {
                                 scenarioResult = AssessmentResult(score: 0, total: 0)
                                 quizResult = AssessmentResult(score: 0, total: 0)
+                                quizStreakSummary = QuizStreakSummary(maxStreak: 0, multiplier: 1.0)
                                 racJustification = ""
+                                progress.clearPendingCompletion(for: module.id)
+                                progress.clearResume(for: module.id)
                                 transition(to: .lesson)
                             }
                         }
@@ -121,15 +129,22 @@ struct ModuleFlowView: View {
             }
             .onAppear {
                 progress.refreshForNewDayIfNeeded()
-                if !didApplyResume, let resume = progress.resumeState(for: module.id) {
-                    lessonIndex = min(resume.lessonIndex, max(0, module.lessonPages.count - 1))
-                    switch resume.stage {
-                    case .lesson:
-                        stage = .lesson
-                    case .scenario:
-                        stage = .scenario
-                    case .quiz:
-                        stage = .quiz
+                if !didApplyResume {
+                    if let pending = progress.pendingCompletion(for: module.id) {
+                        restorePendingCompletion(pending)
+                    } else if let resume = progress.resumeState(for: module.id) {
+                        lessonIndex = min(resume.lessonIndex, max(0, module.lessonPages.count - 1))
+                        switch resume.stage {
+                        case .lesson:
+                            stage = .lesson
+                        case .scenario:
+                            stage = .scenario
+                        case .quiz:
+                            stage = .quiz
+                        case .complete:
+                            progress.clearResume(for: module.id)
+                            stage = .lesson
+                        }
                     }
                 }
                 didApplyResume = true
@@ -150,26 +165,12 @@ struct ModuleFlowView: View {
                 case .quiz:
                     progress.updateResume(moduleId: module.id, stage: .quiz, lessonIndex: lessonIndex, quizState: progress.resumeState(for: module.id)?.quizState)
                 case .complete:
-                    progress.clearResume(for: module.id)
+                    progress.updateResume(moduleId: module.id, stage: .complete, lessonIndex: lessonIndex)
                 }
             }
         }
         .navigationTitle(module.title)
         .navigationBarTitleDisplayMode(.inline)
-        .overlay(alignment: .center) {
-            if progress.hearts == 0 && (stage == .scenario || stage == .quiz) {
-                HeartsEmptyOverlay(onPractice: {
-                    showPracticeSheet = true
-                }, onExit: {
-                    dismiss()
-                })
-            }
-        }
-        .sheet(isPresented: $showPracticeSheet) {
-            PracticeSessionView()
-                .environmentObject(progress)
-                .environmentObject(adaptiveManager)
-        }
     }
 
     private func transition(to destination: ModuleStage) {
@@ -187,6 +188,16 @@ struct ModuleFlowView: View {
         guard total > 0 else { return 0 }
         let points = scenarioResult.score + quizResult.score
         return Int(round(Double(points) / Double(total) * 100))
+    }
+
+    private func restorePendingCompletion(_ pending: PendingModuleCompletion) {
+        if let resume = progress.resumeState(for: module.id) {
+            lessonIndex = min(resume.lessonIndex, max(0, module.lessonPages.count - 1))
+        }
+        scenarioResult = pending.scenarioResult
+        quizResult = pending.quizResult
+        quizStreakSummary = pending.quizStreakSummary
+        stage = .complete
     }
 }
 
@@ -327,7 +338,7 @@ struct CompletionView: View {
                         }
                         .buttonStyle(OutlineButtonStyle())
                     } else {
-                        Button("Save Progress") {
+                        Button(passed ? "Save Progress" : "Log Attempt") {
                             rewardSummary = onComplete()
                             didSave = true
                             completionDate = Date()
@@ -360,7 +371,8 @@ struct CompletionView: View {
 
                     Button("Share Challenge") {
                         let appName = progress.selectedRole?.appTitle ?? "Inspector Trainer"
-                        let text = "I completed \(moduleTitle) with a score of \(score)% in the \(appName)."
+                        let verb = passed ? "completed" : "attempted"
+                        let text = "I \(verb) \(moduleTitle) with a score of \(score)% in the \(appName)."
                         shareItems = [text]
                         showShareSheet = true
                     }

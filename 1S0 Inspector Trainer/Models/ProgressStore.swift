@@ -48,6 +48,11 @@ struct ModuleProficiency: Codable {
     }
 }
 
+private struct RecentQuestionMiss: Codable, Hashable {
+    let questionId: String
+    let missedAt: Date
+}
+
 final class ProgressStore: ObservableObject {
     private struct RoleOnboardingState: Codable {
         let startDate: Date?
@@ -70,14 +75,17 @@ final class ProgressStore: ObservableObject {
     @Published private(set) var bestDailyFiveScore: Int = 0
     @Published private(set) var lastDailyFiveScore: Int = 0
     @Published private(set) var resumeState: ModuleResumeState? = nil
-    @Published private(set) var hearts: Int = 5
     @Published private(set) var selectedRole: TrainingRole? = .oneS0
     @Published private(set) var onboardingStartDate: Date? = nil
     @Published private(set) var onboardingCheckIns: Set<Int> = []
     @Published private(set) var srCards: [String: SRCard] = [:]
     @Published private(set) var moduleProficiency: [String: ModuleProficiency] = [:]
-    let maxHearts: Int = 5
-
+    @Published private(set) var completedPPEScenarios: Set<String> = []
+    @Published private(set) var bestCodeLookupScore: Int = 0
+    @Published private(set) var codeLookupGamesPlayed: Int = 0
+    @Published private(set) var codeLookupBestStreak: Int = 0
+    @Published private(set) var pendingCompletion: PendingModuleCompletion? = nil
+    private var recentQuestionMisses: [RecentQuestionMiss] = []
     private let defaults: UserDefaults
     private let calendar: Calendar
     private let dateProvider: () -> Date
@@ -102,16 +110,19 @@ final class ProgressStore: ObservableObject {
     private let bestDailyFiveKey = "bestDailyFive"
     private let lastDailyFiveScoreKey = "lastDailyFiveScore"
     private let resumeStateKey = "resumeState"
-    private let heartsKey = "hearts"
     private let selectedRoleKey = "selectedRole"
     private let onboardingStartKey = "onboardingStartDate"
     private let onboardingCheckInsKey = "onboardingCheckIns"
     private let onboardingByRoleKey = "onboardingByRole"
     private let srCardsKey = "sr_cards_v1"
     private let proficiencyKey = "module_proficiency_v1"
-    private let procedureDrillRunsByRoleKey = "procedure_drill_runs_by_role_v1"
+    private let completedPPEKey = "completedPPEScenarios"
+    private let bestCodeLookupKey = "bestCodeLookup"
+    private let codeLookupPlayedKey = "codeLookupPlayed"
+    private let codeLookupStreakKey = "codeLookupStreak"
+    private let pendingCompletionKey = "pendingModuleCompletion"
+    private let recentQuestionMissesKey = "recentQuestionMisses_v1"
     private var onboardingStateByRole: [String: RoleOnboardingState] = [:]
-    private var procedureDrillRunByRole: [String: ProcedureDrillRunState] = [:]
 
     init(defaults: UserDefaults = .standard, calendar: Calendar = .current, dateProvider: @escaping () -> Date = Date.init) {
         self.defaults = defaults
@@ -201,13 +212,17 @@ final class ProgressStore: ObservableObject {
         bestDailyFiveScore = 0
         lastDailyFiveScore = 0
         resumeState = nil
-        hearts = maxHearts
+        completedPPEScenarios = []
+        bestCodeLookupScore = 0
+        codeLookupGamesPlayed = 0
+        codeLookupBestStreak = 0
+        pendingCompletion = nil
+        recentQuestionMisses = []
         onboardingStartDate = nil
         onboardingCheckIns = []
         srCards = [:]
         moduleProficiency = [:]
         onboardingStateByRole = [:]
-        procedureDrillRunByRole = [:]
         save()
     }
 
@@ -228,22 +243,6 @@ final class ProgressStore: ObservableObject {
     var dailyGoalProgress: Double {
         guard dailyGoal > 0 else { return 0 }
         return min(1, Double(dailyXp) / Double(dailyGoal))
-    }
-
-    func initializeSRCardsIfNeeded(allQuestions: [QuizQuestion]) {
-        guard srCards.isEmpty else { return }
-        let initialCards = allQuestions.map {
-            SRCard(
-                questionId: $0.id,
-                easeFactor: 2.5,
-                interval: 0,
-                repetitions: 0,
-                nextReviewDate: .distantPast,
-                lastQuality: 0
-            )
-        }
-        srCards = Dictionary(uniqueKeysWithValues: initialCards.map { ($0.questionId, $0) })
-        save()
     }
 
     func updateSRCard(questionId: String, quality: Int) {
@@ -275,25 +274,28 @@ final class ProgressStore: ObservableObject {
                 0.1 - Double(5 - quality) * (0.08 + Double(5 - quality) * 0.02)
             )
         )
-        card.nextReviewDate = Calendar.current.date(byAdding: .day, value: card.interval, to: Date()) ?? Date()
+        card.nextReviewDate = calendar.date(byAdding: .day, value: card.interval, to: dateProvider()) ?? dateProvider()
         card.lastQuality = quality
         srCards[questionId] = card
         save()
     }
 
     func overdueCards() -> [SRCard] {
-        srCards.values
-            .filter { $0.nextReviewDate <= Date() }
+        let now = dateProvider()
+        return srCards.values
+            .filter { $0.nextReviewDate <= now }
             .sorted { $0.nextReviewDate < $1.nextReviewDate }
     }
 
     func overdueCount() -> Int {
-        srCards.values.filter { $0.nextReviewDate <= Date() }.count
+        let now = dateProvider()
+        return srCards.values.filter { $0.nextReviewDate <= now }.count
     }
 
-    func overdueCount(for modulePrefix: String) -> Int {
-        srCards.values.filter {
-            $0.questionId.hasPrefix(modulePrefix) && $0.nextReviewDate <= Date()
+    func overdueCount(for moduleId: String) -> Int {
+        let now = dateProvider()
+        return srCards.values.filter {
+            ModuleHelper.modulePrefix(for: $0.questionId) == moduleId && $0.nextReviewDate <= now
         }.count
     }
 
@@ -303,7 +305,7 @@ final class ProgressStore: ObservableObject {
         if correct {
             prof.correctAttempts += 1
         }
-        prof.lastAttemptDate = Date()
+        prof.lastAttemptDate = dateProvider()
         prof.accuracyHistory.append(correct ? 1.0 : 0.0)
         if prof.accuracyHistory.count > 20 {
             prof.accuracyHistory.removeFirst()
@@ -312,12 +314,175 @@ final class ProgressStore: ObservableObject {
         save()
     }
 
-    func selectionWeight(for moduleId: String) -> Double {
-        guard let prof = moduleProficiency[moduleId] else { return 1.0 }
-        let accuracyWeight = 1.0 - prof.recentAccuracy
-        let daysSince = Calendar.current.dateComponents([.day], from: prof.lastAttemptDate, to: Date()).day ?? 0
-        let recencyBonus = min(Double(daysSince) * 0.05, 0.3)
-        return max(0.1, accuracyWeight + recencyBonus)
+    func recordQuestionAttempt(questionId: String, correct: Bool) {
+        let previousMisses = recentQuestionMisses
+        recentQuestionMisses.removeAll { $0.questionId == questionId }
+        if !correct {
+            recentQuestionMisses.insert(
+                RecentQuestionMiss(questionId: questionId, missedAt: dateProvider()),
+                at: 0
+            )
+            if recentQuestionMisses.count > 24 {
+                recentQuestionMisses.removeLast(recentQuestionMisses.count - 24)
+            }
+        }
+        if recentQuestionMisses != previousMisses {
+            save()
+        }
+    }
+
+    func adaptiveRemediationPlan(from allQuestions: [QuizQuestion], questionCount: Int = 5) -> AdaptiveMissionPlan {
+        guard !allQuestions.isEmpty, questionCount > 0 else {
+            return AdaptiveMissionPlan(items: [])
+        }
+
+        let questionMap = Dictionary(uniqueKeysWithValues: allQuestions.map { ($0.id, $0) })
+        let questionsByModule = Dictionary(grouping: allQuestions, by: { ModuleHelper.modulePrefix(for: $0.id) })
+        let missedById = Dictionary(uniqueKeysWithValues: recentQuestionMisses.map { ($0.questionId, $0) })
+        let overdueIds = Set(
+            overdueCards()
+                .filter { $0.lastQuality > 0 }
+                .map(\.questionId)
+        )
+
+        var selectedItems: [AdaptiveMissionItem] = []
+        var selectedIds: Set<String> = []
+
+        func append(question: QuizQuestion?, reason: AdaptiveMissionReason) {
+            guard let question, selectedItems.count < questionCount else { return }
+            guard selectedIds.insert(question.id).inserted else { return }
+            selectedItems.append(AdaptiveMissionItem(question: question, reason: reason))
+        }
+
+        for miss in recentQuestionMisses.sorted(by: { $0.missedAt > $1.missedAt }).prefix(2) {
+            append(question: questionMap[miss.questionId], reason: .recentMiss)
+        }
+
+        var overdueAdded = 0
+        for card in overdueCards() where card.lastQuality > 0 {
+            let previousCount = selectedItems.count
+            append(question: questionMap[card.questionId], reason: .overdueReview)
+            if selectedItems.count > previousCount {
+                overdueAdded += 1
+            }
+            if overdueAdded >= 2 || selectedItems.count >= questionCount {
+                break
+            }
+        }
+
+        let rankedModuleIds = questionsByModule.keys.sorted { left, right in
+            let leftWeight = adaptiveMissionWeight(for: left)
+            let rightWeight = adaptiveMissionWeight(for: right)
+            if leftWeight == rightWeight {
+                return left < right
+            }
+            return leftWeight > rightWeight
+        }
+
+        var questionPools = rankedModuleIds.map { moduleId in
+            (
+                moduleId: moduleId,
+                questions: prioritizedMissionQuestions(
+                    questionsByModule[moduleId] ?? [],
+                    missedById: missedById,
+                    overdueIds: overdueIds
+                )
+            )
+        }
+
+        var appendedWeakQuestion = true
+        while selectedItems.count < questionCount && appendedWeakQuestion {
+            appendedWeakQuestion = false
+            for index in questionPools.indices {
+                while !questionPools[index].questions.isEmpty {
+                    let question = questionPools[index].questions.removeFirst()
+                    guard !selectedIds.contains(question.id) else { continue }
+                    append(question: question, reason: .weakModule)
+                    appendedWeakQuestion = true
+                    break
+                }
+                if selectedItems.count >= questionCount {
+                    break
+                }
+            }
+        }
+
+        if selectedItems.count < questionCount {
+            let fallbackQuestions = allQuestions.sorted { left, right in
+                let leftWeight = fallbackQuestionWeight(
+                    question: left,
+                    missedById: missedById,
+                    overdueIds: overdueIds
+                )
+                let rightWeight = fallbackQuestionWeight(
+                    question: right,
+                    missedById: missedById,
+                    overdueIds: overdueIds
+                )
+                if leftWeight == rightWeight {
+                    return left.id < right.id
+                }
+                return leftWeight > rightWeight
+            }
+
+            for question in fallbackQuestions where selectedItems.count < questionCount {
+                append(question: question, reason: .fallback)
+            }
+        }
+
+        return AdaptiveMissionPlan(items: selectedItems)
+    }
+
+    private func adaptiveMissionWeight(for moduleId: String) -> Double {
+        let proficiency = moduleProficiency[moduleId] ?? ModuleProficiency(moduleId: moduleId)
+        let accuracyPenalty = 1.0 - proficiency.recentAccuracy
+        let overduePressure = min(Double(overdueCount(for: moduleId)) * 0.15, 0.45)
+        let missedPressure = recentQuestionMisses.contains {
+            ModuleHelper.modulePrefix(for: $0.questionId) == moduleId
+        } ? 0.25 : 0
+        let newModuleBonus = proficiency.totalAttempts == 0 ? 0.1 : 0
+        return accuracyPenalty + overduePressure + missedPressure + newModuleBonus
+    }
+
+    private func prioritizedMissionQuestions(
+        _ questions: [QuizQuestion],
+        missedById: [String: RecentQuestionMiss],
+        overdueIds: Set<String>
+    ) -> [QuizQuestion] {
+        questions.sorted { left, right in
+            let leftWeight = fallbackQuestionWeight(
+                question: left,
+                missedById: missedById,
+                overdueIds: overdueIds
+            )
+            let rightWeight = fallbackQuestionWeight(
+                question: right,
+                missedById: missedById,
+                overdueIds: overdueIds
+            )
+            if leftWeight == rightWeight {
+                return left.id < right.id
+            }
+            return leftWeight > rightWeight
+        }
+    }
+
+    private func fallbackQuestionWeight(
+        question: QuizQuestion,
+        missedById: [String: RecentQuestionMiss],
+        overdueIds: Set<String>
+    ) -> Double {
+        let moduleWeight = adaptiveMissionWeight(for: ModuleHelper.modulePrefix(for: question.id))
+        let missWeight: Double
+        if let miss = missedById[question.id] {
+            let hoursSinceMiss = max(0, dateProvider().timeIntervalSince(miss.missedAt) / 3600)
+            missWeight = max(0.2, 1.4 - min(hoursSinceMiss / 24, 1.0))
+        } else {
+            missWeight = 0
+        }
+        let overdueWeight = overdueIds.contains(question.id) ? 0.7 : 0
+        let reviewPenalty = Double(max(0, 5 - (srCards[question.id]?.lastQuality ?? 4))) * 0.08
+        return moduleWeight + missWeight + overdueWeight + reviewPenalty
     }
 
     private func load() {
@@ -362,11 +527,6 @@ final class ProgressStore: ObservableObject {
            let decoded = try? JSONDecoder().decode(ModuleResumeState.self, from: data) {
             resumeState = decoded
         }
-        if defaults.object(forKey: heartsKey) == nil {
-            hearts = maxHearts
-        } else {
-            hearts = defaults.integer(forKey: heartsKey)
-        }
         if let rawRole = defaults.string(forKey: selectedRoleKey) {
             selectedRole = TrainingRole(rawValue: rawRole) ?? .oneS0
         }
@@ -378,11 +538,21 @@ final class ProgressStore: ObservableObject {
            let decoded = try? JSONDecoder().decode([String: ModuleProficiency].self, from: data) {
             moduleProficiency = decoded
         }
-        if let data = defaults.data(forKey: procedureDrillRunsByRoleKey),
-           let decoded = try? JSONDecoder().decode([String: ProcedureDrillRunState].self, from: data) {
-            procedureDrillRunByRole = decoded
+        if let data = defaults.data(forKey: completedPPEKey),
+           let decoded = try? JSONDecoder().decode([String].self, from: data) {
+            completedPPEScenarios = Set(decoded)
         }
-
+        bestCodeLookupScore = defaults.integer(forKey: bestCodeLookupKey)
+        codeLookupGamesPlayed = defaults.integer(forKey: codeLookupPlayedKey)
+        codeLookupBestStreak = defaults.integer(forKey: codeLookupStreakKey)
+        if let data = defaults.data(forKey: pendingCompletionKey),
+           let decoded = try? JSONDecoder().decode(PendingModuleCompletion.self, from: data) {
+            pendingCompletion = decoded
+        }
+        if let data = defaults.data(forKey: recentQuestionMissesKey),
+           let decoded = try? JSONDecoder().decode([RecentQuestionMiss].self, from: data) {
+            recentQuestionMisses = decoded
+        }
         if let data = defaults.data(forKey: onboardingByRoleKey),
            let decoded = try? JSONDecoder().decode([String: RoleOnboardingState].self, from: data) {
             onboardingStateByRole = decoded
@@ -404,7 +574,6 @@ final class ProgressStore: ObservableObject {
             }
         }
         applyOnboardingState(for: selectedRole)
-        _ = purgeExpiredProcedureDrillRuns(referenceDay: calendar.startOfDay(for: dateProvider()))
     }
 
     private func save() {
@@ -444,7 +613,6 @@ final class ProgressStore: ObservableObject {
         } else {
             defaults.removeObject(forKey: resumeStateKey)
         }
-        defaults.set(hearts, forKey: heartsKey)
         defaults.set(selectedRole?.rawValue, forKey: selectedRoleKey)
         if let data = try? JSONEncoder().encode(srCards) {
             defaults.set(data, forKey: srCardsKey)
@@ -452,8 +620,20 @@ final class ProgressStore: ObservableObject {
         if let data = try? JSONEncoder().encode(moduleProficiency) {
             defaults.set(data, forKey: proficiencyKey)
         }
-        if let data = try? JSONEncoder().encode(procedureDrillRunByRole) {
-            defaults.set(data, forKey: procedureDrillRunsByRoleKey)
+        if let data = try? JSONEncoder().encode(Array(completedPPEScenarios)) {
+            defaults.set(data, forKey: completedPPEKey)
+        }
+        defaults.set(bestCodeLookupScore, forKey: bestCodeLookupKey)
+        defaults.set(codeLookupGamesPlayed, forKey: codeLookupPlayedKey)
+        defaults.set(codeLookupBestStreak, forKey: codeLookupStreakKey)
+        if let pendingCompletion,
+           let data = try? JSONEncoder().encode(pendingCompletion) {
+            defaults.set(data, forKey: pendingCompletionKey)
+        } else {
+            defaults.removeObject(forKey: pendingCompletionKey)
+        }
+        if let data = try? JSONEncoder().encode(recentQuestionMisses) {
+            defaults.set(data, forKey: recentQuestionMissesKey)
         }
         if let data = try? JSONEncoder().encode(onboardingStateByRole) {
             defaults.set(data, forKey: onboardingByRoleKey)
@@ -489,48 +669,8 @@ final class ProgressStore: ObservableObject {
         onboardingCheckIns = Set(state.checkIns)
     }
 
-    func procedureDrillRun(for role: TrainingRole?) -> ProcedureDrillRunState? {
-        let key = roleKey(for: role)
-        guard let run = procedureDrillRunByRole[key] else { return nil }
-        let today = calendar.startOfDay(for: dateProvider())
-        guard calendar.isDate(run.updatedAt, inSameDayAs: today) else {
-            procedureDrillRunByRole.removeValue(forKey: key)
-            save()
-            return nil
-        }
-        return run
-    }
-
-    func saveProcedureDrillRun(_ run: ProcedureDrillRunState?, for role: TrainingRole?) {
-        let key = roleKey(for: role)
-        if var run {
-            run.updatedAt = dateProvider()
-            procedureDrillRunByRole[key] = run
-        } else {
-            procedureDrillRunByRole.removeValue(forKey: key)
-        }
-        save()
-    }
-
-    func clearProcedureDrillRun(for role: TrainingRole?) {
-        let key = roleKey(for: role)
-        guard procedureDrillRunByRole[key] != nil else { return }
-        procedureDrillRunByRole.removeValue(forKey: key)
-        save()
-    }
-
-    @discardableResult
-    private func purgeExpiredProcedureDrillRuns(referenceDay: Date) -> Bool {
-        let originalCount = procedureDrillRunByRole.count
-        procedureDrillRunByRole = procedureDrillRunByRole.filter { _, run in
-            calendar.isDate(run.updatedAt, inSameDayAs: referenceDay)
-        }
-        return procedureDrillRunByRole.count != originalCount
-    }
-
     func refreshForNewDayIfNeeded() {
         let today = calendar.startOfDay(for: dateProvider())
-        let removedExpiredRuns = purgeExpiredProcedureDrillRuns(referenceDay: today)
         guard let lastReset = lastDailyReset else {
             lastDailyReset = today
             save()
@@ -538,7 +678,6 @@ final class ProgressStore: ObservableObject {
         }
         if !calendar.isDate(lastReset, inSameDayAs: today) {
             dailyXp = 0
-            hearts = maxHearts
             lastDailyReset = today
             if let lastGoal = lastDailyGoalDate {
                 let lastGoalDay = calendar.startOfDay(for: lastGoal)
@@ -548,61 +687,19 @@ final class ProgressStore: ObservableObject {
                 }
             }
             save()
-        } else if removedExpiredRuns {
-            save()
         }
     }
-
-    func consumeHeart() {
-        performMutationTransaction {
-            refreshForNewDayIfNeeded()
-            guard hearts > 0 else { return }
-            hearts -= 1
-            save()
-        }
-    }
-
-    @discardableResult
-    func restoreHearts(_ amount: Int) -> Int {
-        performMutationTransaction {
-            refreshForNewDayIfNeeded()
-            guard amount > 0 else { return 0 }
-            let before = hearts
-            hearts = min(maxHearts, hearts + amount)
-            save()
-            return max(0, hearts - before)
-        }
-    }
-
-    func restoreAllHearts() {
-        performMutationTransaction {
-            refreshForNewDayIfNeeded()
-            hearts = maxHearts
-            save()
-        }
-    }
-
-    #if DEBUG
-    func debugMaxRank(modules: [TrainingModule]) {
-        performMutationTransaction {
-            for module in modules {
-                markCompleted(moduleId: module.id, score: 100, scenarioPerfect: true, quizPerfect: true)
-            }
-            xp = max(xp, levelStep * 20)
-            dailyXp = max(dailyXp, dailyGoal)
-            save()
-        }
-    }
-    #endif
 
     func completeModule(moduleId: String, score: Int, scenarioResult: AssessmentResult, quizResult: AssessmentResult, quizMultiplier: Double = 1.0) -> RewardSummary {
         performMutationTransaction {
-            markCompleted(
-                moduleId: moduleId,
-                score: score,
-                scenarioPerfect: scenarioResult.score == scenarioResult.total && scenarioResult.total > 0,
-                quizPerfect: quizResult.score == quizResult.total && quizResult.total > 0
-            )
+            if score >= 80 {
+                markCompleted(
+                    moduleId: moduleId,
+                    score: score,
+                    scenarioPerfect: scenarioResult.score == scenarioResult.total && scenarioResult.total > 0,
+                    quizPerfect: quizResult.score == quizResult.total && quizResult.total > 0
+                )
+            }
 
             let lessonXp = 12
             let scenarioXp = scenarioResult.score * 8
@@ -610,8 +707,18 @@ final class ProgressStore: ObservableObject {
             let passBonus = score >= 80 ? 20 : 0
             let perfectBonus = score == 100 ? 10 : 0
             let totalXp = lessonXp + scenarioXp + quizXp + passBonus + perfectBonus
-            return earnXp(totalXp, heartsRestored: 0, streakMultiplier: quizMultiplier)
+            return earnXp(totalXp, streakMultiplier: quizMultiplier)
         }
+    }
+
+    func markPPEScenarioCompleted(_ scenarioId: String) {
+        completedPPEScenarios.insert(scenarioId)
+        save()
+    }
+
+    var allPPEScenariosCompleted: Bool {
+        let allIds = Set(PPELoadoutBank.allScenarios.map(\.id))
+        return allIds.isSubset(of: completedPPEScenarios)
     }
 
     func completePractice(score: Int, total: Int, streakMultiplier: Double = 1.0) -> RewardSummary {
@@ -621,22 +728,47 @@ final class ProgressStore: ObservableObject {
             let baseXp = 10
             let bonusXp = Int(round(accuracy * 25))
             let earned = Int(round(Double(baseXp + bonusXp) * streakMultiplier))
-            var restored = 0
 
-            if accuracy >= 0.9 {
-                restored = restoreHearts(2)
-            } else if accuracy >= 0.7 {
-                restored = restoreHearts(1)
-            }
-
-            return earnXp(earned, heartsRestored: restored, streakMultiplier: streakMultiplier)
+            return earnXp(earned, streakMultiplier: streakMultiplier)
         }
     }
 
-    private func earnXp(_ amount: Int, heartsRestored: Int, streakMultiplier: Double = 1.0) -> RewardSummary {
+    func completeAdaptiveRemediation(score: Int, total: Int, streakMultiplier: Double = 1.0) -> RewardSummary {
+        performMutationTransaction {
+            recordDailyFive(score: score, total: total)
+            refreshForNewDayIfNeeded()
+            let accuracy = total > 0 ? Double(score) / Double(total) : 0
+            let baseXp = 12
+            let accuracyBonus = Int(round(accuracy * 18))
+            let cleanSweepBonus = score == total && total > 0 ? 8 : 0
+            let earned = Int(round(Double(baseXp + accuracyBonus + cleanSweepBonus) * streakMultiplier))
+            return earnXp(earned, streakMultiplier: streakMultiplier)
+        }
+    }
+
+    func completeCodeLookup(score: Int, total: Int, accuracy: Double, bestStreak: Int) -> RewardSummary {
+        performMutationTransaction {
+            refreshForNewDayIfNeeded()
+            codeLookupGamesPlayed += 1
+            if score > bestCodeLookupScore {
+                bestCodeLookupScore = score
+            }
+            if bestStreak > codeLookupBestStreak {
+                codeLookupBestStreak = bestStreak
+            }
+            let baseXp = 15
+            let bonusXp = Int(round(accuracy * 30))
+            let streakBonus = bestStreak >= 5 ? 10 : 0
+            let earned = baseXp + bonusXp + streakBonus
+            save()
+            return earnXp(earned)
+        }
+    }
+
+    private func earnXp(_ amount: Int, streakMultiplier: Double = 1.0) -> RewardSummary {
         refreshForNewDayIfNeeded()
         guard amount > 0 else {
-            return RewardSummary(xpGained: 0, leveledUp: false, streakIncreased: false, heartsRestored: heartsRestored, streakMultiplier: streakMultiplier)
+            return RewardSummary(xpGained: 0, leveledUp: false, streakIncreased: false, streakMultiplier: streakMultiplier)
         }
 
         let previousLevel = level
@@ -667,7 +799,7 @@ final class ProgressStore: ObservableObject {
 
         let leveledUp = level > previousLevel
         save()
-        return RewardSummary(xpGained: amount, leveledUp: leveledUp, streakIncreased: streakIncreased, heartsRestored: heartsRestored, streakMultiplier: streakMultiplier)
+        return RewardSummary(xpGained: amount, leveledUp: leveledUp, streakIncreased: streakIncreased, streakMultiplier: streakMultiplier)
     }
 
     private let levelStep: Int = 120
@@ -716,6 +848,33 @@ final class ProgressStore: ObservableObject {
         return state
     }
 
+    func savePendingCompletion(
+        moduleId: String,
+        scenarioResult: AssessmentResult,
+        quizResult: AssessmentResult,
+        quizStreakSummary: QuizStreakSummary
+    ) {
+        pendingCompletion = PendingModuleCompletion(
+            moduleId: moduleId,
+            scenarioResult: scenarioResult,
+            quizResult: quizResult,
+            quizStreakSummary: quizStreakSummary,
+            savedAt: dateProvider()
+        )
+        save()
+    }
+
+    func pendingCompletion(for moduleId: String) -> PendingModuleCompletion? {
+        guard let pendingCompletion, pendingCompletion.moduleId == moduleId else { return nil }
+        return pendingCompletion
+    }
+
+    func clearPendingCompletion(for moduleId: String) {
+        guard pendingCompletion?.moduleId == moduleId else { return }
+        pendingCompletion = nil
+        save()
+    }
+
     func startOnboardingIfNeeded() {
         if onboardingStartDate == nil {
             onboardingStartDate = calendar.startOfDay(for: dateProvider())
@@ -755,15 +914,15 @@ final class ProgressStore: ObservableObject {
             guard !onboardingCheckIns.contains(dayNumber) else { return nil }
             onboardingCheckIns.insert(dayNumber)
             save()
-            return earnXp(8, heartsRestored: 0, streakMultiplier: 1.0)
+            return earnXp(8, streakMultiplier: 1.0)
         }
     }
+
 }
 
 struct RewardSummary {
     let xpGained: Int
     let leveledUp: Bool
     let streakIncreased: Bool
-    let heartsRestored: Int
     let streakMultiplier: Double
 }

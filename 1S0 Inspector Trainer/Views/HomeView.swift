@@ -16,11 +16,6 @@ struct HomeView: View {
         modules.first(where: { !$0.isCompleted(progress) && $0.isIntegrityValid })
     }
 
-    private let practiceColumns = [
-        GridItem(.flexible(), spacing: 10),
-        GridItem(.flexible(), spacing: 10)
-    ]
-
     var body: some View {
         ZStack {
             BackgroundView()
@@ -42,54 +37,11 @@ struct HomeView: View {
                     sectionHeader("MISSION STATUS")
                     missionStatusZone
 
+                    sectionHeader("FIELD EXERCISE")
+                    fieldExerciseZone
+
                     sectionHeader("CONTINUE TRAINING")
                     continueTrainingZone
-
-                    sectionHeader("PRACTICE MODES")
-                    LazyVGrid(columns: practiceColumns, spacing: 10) {
-                        practiceTile(
-                            icon: "bolt.fill",
-                            label: "Quick Practice",
-                            tint: AppTheme.primary,
-                            destination: AnyView(PracticeSessionView())
-                        )
-                        practiceTile(
-                            icon: "checkmark.seal.fill",
-                            label: "Daily 5 Challenge",
-                            tint: AppTheme.accent,
-                            destination: AnyView(PracticeSessionView(mode: .dailyFive))
-                        )
-                        practiceTile(
-                            icon: "timer",
-                            label: "Match Sprint",
-                            tint: AppTheme.info,
-                            destination: AnyView(MatchingDeckSelectionView())
-                        )
-                        practiceTile(
-                            icon: "bolt.circle",
-                            label: "True/False Blitz",
-                            tint: AppTheme.danger,
-                            destination: AnyView(TrueFalseBlitzView())
-                        )
-                        practiceTile(
-                            icon: "arrow.up.arrow.down.square",
-                            label: "Procedure Drill",
-                            tint: AppTheme.primary,
-                            destination: AnyView(ProcedureDrillLobbyView())
-                        )
-                        practiceTile(
-                            icon: "square.grid.2x2",
-                            label: "RAC Sort",
-                            tint: AppTheme.info,
-                            destination: AnyView(RacSortView())
-                        )
-                        practiceTile(
-                            icon: "scope",
-                            label: "Micro-Drills",
-                            tint: AppTheme.accent,
-                            destination: AnyView(MicroDrillSelectionView())
-                        )
-                    }
 
                     sectionHeader("TRAINING LIBRARY")
                     Text("\(modules.count) modules available")
@@ -101,7 +53,7 @@ struct HomeView: View {
                             NavigationLink {
                                 ModuleDetailView(module: module)
                             } label: {
-                                ModuleCardView(module: module, score: progress.bestScore(for: module.id))
+                                HomeModuleCardView(module: module, score: progress.bestScore(for: module.id))
                             }
                             .buttonStyle(.plain)
                         } else {
@@ -229,6 +181,110 @@ struct HomeView: View {
         }
     }
 
+    private var fieldExerciseZone: some View {
+        VStack(spacing: 12) {
+            GlassCard(glow: AppTheme.info.opacity(0.3)) {
+                VStack(alignment: .leading, spacing: 10) {
+                    HStack(spacing: 8) {
+                        Image(systemName: "scope")
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundColor(AppTheme.info)
+                        Text("Adaptive Remediation")
+                            .font(AppFont.subtitle(15))
+                            .foregroundColor(AppTheme.text)
+                    }
+
+                    Text("Five targeted questions built from missed items, review-due cards, and your weakest modules.")
+                        .font(AppFont.body(13))
+                        .foregroundColor(AppTheme.muted)
+
+                    HStack(spacing: 10) {
+                        TagPill(text: "\(progress.overdueCount()) due")
+                        TagPill(text: "\(progress.dailyFiveStreak)d streak")
+                        TagPill(text: "Best \(progress.bestDailyFiveScore)%")
+                    }
+
+                    if playedDailyFiveToday {
+                        Text("Today's mission is already logged. Replays still refresh your last score.")
+                        .font(AppFont.body(12))
+                        .foregroundColor(AppTheme.muted)
+                    } else {
+                        Text("Run today's mission to tighten weak spots and collect the clean-sweep bonus.")
+                            .font(AppFont.body(12))
+                            .foregroundColor(AppTheme.muted)
+                    }
+
+                    NavigationLink {
+                        PracticeSessionView()
+                    } label: {
+                        HStack {
+                            Text(playedDailyFiveToday ? "Replay Adaptive Mission" : "Run Adaptive Mission")
+                            Spacer()
+                            Image(systemName: "arrow.right.circle.fill")
+                        }
+                    }
+                    .buttonStyle(PrimaryButtonStyle())
+                }
+            }
+
+            GlassCard(glow: AppTheme.accent.opacity(0.3)) {
+                VStack(alignment: .leading, spacing: 10) {
+                    HStack(spacing: 8) {
+                        Image(systemName: "shield.checkered")
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundColor(AppTheme.accent)
+                        Text("PPE Loadout")
+                            .font(AppFont.subtitle(15))
+                            .foregroundColor(AppTheme.text)
+                    }
+
+                    Text("Gear up for the job. Pick the right PPE for real-world scenarios.")
+                        .font(AppFont.body(13))
+                        .foregroundColor(AppTheme.muted)
+
+                    NavigationLink {
+                        PPELoadoutView()
+                    } label: {
+                        HStack {
+                            Text("Start Exercise")
+                            Spacer()
+                            Image(systemName: "arrow.right.circle.fill")
+                        }
+                    }
+                    .buttonStyle(OutlineButtonStyle())
+                }
+            }
+
+            GlassCard(glow: AppTheme.primary.opacity(0.3)) {
+                VStack(alignment: .leading, spacing: 10) {
+                    HStack(spacing: 8) {
+                        Image(systemName: "book.closed")
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundColor(AppTheme.primary)
+                        Text("Code Lookup")
+                            .font(AppFont.subtitle(15))
+                            .foregroundColor(AppTheme.text)
+                    }
+
+                    Text("Match violations to their OSHA/DAFMAN citations. Build regulation recall under pressure.")
+                        .font(AppFont.body(13))
+                        .foregroundColor(AppTheme.muted)
+
+                    NavigationLink {
+                        CodeLookupView()
+                    } label: {
+                        HStack {
+                            Text("Start Challenge")
+                            Spacer()
+                            Image(systemName: "arrow.right.circle.fill")
+                        }
+                    }
+                    .buttonStyle(OutlineButtonStyle())
+                }
+            }
+        }
+    }
+
     private var continueTrainingZone: some View {
         Group {
             if let resumeModule {
@@ -295,15 +351,6 @@ struct HomeView: View {
             hudSegment(label: "XP", value: "\(progress.xp)", tint: AppTheme.accent)
             hudDivider
             hudSegment(label: "STREAK", value: "\(progress.dailyStreak)d", tint: AppTheme.accent)
-            hudDivider
-            VStack(spacing: 2) {
-                Text("HEARTS")
-                    .font(AppFont.mono(9))
-                    .foregroundColor(AppTheme.muted)
-                HeartsView(hearts: progress.hearts, maxHearts: progress.maxHearts, compact: true)
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 10)
         }
         .background(
             RoundedRectangle(cornerRadius: 8, style: .continuous)
@@ -342,34 +389,6 @@ struct HomeView: View {
             .tracking(1.5)
     }
 
-    private func practiceTile(icon: String, label: String, tint: Color, destination: AnyView) -> some View {
-        NavigationLink {
-            destination
-        } label: {
-            VStack(spacing: 8) {
-                Image(systemName: icon)
-                    .font(.system(size: 20, weight: .semibold))
-                    .foregroundColor(tint)
-                Text(label)
-                    .font(AppFont.mono(11))
-                    .foregroundColor(AppTheme.text)
-                    .lineLimit(2)
-                    .multilineTextAlignment(.center)
-            }
-            .frame(maxWidth: .infinity, minHeight: 96)
-            .padding(.vertical, 12)
-            .background(
-                RoundedRectangle(cornerRadius: 8, style: .continuous)
-                    .fill(AppTheme.surface)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 8, style: .continuous)
-                    .stroke(AppTheme.border, lineWidth: 1)
-            )
-        }
-        .buttonStyle(.plain)
-    }
-
     private var onboardingTotal: Int {
         PracticeContent.onboardingDays(for: progress.selectedRole).count
     }
@@ -386,10 +405,48 @@ struct HomeView: View {
     private var onboardingDayNumber: Int? {
         progress.onboardingDayNumber()
     }
+
+    private var playedDailyFiveToday: Bool {
+        guard let lastRun = progress.lastDailyFiveDate else { return false }
+        return Calendar.current.isDateInToday(lastRun)
+    }
 }
 
 private extension TrainingModule {
     func isCompleted(_ progress: ProgressStore) -> Bool {
         progress.isCompleted(id)
+    }
+}
+
+private struct HomeModuleCardView: View {
+    let module: TrainingModule
+    let score: Int
+
+    var body: some View {
+        GlassCard {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack(alignment: .top) {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text(module.title)
+                            .font(AppFont.subtitle(18))
+                            .foregroundColor(AppTheme.text)
+                        Text(module.subtitle)
+                            .font(AppFont.body(13))
+                            .foregroundColor(AppTheme.muted)
+                    }
+                    Spacer()
+                    if score > 0 {
+                        ScoreBadge(score: score)
+                    }
+                }
+
+                HStack(spacing: 12) {
+                    TagPill(text: module.difficulty)
+                    if let tag = module.tags.first {
+                        TagPill(text: tag)
+                    }
+                }
+            }
+        }
     }
 }

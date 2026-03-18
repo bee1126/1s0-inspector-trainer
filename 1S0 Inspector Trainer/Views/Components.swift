@@ -93,70 +93,6 @@ struct ScoreBadge: View {
     }
 }
 
-// MARK: - Hearts
-
-struct HeartsView: View {
-    let hearts: Int
-    let maxHearts: Int
-    var compact: Bool = false
-    var onDark: Bool = true
-    var accessibilityLabel: String? = nil
-    var accessibilityValue: String? = nil
-    var accessibilityHint: String? = nil
-
-    var body: some View {
-        HStack(spacing: compact ? 2 : 3) {
-            ForEach(0..<maxHearts, id: \.self) { i in
-                Image(systemName: i < hearts ? "heart.fill" : "heart")
-                    .font(.system(size: compact ? 10 : 12, weight: .bold))
-                    .foregroundColor(i < hearts ? AppTheme.danger : AppTheme.muted)
-            }
-        }
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(accessibilityLabel ?? AccessibilityCopy.heartsLabel(hearts: hearts, maxHearts: maxHearts))
-        .accessibilityValue(accessibilityValue ?? AccessibilityCopy.heartsValue(hearts: hearts, maxHearts: maxHearts))
-        .accessibilityHint(accessibilityHint ?? AccessibilityCopy.heartsHint())
-    }
-}
-
-// MARK: - HeartsEmptyOverlay
-
-struct HeartsEmptyOverlay: View {
-    let onPractice: () -> Void
-    let onExit: () -> Void
-
-    var body: some View {
-        ZStack {
-            Color.black.opacity(0.7).ignoresSafeArea()
-
-            GlassCard {
-                VStack(spacing: 14) {
-                    Image(systemName: "heart.slash")
-                        .font(.system(size: 32, weight: .bold))
-                        .foregroundColor(AppTheme.danger)
-                    Text("OUT OF HEARTS")
-                        .font(AppFont.mono(14))
-                        .foregroundColor(AppTheme.danger)
-                    Text("Practice to restore hearts and continue.")
-                        .font(AppFont.body(13))
-                        .foregroundColor(AppTheme.muted)
-                        .multilineTextAlignment(.center)
-                    Button("Practice Now") {
-                        onPractice()
-                    }
-                    .buttonStyle(PrimaryButtonStyle())
-                    Button("Exit") {
-                        onExit()
-                    }
-                    .buttonStyle(OutlineButtonStyle())
-                }
-                .frame(maxWidth: .infinity)
-            }
-            .padding(40)
-        }
-    }
-}
-
 // MARK: - XP Progress Ring
 
 struct XPProgressRing: View {
@@ -259,15 +195,7 @@ struct RewardSummaryCard: View {
                     }
                 }
 
-                if summary.heartsRestored > 0 {
-                    HStack(spacing: 6) {
-                        Image(systemName: "heart.fill")
-                            .foregroundColor(AppTheme.danger)
-                        Text("+\(summary.heartsRestored) hearts restored")
-                            .font(AppFont.body(13))
-                            .foregroundColor(AppTheme.text)
-                    }
-                }
+
 
                 if summary.leveledUp {
                     HStack(spacing: 6) {
@@ -526,83 +454,3 @@ struct FeedbackView: View {
     }
 }
 
-// MARK: - Match Card
-
-struct MatchCardView: View {
-    let card: MatchCard
-    let isSelected: Bool
-    let isMatched: Bool
-    let isMismatched: Bool
-
-    var body: some View {
-        ZStack(alignment: .topTrailing) {
-            VStack(alignment: .leading, spacing: 6) {
-                Text(card.kind == .term ? "Prompt" : "Answer")
-                    .font(AppFont.mono(10))
-                    .foregroundColor(labelColor)
-
-                Text(card.text)
-                    .font(AppFont.body(13))
-                    .foregroundColor(AppTheme.text)
-                    .lineLimit(4)
-                    .minimumScaleFactor(0.85)
-                    .multilineTextAlignment(.leading)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-            .padding(12)
-            .frame(maxWidth: .infinity, minHeight: 84, alignment: .leading)
-            .background(
-                RoundedRectangle(cornerRadius: 8, style: .continuous)
-                    .fill(backgroundColor)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 8, style: .continuous)
-                    .stroke(borderColor, lineWidth: 1)
-            )
-            .opacity(isMatched ? 0.55 : 1.0)
-
-            if isMatched {
-                Image(systemName: "checkmark.circle.fill")
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundColor(AppTheme.primary)
-                    .padding(10)
-            }
-        }
-        .background(
-            GeometryReader { proxy in
-                Color.clear
-                    .preference(key: CardFramePreferenceKey.self, value: [card.id: proxy.frame(in: .named("matchGrid"))])
-            }
-        )
-        .contentShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-    }
-
-    private var backgroundColor: Color {
-        if isMatched { return AppTheme.primary.opacity(0.1) }
-        if isMismatched { return AppTheme.danger.opacity(0.1) }
-        if isSelected { return AppTheme.info.opacity(0.15) }
-        return AppTheme.surface
-    }
-
-    private var borderColor: Color {
-        if isMatched { return AppTheme.primary.opacity(0.6) }
-        if isMismatched { return AppTheme.danger.opacity(0.6) }
-        if isSelected { return AppTheme.info.opacity(0.6) }
-        return AppTheme.border
-    }
-
-    private var labelColor: Color {
-        if isMatched { return AppTheme.primary }
-        if isSelected { return AppTheme.info }
-        return AppTheme.muted
-    }
-}
-
-// MARK: - CardFramePreferenceKey
-
-struct CardFramePreferenceKey: PreferenceKey {
-    static var defaultValue: [UUID: CGRect] = [:]
-    static func reduce(value: inout [UUID: CGRect], nextValue: () -> [UUID: CGRect]) {
-        value.merge(nextValue()) { $1 }
-    }
-}

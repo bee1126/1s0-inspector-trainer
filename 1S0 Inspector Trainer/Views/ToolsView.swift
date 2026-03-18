@@ -10,7 +10,7 @@ struct ToolsView: View {
 
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: AppSpacing.stack) {
-                    Text("Feedback")
+                    Text("Comms & Tools")
                         .font(AppFont.title(26))
                         .foregroundColor(AppTheme.text)
 
@@ -42,12 +42,13 @@ struct ToolsView: View {
             }
             .scrollIndicators(.hidden)
         }
-        .navigationTitle("Feedback")
+        .navigationTitle("Comms")
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showRoleSelection) {
             RoleSelectionView(
-                title: "Update Training Role",
-                subtitle: "Switch roles to see tailored modules and questions.",
+                title: "Training Profile",
+                subtitle: "Review the active inspector profile used for content, progress, and onboarding.",
+                initialRole: progress.selectedRole,
                 onSelect: { role in
                     progress.setRole(role)
                     showRoleSelection = false

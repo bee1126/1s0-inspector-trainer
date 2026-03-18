@@ -1,6 +1,6 @@
 # 1S0 Inspector Trainer
 
-This folder contains the SwiftUI source for a native iOS training app tailored to Air Force safety inspectors. It is structured so you can drop the `1S0 Inspector Trainer` folder into an Xcode iOS App project.
+This repository contains the SwiftUI source and Xcode project for a native iOS training app tailored to Air Force safety inspectors.
 
 ## Quick Start (Xcode)
 1. Open `1S0 Inspector Trainer.xcodeproj` in Xcode.
@@ -17,9 +17,8 @@ This folder contains the SwiftUI source for a native iOS training app tailored t
 - Interactive modules for Lockout/Tagout, Fall Protection, Risk Management, Roles & Responsibilities, Hazard Abatement, and RAC System
 - Additional modules for Confined Space, Hot Work, Hearing Conservation, Mishap Reporting, Investigation Basics, JHA Fundamentals, Safety Briefing, and PPE Decision
 - Scenario-driven decision paths and quick-check quizzes (with randomized answer order)
-- Quick-check quizzes with randomized answer order
 - Pass/fail assessments with completion summaries
-- XP, levels, daily goals, streaks, and hearts (Duolingo-style loop)
+- XP, levels, daily goals, streaks, and badges (Duolingo-style loop)
 - Progress tracking and badges (on-device)
 - References screen and disclaimer
 - Draft App Store metadata in `AppStoreMetadata.md`

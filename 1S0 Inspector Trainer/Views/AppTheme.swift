@@ -26,7 +26,6 @@ enum AppTheme {
     static let sand        = text
     static let charcoal    = text
     static let xpGold      = accent
-    static let heartRed    = danger
 
     static let backgroundGradient = LinearGradient(
         gradient: Gradient(colors: [bg, surface]),
@@ -119,13 +118,14 @@ struct PrimaryButtonStyle: ButtonStyle {
         configuration.label
             .font(AppFont.subtitle(14))
             .foregroundColor(AppTheme.bg)
-            .frame(minHeight: AppSpacing.minTapTarget)
+            .frame(maxWidth: .infinity, minHeight: AppSpacing.minTapTarget)
             .padding(.vertical, 12)
             .padding(.horizontal, 20)
             .background(
                 RoundedRectangle(cornerRadius: 8, style: .continuous)
                     .fill(AppTheme.primary)
             )
+            .contentShape(Rectangle())
             .shadow(color: AppTheme.primary.opacity(0.3), radius: 8, x: 0, y: 4)
             .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
             .animation(.easeOut(duration: 0.15), value: configuration.isPressed)
@@ -137,13 +137,14 @@ struct OutlineButtonStyle: ButtonStyle {
         configuration.label
             .font(AppFont.subtitle(14))
             .foregroundColor(AppTheme.primary)
-            .frame(minHeight: AppSpacing.minTapTarget)
+            .frame(maxWidth: .infinity, minHeight: AppSpacing.minTapTarget)
             .padding(.vertical, 10)
             .padding(.horizontal, 18)
             .background(
                 RoundedRectangle(cornerRadius: 8, style: .continuous)
                     .stroke(AppTheme.primary.opacity(0.5), lineWidth: 1)
             )
+            .contentShape(Rectangle())
             .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
             .animation(.easeOut(duration: 0.15), value: configuration.isPressed)
     }

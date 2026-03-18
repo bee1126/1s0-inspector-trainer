@@ -3,6 +3,7 @@ import SwiftUI
 struct ProgressDashboardView: View {
     @EnvironmentObject private var progress: ProgressStore
     @EnvironmentObject private var adaptiveManager: AdaptiveDifficultyManager
+    @State private var showResetAlert = false
     private var modules: [TrainingModule] {
         TrainingContent.modules(for: progress.selectedRole)
     }
@@ -72,8 +73,6 @@ struct ProgressDashboardView: View {
                                 Text("Streak: \(progress.dailyStreak) days")
                                     .font(AppFont.mono(12))
                                     .foregroundColor(AppTheme.accent)
-                                Spacer()
-                                HeartsView(hearts: progress.hearts, maxHearts: progress.maxHearts, onDark: true)
                             }
 
                             HStack(spacing: 6) {
@@ -252,7 +251,7 @@ struct ProgressDashboardView: View {
                     }
 
                     Button("Reset Progress") {
-                        progress.resetAll()
+                        showResetAlert = true
                     }
                     .buttonStyle(OutlineButtonStyle())
                 }
@@ -265,6 +264,14 @@ struct ProgressDashboardView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             progress.refreshForNewDayIfNeeded()
+        }
+        .alert("Reset All Progress?", isPresented: $showResetAlert) {
+            Button("Reset", role: .destructive) {
+                progress.resetAll()
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("This will erase all training data, scores, streaks, and XP. This cannot be undone.")
         }
     }
 
@@ -282,7 +289,7 @@ struct ProgressDashboardView: View {
     private var moduleProficiencyRows: [ModuleProficiencyRow] {
         modules
             .map { module in
-                let prefix = modulePrefix(for: module.quiz.first?.id ?? module.id)
+                let prefix = ModuleHelper.modulePrefix(for: module.quiz.first?.id ?? module.id)
                 let recentAccuracy = progress.moduleProficiency[prefix]?.recentAccuracy ?? 0
                 return ModuleProficiencyRow(id: prefix, title: module.title, recentAccuracy: recentAccuracy)
             }
@@ -400,12 +407,6 @@ struct ProgressDashboardView: View {
             return AppTheme.accent
         }
         return AppTheme.danger
-    }
-
-    private func modulePrefix(for questionId: String) -> String {
-        let components = questionId.split(separator: "-")
-        guard components.count > 1 else { return questionId }
-        return components.dropLast().joined(separator: "-")
     }
 
     private func readinessMetric(title: String, value: String, tint: Color) -> some View {

@@ -4,13 +4,4 @@
    <FileRef
       location = "self:">
    </FileRef>
-   <FileRef
-      location = "group:PagedContainerView.swift">
-   </FileRef>
-   <FileRef
-      location = "group:HomePagerDemo.swift">
-   </FileRef>
-   <FileRef
-      location = "group:ChoiceBubbleStyle.swift">
-   </FileRef>
 </Workspace>

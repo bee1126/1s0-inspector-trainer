@@ -2,8 +2,8 @@ import SwiftUI
 
 enum AppDeepLink: Equatable {
     case home
-    case dailyFive
     case module(String)
+    case dailyFive
 }
 
 final class DeepLinkRouter: ObservableObject {

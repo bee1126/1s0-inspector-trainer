@@ -9,11 +9,15 @@ struct QuizFlowView: View {
     let questions: [QuizQuestion]
     var onWrongAnswer: (() -> Void)? = nil
     let onComplete: (AssessmentResult, QuizStreakSummary) -> Void
-    var showsHearts: Bool = true
     var shuffleQuestions: Bool = false
     var maxQuestions: Int? = nil
     var resumeState: QuizResumeState? = nil
     var onStateUpdate: ((QuizResumeState) -> Void)? = nil
+    var title: String = "Quick Check"
+    var emptyStateText: String = "No medium or hard questions are available."
+    var statusLabelText: String? = nil
+    var statusLabelColor: Color? = nil
+    var useAdaptiveDifficulty: Bool = true
 
     @State private var index = 0
     @State private var selectedChoiceId: String? = nil
@@ -35,10 +39,10 @@ struct QuizFlowView: View {
             GlassCard {
                 if filtered.isEmpty {
                     VStack(alignment: .leading, spacing: AppSpacing.stack) {
-                        Text("Quick Check")
+                        Text(title)
                             .font(AppFont.mono(12))
                             .foregroundColor(AppTheme.muted)
-                        Text("No medium or hard questions are available.")
+                        Text(emptyStateText)
                             .font(AppFont.subtitle(18))
                             .foregroundColor(AppTheme.text)
                     }
@@ -48,19 +52,18 @@ struct QuizFlowView: View {
 
                     VStack(alignment: .leading, spacing: AppSpacing.stack) {
                         HStack {
-                            Text("Quick Check")
+                            Text(title)
                                 .font(AppFont.mono(12))
                                 .foregroundColor(AppTheme.muted)
                             Spacer()
-                            if showsHearts {
-                                HeartsView(hearts: progress.hearts, maxHearts: progress.maxHearts, compact: true, onDark: false)
-                            }
                             Text("\(safeIndex + 1)/\(filtered.count)")
                                 .font(AppFont.mono(12))
                                 .foregroundColor(AppTheme.muted)
-                            Text(adaptiveLabelText)
-                                .font(AppFont.mono(11))
-                                .foregroundColor(adaptiveLabelColor)
+                            if let currentStatusLabelText {
+                                Text(currentStatusLabelText)
+                                    .font(AppFont.mono(11))
+                                    .foregroundColor(currentStatusLabelColor)
+                            }
                         }
 
                         ProgressView(value: Double(safeIndex + 1), total: Double(filtered.count))
@@ -103,9 +106,10 @@ struct QuizFlowView: View {
                                         AppFeedback.incorrect()
                                     }
                                     progress.updateSRCard(questionId: question.id, quality: isCorrect ? 4 : 1)
-                                    progress.recordModuleAnswer(moduleId: modulePrefix(for: question.id), correct: isCorrect)
-                                    updateState()
+                                    progress.recordQuestionAttempt(questionId: question.id, correct: isCorrect)
+                                    progress.recordModuleAnswer(moduleId: ModuleHelper.modulePrefix(for: question.id), correct: isCorrect)
                                     revealFeedback()
+                                    updateState()
                                 } label: {
                                     OptionRow(
                                         text: choice.text,
@@ -185,7 +189,10 @@ struct QuizFlowView: View {
                 maxStreak: bestStreakCount,
                 multiplier: 1.0 + Double(bestStreakTier) * 0.1
             )
-            onComplete(AssessmentResult(score: correctCount, total: list.count), summary)
+            onComplete(
+                AssessmentResult(score: clampedCorrectCount(for: list.count), total: list.count),
+                summary
+            )
         } else {
             index += 1
             selectedChoiceId = nil
@@ -195,6 +202,7 @@ struct QuizFlowView: View {
     }
 
     private var filteredQuestions: [QuizQuestion] {
+        guard useAdaptiveDifficulty else { return questions }
         let medium = questions.filter { $0.difficulty == .medium }
         let hard = questions.filter { $0.difficulty == .hard }
 
@@ -227,6 +235,14 @@ struct QuizFlowView: View {
         adaptiveManager.currentDifficulty == .hard ? AppTheme.accent : AppTheme.muted
     }
 
+    private var currentStatusLabelText: String? {
+        statusLabelText ?? (useAdaptiveDifficulty ? adaptiveLabelText : nil)
+    }
+
+    private var currentStatusLabelColor: Color {
+        statusLabelColor ?? (useAdaptiveDifficulty ? adaptiveLabelColor : AppTheme.muted)
+    }
+
     private func prepareQuestions() {
         resetStreak()
         if let resumeState {
@@ -237,7 +253,19 @@ struct QuizFlowView: View {
                     questionWithChoiceOrder(question, choiceOrder: resumeState.choiceOrder[question.id])
                 }
                 index = min(resumeState.index, max(0, preparedQuestions.count - 1))
-                correctCount = resumeState.correctCount
+                correctCount = min(resumeState.correctCount, preparedQuestions.count)
+                streakCount = max(0, resumeState.streakCount)
+                bestStreakCount = max(streakCount, resumeState.bestStreakCount)
+                streakTier = max(0, resumeState.streakTier)
+                bestStreakTier = max(streakTier, resumeState.bestStreakTier)
+                if let restoredChoiceId = resumeState.selectedChoiceId,
+                   preparedQuestions[index].choices.contains(where: { $0.id == restoredChoiceId }) {
+                    selectedChoiceId = restoredChoiceId
+                    showFeedback = true
+                } else {
+                    selectedChoiceId = nil
+                    showFeedback = false
+                }
                 updateState()
                 return
             }
@@ -251,6 +279,9 @@ struct QuizFlowView: View {
             list = Array(list.prefix(maxQuestions))
         }
         preparedQuestions = randomizedQuestions(from: list)
+        correctCount = 0
+        selectedChoiceId = nil
+        showFeedback = false
         updateState()
     }
 
@@ -380,15 +411,20 @@ struct QuizFlowView: View {
             QuizResumeState(
                 questionIds: questionIds,
                 choiceOrder: choiceOrder,
-                index: index,
-                correctCount: correctCount
+                index: min(max(index, 0), max(0, list.count - 1)),
+                correctCount: clampedCorrectCount(for: list.count),
+                selectedChoiceId: selectedChoiceId,
+                showFeedback: showFeedback,
+                streakCount: streakCount,
+                bestStreakCount: bestStreakCount,
+                streakTier: streakTier,
+                bestStreakTier: bestStreakTier
             )
         )
     }
 
-    private func modulePrefix(for questionId: String) -> String {
-        let components = questionId.split(separator: "-")
-        guard components.count > 1 else { return questionId }
-        return components.dropLast().joined(separator: "-")
+    private func clampedCorrectCount(for total: Int) -> Int {
+        min(max(correctCount, 0), total)
     }
+
 }

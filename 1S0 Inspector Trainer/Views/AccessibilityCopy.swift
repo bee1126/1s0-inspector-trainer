@@ -1,18 +1,6 @@
 import Foundation
 
 enum AccessibilityCopy {
-    static func heartsLabel(hearts: Int, maxHearts: Int) -> String {
-        "Hearts"
-    }
-
-    static func heartsValue(hearts: Int, maxHearts: Int) -> String {
-        "\(hearts) of \(maxHearts) remaining"
-    }
-
-    static func heartsHint() -> String {
-        "Wrong answers consume hearts. Practice restores hearts."
-    }
-
     static func scoreLabel(score: Int) -> String {
         "Score"
     }

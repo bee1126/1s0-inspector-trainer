@@ -22,7 +22,6 @@ struct ModuleDetailView: View {
                                 .foregroundColor(AppTheme.muted)
 
                             HStack(spacing: 10) {
-                                TagPill(text: "\(module.estimatedMinutes) min")
                                 TagPill(text: module.difficulty)
                             }
                         }
@@ -95,7 +94,7 @@ struct ModuleDetailView: View {
                             Text("Up to \(maxXp) XP")
                                 .font(AppFont.title(22))
                                 .foregroundColor(AppTheme.xpGold)
-                            Text("Mistakes cost a heart. Practice restores hearts.")
+                            Text("Test your knowledge with scenarios and quizzes.")
                                 .font(AppFont.body(12))
                                 .foregroundColor(AppTheme.muted)
                         }

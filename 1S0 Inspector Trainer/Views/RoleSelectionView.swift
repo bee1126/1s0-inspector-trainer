@@ -4,10 +4,24 @@ struct RoleSelectionView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let title: String
     let subtitle: String
+    let initialRole: TrainingRole?
     let onSelect: (TrainingRole) -> Void
 
-    @State private var selectedRole: TrainingRole? = nil
+    @State private var selectedRole: TrainingRole?
     @State private var appeared = false
+
+    init(
+        title: String,
+        subtitle: String,
+        initialRole: TrainingRole? = nil,
+        onSelect: @escaping (TrainingRole) -> Void
+    ) {
+        self.title = title
+        self.subtitle = subtitle
+        self.initialRole = initialRole
+        self.onSelect = onSelect
+        _selectedRole = State(initialValue: initialRole)
+    }
 
     var body: some View {
         ZStack {

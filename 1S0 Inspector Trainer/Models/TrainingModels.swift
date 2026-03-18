@@ -121,12 +121,12 @@ struct QuizChoice: Identifiable, Hashable {
     let isCorrect: Bool
 }
 
-struct AssessmentResult: Hashable {
+struct AssessmentResult: Codable, Hashable {
     let score: Int
     let total: Int
 }
 
-struct QuizStreakSummary: Hashable {
+struct QuizStreakSummary: Codable, Hashable {
     let maxStreak: Int
     let multiplier: Double
 }
@@ -140,6 +140,47 @@ enum QuizDifficulty: String, CaseIterable, Identifiable {
     var id: String { rawValue }
 }
 
+enum AdaptiveMissionReason: String, CaseIterable, Hashable, Identifiable {
+    case recentMiss
+    case overdueReview
+    case weakModule
+    case fallback
+
+    var id: String { rawValue }
+
+    var label: String {
+        switch self {
+        case .recentMiss:
+            return "Recent Miss"
+        case .overdueReview:
+            return "Review Due"
+        case .weakModule:
+            return "Weak Area"
+        case .fallback:
+            return "Full Bank"
+        }
+    }
+}
+
+struct AdaptiveMissionItem: Identifiable, Hashable {
+    let question: QuizQuestion
+    let reason: AdaptiveMissionReason
+
+    var id: String { question.id }
+}
+
+struct AdaptiveMissionPlan: Hashable {
+    let items: [AdaptiveMissionItem]
+
+    var questions: [QuizQuestion] {
+        items.map(\.question)
+    }
+
+    func count(for reason: AdaptiveMissionReason) -> Int {
+        items.filter { $0.reason == reason }.count
+    }
+}
+
 struct ReferenceSource: Identifiable, Hashable {
     let id: String
     let title: String
@@ -151,6 +192,7 @@ enum ModuleStageKey: String, Codable {
     case lesson
     case scenario
     case quiz
+    case complete
 }
 
 struct QuizResumeState: Codable, Hashable {
@@ -158,6 +200,63 @@ struct QuizResumeState: Codable, Hashable {
     let choiceOrder: [String: [String]]
     let index: Int
     let correctCount: Int
+    let selectedChoiceId: String?
+    let showFeedback: Bool
+    let streakCount: Int
+    let bestStreakCount: Int
+    let streakTier: Int
+    let bestStreakTier: Int
+
+    init(
+        questionIds: [String],
+        choiceOrder: [String: [String]],
+        index: Int,
+        correctCount: Int,
+        selectedChoiceId: String? = nil,
+        showFeedback: Bool = false,
+        streakCount: Int = 0,
+        bestStreakCount: Int = 0,
+        streakTier: Int = 0,
+        bestStreakTier: Int = 0
+    ) {
+        self.questionIds = questionIds
+        self.choiceOrder = choiceOrder
+        self.index = index
+        self.correctCount = correctCount
+        self.selectedChoiceId = selectedChoiceId
+        self.showFeedback = showFeedback
+        self.streakCount = streakCount
+        self.bestStreakCount = bestStreakCount
+        self.streakTier = streakTier
+        self.bestStreakTier = bestStreakTier
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case questionIds
+        case choiceOrder
+        case index
+        case correctCount
+        case selectedChoiceId
+        case showFeedback
+        case streakCount
+        case bestStreakCount
+        case streakTier
+        case bestStreakTier
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        questionIds = try container.decode([String].self, forKey: .questionIds)
+        choiceOrder = try container.decode([String: [String]].self, forKey: .choiceOrder)
+        index = try container.decode(Int.self, forKey: .index)
+        correctCount = try container.decode(Int.self, forKey: .correctCount)
+        selectedChoiceId = try container.decodeIfPresent(String.self, forKey: .selectedChoiceId)
+        showFeedback = try container.decodeIfPresent(Bool.self, forKey: .showFeedback) ?? false
+        streakCount = try container.decodeIfPresent(Int.self, forKey: .streakCount) ?? 0
+        bestStreakCount = try container.decodeIfPresent(Int.self, forKey: .bestStreakCount) ?? 0
+        streakTier = try container.decodeIfPresent(Int.self, forKey: .streakTier) ?? 0
+        bestStreakTier = try container.decodeIfPresent(Int.self, forKey: .bestStreakTier) ?? 0
+    }
 }
 
 struct ModuleResumeState: Codable, Hashable {
@@ -168,49 +267,10 @@ struct ModuleResumeState: Codable, Hashable {
     let updatedAt: Date
 }
 
-struct ProcedureDrillRoundState: Codable, Hashable {
-    let setId: String
-    var currentOrder: [Int]
-    var failedChecks: Int
-    var finalCorrectPlacements: Int?
-    var finalScore: Int?
-    var didAutoSubmit: Bool
-    var isComplete: Bool
-}
-
-struct ProcedureDrillRunState: Codable, Hashable {
-    let roundSetIds: [String]
-    var rounds: [ProcedureDrillRoundState]
-    var currentRoundIndex: Int
-    let startedAt: Date
-    var updatedAt: Date
-}
-
-struct ProcedureDrillRoundOutcome: Hashable {
-    let correctPlacements: Int
-    let failedChecks: Int
-    let totalSteps: Int
-}
-
-enum ProcedureDrillScoring {
-    static func roundScore(correctPlacements: Int, failedChecks: Int, totalSteps: Int) -> Int {
-        let boundedSteps = max(0, totalSteps)
-        let boundedCorrect = max(0, min(correctPlacements, boundedSteps))
-        let penalty = max(0, failedChecks)
-        return max(0, boundedCorrect - penalty)
-    }
-
-    static func aggregateScore(rounds: [ProcedureDrillRoundOutcome]) -> AssessmentResult {
-        let total = rounds.reduce(0) { partial, round in
-            partial + max(0, round.totalSteps)
-        }
-        let score = rounds.reduce(0) { partial, round in
-            partial + roundScore(
-                correctPlacements: round.correctPlacements,
-                failedChecks: round.failedChecks,
-                totalSteps: round.totalSteps
-            )
-        }
-        return AssessmentResult(score: score, total: total)
-    }
+struct PendingModuleCompletion: Codable, Hashable {
+    let moduleId: String
+    let scenarioResult: AssessmentResult
+    let quizResult: AssessmentResult
+    let quizStreakSummary: QuizStreakSummary
+    let savedAt: Date
 }

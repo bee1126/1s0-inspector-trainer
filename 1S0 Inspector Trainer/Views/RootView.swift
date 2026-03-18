@@ -1,8 +1,8 @@
 import SwiftUI
 
 enum HomeDeepLinkDestination: Hashable {
-    case dailyFive
     case module(String)
+    case dailyFive
 }
 
 struct RootView: View {
@@ -10,8 +10,6 @@ struct RootView: View {
     @EnvironmentObject private var deepLinkRouter: DeepLinkRouter
     @State private var selectedTab: Int = 0
     @State private var homePath: [HomeDeepLinkDestination] = []
-
-    private let swipeThreshold: CGFloat = 120
 
     var body: some View {
         ZStack {
@@ -22,8 +20,6 @@ struct RootView: View {
                     HomeView()
                         .navigationDestination(for: HomeDeepLinkDestination.self) { destination in
                             switch destination {
-                            case .dailyFive:
-                                PracticeSessionView(mode: .dailyFive)
                             case .module(let moduleId):
                                 if let module = TrainingContent.modules(for: progress.selectedRole)
                                     .first(where: { $0.id == moduleId }) {
@@ -31,6 +27,8 @@ struct RootView: View {
                                 } else {
                                     ModuleUnavailableView(moduleId: moduleId)
                                 }
+                            case .dailyFive:
+                                PracticeSessionView()
                             }
                         }
                 }
@@ -68,20 +66,6 @@ struct RootView: View {
                 .tag(3)
             }
             .tint(AppTheme.primary)
-            .simultaneousGesture(
-                DragGesture(minimumDistance: 30)
-                    .onEnded { value in
-                        let horizontal = value.translation.width
-                        guard abs(horizontal) > swipeThreshold else { return }
-                        withAnimation {
-                            if horizontal < 0 {
-                                selectedTab = min(selectedTab + 1, 3)
-                            } else {
-                                selectedTab = max(selectedTab - 1, 0)
-                            }
-                        }
-                    }
-            )
         }
         .onAppear {
             configureTacticalTabBar()
@@ -135,12 +119,12 @@ struct RootView: View {
         case .home:
             selectedTab = 0
             homePath = []
-        case .dailyFive:
-            selectedTab = 0
-            homePath = [.dailyFive]
         case .module(let moduleId):
             selectedTab = 0
             homePath = [.module(moduleId)]
+        case .dailyFive:
+            selectedTab = 0
+            homePath = [.dailyFive]
         }
 
         DispatchQueue.main.async {

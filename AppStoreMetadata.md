@@ -19,7 +19,7 @@ WHAT YOU GET
 • Pass/fail assessments with completion summaries
 
 STAY MOTIVATED
-• XP, levels, daily goals, streaks, hearts, and badges — Duolingo-style progression
+• XP, levels, daily goals, streaks, and badges — Duolingo-style progression
 • On-device progress tracking — pick up where you left off
 
 BUILT FOR PRIVACY

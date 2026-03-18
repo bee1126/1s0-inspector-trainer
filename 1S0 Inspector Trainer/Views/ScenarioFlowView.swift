@@ -8,8 +8,6 @@ struct ScenarioFlowView: View {
     let scenario: Scenario
     var onWrongAnswer: (() -> Void)? = nil
     let onComplete: (AssessmentResult) -> Void
-    var showsHearts: Bool = true
-
     @State private var currentStepId: String
     @State private var selectedOptionId: String? = nil
     @State private var showFeedback = false
@@ -23,10 +21,9 @@ struct ScenarioFlowView: View {
     private let timeLimit = 25
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
-    init(scenario: Scenario, onWrongAnswer: (() -> Void)? = nil, showsHearts: Bool = true, onComplete: @escaping (AssessmentResult) -> Void) {
+    init(scenario: Scenario, onWrongAnswer: (() -> Void)? = nil, onComplete: @escaping (AssessmentResult) -> Void) {
         self.scenario = scenario
         self.onWrongAnswer = onWrongAnswer
-        self.showsHearts = showsHearts
         self.onComplete = onComplete
         _currentStepId = State(initialValue: scenario.startStepId)
         _shuffledOptionsByStepId = State(initialValue: Self.buildShuffledOptions(for: scenario))
@@ -76,14 +73,6 @@ struct ScenarioFlowView: View {
                                 .font(AppFont.subtitle(14))
                                 .foregroundColor(timeLeft <= 5 ? AppTheme.danger : AppTheme.text)
                             Spacer()
-                            if showsHearts {
-                                HeartsView(
-                                    hearts: progress.hearts,
-                                    maxHearts: progress.maxHearts,
-                                    compact: true,
-                                    onDark: false
-                                )
-                            }
                             Toggle("Time Pressure", isOn: $timerActive)
                                 .labelsHidden()
                                 .tint(AppTheme.primary)

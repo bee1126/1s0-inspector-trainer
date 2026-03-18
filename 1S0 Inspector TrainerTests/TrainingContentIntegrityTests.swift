@@ -13,6 +13,24 @@ final class TrainingContentIntegrityTests: XCTestCase {
         XCTAssertEqual(TrainingContent.modules(for: nil).count, expectedOneS0ModuleCount)
     }
 
+    func testStarterProgramCoversSevenDaysAndEndsWithDailyFive() {
+        let starterPath = PracticeContent.onboardingDays(for: .oneS0)
+
+        XCTAssertEqual(starterPath.count, 7)
+        XCTAssertEqual(starterPath.map(\.id), Array(1...7))
+
+        guard let finalAction = starterPath.last?.action else {
+            return XCTFail("Expected a final onboarding action.")
+        }
+
+        switch finalAction {
+        case .dailyFive:
+            break
+        case .module(let moduleID):
+            XCTFail("Expected Daily Five as the final onboarding action, got module \(moduleID).")
+        }
+    }
+
     func testEveryModuleHasExpectedQuestionDepth() {
         let oneS0Modules = TrainingContent.modules(for: .oneS0)
 
