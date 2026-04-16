@@ -933,6 +933,88 @@ enum QuizBank {
             ]
         )
     ]
+
+    // MARK: - Deployed ORM
+
+    static let deployedORM: [QuizQuestion] = [
+        QuizQuestion(
+            id: "dorm-q1",
+            prompt: "At a deployed location, a squadron commander directs you to sign a risk acceptance letter for a generator placement that violates setback distances. What is the correct response?",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "dorm-q1-a", text: "Prepare the risk assessment documenting the hazard, but the commander — not the safety inspector — signs the risk acceptance", isCorrect: true),
+                QuizChoice(id: "dorm-q1-b", text: "Sign the letter since the commander has directed it and they outrank you", isCorrect: false),
+                QuizChoice(id: "dorm-q1-c", text: "Refuse to participate and file an IG complaint immediately", isCorrect: false),
+                QuizChoice(id: "dorm-q1-d", text: "Sign it but annotate 'under protest' to protect yourself", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "dorm-q2",
+            prompt: "Per AFMAN 90-802, who is the lowest level of command that can accept 'High' residual risk?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "dorm-q2-a", text: "Group Commander (O-6) or equivalent", isCorrect: true),
+                QuizChoice(id: "dorm-q2-b", text: "Squadron Commander (O-5)", isCorrect: false),
+                QuizChoice(id: "dorm-q2-c", text: "Flight Commander (O-3/O-4)", isCorrect: false),
+                QuizChoice(id: "dorm-q2-d", text: "Wing Commander (O-7+)", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "dorm-q3",
+            prompt: "Host-nation construction workers on your installation are not using fall protection at 18 feet. The contract says host-nation labor laws apply, which have no fall protection requirement. What is your obligation?",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "dorm-q3-a", text: "The installation commander is responsible for safety of all personnel on the installation per DAFI 91-202, regardless of contract language", isCorrect: true),
+                QuizChoice(id: "dorm-q3-b", text: "Host-nation labor laws govern — you have no authority to impose US standards on foreign workers", isCorrect: false),
+                QuizChoice(id: "dorm-q3-c", text: "Only US military personnel fall under your safety purview at deployed locations", isCorrect: false),
+                QuizChoice(id: "dorm-q3-d", text: "Document the observation but take no action since it is a contracting issue", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "dorm-q4",
+            prompt: "A diesel generator is positioned 10 feet from occupied sleeping tents at a deployed location. Personnel report exhaust odor inside. No CO monitors are available. What is the MOST critical immediate action?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "dorm-q4-a", text: "Relocate the generator to establish adequate setback distance from occupied structures", isCorrect: true),
+                QuizChoice(id: "dorm-q4-b", text: "Install expedient exhaust ducting to redirect fumes away from the tents", isCorrect: false),
+                QuizChoice(id: "dorm-q4-c", text: "Issue a directive for personnel to ventilate tents by opening flaps during generator operation", isCorrect: false),
+                QuizChoice(id: "dorm-q4-d", text: "Reduce generator run time and rotate which tents receive AC", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "dorm-q5",
+            prompt: "A maintenance troop proposes bypassing a failed breaker with jumper wires to restore flightline lighting for night ops. The troop is an aircraft electrician (2A6X6), not a facilities electrician (3E0X1). What should you advise?",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "dorm-q5-a", text: "The bypass should not be performed — deploy portable light carts as an alternative and wait for proper parts and qualified personnel", isCorrect: true),
+                QuizChoice(id: "dorm-q5-b", text: "Allow the bypass since the troop has electrical training even though it is on aircraft systems", isCorrect: false),
+                QuizChoice(id: "dorm-q5-c", text: "Allow the bypass with a fire watch posted at the panel during night operations", isCorrect: false),
+                QuizChoice(id: "dorm-q5-d", text: "Have the maintenance officer sign off on the repair to authorize the work", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "dorm-q6",
+            prompt: "Vehicle operators on a night convoy have been on duty for 16 hours. Fog has reduced visibility to 100 meters. The route has unmarked construction hazards. What type of ORM is most appropriate?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "dorm-q6-a", text: "Time-Critical ORM — the compressed timeline and multiple compounding hazards require rapid but structured risk assessment", isCorrect: true),
+                QuizChoice(id: "dorm-q6-b", text: "Deliberate ORM — a full risk assessment with brainstorming and detailed analysis before any movement", isCorrect: false),
+                QuizChoice(id: "dorm-q6-c", text: "Strategic ORM — this requires a long-term planning effort to address systemic convoy safety issues", isCorrect: false),
+                QuizChoice(id: "dorm-q6-d", text: "No formal ORM is needed — the mission priority overrides the process requirement", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "dorm-q7",
+            prompt: "What distinguishes the safety inspector's role from the commander's role in deployed ORM decision-making?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "dorm-q7-a", text: "The inspector identifies hazards, assesses risk, and recommends controls — the commander decides whether to accept residual risk", isCorrect: true),
+                QuizChoice(id: "dorm-q7-b", text: "The inspector has authority to stop any operation they deem unsafe regardless of mission impact", isCorrect: false),
+                QuizChoice(id: "dorm-q7-c", text: "The commander identifies hazards and the inspector decides the acceptable risk level", isCorrect: false),
+                QuizChoice(id: "dorm-q7-d", text: "Both roles are interchangeable at deployed locations due to limited staffing", isCorrect: false)
+            ]
+        ),
+    ]
 }
 
 // swiftlint:enable file_length type_body_length

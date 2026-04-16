@@ -81,6 +81,8 @@ final class ProgressStore: ObservableObject {
     @Published private(set) var srCards: [String: SRCard] = [:]
     @Published private(set) var moduleProficiency: [String: ModuleProficiency] = [:]
     @Published private(set) var completedPPEScenarios: Set<String> = []
+    @Published private(set) var completedHazardReports: Set<String> = []
+    @Published private(set) var completedORMScenarios: Set<String> = []
     @Published private(set) var bestCodeLookupScore: Int = 0
     @Published private(set) var codeLookupGamesPlayed: Int = 0
     @Published private(set) var codeLookupBestStreak: Int = 0
@@ -117,6 +119,8 @@ final class ProgressStore: ObservableObject {
     private let srCardsKey = "sr_cards_v1"
     private let proficiencyKey = "module_proficiency_v1"
     private let completedPPEKey = "completedPPEScenarios"
+    private let completedHazardReportsKey = "completedHazardReports"
+    private let completedORMScenariosKey = "completedORMScenarios"
     private let bestCodeLookupKey = "bestCodeLookup"
     private let codeLookupPlayedKey = "codeLookupPlayed"
     private let codeLookupStreakKey = "codeLookupStreak"
@@ -213,6 +217,8 @@ final class ProgressStore: ObservableObject {
         lastDailyFiveScore = 0
         resumeState = nil
         completedPPEScenarios = []
+        completedHazardReports = []
+        completedORMScenarios = []
         bestCodeLookupScore = 0
         codeLookupGamesPlayed = 0
         codeLookupBestStreak = 0
@@ -339,10 +345,12 @@ final class ProgressStore: ObservableObject {
         let questionMap = Dictionary(uniqueKeysWithValues: allQuestions.map { ($0.id, $0) })
         let questionsByModule = Dictionary(grouping: allQuestions, by: { ModuleHelper.modulePrefix(for: $0.id) })
         let missedById = Dictionary(uniqueKeysWithValues: recentQuestionMisses.map { ($0.questionId, $0) })
-        let overdueIds = Set(
-            overdueCards()
-                .filter { $0.lastQuality > 0 }
-                .map(\.questionId)
+        let overdue = overdueCards()
+        let overdueIds = Set(overdue.filter { $0.lastQuality > 0 }.map(\.questionId))
+
+        // Pre-compute module weights so sort comparators are O(1)
+        let moduleWeights = Dictionary(
+            uniqueKeysWithValues: questionsByModule.keys.map { ($0, adaptiveMissionWeight(for: $0)) }
         )
 
         var selectedItems: [AdaptiveMissionItem] = []
@@ -359,7 +367,7 @@ final class ProgressStore: ObservableObject {
         }
 
         var overdueAdded = 0
-        for card in overdueCards() where card.lastQuality > 0 {
+        for card in overdue where card.lastQuality > 0 {
             let previousCount = selectedItems.count
             append(question: questionMap[card.questionId], reason: .overdueReview)
             if selectedItems.count > previousCount {
@@ -371,21 +379,20 @@ final class ProgressStore: ObservableObject {
         }
 
         let rankedModuleIds = questionsByModule.keys.sorted { left, right in
-            let leftWeight = adaptiveMissionWeight(for: left)
-            let rightWeight = adaptiveMissionWeight(for: right)
-            if leftWeight == rightWeight {
-                return left < right
-            }
+            let leftWeight = moduleWeights[left, default: 0]
+            let rightWeight = moduleWeights[right, default: 0]
+            if leftWeight == rightWeight { return left < right }
             return leftWeight > rightWeight
         }
 
         var questionPools = rankedModuleIds.map { moduleId in
             (
                 moduleId: moduleId,
-                questions: prioritizedMissionQuestions(
+                questions: sortedByFallbackWeight(
                     questionsByModule[moduleId] ?? [],
                     missedById: missedById,
-                    overdueIds: overdueIds
+                    overdueIds: overdueIds,
+                    moduleWeights: moduleWeights
                 )
             )
         }
@@ -408,23 +415,12 @@ final class ProgressStore: ObservableObject {
         }
 
         if selectedItems.count < questionCount {
-            let fallbackQuestions = allQuestions.sorted { left, right in
-                let leftWeight = fallbackQuestionWeight(
-                    question: left,
-                    missedById: missedById,
-                    overdueIds: overdueIds
-                )
-                let rightWeight = fallbackQuestionWeight(
-                    question: right,
-                    missedById: missedById,
-                    overdueIds: overdueIds
-                )
-                if leftWeight == rightWeight {
-                    return left.id < right.id
-                }
-                return leftWeight > rightWeight
-            }
-
+            let fallbackQuestions = sortedByFallbackWeight(
+                allQuestions,
+                missedById: missedById,
+                overdueIds: overdueIds,
+                moduleWeights: moduleWeights
+            )
             for question in fallbackQuestions where selectedItems.count < questionCount {
                 append(question: question, reason: .fallback)
             }
@@ -444,25 +440,16 @@ final class ProgressStore: ObservableObject {
         return accuracyPenalty + overduePressure + missedPressure + newModuleBonus
     }
 
-    private func prioritizedMissionQuestions(
+    private func sortedByFallbackWeight(
         _ questions: [QuizQuestion],
         missedById: [String: RecentQuestionMiss],
-        overdueIds: Set<String>
+        overdueIds: Set<String>,
+        moduleWeights: [String: Double]
     ) -> [QuizQuestion] {
         questions.sorted { left, right in
-            let leftWeight = fallbackQuestionWeight(
-                question: left,
-                missedById: missedById,
-                overdueIds: overdueIds
-            )
-            let rightWeight = fallbackQuestionWeight(
-                question: right,
-                missedById: missedById,
-                overdueIds: overdueIds
-            )
-            if leftWeight == rightWeight {
-                return left.id < right.id
-            }
+            let leftWeight = fallbackQuestionWeight(question: left, missedById: missedById, overdueIds: overdueIds, moduleWeights: moduleWeights)
+            let rightWeight = fallbackQuestionWeight(question: right, missedById: missedById, overdueIds: overdueIds, moduleWeights: moduleWeights)
+            if leftWeight == rightWeight { return left.id < right.id }
             return leftWeight > rightWeight
         }
     }
@@ -470,9 +457,10 @@ final class ProgressStore: ObservableObject {
     private func fallbackQuestionWeight(
         question: QuizQuestion,
         missedById: [String: RecentQuestionMiss],
-        overdueIds: Set<String>
+        overdueIds: Set<String>,
+        moduleWeights: [String: Double]
     ) -> Double {
-        let moduleWeight = adaptiveMissionWeight(for: ModuleHelper.modulePrefix(for: question.id))
+        let moduleWeight = moduleWeights[ModuleHelper.modulePrefix(for: question.id), default: 0]
         let missWeight: Double
         if let miss = missedById[question.id] {
             let hoursSinceMiss = max(0, dateProvider().timeIntervalSince(miss.missedAt) / 3600)
@@ -541,6 +529,14 @@ final class ProgressStore: ObservableObject {
         if let data = defaults.data(forKey: completedPPEKey),
            let decoded = try? JSONDecoder().decode([String].self, from: data) {
             completedPPEScenarios = Set(decoded)
+        }
+        if let data = defaults.data(forKey: completedHazardReportsKey),
+           let decoded = try? JSONDecoder().decode([String].self, from: data) {
+            completedHazardReports = Set(decoded)
+        }
+        if let data = defaults.data(forKey: completedORMScenariosKey),
+           let decoded = try? JSONDecoder().decode([String].self, from: data) {
+            completedORMScenarios = Set(decoded)
         }
         bestCodeLookupScore = defaults.integer(forKey: bestCodeLookupKey)
         codeLookupGamesPlayed = defaults.integer(forKey: codeLookupPlayedKey)
@@ -622,6 +618,12 @@ final class ProgressStore: ObservableObject {
         }
         if let data = try? JSONEncoder().encode(Array(completedPPEScenarios)) {
             defaults.set(data, forKey: completedPPEKey)
+        }
+        if let data = try? JSONEncoder().encode(Array(completedHazardReports)) {
+            defaults.set(data, forKey: completedHazardReportsKey)
+        }
+        if let data = try? JSONEncoder().encode(Array(completedORMScenarios)) {
+            defaults.set(data, forKey: completedORMScenariosKey)
         }
         defaults.set(bestCodeLookupScore, forKey: bestCodeLookupKey)
         defaults.set(codeLookupGamesPlayed, forKey: codeLookupPlayedKey)
@@ -716,9 +718,34 @@ final class ProgressStore: ObservableObject {
         save()
     }
 
+    var playedDailyFiveToday: Bool {
+        guard let lastRun = lastDailyFiveDate else { return false }
+        return calendar.isDateInToday(lastRun)
+    }
+
     var allPPEScenariosCompleted: Bool {
         let allIds = Set(PPELoadoutBank.allScenarios.map(\.id))
         return allIds.isSubset(of: completedPPEScenarios)
+    }
+
+    func markHazardReportCompleted(_ scenarioId: String) {
+        completedHazardReports.insert(scenarioId)
+        save()
+    }
+
+    var allHazardReportsCompleted: Bool {
+        let allIds = Set(HazardReportBank.allScenarios.map(\.id))
+        return allIds.isSubset(of: completedHazardReports)
+    }
+
+    func markORMScenarioCompleted(_ scenarioId: String) {
+        completedORMScenarios.insert(scenarioId)
+        save()
+    }
+
+    var allORMScenariosCompleted: Bool {
+        let allIds = Set(DeployedORMBank.allScenarios.map(\.id))
+        return allIds.isSubset(of: completedORMScenarios)
     }
 
     func completePractice(score: Int, total: Int, streakMultiplier: Double = 1.0) -> RewardSummary {

@@ -95,9 +95,15 @@ struct ToolCard: View {
     }
 }
 
-private struct SharePayload: Identifiable {
-    let id = UUID()
-    let text: String
+private func mailtoURL(to: String, subject: String, body: String) -> URL? {
+    var components = URLComponents()
+    components.scheme = "mailto"
+    components.path = to
+    components.queryItems = [
+        URLQueryItem(name: "subject", value: subject),
+        URLQueryItem(name: "body", value: body)
+    ]
+    return components.url
 }
 
 struct BugReportView: View {
@@ -105,7 +111,6 @@ struct BugReportView: View {
     @State private var steps = ""
     @State private var expected = ""
     @State private var actual = ""
-    @State private var sharePayload: SharePayload? = nil
 
     var body: some View {
         ZStack {
@@ -130,15 +135,25 @@ struct BugReportView: View {
                         FormFieldLabel(text: "Actual result")
                         AppTextEditor(text: $actual, height: 80)
 
-                        Button("Share Bug Report") {
-                            let text = """
+                        Button("Submit Bug Report") {
+                            let subject = "Bug Report: \(title)"
+                            let body = """
 Bug Report
+
 Title: \(title)
-Steps: \(steps)
-Expected: \(expected)
-Actual: \(actual)
+
+Steps to Reproduce:
+\(steps)
+
+Expected Result:
+\(expected)
+
+Actual Result:
+\(actual)
 """
-                            sharePayload = SharePayload(text: text)
+                            if let url = mailtoURL(to: "abdoulbah1126@gmail.com", subject: subject, body: body) {
+                                UIApplication.shared.open(url)
+                            }
                         }
                         .buttonStyle(PrimaryButtonStyle())
                     }
@@ -149,9 +164,6 @@ Actual: \(actual)
             .scrollIndicators(.hidden)
             .scrollDismissesKeyboard(.interactively)
         }
-        .sheet(item: $sharePayload) { payload in
-            ShareSheet(activityItems: [payload.text])
-        }
         .navigationTitle("Bug Report")
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -161,7 +173,6 @@ struct FeatureRequestView: View {
     @State private var title = ""
     @State private var value = ""
     @State private var details = ""
-    @State private var sharePayload: SharePayload? = nil
 
     var body: some View {
         ZStack {
@@ -183,14 +194,22 @@ struct FeatureRequestView: View {
                         FormFieldLabel(text: "Details")
                         AppTextEditor(text: $details, height: 90)
 
-                        Button("Share Feature Request") {
-                            let text = """
+                        Button("Submit Feature Request") {
+                            let subject = "Feature Request: \(title)"
+                            let body = """
 Feature Request
+
 Title: \(title)
-Why it helps: \(value)
-Details: \(details)
+
+Why This Helps:
+\(value)
+
+Details:
+\(details)
 """
-                            sharePayload = SharePayload(text: text)
+                            if let url = mailtoURL(to: "abdoulbah1126@gmail.com", subject: subject, body: body) {
+                                UIApplication.shared.open(url)
+                            }
                         }
                         .buttonStyle(PrimaryButtonStyle())
                     }
@@ -200,9 +219,6 @@ Details: \(details)
             }
             .scrollIndicators(.hidden)
             .scrollDismissesKeyboard(.interactively)
-        }
-        .sheet(item: $sharePayload) { payload in
-            ShareSheet(activityItems: [payload.text])
         }
         .navigationTitle("Feature")
         .navigationBarTitleDisplayMode(.inline)

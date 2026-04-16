@@ -15,8 +15,7 @@ struct PracticeSessionView: View {
     }
 
     private var playedToday: Bool {
-        guard let lastRun = progress.lastDailyFiveDate else { return false }
-        return Calendar.current.isDateInToday(lastRun)
+        progress.playedDailyFiveToday
     }
 
     var body: some View {
@@ -171,11 +170,15 @@ struct PracticeSessionView: View {
         return Int(round(Double(result.score) / Double(result.total) * 100))
     }
 
-    private func shortDate(_ date: Date) -> String {
+    private static let shortDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .short
         formatter.timeStyle = .none
-        return formatter.string(from: date)
+        return formatter
+    }()
+
+    private func shortDate(_ date: Date) -> String {
+        Self.shortDateFormatter.string(from: date)
     }
 
     private var reasonPills: [String] {

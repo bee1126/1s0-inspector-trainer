@@ -37,6 +37,9 @@ struct HomeView: View {
                     sectionHeader("MISSION STATUS")
                     missionStatusZone
 
+                    sectionHeader("DAILY LESSON")
+                    DailyLessonCard(lesson: DailyLessonBank.lessonForToday())
+
                     sectionHeader("FIELD EXERCISE")
                     fieldExerciseZone
 
@@ -185,14 +188,7 @@ struct HomeView: View {
         VStack(spacing: 12) {
             GlassCard(glow: AppTheme.info.opacity(0.3)) {
                 VStack(alignment: .leading, spacing: 10) {
-                    HStack(spacing: 8) {
-                        Image(systemName: "scope")
-                            .font(.system(size: 14, weight: .semibold))
-                            .foregroundColor(AppTheme.info)
-                        Text("Adaptive Remediation")
-                            .font(AppFont.subtitle(15))
-                            .foregroundColor(AppTheme.text)
-                    }
+                    FieldExerciseHeader(icon: "scope", title: "Adaptive Remediation", tint: AppTheme.info)
 
                     Text("Five targeted questions built from missed items, review-due cards, and your weakest modules.")
                         .font(AppFont.body(13))
@@ -227,61 +223,41 @@ struct HomeView: View {
                 }
             }
 
-            GlassCard(glow: AppTheme.accent.opacity(0.3)) {
-                VStack(alignment: .leading, spacing: 10) {
-                    HStack(spacing: 8) {
-                        Image(systemName: "shield.checkered")
-                            .font(.system(size: 14, weight: .semibold))
-                            .foregroundColor(AppTheme.accent)
-                        Text("PPE Loadout")
-                            .font(AppFont.subtitle(15))
-                            .foregroundColor(AppTheme.text)
-                    }
+            FieldExerciseCard(
+                icon: "shield.checkered",
+                tint: AppTheme.accent,
+                title: "PPE Loadout",
+                description: "Gear up for the job. Pick the right PPE for real-world scenarios.",
+                buttonLabel: "Start Exercise",
+                destination: PPELoadoutView()
+            )
 
-                    Text("Gear up for the job. Pick the right PPE for real-world scenarios.")
-                        .font(AppFont.body(13))
-                        .foregroundColor(AppTheme.muted)
+            FieldExerciseCard(
+                icon: "book.closed",
+                tint: AppTheme.primary,
+                title: "Code Lookup",
+                description: "Match violations to their OSHA/DAFMAN citations. Build regulation recall under pressure.",
+                buttonLabel: "Start Challenge",
+                destination: CodeLookupView()
+            )
 
-                    NavigationLink {
-                        PPELoadoutView()
-                    } label: {
-                        HStack {
-                            Text("Start Exercise")
-                            Spacer()
-                            Image(systemName: "arrow.right.circle.fill")
-                        }
-                    }
-                    .buttonStyle(OutlineButtonStyle())
-                }
-            }
+            FieldExerciseCard(
+                icon: "doc.text.fill",
+                tint: AppTheme.danger,
+                title: "Hazard Report",
+                description: "Process AF Form 457 hazard reports. Assess risk, assign RAC codes, and recommend corrective actions.",
+                buttonLabel: "Start Processing",
+                destination: HazardReportView()
+            )
 
-            GlassCard(glow: AppTheme.primary.opacity(0.3)) {
-                VStack(alignment: .leading, spacing: 10) {
-                    HStack(spacing: 8) {
-                        Image(systemName: "book.closed")
-                            .font(.system(size: 14, weight: .semibold))
-                            .foregroundColor(AppTheme.primary)
-                        Text("Code Lookup")
-                            .font(AppFont.subtitle(15))
-                            .foregroundColor(AppTheme.text)
-                    }
-
-                    Text("Match violations to their OSHA/DAFMAN citations. Build regulation recall under pressure.")
-                        .font(AppFont.body(13))
-                        .foregroundColor(AppTheme.muted)
-
-                    NavigationLink {
-                        CodeLookupView()
-                    } label: {
-                        HStack {
-                            Text("Start Challenge")
-                            Spacer()
-                            Image(systemName: "arrow.right.circle.fill")
-                        }
-                    }
-                    .buttonStyle(OutlineButtonStyle())
-                }
-            }
+            FieldExerciseCard(
+                icon: "exclamationmark.shield",
+                tint: Color(red: 0.9, green: 0.5, blue: 0.1),
+                title: "Deployed ORM",
+                description: "Assess operational risks at contingency locations. Navigate mission-vs-safety tensions in austere environments.",
+                buttonLabel: "Start Assessment",
+                destination: DeployedORMView()
+            )
         }
     }
 
@@ -407,14 +383,62 @@ struct HomeView: View {
     }
 
     private var playedDailyFiveToday: Bool {
-        guard let lastRun = progress.lastDailyFiveDate else { return false }
-        return Calendar.current.isDateInToday(lastRun)
+        progress.playedDailyFiveToday
     }
 }
 
 private extension TrainingModule {
     func isCompleted(_ progress: ProgressStore) -> Bool {
         progress.isCompleted(id)
+    }
+}
+
+private struct FieldExerciseHeader: View {
+    let icon: String
+    let title: String
+    let tint: Color
+
+    var body: some View {
+        HStack(spacing: 8) {
+            Image(systemName: icon)
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundColor(tint)
+            Text(title)
+                .font(AppFont.subtitle(15))
+                .foregroundColor(AppTheme.text)
+        }
+    }
+}
+
+private struct FieldExerciseCard<Destination: View>: View {
+    let icon: String
+    let tint: Color
+    let title: String
+    let description: String
+    let buttonLabel: String
+    let destination: Destination
+
+    var body: some View {
+        GlassCard(glow: tint.opacity(0.3)) {
+            VStack(alignment: .leading, spacing: 10) {
+                FieldExerciseHeader(icon: icon, title: title, tint: tint)
+
+                Text(description)
+                    .font(AppFont.body(13))
+                    .foregroundColor(AppTheme.muted)
+
+                NavigationLink {
+                    destination
+                } label: {
+                    HStack {
+                        Text(buttonLabel)
+                        Spacer()
+                        Image(systemName: "arrow.right.circle.fill")
+                    }
+                }
+                .buttonStyle(OutlineButtonStyle())
+            }
+        }
     }
 }
 

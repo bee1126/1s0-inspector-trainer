@@ -1122,6 +1122,224 @@ enum TrainingContent {
                 ]
             ),
             quiz: QuizBank.ppeDecision
+        ),
+
+        // MARK: - Deployed ORM
+
+        TrainingModule(
+            id: "deployed-orm",
+            title: "Deployed ORM",
+            subtitle: "Manage operational risk at contingency and deployed locations",
+            estimatedMinutes: 25,
+            difficulty: "Advanced",
+            tags: ["ORM", "Contingency Ops"],
+            objectives: [
+                "Apply the 5-step ORM process in austere and time-compressed environments",
+                "Identify risk acceptance authority levels for residual risk in deployed settings",
+                "Navigate mission-vs-safety tensions when commanders push to accept elevated risk",
+                "Assess host-nation compliance gaps and your obligations under DAFI 91-202",
+                "Document risk decisions and recommendations even in expeditionary conditions"
+            ],
+            lessonPages: [
+                LessonPage(
+                    id: "dorm-1",
+                    title: "ORM in Deployed Environments",
+                    bullets: [
+                        "Deployed locations rarely have a fully established safety office, reference library, or inspection history.",
+                        "Standards that are clear-cut in garrison become ambiguous in austere settings — temporary structures, expedient repairs, and improvised work areas are the norm.",
+                        "Decision timelines compress dramatically. Commanders need answers in hours, not weeks.",
+                        "Your role as the safety professional does not change: identify hazards, assess risk, recommend controls, and inform the commander."
+                    ]
+                ),
+                LessonPage(
+                    id: "dorm-2",
+                    title: "The 5-Step ORM Process Downrange",
+                    bullets: [
+                        "Step 1 — Identify Hazards: Walk the site. In deployed settings, hazards hide in expedient solutions and workarounds that would never pass garrison inspection.",
+                        "Step 2 — Assess Risk: Use the standard severity × probability matrix, but recognize that deployed conditions often increase probability (limited PPE, fatigued workers, improvised setups).",
+                        "Step 3 — Analyze Controls: The full hierarchy of controls still applies, but engineering controls may require creativity with limited materials.",
+                        "Step 4 — Make Risk Decisions: Present the risk assessment clearly. The commander decides — you inform. Document the decision regardless of outcome.",
+                        "Step 5 — Supervise and Evaluate: Controls that work on day one may degrade quickly in harsh environments. Re-assess regularly."
+                    ]
+                ),
+                LessonPage(
+                    id: "dorm-3",
+                    title: "Risk Acceptance Authority",
+                    bullets: [
+                        "Low residual risk: Flight/CC or equivalent can accept.",
+                        "Medium residual risk: Squadron/CC level acceptance required.",
+                        "High residual risk: Group/CC (O-6) or equivalent must accept.",
+                        "Extremely High residual risk: Wing/CC or equivalent — rarely acceptable outside combat operations.",
+                        "The inspector NEVER accepts risk — you prepare the assessment and the appropriate commander signs. This distinction matters especially when pressured."
+                    ]
+                ),
+                LessonPage(
+                    id: "dorm-4",
+                    title: "Common Deployed Hazards",
+                    bullets: [
+                        "Generator operations: CO exposure from inadequate setback distances, fuel handling in improvised storage, electrical distribution from temporary panels.",
+                        "Temporary structures: Fabric shelters degrade in UV/sand, tent city fire separation, improvised maintenance facilities.",
+                        "Expedient repairs: Unqualified personnel performing work outside their AFSC, bypassing safety devices to meet mission timelines.",
+                        "HAZMAT with limited supplies: Expired PPE, incomplete spill kits, no industrial hygiene monitoring capability.",
+                        "Host-nation compliance: Contract language vs. DAFI 91-202 obligations, SOFA implications, cultural differences in safety practices."
+                    ]
+                ),
+                LessonPage(
+                    id: "dorm-5",
+                    title: "The Inspector's Gray Area",
+                    bullets: [
+                        "When standards do not cleanly apply, your job is to identify the hazard and assess the risk — not to force a garrison solution onto a deployed problem.",
+                        "Credibility comes from offering alternatives, not just saying 'no.' Find the option that supports the mission AND reduces risk.",
+                        "Document everything. In the absence of formal inspection reports, emails, photos, and risk assessment worksheets become your record.",
+                        "Fatigue, isolation, and mission pressure affect your judgment too. Apply ORM to yourself — know when you need a second opinion.",
+                        "The best deployed safety professionals are the ones commanders seek out before making decisions, not the ones they try to avoid."
+                    ]
+                ),
+            ],
+            scenario: Scenario(
+                title: "Sandstorm Damage Assessment",
+                intro: "You are the deployed safety representative at a bare base in Southwest Asia. A major sandstorm has damaged several temporary structures and equipment. The Operations Group Commander needs your risk assessment before resuming flight operations. You have 2 hours before the next launch window.",
+                startStepId: "storm-1",
+                steps: [
+                    ScenarioStep(
+                        id: "storm-1",
+                        prompt: "You arrive at the flight line to begin your assessment. Multiple structures and systems are damaged. Where do you start?",
+                        options: [
+                            ScenarioOption(
+                                id: "storm-1-a",
+                                text: "Assess occupied structures first — personnel in damaged buildings are the immediate life-safety priority.",
+                                feedback: "Correct. Life safety comes first in any assessment. Occupied structures with potential collapse risk must be evaluated before equipment or operational assets. This follows the ORM principle of addressing the highest severity hazards first.",
+                                isCorrect: true,
+                                nextStepId: "storm-2"
+                            ),
+                            ScenarioOption(
+                                id: "storm-1-b",
+                                text: "Start with the flight line equipment since the commander needs to know about launch capability.",
+                                feedback: "Incorrect. While the commander wants operational answers, occupied structures with collapse potential are a higher severity hazard. Equipment can be assessed after confirming personnel safety.",
+                                isCorrect: false,
+                                nextStepId: "storm-2"
+                            ),
+                            ScenarioOption(
+                                id: "storm-1-c",
+                                text: "Begin a systematic left-to-right sweep of the entire base to document all damage.",
+                                feedback: "Incorrect. A systematic sweep is thorough but does not prioritize. With a 2-hour window, you need to triage by risk severity — occupied structures first, then operational assets.",
+                                isCorrect: false,
+                                nextStepId: "storm-2"
+                            ),
+                            ScenarioOption(
+                                id: "storm-1-d",
+                                text: "Ask the commander which assets they want assessed first.",
+                                feedback: "Incorrect. The commander wants an operational answer, but the safety professional determines assessment priority based on hazard severity, not mission preference.",
+                                isCorrect: false,
+                                nextStepId: "storm-2"
+                            )
+                        ]
+                    ),
+                    ScenarioStep(
+                        id: "storm-2",
+                        prompt: "During your assessment, you discover a damaged fuel bladder with a slow JP-8 seep near the aircraft parking area. The Ops Group Commander wants maintenance crews to patch it and continue flight ops. What do you recommend?",
+                        options: [
+                            ScenarioOption(
+                                id: "storm-2-a",
+                                text: "Evacuate the immediate area, establish a hazard perimeter, and assess the full extent of the seep before any repair attempt.",
+                                feedback: "Correct. An uncontrolled fuel leak near an active flight line creates fire/explosion risk. You must establish the extent of contamination before allowing personnel into the area. Patching without assessment could miss a larger structural failure in the bladder.",
+                                isCorrect: true,
+                                nextStepId: "storm-3"
+                            ),
+                            ScenarioOption(
+                                id: "storm-2-b",
+                                text: "Allow the patch if maintenance uses proper PPE and has a fire extinguisher standing by.",
+                                feedback: "Incorrect. PPE and fire extinguishers do not address the root issue — the extent of the damage and contamination is unknown. A small visible seep may indicate a larger structural failure.",
+                                isCorrect: false,
+                                nextStepId: "storm-3"
+                            ),
+                            ScenarioOption(
+                                id: "storm-2-c",
+                                text: "Recommend switching to a backup fuel source and abandoning the damaged bladder entirely.",
+                                feedback: "Partially correct in concept, but premature. Assessment must come first — the bladder may be repairable once the damage extent is known. Abandoning it without assessment wastes a critical resource.",
+                                isCorrect: false,
+                                nextStepId: "storm-3"
+                            ),
+                            ScenarioOption(
+                                id: "storm-2-d",
+                                text: "This is a fuels issue, not a safety issue. Defer to the POL team.",
+                                feedback: "Incorrect. A fuel leak on the flight line is absolutely a safety issue — fire/explosion risk and environmental contamination fall within your scope. Coordinate with POL, but do not abdicate your assessment role.",
+                                isCorrect: false,
+                                nextStepId: "storm-3"
+                            )
+                        ]
+                    ),
+                    ScenarioStep(
+                        id: "storm-3",
+                        prompt: "The base control tower has visible cracking in the temporary structure walls. The commander suggests controllers can operate from a ground vehicle with radio equipment as an alternative. What is your assessment?",
+                        options: [
+                            ScenarioOption(
+                                id: "storm-3-a",
+                                text: "Support the vehicle-based alternative, document the tower as off-limits, and request a structural engineering assessment.",
+                                feedback: "Correct. The commander proposed a creative alternative that avoids the structural risk. Your role is to validate that the alternative is safe and ensure the damaged structure is formally restricted. Requesting engineering assessment is the right follow-up for the permanent fix.",
+                                isCorrect: true,
+                                nextStepId: "storm-4"
+                            ),
+                            ScenarioOption(
+                                id: "storm-3-b",
+                                text: "The tower must remain operational — recommend reinforcing the cracked walls with available materials.",
+                                feedback: "Incorrect. Improvised structural repairs to a cracked temporary structure are unreliable. The commander already offered a viable alternative. There is no need to accept structural risk when the mission can continue from a vehicle.",
+                                isCorrect: false,
+                                nextStepId: "storm-4"
+                            ),
+                            ScenarioOption(
+                                id: "storm-3-c",
+                                text: "Shut down all flight operations until the tower is repaired or replaced.",
+                                feedback: "Disproportionate. The commander's vehicle-based alternative allows safe continuation of operations. Shutting down completely when a viable workaround exists is not adding value — it is being an unnecessary mission stopper.",
+                                isCorrect: false,
+                                nextStepId: "storm-4"
+                            ),
+                            ScenarioOption(
+                                id: "storm-3-d",
+                                text: "Allow limited tower use with reduced occupancy until engineering assesses it.",
+                                feedback: "Incorrect. Cracked walls in a temporary structure indicate potential failure. 'Reduced occupancy' does not reduce collapse risk — it just means fewer people are at risk. The vehicle alternative eliminates the hazard entirely.",
+                                isCorrect: false,
+                                nextStepId: "storm-4"
+                            )
+                        ]
+                    ),
+                    ScenarioStep(
+                        id: "storm-4",
+                        prompt: "The Ops Group Commander asks you to sign a risk acceptance letter stating that flight operations can safely resume with your identified mitigations in place. What do you do?",
+                        options: [
+                            ScenarioOption(
+                                id: "storm-4-a",
+                                text: "Prepare the risk assessment documenting hazards, controls, and residual risk — but the commander signs the acceptance, not you.",
+                                feedback: "Correct. Safety professionals prepare risk assessments and recommend controls. Commanders accept risk. This is a fundamental ORM principle. Your signature goes on the assessment, not the acceptance. The commander's signature acknowledges they understand and accept the residual risk.",
+                                isCorrect: true,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "storm-4-b",
+                                text: "Sign it — you have assessed the risks and your mitigations are in place.",
+                                feedback: "Incorrect. Signing a risk acceptance letter exceeds your authority and role. If something goes wrong, you have taken personal liability for a command decision. Your role is to inform, not to accept risk on behalf of the organization.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "storm-4-c",
+                                text: "Refuse to prepare any documentation until all hazards are fully resolved.",
+                                feedback: "Incorrect. Deployed operations often proceed with residual risk — that is the nature of contingency operations. Your job is to document the risk clearly so the commander can make an informed decision, not to hold documentation hostage until risk is zero.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "storm-4-d",
+                                text: "Tell the commander risk acceptance letters are not required at deployed locations.",
+                                feedback: "Incorrect. Risk documentation is arguably MORE important in deployed settings where oversight is limited. The lack of a garrison safety office does not eliminate the requirement to document risk decisions.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            )
+                        ]
+                    )
+                ]
+            ),
+            quiz: QuizBank.deployedORM
         )
     ]
 
