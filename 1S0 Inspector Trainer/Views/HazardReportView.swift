@@ -139,7 +139,7 @@ struct HazardReportView: View {
             } else {
                 GlassCard {
                     VStack(alignment: .leading, spacing: 6) {
-                        Text("Process AF Form 457 hazard reports through the correct workflow. Complete all \(HazardReportBank.allScenarios.count) to earn the Hazard Analyst badge.")
+                        Text("Process DAF Form 457 hazard reports through the correct workflow. Complete all \(HazardReportBank.allScenarios.count) to earn the Hazard Analyst badge.")
                             .font(AppFont.body(13))
                             .foregroundColor(AppTheme.muted)
                         HStack(spacing: 4) {
@@ -224,7 +224,7 @@ struct HazardReportView: View {
         return Double(progress.completedHazardReports.count) / Double(total)
     }
 
-    // MARK: - Report Review (AF Form 457)
+    // MARK: - Report Review (DAF Form 457)
 
     private var reportReviewView: some View {
         VStack(alignment: .leading, spacing: AppSpacing.stack) {
@@ -234,7 +234,7 @@ struct HazardReportView: View {
                         Image(systemName: "doc.text.fill")
                             .font(.system(size: 14, weight: .semibold))
                             .foregroundColor(AppTheme.danger)
-                        Text("AF FORM 457 \u{2014} HAZARD REPORT")
+                        Text("DAF FORM 457 \u{2014} HAZARD REPORT")
                             .font(AppFont.mono(12))
                             .foregroundColor(AppTheme.danger)
                             .tracking(1)

@@ -39,11 +39,11 @@ enum PracticeContent {
         ),
         OnboardingDay(
             id: 4,
-            title: "Roles & Responsibilities",
-            summary: "Understand safety roles and responsibilities.",
+            title: "Program Responsibilities",
+            summary: "Understand how 1S0 inspectors, commanders, and supervisors share safety responsibilities.",
             tasks: [
-                "Complete the Roles & Responsibilities module",
-                "Review safety role objectives"
+                "Complete the Program Responsibilities module",
+                "Review the 1S0 inspector responsibilities"
             ],
             action: .module("roles-responsibilities")
         ),

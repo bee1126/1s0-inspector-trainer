@@ -362,13 +362,13 @@ enum CodeLookupContent {
             violationDescription: "Fire extinguisher in a warehouse is mounted on a wall with its handle at 6 feet above the floor. Pallets are stacked within 2 feet of it.",
             category: "Fire Protection",
             correctCitation: "29 CFR 1910.157(c)(1)",
-            correctTitle: "Extinguisher Access and Mounting",
+            correctTitle: "Extinguisher Access",
             distractors: [
                 "29 CFR 1910.157(d)(1)",
                 "29 CFR 1910.37(a)(3)",
                 "29 CFR 1910.157(e)(1)"
             ],
-            explanation: "1910.157(c)(1) requires fire extinguishers to be conspicuously located, readily accessible, and immediately available. Extinguishers over 40 lbs must have tops no higher than 3.5 feet; lighter ones no higher than 5 feet. Obstructed access is a violation."
+            explanation: "1910.157(c)(1) requires portable fire extinguishers to be conspicuously located, readily accessible, and immediately available. Obstructed access is a violation."
         ),
         CodeLookupQuestion(
             id: "cl-fire-02",
@@ -482,27 +482,27 @@ enum CodeLookupContent {
             id: "cl-af-03",
             violationDescription: "Personnel on the active flight line without double hearing protection in a posted high-noise area during engine runs.",
             category: "AF-Specific",
-            correctCitation: "AFMAN 91-203 para 15.3",
-            correctTitle: "Hearing Conservation on Flight Line",
+            correctCitation: "DAFMAN 91-203 para 24.9.8",
+            correctTitle: "Flightline Hearing Protection Devices",
             distractors: [
-                "AFMAN 91-203 para 24.8",
-                "AFMAN 91-203 para 12.6",
-                "AFMAN 91-203 para 15.9"
+                "DAFMAN 91-203 para 24.5",
+                "DAFMAN 91-203 para 12.8",
+                "DAFMAN 91-203 para 17.4"
             ],
-            explanation: "AFMAN 91-203 paragraph 15.3 addresses hearing conservation requirements, including double hearing protection (plugs plus muffs) in high-noise environments such as the flight line during engine operations."
+            explanation: "DAFMAN 91-203 paragraph 24.9.8 requires approved hearing protection in flightline noise hazard areas. Installation Bioenvironmental Engineering determines noise hazard areas, protection requirements, and adequacy."
         ),
         CodeLookupQuestion(
             id: "cl-af-04",
             violationDescription: "Fuel servicing operation in progress with no fire extinguisher positioned within 50 feet of the fueling point. Aircraft not grounded.",
             category: "AF-Specific",
-            correctCitation: "AFMAN 91-203 para 24.11",
+            correctCitation: "DAFMAN 91-203 para 18.10 / T.O. 00-25-172",
             correctTitle: "Aircraft Fueling Safety",
             distractors: [
-                "AFMAN 91-203 para 24.3",
-                "AFMAN 91-203 para 22.7",
-                "AFMAN 91-203 para 24.18"
+                "DAFMAN 91-203 para 24.3",
+                "DAFMAN 91-203 para 22.7",
+                "DAFMAN 91-203 para 20.10"
             ],
-            explanation: "AFMAN 91-203 paragraph 24.11 establishes aircraft fuel servicing safety requirements including fire extinguisher positioning, grounding/bonding, and safety zone restrictions during fueling operations."
+            explanation: "DAFMAN 91-203 paragraph 18.10 directs aircraft servicing to be conducted under T.O. 00-25-172 and applicable technical orders. Fuel servicing controls include grounding/bonding, fire protection, and safety-zone restrictions."
         ),
     ]
 }

@@ -245,7 +245,7 @@ struct HomeView: View {
                 icon: "doc.text.fill",
                 tint: AppTheme.danger,
                 title: "Hazard Report",
-                description: "Process AF Form 457 hazard reports. Assess risk, assign RAC codes, and recommend corrective actions.",
+                description: "Process DAF Form 457 hazard reports. Assess risk, assign RAC codes, and recommend corrective actions.",
                 buttonLabel: "Start Processing",
                 destination: HazardReportView()
             )

@@ -13,6 +13,35 @@ struct SourcesView: View {
                         .font(AppFont.title(26))
                         .foregroundColor(AppTheme.text)
 
+                    NavigationLink {
+                        GlossaryView()
+                    } label: {
+                        GlassCard(glow: AppTheme.primary.opacity(0.35)) {
+                            HStack(spacing: 12) {
+                                Image(systemName: "text.book.closed.fill")
+                                    .font(.system(size: 22, weight: .semibold))
+                                    .foregroundColor(AppTheme.primary)
+                                    .frame(width: 34, height: 34)
+
+                                VStack(alignment: .leading, spacing: 5) {
+                                    Text("Safety Glossary")
+                                        .font(AppFont.subtitle(17))
+                                        .foregroundColor(AppTheme.text)
+                                    Text("Search verified 1S0, OSHA, DAFMAN, and risk management terms.")
+                                        .font(AppFont.body(13))
+                                        .foregroundColor(AppTheme.muted)
+                                }
+
+                                Spacer()
+
+                                Image(systemName: "chevron.right")
+                                    .font(.system(size: 12, weight: .semibold))
+                                    .foregroundColor(AppTheme.muted)
+                            }
+                        }
+                    }
+                    .buttonStyle(.plain)
+
                     GlassCard {
                         VStack(alignment: .leading, spacing: 10) {
                             Text("REFERENCE MATERIALS")
@@ -31,6 +60,14 @@ struct SourcesView: View {
                                     Text(source.notes)
                                         .font(AppFont.body(12))
                                         .foregroundColor(AppTheme.muted)
+                                    if let url = source.url {
+                                        Link(destination: url) {
+                                            Label("Open in App Store", systemImage: "arrow.up.right.square")
+                                                .font(AppFont.subtitle(12))
+                                                .foregroundColor(AppTheme.primary)
+                                        }
+                                        .accessibilityHint("Opens \(source.title) outside this app.")
+                                    }
                                 }
                                 if index < references.count - 1 {
                                     Divider().opacity(0.3)

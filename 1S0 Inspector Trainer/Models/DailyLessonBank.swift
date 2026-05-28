@@ -228,7 +228,7 @@ enum DailyLessonBank {
             icon: "minus.circle",
             keyPoints: [
                 "NRR (Noise Reduction Rating) is tested in a lab — real-world performance is lower.",
-                "OSHA derates by subtracting 7 and dividing by 2: effective NRR = (NRR - 7) / 2.",
+                "OSHA Appendix B subtracts 7 dB from the NRR when estimating attenuation from A-weighted measurements.",
                 "Proper fit matters more than the rated number on the package."
             ],
             regulation: "OSHA 1910.95(j)",
@@ -297,11 +297,11 @@ enum DailyLessonBank {
             proTip: "A 5-minute photo walkthrough of the scene can save weeks of investigation guesswork."
         ),
 
-        // MARK: - Roles & Responsibilities
+        // MARK: - Program Responsibilities
 
         DailyLesson(
             id: "dl-roles-01",
-            moduleTag: "Roles & Responsibilities",
+            moduleTag: "Program Responsibilities",
             title: "Commander's Safety Responsibility",
             subtitle: "Safety starts at the top",
             icon: "star.circle.fill",
@@ -316,7 +316,7 @@ enum DailyLessonBank {
 
         DailyLesson(
             id: "dl-roles-02",
-            moduleTag: "Roles & Responsibilities",
+            moduleTag: "Program Responsibilities",
             title: "The 1S0 Inspector's Lane",
             subtitle: "What's yours and what isn't",
             icon: "person.badge.shield.checkmark.fill",
@@ -331,7 +331,7 @@ enum DailyLessonBank {
 
         DailyLesson(
             id: "dl-roles-03",
-            moduleTag: "Roles & Responsibilities",
+            moduleTag: "Program Responsibilities",
             title: "Supervisor Accountability",
             subtitle: "First-line defense in the workplace",
             icon: "person.badge.clock",

@@ -29,10 +29,16 @@ Host them (GitHub Pages or any static host) and paste the resulting URLs into Ap
 - Screenshots: capture required sizes (if universal: iPhone + iPad).
 - Optional: add an App Preview video.
 
-## 5) Archive & upload (Xcode)
+## 5) Archive, upload, and submit
 1. Select **Any iOS Device (arm64)** (not a simulator).
 2. Product → **Archive**.
 3. Distribute App → **App Store Connect** → Upload.
+
+API automation is also available:
+- One-time setup: `docs/release/AppStoreConnectAPI.md`
+- Env template: `scripts/appstore_release.env.example`
+- Export options: `scripts/appstore-export-options.plist`
+- App Store Connect helper: `scripts/asc_release.py`
 
 ## 6) App Review notes (recommended)
 Include:

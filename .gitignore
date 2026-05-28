@@ -1,4 +1,5 @@
 .DS_Store
+.~lock.*#
 
 # Xcode
 DerivedData/
@@ -17,3 +18,9 @@ xcuserdata/
 *.ipa
 *.dSYM.zip
 *.dSYM
+
+# App Store Connect API secrets
+.env.appstoreconnect
+.env.appstoreconnect.*
+AuthKey_*.p8
+*.p8

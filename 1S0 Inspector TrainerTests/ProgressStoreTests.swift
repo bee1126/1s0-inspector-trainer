@@ -105,8 +105,8 @@ final class ProgressStoreTests: XCTestCase {
         XCTAssertEqual(store.selectedRole, .oneS0)
     }
 
-    func testLegacyUSRSelectionFallsBackToOneS0() {
-        defaults.set("USR", forKey: "selectedRole")
+    func testLegacyUnknownSelectionFallsBackToOneS0() {
+        defaults.set("legacy-role", forKey: "selectedRole")
 
         let now = Date(timeIntervalSince1970: 0)
         let store = ProgressStore(defaults: defaults, calendar: calendar, dateProvider: { now })
@@ -268,6 +268,73 @@ final class ProgressStoreTests: XCTestCase {
         XCTAssertEqual(store.dailyFiveStreak, 2)
         XCTAssertEqual(store.lastDailyFiveScore, 60)
         XCTAssertEqual(store.bestDailyFiveScore, 100)
+    }
+
+    func testMissionFocusRecommendationPrioritizesReviewQueue() {
+        var now = Date(timeIntervalSince1970: 0)
+        let store = ProgressStore(defaults: defaults, calendar: calendar, dateProvider: { now })
+
+        store.updateSRCard(questionId: "loto-q1", quality: 1)
+        now = calendar.date(byAdding: .day, value: 2, to: now)!
+
+        let recommendation = MissionFocusRecommendation.make(
+            modules: TrainingContent.modules(for: store.selectedRole),
+            progress: store
+        )
+
+        XCTAssertEqual(recommendation.priority, .reviewQueue)
+        XCTAssertEqual(recommendation.destination, .adaptiveMission)
+        XCTAssertEqual(recommendation.buttonLabel, "Start Review Run")
+    }
+
+    func testMissionFocusRecommendationTargetsWeakModuleBeforeNewContent() {
+        let now = Date(timeIntervalSince1970: 0)
+        let store = ProgressStore(defaults: defaults, calendar: calendar, dateProvider: { now })
+
+        store.recordModuleAnswer(moduleId: "loto", correct: false)
+        store.recordModuleAnswer(moduleId: "loto", correct: false)
+        store.recordModuleAnswer(moduleId: "loto", correct: true)
+
+        let recommendation = MissionFocusRecommendation.make(
+            modules: TrainingContent.modules(for: store.selectedRole),
+            progress: store
+        )
+
+        XCTAssertEqual(recommendation.priority, .weakModule)
+        XCTAssertEqual(recommendation.destination, .module("loto"))
+        XCTAssertEqual(recommendation.buttonLabel, "Open Refresher Module")
+    }
+
+    func testMissionFocusRecommendationDefaultsToNextIncompleteModule() {
+        let now = Date(timeIntervalSince1970: 0)
+        let store = ProgressStore(defaults: defaults, calendar: calendar, dateProvider: { now })
+
+        let recommendation = MissionFocusRecommendation.make(
+            modules: TrainingContent.modules(for: store.selectedRole),
+            progress: store
+        )
+
+        XCTAssertEqual(recommendation.priority, .nextModule)
+        XCTAssertEqual(recommendation.destination, .module("loto"))
+        XCTAssertEqual(recommendation.buttonLabel, "Open Module")
+    }
+
+    func testMissionFocusRecommendationFallsBackToMaintainReadinessWhenModulesAreComplete() {
+        let now = Date(timeIntervalSince1970: 0)
+        let store = ProgressStore(defaults: defaults, calendar: calendar, dateProvider: { now })
+
+        for module in TrainingContent.modules(for: store.selectedRole) {
+            store.markCompleted(moduleId: module.id, score: 100, scenarioPerfect: true, quizPerfect: true)
+        }
+
+        let recommendation = MissionFocusRecommendation.make(
+            modules: TrainingContent.modules(for: store.selectedRole),
+            progress: store
+        )
+
+        XCTAssertEqual(recommendation.priority, .maintainReadiness)
+        XCTAssertEqual(recommendation.destination, .adaptiveMission)
+        XCTAssertEqual(recommendation.buttonLabel, "Run Adaptive Mission")
     }
 
     private func makeQuestion(id: String) -> QuizQuestion {

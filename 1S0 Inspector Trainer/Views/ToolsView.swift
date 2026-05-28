@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ToolsView: View {
     @EnvironmentObject private var progress: ProgressStore
-    @State private var showRoleSelection = false
+    @State private var showInspectorProfile = false
 
     var body: some View {
         ZStack {
@@ -27,11 +27,11 @@ struct ToolsView: View {
 
                     ToolSection(title: "Profile") {
                         Button {
-                            showRoleSelection = true
+                            showInspectorProfile = true
                         } label: {
                             ToolCard(
-                                title: "Training Role",
-                                detail: progress.selectedRole?.displayName ?? "Choose your role"
+                                title: "Inspector Profile",
+                                detail: progress.selectedRole?.displayName ?? "1S0 Safety Inspector"
                             )
                         }
                         .buttonStyle(.plain)
@@ -44,14 +44,14 @@ struct ToolsView: View {
         }
         .navigationTitle("Comms")
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(isPresented: $showRoleSelection) {
+        .sheet(isPresented: $showInspectorProfile) {
             RoleSelectionView(
-                title: "Training Profile",
-                subtitle: "Review the active inspector profile used for content, progress, and onboarding.",
+                title: "Inspector Profile",
+                subtitle: "Review the active 1S0 inspector profile used for content, progress, and onboarding.",
                 initialRole: progress.selectedRole,
                 onSelect: { role in
                     progress.setRole(role)
-                    showRoleSelection = false
+                    showInspectorProfile = false
                 }
             )
         }

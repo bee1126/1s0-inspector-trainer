@@ -176,9 +176,9 @@ enum QuizBank {
             difficulty: .medium,
             imageName: "hazard_scene_02_rooftop",
             choices: [
-                QuizChoice(id: "fall-q5-a", text: "Install temporary guardrails, a warning line system, or use a personal fall arrest system before accessing the edge", isCorrect: true),
+                QuizChoice(id: "fall-q5-a", text: "Use guardrails, travel restraint, or a personal fall arrest system before working near the edge", isCorrect: true),
                 QuizChoice(id: "fall-q5-b", text: "Stay 10 feet from the edge and no fall protection is needed", isCorrect: false),
-                QuizChoice(id: "fall-q5-c", text: "Use a safety monitor alone as the sole means of protection", isCorrect: false),
+                QuizChoice(id: "fall-q5-c", text: "Use a warning line or safety monitor alone while accessing the edge", isCorrect: false),
                 QuizChoice(id: "fall-q5-d", text: "Proceed carefully and maintain three points of contact", isCorrect: false)
             ]
         ),
@@ -256,13 +256,13 @@ enum QuizBank {
         ),
         QuizQuestion(
             id: "rm-q2",
-            prompt: "A risk assessment results in a 'High' residual risk. Who has the authority to accept this level of risk?",
+            prompt: "A risk assessment results in a 'High' residual risk. Who should normally accept this level of risk in the Air Force chain of command?",
             difficulty: .medium,
             choices: [
-                QuizChoice(id: "rm-q2-a", text: "The first flag officer or general officer in the chain of command, per OPNAVINST 3500.39", isCorrect: true),
+                QuizChoice(id: "rm-q2-a", text: "The group commander (O-6) or equivalent, following the unit's risk acceptance matrix", isCorrect: true),
                 QuizChoice(id: "rm-q2-b", text: "The on-scene supervisor, as long as they document the decision", isCorrect: false),
-                QuizChoice(id: "rm-q2-c", text: "Any E-7 or above with safety training", isCorrect: false),
-                QuizChoice(id: "rm-q2-d", text: "The safety officer alone can accept any level of residual risk", isCorrect: false)
+                QuizChoice(id: "rm-q2-c", text: "Any SNCO with safety training", isCorrect: false),
+                QuizChoice(id: "rm-q2-d", text: "The safety office alone can accept any level of residual risk", isCorrect: false)
             ]
         ),
         QuizQuestion(
@@ -355,29 +355,29 @@ enum QuizBank {
         )
     ]
 
-    // MARK: - Roles & Responsibilities
+    // MARK: - Program Responsibilities
 
     static let rolesResponsibilities: [QuizQuestion] = [
         QuizQuestion(
             id: "roles-q1",
-            prompt: "Under NAVOSH, who is ultimately responsible for the safety and health program at a command?",
+            prompt: "Within an Air Force unit safety program, who is ultimately responsible for setting expectations and resourcing the program?",
             difficulty: .medium,
             choices: [
-                QuizChoice(id: "roles-q1-a", text: "The commanding officer", isCorrect: true),
-                QuizChoice(id: "roles-q1-b", text: "The safety officer", isCorrect: false),
-                QuizChoice(id: "roles-q1-c", text: "The senior enlisted advisor", isCorrect: false),
-                QuizChoice(id: "roles-q1-d", text: "The industrial hygienist", isCorrect: false)
+                QuizChoice(id: "roles-q1-a", text: "The commander or director", isCorrect: true),
+                QuizChoice(id: "roles-q1-b", text: "The 1S0 safety inspector", isCorrect: false),
+                QuizChoice(id: "roles-q1-c", text: "The most senior supervisor in the shop", isCorrect: false),
+                QuizChoice(id: "roles-q1-d", text: "The installation industrial hygienist", isCorrect: false)
             ]
         ),
         QuizQuestion(
             id: "roles-q2",
-            prompt: "What is the primary role of the collateral duty safety officer (CDSO)?",
+            prompt: "What is the primary responsibility of a 1S0 safety inspector during a routine workplace inspection?",
             difficulty: .medium,
             choices: [
-                QuizChoice(id: "roles-q2-a", text: "Advise the commanding officer on safety matters and assist in implementing the safety program", isCorrect: true),
-                QuizChoice(id: "roles-q2-b", text: "Replace the need for a full-time safety professional at the command", isCorrect: false),
-                QuizChoice(id: "roles-q2-c", text: "Conduct all safety inspections without assistance", isCorrect: false),
-                QuizChoice(id: "roles-q2-d", text: "Approve risk acceptance decisions on behalf of the CO", isCorrect: false)
+                QuizChoice(id: "roles-q2-a", text: "Assess compliance, identify hazards, and recommend corrective actions", isCorrect: true),
+                QuizChoice(id: "roles-q2-b", text: "Direct daily shop operations and assign manpower", isCorrect: false),
+                QuizChoice(id: "roles-q2-c", text: "Accept residual risk on behalf of the commander", isCorrect: false),
+                QuizChoice(id: "roles-q2-d", text: "Replace the supervisor as the owner of local corrective actions", isCorrect: false)
             ]
         ),
         QuizQuestion(
@@ -387,74 +387,74 @@ enum QuizBank {
             choices: [
                 QuizChoice(id: "roles-q3-a", text: "Stop work immediately, warn others in the area, and report the hazard to their supervisor", isCorrect: true),
                 QuizChoice(id: "roles-q3-b", text: "Document the hazard and submit a report at the end of the shift", isCorrect: false),
-                QuizChoice(id: "roles-q3-c", text: "Continue work while notifying the safety officer by email", isCorrect: false),
+                QuizChoice(id: "roles-q3-c", text: "Continue work while notifying the safety office by email", isCorrect: false),
                 QuizChoice(id: "roles-q3-d", text: "Wait for the supervisor to assess the situation before taking action", isCorrect: false)
             ]
         ),
         QuizQuestion(
             id: "roles-q4",
-            prompt: "Who is responsible for ensuring that safety training records are maintained for all personnel?",
+            prompt: "Who is primarily responsible for ensuring shop-level safety training is completed and documented?",
             difficulty: .medium,
             choices: [
-                QuizChoice(id: "roles-q4-a", text: "The department supervisor, with oversight from the safety office", isCorrect: true),
+                QuizChoice(id: "roles-q4-a", text: "The supervisor, with support and oversight from the safety office", isCorrect: true),
                 QuizChoice(id: "roles-q4-b", text: "Individual workers are solely responsible for their own records", isCorrect: false),
-                QuizChoice(id: "roles-q4-c", text: "The commanding officer personally maintains all records", isCorrect: false),
-                QuizChoice(id: "roles-q4-d", text: "Training records are only required for civilian employees", isCorrect: false)
+                QuizChoice(id: "roles-q4-c", text: "The commander personally maintains all records", isCorrect: false),
+                QuizChoice(id: "roles-q4-d", text: "Training documentation is only required after an inspection finding", isCorrect: false)
             ]
         ),
         QuizQuestion(
             id: "roles-q5",
-            prompt: "During a safety inspection, who has the authority to issue a stop-work order for an unsafe condition?",
+            prompt: "Repeated PPE misuse is found during an inspection. Who owns the day-to-day correction?",
             difficulty: .medium,
             choices: [
-                QuizChoice(id: "roles-q5-a", text: "Any person who identifies an imminent danger has the right and responsibility to stop work", isCorrect: true),
-                QuizChoice(id: "roles-q5-b", text: "Only the safety officer can issue a formal stop-work order", isCorrect: false),
-                QuizChoice(id: "roles-q5-c", text: "Only E-7 and above can stop work on a military installation", isCorrect: false),
-                QuizChoice(id: "roles-q5-d", text: "Stop-work authority rests solely with the commanding officer", isCorrect: false)
+                QuizChoice(id: "roles-q5-a", text: "The supervisor, supported by the safety office and inspector feedback", isCorrect: true),
+                QuizChoice(id: "roles-q5-b", text: "The 1S0 inspector alone because they found the issue", isCorrect: false),
+                QuizChoice(id: "roles-q5-c", text: "The individual worker alone because PPE use is personal", isCorrect: false),
+                QuizChoice(id: "roles-q5-d", text: "No one until the next scheduled inspection", isCorrect: false)
             ]
         ),
         QuizQuestion(
             id: "roles-q6",
-            prompt: "What is the role of the safety committee (or Safety Council) at a command?",
+            prompt: "What is the purpose of a unit or wing safety council?",
             difficulty: .medium,
             choices: [
-                QuizChoice(id: "roles-q6-a", text: "Review mishap trends, recommend corrective actions, and advise the CO on safety program effectiveness", isCorrect: true),
-                QuizChoice(id: "roles-q6-b", text: "Conduct all workplace inspections on behalf of department supervisors", isCorrect: false),
+                QuizChoice(id: "roles-q6-a", text: "Review mishap trends, monitor program effectiveness, and recommend corrective actions to leadership", isCorrect: true),
+                QuizChoice(id: "roles-q6-b", text: "Conduct every workplace inspection on behalf of supervisors", isCorrect: false),
                 QuizChoice(id: "roles-q6-c", text: "Approve all hazardous work permits before operations begin", isCorrect: false),
-                QuizChoice(id: "roles-q6-d", text: "Discipline workers who violate safety procedures", isCorrect: false)
+                QuizChoice(id: "roles-q6-d", text: "Replace commanders and supervisors as the safety decision-makers", isCorrect: false)
             ]
         ),
         QuizQuestion(
             id: "roles-q7",
-            prompt: "A supervisor delegates safety inspection duties to a junior worker. Is this acceptable?",
+            prompt: "A supervisor delegates part of a safety walkthrough to a trained worker. Is this acceptable?",
             difficulty: .medium,
             choices: [
                 QuizChoice(id: "roles-q7-a", text: "The supervisor may delegate tasks but retains accountability for ensuring inspections are done correctly", isCorrect: true),
                 QuizChoice(id: "roles-q7-b", text: "No — only supervisors may conduct safety inspections", isCorrect: false),
                 QuizChoice(id: "roles-q7-c", text: "Yes — once delegated, the supervisor is no longer responsible for the outcome", isCorrect: false),
-                QuizChoice(id: "roles-q7-d", text: "Only if the junior worker has completed OSHA-30 training", isCorrect: false)
+                QuizChoice(id: "roles-q7-d", text: "Only if the worker is the unit safety manager", isCorrect: false)
             ]
         ),
         QuizQuestion(
             id: "roles-q8",
-            prompt: "What is the inspector's role in the hazard abatement tracking process?",
+            prompt: "What is the 1S0 inspector's responsibility in the hazard abatement tracking process?",
             difficulty: .medium,
             choices: [
                 QuizChoice(id: "roles-q8-a", text: "Verify that identified hazards are corrected within established timelines and interim controls are in place", isCorrect: true),
                 QuizChoice(id: "roles-q8-b", text: "Personally fix all hazards found during inspections", isCorrect: false),
-                QuizChoice(id: "roles-q8-c", text: "Only record hazards; corrective action is the exclusive responsibility of the department head", isCorrect: false),
+                QuizChoice(id: "roles-q8-c", text: "Only record hazards; once documented, the inspection is complete", isCorrect: false),
                 QuizChoice(id: "roles-q8-d", text: "Close out hazards after 30 days regardless of corrective action status", isCorrect: false)
             ]
         ),
         QuizQuestion(
             id: "roles-q9",
-            prompt: "Per OPNAVINST 5100.23, how often must the commanding officer review the safety program?",
+            prompt: "A hazard cannot be corrected immediately. What is the best next step?",
             difficulty: .medium,
             choices: [
-                QuizChoice(id: "roles-q9-a", text: "At least annually, with continuous oversight through the safety committee and safety officer", isCorrect: true),
-                QuizChoice(id: "roles-q9-b", text: "Only after a Class A mishap occurs", isCorrect: false),
-                QuizChoice(id: "roles-q9-c", text: "Every five years during the command's certification cycle", isCorrect: false),
-                QuizChoice(id: "roles-q9-d", text: "Monthly via personal inspection of all workspaces", isCorrect: false)
+                QuizChoice(id: "roles-q9-a", text: "Document the hazard, establish interim controls, assign an owner, and track abatement to closure", isCorrect: true),
+                QuizChoice(id: "roles-q9-b", text: "Leave it open with no controls until funding is available", isCorrect: false),
+                QuizChoice(id: "roles-q9-c", text: "Close it once the hazard is entered into the log", isCorrect: false),
+                QuizChoice(id: "roles-q9-d", text: "Wait for the next inspection cycle before taking any action", isCorrect: false)
             ]
         ),
         QuizQuestion(
@@ -475,7 +475,7 @@ enum QuizBank {
     static let confinedSpace: [QuizQuestion] = [
         QuizQuestion(
             id: "cs-q1",
-            prompt: "What three criteria define a permit-required confined space?",
+            prompt: "What three criteria define a confined space before permit-required hazards are evaluated?",
             difficulty: .hard,
             imageName: "hazard_scene_04_confined",
             choices: [
@@ -567,7 +567,7 @@ enum QuizBank {
             prompt: "Rescue and emergency services for confined space must be:",
             difficulty: .hard,
             choices: [
-                QuizChoice(id: "cs-q9-a", text: "Evaluated and available before any entry begins, with retrieval equipment in place at the entry point", isCorrect: true),
+                QuizChoice(id: "cs-q9-a", text: "Evaluated and available before entry, with non-entry retrieval used unless it increases risk or would not help", isCorrect: true),
                 QuizChoice(id: "cs-q9-b", text: "Called only after an emergency occurs to avoid unnecessary cost", isCorrect: false),
                 QuizChoice(id: "cs-q9-c", text: "On standby at the fire station — a phone call is sufficient", isCorrect: false),
                 QuizChoice(id: "cs-q9-d", text: "Arranged within 24 hours of the first entry", isCorrect: false)
@@ -638,9 +638,9 @@ enum QuizBank {
             prompt: "An employee's NRR-rated earplugs have an NRR of 29. Using the OSHA derating method, what is the estimated real-world noise reduction?",
             difficulty: .hard,
             choices: [
-                QuizChoice(id: "hc-q5-a", text: "Approximately 14 dB — subtract 7, then divide by 2: (29-7)/2 = 11, used as practical estimate", isCorrect: true),
+                QuizChoice(id: "hc-q5-a", text: "Approximately 11 dB — subtract 7, then divide by 2; this is a conservative field rule, not OSHA's Appendix B method", isCorrect: false),
                 QuizChoice(id: "hc-q5-b", text: "The full 29 dB as stated on the label", isCorrect: false),
-                QuizChoice(id: "hc-q5-c", text: "Approximately 22 dB — subtract 7 from the NRR", isCorrect: false),
+                QuizChoice(id: "hc-q5-c", text: "Approximately 22 dB — subtract 7 from the NRR when using A-weighted measurements", isCorrect: true),
                 QuizChoice(id: "hc-q5-d", text: "The NRR only applies in laboratory conditions and cannot be estimated for field use", isCorrect: false)
             ]
         ),
@@ -657,13 +657,13 @@ enum QuizBank {
         ),
         QuizQuestion(
             id: "hc-q7",
-            prompt: "What areas must be posted when noise levels exceed the action level?",
+            prompt: "Under OSHA 1910.95, what must happen for employees exposed at or above the 85 dBA action level?",
             difficulty: .hard,
             choices: [
-                QuizChoice(id: "hc-q7-a", text: "Areas must be identified as high-noise zones with signage indicating hearing protection is required", isCorrect: true),
-                QuizChoice(id: "hc-q7-b", text: "Posting is only required above the PEL, not the action level", isCorrect: false),
-                QuizChoice(id: "hc-q7-c", text: "No posting is required if hearing protection is available at the entrance", isCorrect: false),
-                QuizChoice(id: "hc-q7-d", text: "Only the entrance to the building needs to be posted", isCorrect: false)
+                QuizChoice(id: "hc-q7-a", text: "Include them in the hearing conservation program and make hearing protectors available at no cost", isCorrect: true),
+                QuizChoice(id: "hc-q7-b", text: "Require hearing protectors only after exposure exceeds the 90 dBA PEL", isCorrect: false),
+                QuizChoice(id: "hc-q7-c", text: "Post a high-noise sign, but no program enrollment is needed until 100 dBA", isCorrect: false),
+                QuizChoice(id: "hc-q7-d", text: "Issue hearing protection only if the employee requests it in writing", isCorrect: false)
             ]
         ),
         QuizQuestion(
@@ -754,7 +754,7 @@ enum QuizBank {
             prompt: "An employee is injured but insists they do not want to report it. What is the supervisor's obligation?",
             difficulty: .hard,
             choices: [
-                QuizChoice(id: "mishap-q5-a", text: "Report the injury regardless — employers are required to record and report work-related injuries", isCorrect: true),
+                QuizChoice(id: "mishap-q5-a", text: "Report it through supervisory and safety channels so recordability and reportability can be determined", isCorrect: true),
                 QuizChoice(id: "mishap-q5-b", text: "Respect the employee's wishes and do not file a report", isCorrect: false),
                 QuizChoice(id: "mishap-q5-c", text: "Report it only if the employee seeks medical treatment", isCorrect: false),
                 QuizChoice(id: "mishap-q5-d", text: "Wait 24 hours to see if the injury resolves before reporting", isCorrect: false)
@@ -795,7 +795,7 @@ enum QuizBank {
         ),
         QuizQuestion(
             id: "mishap-q9",
-            prompt: "A worker experiences a needlestick injury. Under OSHA, what reporting action is required?",
+            prompt: "A worker experiences a contaminated needlestick or sharps injury. Under OSHA, what recordkeeping action is required?",
             difficulty: .hard,
             choices: [
                 QuizChoice(id: "mishap-q9-a", text: "Record it on the OSHA 300 log as it is a recordable injury involving a sharps exposure", isCorrect: true),
@@ -848,10 +848,10 @@ enum QuizBank {
             difficulty: .hard,
             imageName: "hazard_scene_01_shop",
             choices: [
-                QuizChoice(id: "ppe-q3-a", text: "Safety goggles or face shield rated for both impact (ANSI Z87.1) and chemical splash protection", isCorrect: true),
+                QuizChoice(id: "ppe-q3-a", text: "Impact-rated chemical splash goggles, with a face shield added when splash severity warrants", isCorrect: true),
                 QuizChoice(id: "ppe-q3-b", text: "Standard safety glasses are sufficient for all eye hazards", isCorrect: false),
                 QuizChoice(id: "ppe-q3-c", text: "The worker can choose whichever protection they prefer", isCorrect: false),
-                QuizChoice(id: "ppe-q3-d", text: "Chemical splash goggles only — they inherently provide impact protection", isCorrect: false)
+                QuizChoice(id: "ppe-q3-d", text: "A face shield alone because it covers both the face and eyes", isCorrect: false)
             ]
         ),
         QuizQuestion(
@@ -950,7 +950,7 @@ enum QuizBank {
         ),
         QuizQuestion(
             id: "dorm-q2",
-            prompt: "Per AFMAN 90-802, who is the lowest level of command that can accept 'High' residual risk?",
+            prompt: "Under Air Force RM guidance, who normally accepts 'High' residual risk when the unit risk matrix does not set a stricter level?",
             difficulty: .medium,
             choices: [
                 QuizChoice(id: "dorm-q2-a", text: "Group Commander (O-6) or equivalent", isCorrect: true),
@@ -964,7 +964,7 @@ enum QuizBank {
             prompt: "Host-nation construction workers on your installation are not using fall protection at 18 feet. The contract says host-nation labor laws apply, which have no fall protection requirement. What is your obligation?",
             difficulty: .hard,
             choices: [
-                QuizChoice(id: "dorm-q3-a", text: "The installation commander is responsible for safety of all personnel on the installation per DAFI 91-202, regardless of contract language", isCorrect: true),
+                QuizChoice(id: "dorm-q3-a", text: "Protect exposed DAF personnel, document the hazard, and elevate through command and contracting channels for controls", isCorrect: true),
                 QuizChoice(id: "dorm-q3-b", text: "Host-nation labor laws govern — you have no authority to impose US standards on foreign workers", isCorrect: false),
                 QuizChoice(id: "dorm-q3-c", text: "Only US military personnel fall under your safety purview at deployed locations", isCorrect: false),
                 QuizChoice(id: "dorm-q3-d", text: "Document the observation but take no action since it is a contracting issue", isCorrect: false)
@@ -1014,6 +1014,616 @@ enum QuizBank {
                 QuizChoice(id: "dorm-q7-d", text: "Both roles are interchangeable at deployed locations due to limited staffing", isCorrect: false)
             ]
         ),
+        QuizQuestion(
+            id: "dorm-q8",
+            prompt: "A deployed work center reports a serious hazard that cannot be corrected immediately. What should the safety inspector ensure happens first?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "dorm-q8-a", text: "Validate the hazard, establish interim controls, assign ownership, and track abatement", isCorrect: true),
+                QuizChoice(id: "dorm-q8-b", text: "Close the report until permanent funding is approved", isCorrect: false),
+                QuizChoice(id: "dorm-q8-c", text: "Wait for the next scheduled inspection to avoid duplicate documentation", isCorrect: false),
+                QuizChoice(id: "dorm-q8-d", text: "Tell the shop to accept the risk locally because deployed sites are temporary", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "dorm-q9",
+            prompt: "Which DAFI 91-202 hazard reporting principle still applies at a deployed location?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "dorm-q9-a", text: "Any person assigned, attached, or under contract to the DAF may report hazards through available channels", isCorrect: true),
+                QuizChoice(id: "dorm-q9-b", text: "Only commanders may submit hazard reports during contingency operations", isCorrect: false),
+                QuizChoice(id: "dorm-q9-c", text: "Hazard reports are optional when AFSAS access is unavailable", isCorrect: false),
+                QuizChoice(id: "dorm-q9-d", text: "Anonymous hazard reporting is suspended in deployed environments", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "dorm-q10",
+            prompt: "If DAFMAN 91-203, federal standards, and local deployed guidance appear to conflict, what is the best inspector action?",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "dorm-q10-a", text: "Use the most protective workable control, document the conflict, and elevate through the safety chain for interpretation", isCorrect: true),
+                QuizChoice(id: "dorm-q10-b", text: "Ignore DAFMAN 91-203 because deployed locations are exempt from occupational safety standards", isCorrect: false),
+                QuizChoice(id: "dorm-q10-c", text: "Apply only host-nation rules because they supersede DAF guidance on installations", isCorrect: false),
+                QuizChoice(id: "dorm-q10-d", text: "Choose the least restrictive standard to preserve mission tempo", isCorrect: false)
+            ]
+        )
+    ]
+
+    // MARK: - Hazard Communication
+
+    static let hazardCommunication: [QuizQuestion] = [
+        QuizQuestion(
+            id: "hazcom-q1",
+            prompt: "What is the core purpose of OSHA 1910.1200, Hazard Communication?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "hazcom-q1-a", text: "Ensure chemical hazards are classified and communicated through labels, SDSs, and worker training", isCorrect: true),
+                QuizChoice(id: "hazcom-q1-b", text: "Require safety offices to approve every chemical purchase", isCorrect: false),
+                QuizChoice(id: "hazcom-q1-c", text: "Limit hazardous chemicals to industrial shops only", isCorrect: false),
+                QuizChoice(id: "hazcom-q1-d", text: "Replace PPE selection with manufacturer warning labels", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "hazcom-q2",
+            prompt: "A secondary spray bottle contains a solvent transferred from a bulk container. What must be true before workers use it?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "hazcom-q2-a", text: "It must be labeled with the chemical identity and appropriate hazard warnings unless an immediate-use exception applies", isCorrect: true),
+                QuizChoice(id: "hazcom-q2-b", text: "It needs no label if everyone in the shop recognizes the smell", isCorrect: false),
+                QuizChoice(id: "hazcom-q2-c", text: "Only the storage cabinet needs a label", isCorrect: false),
+                QuizChoice(id: "hazcom-q2-d", text: "A handwritten date is enough if the container is used during the same week", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "hazcom-q3",
+            prompt: "When must employees receive HazCom training?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "hazcom-q3-a", text: "At initial assignment and when a new chemical hazard is introduced into their work area", isCorrect: true),
+                QuizChoice(id: "hazcom-q3-b", text: "Only after a chemical exposure incident", isCorrect: false),
+                QuizChoice(id: "hazcom-q3-c", text: "Every five years regardless of chemical changes", isCorrect: false),
+                QuizChoice(id: "hazcom-q3-d", text: "Only if they handle chemicals classified as acutely toxic", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "hazcom-q4",
+            prompt: "How must Safety Data Sheets be made available to workers?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "hazcom-q4-a", text: "Readily accessible during each work shift when workers are in their work areas", isCorrect: true),
+                QuizChoice(id: "hazcom-q4-b", text: "Stored only in the safety office for inspector review", isCorrect: false),
+                QuizChoice(id: "hazcom-q4-c", text: "Provided only after a worker submits a written request", isCorrect: false),
+                QuizChoice(id: "hazcom-q4-d", text: "Kept by the manufacturer; local copies are optional", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "hazcom-q5",
+            prompt: "A chemical arrives with a damaged label and no SDS. What is the correct response?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "hazcom-q5-a", text: "Do not release it for use until the identity, hazards, label information, and SDS are obtained", isCorrect: true),
+                QuizChoice(id: "hazcom-q5-b", text: "Use it if the container shape matches a known product", isCorrect: false),
+                QuizChoice(id: "hazcom-q5-c", text: "Place it in the flammable cabinet and wait for the next inspection", isCorrect: false),
+                QuizChoice(id: "hazcom-q5-d", text: "Let only experienced workers use it until the SDS arrives", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "hazcom-q6",
+            prompt: "What belongs in a written HazCom program?",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "hazcom-q6-a", text: "How labels, SDS access, training, non-routine tasks, and contractor chemical information will be managed", isCorrect: true),
+                QuizChoice(id: "hazcom-q6-b", text: "Only a list of workers authorized to order chemicals", isCorrect: false),
+                QuizChoice(id: "hazcom-q6-c", text: "Only emergency spill phone numbers", isCorrect: false),
+                QuizChoice(id: "hazcom-q6-d", text: "A statement that workers should read manufacturer labels on their own", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "hazcom-q7",
+            prompt: "Which item is required on shipped-container HazCom labels?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "hazcom-q7-a", text: "Product identifier, signal word, hazard statement, pictogram, precautionary statement, and supplier information", isCorrect: true),
+                QuizChoice(id: "hazcom-q7-b", text: "Only the National Stock Number and expiration date", isCorrect: false),
+                QuizChoice(id: "hazcom-q7-c", text: "Only PPE icons selected by the local shop", isCorrect: false),
+                QuizChoice(id: "hazcom-q7-d", text: "Only the chemical formula and purchase order number", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "hazcom-q8",
+            prompt: "A worker is assigned a non-routine task involving a chemical line break. What must the supervisor address?",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "hazcom-q8-a", text: "Specific chemical hazards, required protective measures, and steps the organization uses to reduce risk", isCorrect: true),
+                QuizChoice(id: "hazcom-q8-b", text: "Only the fastest method to restore production", isCorrect: false),
+                QuizChoice(id: "hazcom-q8-c", text: "Only whether the worker has completed annual general safety training", isCorrect: false),
+                QuizChoice(id: "hazcom-q8-d", text: "No additional briefing is needed if the worker has seen the SDS before", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "hazcom-q9",
+            prompt: "A shop stores incompatible chemicals together because both are corrosive. What is the best inspection finding?",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "hazcom-q9-a", text: "Hazard class alone is not enough; review SDS incompatibilities and segregate chemicals accordingly", isCorrect: true),
+                QuizChoice(id: "hazcom-q9-b", text: "All corrosives may be stored together if the cabinet is labeled", isCorrect: false),
+                QuizChoice(id: "hazcom-q9-c", text: "Segregation is required only for flammable liquids", isCorrect: false),
+                QuizChoice(id: "hazcom-q9-d", text: "Storage compatibility is a logistics issue, not a safety concern", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "hazcom-q10",
+            prompt: "What is the safest response when workers cannot explain the hazards of a chemical they use daily?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "hazcom-q10-a", text: "Retrain on the chemical hazards, SDS location, label elements, protective measures, and emergency procedures", isCorrect: true),
+                QuizChoice(id: "hazcom-q10-b", text: "Assume experience replaces formal HazCom understanding", isCorrect: false),
+                QuizChoice(id: "hazcom-q10-c", text: "Remove the SDS binder to force workers to ask supervisors", isCorrect: false),
+                QuizChoice(id: "hazcom-q10-d", text: "Mark the finding closed if the product label is readable", isCorrect: false)
+            ]
+        )
+    ]
+
+    // MARK: - Electrical Safety
+
+    static let electricalSafety: [QuizQuestion] = [
+        QuizQuestion(
+            id: "electrical-q1",
+            prompt: "Live electrical parts operating at 50 volts or more must generally be:",
+            difficulty: .medium,
+            imageName: "hazard_scene_03_electrical",
+            choices: [
+                QuizChoice(id: "electrical-q1-a", text: "Guarded against accidental contact by approved enclosures or other effective means", isCorrect: true),
+                QuizChoice(id: "electrical-q1-b", text: "Marked with caution tape only if the panel is indoors", isCorrect: false),
+                QuizChoice(id: "electrical-q1-c", text: "Left exposed so qualified workers can troubleshoot faster", isCorrect: false),
+                QuizChoice(id: "electrical-q1-d", text: "Covered only during annual inspections", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "electrical-q2",
+            prompt: "Storage boxes leave only 24 inches of clearance in front of a 480V panel. What is the issue?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "electrical-q2-a", text: "Electrical working space must be kept clear and sufficient for safe operation and maintenance", isCorrect: true),
+                QuizChoice(id: "electrical-q2-b", text: "Clearance is acceptable if the boxes are lightweight", isCorrect: false),
+                QuizChoice(id: "electrical-q2-c", text: "Only the panel door swing matters", isCorrect: false),
+                QuizChoice(id: "electrical-q2-d", text: "The requirement applies only while electricians are actively working", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "electrical-q3",
+            prompt: "An extension cord is run through a wall opening to power permanent equipment. What is correct?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "electrical-q3-a", text: "Flexible cords cannot be used as a substitute for fixed wiring or run through walls", isCorrect: true),
+                QuizChoice(id: "electrical-q3-b", text: "It is acceptable if the cord is rated for the load", isCorrect: false),
+                QuizChoice(id: "electrical-q3-c", text: "It is acceptable if the hole is sealed with foam", isCorrect: false),
+                QuizChoice(id: "electrical-q3-d", text: "It is allowed for any equipment under 120 volts", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "electrical-q4",
+            prompt: "A worker finds a portable tool cord with exposed conductors. What should happen?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "electrical-q4-a", text: "Remove the tool or cord from service until repaired or replaced by qualified personnel", isCorrect: true),
+                QuizChoice(id: "electrical-q4-b", text: "Wrap it with tape and use it for the rest of the shift", isCorrect: false),
+                QuizChoice(id: "electrical-q4-c", text: "Use it only on a dry floor", isCorrect: false),
+                QuizChoice(id: "electrical-q4-d", text: "Let the user decide based on urgency", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "electrical-q5",
+            prompt: "Before servicing electrical equipment, what is the safest baseline approach?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "electrical-q5-a", text: "Establish an electrically safe work condition by de-energizing, locking/tagging, and verifying absence of voltage", isCorrect: true),
+                QuizChoice(id: "electrical-q5-b", text: "Work energized if the task should take less than 10 minutes", isCorrect: false),
+                QuizChoice(id: "electrical-q5-c", text: "Have a coworker stand near the disconnect instead of locking it", isCorrect: false),
+                QuizChoice(id: "electrical-q5-d", text: "Wear rubber-soled boots and continue energized work", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "electrical-q6",
+            prompt: "What makes a person qualified for electrical work?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "electrical-q6-a", text: "Training and demonstrated skills to recognize hazards, use safe work practices, and work on the specific equipment", isCorrect: true),
+                QuizChoice(id: "electrical-q6-b", text: "Having any maintenance AFSC or job title", isCorrect: false),
+                QuizChoice(id: "electrical-q6-c", text: "Owning insulated tools", isCorrect: false),
+                QuizChoice(id: "electrical-q6-d", text: "Being supervised by a qualified person from another room", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "electrical-q7",
+            prompt: "A junction box has missing cover plates with energized conductors inside. What is required?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "electrical-q7-a", text: "Install approved covers or otherwise guard the live parts before the area is returned to use", isCorrect: true),
+                QuizChoice(id: "electrical-q7-b", text: "Post a warning sign and leave the box open for ventilation", isCorrect: false),
+                QuizChoice(id: "electrical-q7-c", text: "Cover it with cardboard until parts arrive", isCorrect: false),
+                QuizChoice(id: "electrical-q7-d", text: "No action is needed if the box is above eye level", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "electrical-q8",
+            prompt: "What is the main hazard of daisy-chaining power strips in an office or shop?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "electrical-q8-a", text: "Overloading circuits and using temporary wiring in a way not approved for permanent installation", isCorrect: true),
+                QuizChoice(id: "electrical-q8-b", text: "It only creates a housekeeping issue", isCorrect: false),
+                QuizChoice(id: "electrical-q8-c", text: "It is safe if all strips have surge protection", isCorrect: false),
+                QuizChoice(id: "electrical-q8-d", text: "It is allowed when the first strip is plugged into a GFCI", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "electrical-q9",
+            prompt: "Why are GFCIs used in wet, damp, or temporary-power environments?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "electrical-q9-a", text: "They interrupt ground-fault current quickly to reduce shock and electrocution risk", isCorrect: true),
+                QuizChoice(id: "electrical-q9-b", text: "They increase available current for heavy equipment", isCorrect: false),
+                QuizChoice(id: "electrical-q9-c", text: "They replace the need for equipment grounding conductors", isCorrect: false),
+                QuizChoice(id: "electrical-q9-d", text: "They prevent all arc-flash hazards", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "electrical-q10",
+            prompt: "An inspector sees unlabeled disconnects controlling multiple machines. What is the concern?",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "electrical-q10-a", text: "Workers may not be able to identify and isolate the correct energy source during normal operation or LOTO", isCorrect: true),
+                QuizChoice(id: "electrical-q10-b", text: "Labels are optional if the disconnects are color coded", isCorrect: false),
+                QuizChoice(id: "electrical-q10-c", text: "Only the newest disconnect must be labeled", isCorrect: false),
+                QuizChoice(id: "electrical-q10-d", text: "The concern applies only to high-voltage substations", isCorrect: false)
+            ]
+        )
+    ]
+
+    // MARK: - Machine Guarding
+
+    static let machineGuarding: [QuizQuestion] = [
+        QuizQuestion(
+            id: "machine-guarding-q1",
+            prompt: "What hazards must machine guards protect workers from?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "machine-guarding-q1-a", text: "Point of operation, nip points, rotating parts, flying chips, and sparks", isCorrect: true),
+                QuizChoice(id: "machine-guarding-q1-b", text: "Only sharp cutting edges", isCorrect: false),
+                QuizChoice(id: "machine-guarding-q1-c", text: "Only hazards that have caused a previous injury", isCorrect: false),
+                QuizChoice(id: "machine-guarding-q1-d", text: "Only hazards above waist level", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "machine-guarding-q2",
+            prompt: "A production supervisor removes a point-of-operation guard to increase output. What is correct?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "machine-guarding-q2-a", text: "Stop use until effective guarding is restored and workers are protected from the point of operation", isCorrect: true),
+                QuizChoice(id: "machine-guarding-q2-b", text: "Allow operation if workers are experienced", isCorrect: false),
+                QuizChoice(id: "machine-guarding-q2-c", text: "Run slower to compensate for the missing guard", isCorrect: false),
+                QuizChoice(id: "machine-guarding-q2-d", text: "Add a warning sign and continue production", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "machine-guarding-q3",
+            prompt: "On a bench grinder, the tongue guard should be adjusted to within what distance of the wheel?",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "machine-guarding-q3-a", text: "1/4 inch", isCorrect: true),
+                QuizChoice(id: "machine-guarding-q3-b", text: "1/8 inch", isCorrect: false),
+                QuizChoice(id: "machine-guarding-q3-c", text: "1/2 inch", isCorrect: false),
+                QuizChoice(id: "machine-guarding-q3-d", text: "1 inch", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "machine-guarding-q4",
+            prompt: "On a bench grinder, the work rest should be adjusted to within what distance of the wheel?",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "machine-guarding-q4-a", text: "1/8 inch", isCorrect: true),
+                QuizChoice(id: "machine-guarding-q4-b", text: "1/4 inch", isCorrect: false),
+                QuizChoice(id: "machine-guarding-q4-c", text: "1/2 inch", isCorrect: false),
+                QuizChoice(id: "machine-guarding-q4-d", text: "2 inches", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "machine-guarding-q5",
+            prompt: "Why must abrasive wheels be ring-tested before mounting?",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "machine-guarding-q5-a", text: "To help detect cracks or defects that could cause the wheel to shatter during use", isCorrect: true),
+                QuizChoice(id: "machine-guarding-q5-b", text: "To confirm the wheel is the correct color for the grinder", isCorrect: false),
+                QuizChoice(id: "machine-guarding-q5-c", text: "To measure the wheel's RPM rating", isCorrect: false),
+                QuizChoice(id: "machine-guarding-q5-d", text: "To remove dust from the wheel surface", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "machine-guarding-q6",
+            prompt: "A rotating shaft has exposed set screws that can catch clothing. What is required?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "machine-guarding-q6-a", text: "Guard or enclose the projecting parts so workers cannot contact them", isCorrect: true),
+                QuizChoice(id: "machine-guarding-q6-b", text: "Paint the set screws a bright color", isCorrect: false),
+                QuizChoice(id: "machine-guarding-q6-c", text: "Require workers to tuck in shirts and continue operation", isCorrect: false),
+                QuizChoice(id: "machine-guarding-q6-d", text: "Guard only if the shaft is above shoulder height", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "machine-guarding-q7",
+            prompt: "Can an emergency stop button replace a required machine guard?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "machine-guarding-q7-a", text: "No. Emergency stops are supplemental and do not prevent initial contact with the hazard", isCorrect: true),
+                QuizChoice(id: "machine-guarding-q7-b", text: "Yes, if the button is within arm's reach", isCorrect: false),
+                QuizChoice(id: "machine-guarding-q7-c", text: "Yes, if workers test the button daily", isCorrect: false),
+                QuizChoice(id: "machine-guarding-q7-d", text: "Only on machines with two operators", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "machine-guarding-q8",
+            prompt: "What should happen before clearing a jam inside a guarded machine?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "machine-guarding-q8-a", text: "Shut down, isolate hazardous energy, apply LOTO as required, and verify zero energy before reaching in", isCorrect: true),
+                QuizChoice(id: "machine-guarding-q8-b", text: "Reach in quickly while another worker watches the controls", isCorrect: false),
+                QuizChoice(id: "machine-guarding-q8-c", text: "Use a long tool while the machine jogs slowly", isCorrect: false),
+                QuizChoice(id: "machine-guarding-q8-d", text: "Clear the jam during normal production because it is routine", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "machine-guarding-q9",
+            prompt: "What makes a guard effective?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "machine-guarding-q9-a", text: "It prevents worker contact with hazards, is secure, does not create new hazards, and allows required work", isCorrect: true),
+                QuizChoice(id: "machine-guarding-q9-b", text: "It can be removed quickly without tools", isCorrect: false),
+                QuizChoice(id: "machine-guarding-q9-c", text: "It blocks the operator's view so they stay cautious", isCorrect: false),
+                QuizChoice(id: "machine-guarding-q9-d", text: "It is effective if it satisfies the manufacturer, even when workers can reach around it", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "machine-guarding-q10",
+            prompt: "After maintenance, when may a machine be returned to service?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "machine-guarding-q10-a", text: "After guards are reinstalled, tools are removed, personnel are clear, and energy is restored under the procedure", isCorrect: true),
+                QuizChoice(id: "machine-guarding-q10-b", text: "As soon as the repair is mechanically complete", isCorrect: false),
+                QuizChoice(id: "machine-guarding-q10-c", text: "Before guards are installed so the operator can test production speed", isCorrect: false),
+                QuizChoice(id: "machine-guarding-q10-d", text: "When the supervisor verbally accepts the risk", isCorrect: false)
+            ]
+        )
+    ]
+
+    // MARK: - Material Handling
+
+    static let materialHandling: [QuizQuestion] = [
+        QuizQuestion(
+            id: "material-handling-q1",
+            prompt: "What is required for aisles where mechanical handling equipment operates?",
+            difficulty: .medium,
+            imageName: "hazard_scene_05_warehouse",
+            choices: [
+                QuizChoice(id: "material-handling-q1-a", text: "Aisles must be kept clear, in good repair, and marked where mechanical handling equipment is used", isCorrect: true),
+                QuizChoice(id: "material-handling-q1-b", text: "Aisle markings are optional if forklift horns work", isCorrect: false),
+                QuizChoice(id: "material-handling-q1-c", text: "Only pedestrian walkways require markings", isCorrect: false),
+                QuizChoice(id: "material-handling-q1-d", text: "Temporary storage is allowed if it lasts less than one shift", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "material-handling-q2",
+            prompt: "Stacked materials are leaning and heavy items are stored on top. What standard principle applies?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "material-handling-q2-a", text: "Storage must not create a hazard; materials must be stable, secure, and limited in height as needed", isCorrect: true),
+                QuizChoice(id: "material-handling-q2-b", text: "Storage height is unrestricted if the rack is metal", isCorrect: false),
+                QuizChoice(id: "material-handling-q2-c", text: "Only flammable materials require stable storage", isCorrect: false),
+                QuizChoice(id: "material-handling-q2-d", text: "A warning cone satisfies the requirement until the next inventory cycle", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "material-handling-q3",
+            prompt: "A powered industrial truck has faulty brakes during pre-use inspection. What must happen?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "material-handling-q3-a", text: "Remove it from service until restored to safe operating condition", isCorrect: true),
+                QuizChoice(id: "material-handling-q3-b", text: "Use it at low speed until maintenance is available", isCorrect: false),
+                QuizChoice(id: "material-handling-q3-c", text: "Assign only the most experienced operator", isCorrect: false),
+                QuizChoice(id: "material-handling-q3-d", text: "Operate it only in reverse", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "material-handling-q4",
+            prompt: "How often must a forklift operator's performance be formally evaluated under OSHA?",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "material-handling-q4-a", text: "At least once every three years, with refresher training when specified triggers occur", isCorrect: true),
+                QuizChoice(id: "material-handling-q4-b", text: "Only at initial certification", isCorrect: false),
+                QuizChoice(id: "material-handling-q4-c", text: "Every month by the safety office", isCorrect: false),
+                QuizChoice(id: "material-handling-q4-d", text: "Only after a reportable mishap", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "material-handling-q5",
+            prompt: "A forklift operator cannot read the data plate because it is missing. What is the correct action?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "material-handling-q5-a", text: "Do not operate until capacity and configuration information is restored and verified", isCorrect: true),
+                QuizChoice(id: "material-handling-q5-b", text: "Estimate capacity from similar forklifts", isCorrect: false),
+                QuizChoice(id: "material-handling-q5-c", text: "Use it only for light loads", isCorrect: false),
+                QuizChoice(id: "material-handling-q5-d", text: "Ask the operator to memorize the old plate information", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "material-handling-q6",
+            prompt: "What is the safest way to travel with a forklift load?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "material-handling-q6-a", text: "Keep the load stable and low enough for safe travel while maintaining visibility and control", isCorrect: true),
+                QuizChoice(id: "material-handling-q6-b", text: "Raise the load high to avoid floor obstructions", isCorrect: false),
+                QuizChoice(id: "material-handling-q6-c", text: "Carry the load tilted forward to see beneath it", isCorrect: false),
+                QuizChoice(id: "material-handling-q6-d", text: "Travel with forks fully elevated when the aisle is clear", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "material-handling-q7",
+            prompt: "What must happen before modifying a forklift attachment or capacity?",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "material-handling-q7-a", text: "Obtain manufacturer approval and update markings, capacity, and operating instructions as required", isCorrect: true),
+                QuizChoice(id: "material-handling-q7-b", text: "Test the modification with a heavy load and document the result", isCorrect: false),
+                QuizChoice(id: "material-handling-q7-c", text: "Use local commander approval instead of manufacturer approval", isCorrect: false),
+                QuizChoice(id: "material-handling-q7-d", text: "Allow temporary use if the attachment fits the forks", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "material-handling-q8",
+            prompt: "A pedestrian walks under an elevated forklift load. What is the issue?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "material-handling-q8-a", text: "No one should stand or pass under elevated portions of powered industrial trucks, loaded or empty", isCorrect: true),
+                QuizChoice(id: "material-handling-q8-b", text: "It is acceptable if the operator sounds the horn", isCorrect: false),
+                QuizChoice(id: "material-handling-q8-c", text: "It is acceptable if the load is strapped", isCorrect: false),
+                QuizChoice(id: "material-handling-q8-d", text: "Only supervisors may pass under elevated loads", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "material-handling-q9",
+            prompt: "What should an inspector verify about sling or hoist equipment before use?",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "material-handling-q9-a", text: "Rated capacity, condition, inspection status, compatibility with the load, and removal of damaged gear", isCorrect: true),
+                QuizChoice(id: "material-handling-q9-b", text: "Only that the gear looks clean", isCorrect: false),
+                QuizChoice(id: "material-handling-q9-c", text: "Only that the operator has used the same gear before", isCorrect: false),
+                QuizChoice(id: "material-handling-q9-d", text: "Only that the lift will take less than five minutes", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "material-handling-q10",
+            prompt: "A forklift is used to lift a worker on a pallet to reach overhead storage. What is correct?",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "material-handling-q10-a", text: "Do not lift personnel unless using an approved personnel platform and required controls", isCorrect: true),
+                QuizChoice(id: "material-handling-q10-b", text: "It is acceptable if the worker stands still", isCorrect: false),
+                QuizChoice(id: "material-handling-q10-c", text: "It is acceptable if the forklift stays in neutral", isCorrect: false),
+                QuizChoice(id: "material-handling-q10-d", text: "A pallet is acceptable if it is strapped to the forks", isCorrect: false)
+            ]
+        )
+    ]
+
+    // MARK: - Fire / Hot Work
+
+    static let fireHotWork: [QuizQuestion] = [
+        QuizQuestion(
+            id: "fire-hot-work-q1",
+            prompt: "When welding or cutting near combustible material that cannot be moved, what is normally required?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "fire-hot-work-q1-a", text: "Protect combustibles and post a fire watch during hot work and for at least 30 minutes after", isCorrect: true),
+                QuizChoice(id: "fire-hot-work-q1-b", text: "Proceed if the welder has a fire extinguisher nearby", isCorrect: false),
+                QuizChoice(id: "fire-hot-work-q1-c", text: "Wet the floor only and skip the fire watch", isCorrect: false),
+                QuizChoice(id: "fire-hot-work-q1-d", text: "Rely on building sprinklers as the sole control", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "fire-hot-work-q2",
+            prompt: "What is the purpose of a hot work permit?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "fire-hot-work-q2-a", text: "Document authorization, hazards, fire prevention controls, fire watch, and area readiness before hot work starts", isCorrect: true),
+                QuizChoice(id: "fire-hot-work-q2-b", text: "Replace the need to inspect the work area", isCorrect: false),
+                QuizChoice(id: "fire-hot-work-q2-c", text: "Authorize any welding anywhere on the installation for one year", isCorrect: false),
+                QuizChoice(id: "fire-hot-work-q2-d", text: "Serve only as a maintenance work order", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "fire-hot-work-q3",
+            prompt: "A portable extinguisher is blocked by pallets. What is the violation?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "fire-hot-work-q3-a", text: "Extinguishers must be readily accessible and immediately available without obstruction", isCorrect: true),
+                QuizChoice(id: "fire-hot-work-q3-b", text: "Blocked access is acceptable if employees know where the extinguisher is", isCorrect: false),
+                QuizChoice(id: "fire-hot-work-q3-c", text: "Only wheeled extinguishers require clear access", isCorrect: false),
+                QuizChoice(id: "fire-hot-work-q3-d", text: "Access matters only during fire drills", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "fire-hot-work-q4",
+            prompt: "How often must portable fire extinguishers receive a documented maintenance check under OSHA?",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "fire-hot-work-q4-a", text: "At least annually", isCorrect: true),
+                QuizChoice(id: "fire-hot-work-q4-b", text: "Every five years", isCorrect: false),
+                QuizChoice(id: "fire-hot-work-q4-c", text: "Only after discharge", isCorrect: false),
+                QuizChoice(id: "fire-hot-work-q4-d", text: "Only when the pressure gauge is low", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "fire-hot-work-q5",
+            prompt: "An exit route is partially blocked by stored equipment. What is required?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "fire-hot-work-q5-a", text: "Keep exit routes free and unobstructed so personnel can evacuate safely", isCorrect: true),
+                QuizChoice(id: "fire-hot-work-q5-b", text: "Allow storage if a path remains around the equipment", isCorrect: false),
+                QuizChoice(id: "fire-hot-work-q5-c", text: "Post a map showing an alternate exit and leave the equipment", isCorrect: false),
+                QuizChoice(id: "fire-hot-work-q5-d", text: "Move the equipment only during inspections", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "fire-hot-work-q6",
+            prompt: "Before welding on a drum or container, what must be verified?",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "fire-hot-work-q6-a", text: "The container has been cleaned, purged, and made safe from flammable or toxic residues", isCorrect: true),
+                QuizChoice(id: "fire-hot-work-q6-b", text: "The container is empty by visual inspection only", isCorrect: false),
+                QuizChoice(id: "fire-hot-work-q6-c", text: "The drum has been open to air for at least one hour", isCorrect: false),
+                QuizChoice(id: "fire-hot-work-q6-d", text: "A fire watch is enough even if residues remain", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "fire-hot-work-q7",
+            prompt: "Oxygen and fuel-gas cylinders are stored together without separation. What is required when not in use?",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "fire-hot-work-q7-a", text: "Separate oxygen cylinders from fuel-gas cylinders or combustibles by distance or an approved fire-rated barrier", isCorrect: true),
+                QuizChoice(id: "fire-hot-work-q7-b", text: "Store them together if valve caps are installed", isCorrect: false),
+                QuizChoice(id: "fire-hot-work-q7-c", text: "Store them together if the cylinders are chained", isCorrect: false),
+                QuizChoice(id: "fire-hot-work-q7-d", text: "No separation is needed inside a welding shop", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "fire-hot-work-q8",
+            prompt: "What is the best first action when hot work sparks could enter wall or floor openings?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "fire-hot-work-q8-a", text: "Cover or close openings and inspect adjacent areas where sparks could travel before work starts", isCorrect: true),
+                QuizChoice(id: "fire-hot-work-q8-b", text: "Start work and check for smoke at the end", isCorrect: false),
+                QuizChoice(id: "fire-hot-work-q8-c", text: "Assign the welder to watch the openings while welding", isCorrect: false),
+                QuizChoice(id: "fire-hot-work-q8-d", text: "Use a smaller welding rod and continue", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "fire-hot-work-q9",
+            prompt: "A flammable-liquid cabinet is overfilled and containers are unlabeled. What should the inspector focus on?",
+            difficulty: .hard,
+            choices: [
+                QuizChoice(id: "fire-hot-work-q9-a", text: "Storage limits, compatible approved containers, labeling, closed containers, and fire-code compliance", isCorrect: true),
+                QuizChoice(id: "fire-hot-work-q9-b", text: "Only whether the cabinet doors can close", isCorrect: false),
+                QuizChoice(id: "fire-hot-work-q9-c", text: "Only whether the liquids are used daily", isCorrect: false),
+                QuizChoice(id: "fire-hot-work-q9-d", text: "No finding if the cabinet is yellow and marked flammable", isCorrect: false)
+            ]
+        ),
+        QuizQuestion(
+            id: "fire-hot-work-q10",
+            prompt: "Who should approve Air Force hot work controls when local fire prevention requirements apply?",
+            difficulty: .medium,
+            choices: [
+                QuizChoice(id: "fire-hot-work-q10-a", text: "Coordinate with Fire and Emergency Services or the designated fire prevention authority before work begins", isCorrect: true),
+                QuizChoice(id: "fire-hot-work-q10-b", text: "The welder alone approves the work because they hold the torch", isCorrect: false),
+                QuizChoice(id: "fire-hot-work-q10-c", text: "Only the production supervisor approves; fire prevention is not involved", isCorrect: false),
+                QuizChoice(id: "fire-hot-work-q10-d", text: "Approval is unnecessary if work is outdoors", isCorrect: false)
+            ]
+        )
     ]
 }
 

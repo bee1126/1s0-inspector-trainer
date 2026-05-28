@@ -60,7 +60,7 @@ struct RoleSelectionView: View {
                     }
                     .padding(.bottom, 36)
 
-                    // ── Role Cards ────────────────────────────────
+                    // ── Profile Cards ─────────────────────────────
                     VStack(spacing: 14) {
                         ForEach(TrainingRole.allCases) { role in
                             Button {
@@ -76,7 +76,7 @@ struct RoleSelectionView: View {
                             .accessibilityElement(children: .ignore)
                             .accessibilityLabel(role.displayName)
                             .accessibilityValue(selectedRole == role ? "Selected" : "Not selected")
-                            .accessibilityHint("Double tap to choose this role.")
+                            .accessibilityHint("Double tap to confirm this inspector profile.")
                         }
                     }
                     .padding(.horizontal, AppSpacing.screenPadding)
@@ -140,7 +140,7 @@ struct RoleSelectionView: View {
     }
 }
 
-// MARK: - Onboarding Role Card
+// MARK: - Onboarding Profile Card
 
 private struct OnboardingRoleCard: View {
     let role: TrainingRole

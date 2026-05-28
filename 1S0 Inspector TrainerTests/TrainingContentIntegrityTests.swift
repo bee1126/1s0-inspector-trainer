@@ -178,6 +178,88 @@ final class TrainingContentIntegrityTests: XCTestCase {
         }
     }
 
+    func testReferenceSourcesAreWellFormed() {
+        let references = TrainingContent.references
+
+        XCTAssertFalse(references.isEmpty, "Reference list should not be empty.")
+        XCTAssertEqual(Set(references.map(\.id)).count, references.count, "Duplicate reference IDs found.")
+
+        for source in references {
+            let prefix = "[reference:\(source.id)]"
+
+            XCTAssertFalse(source.id.trimmed.isEmpty, "\(prefix) id is empty.")
+            XCTAssertFalse(source.title.trimmed.isEmpty, "\(prefix) title is empty.")
+            XCTAssertFalse(source.date.trimmed.isEmpty, "\(prefix) date is empty.")
+            XCTAssertFalse(source.notes.trimmed.isEmpty, "\(prefix) notes are empty.")
+            if let url = source.url {
+                XCTAssertEqual(url.scheme, "https", "\(prefix) external reference must use HTTPS.")
+                XCTAssertFalse(url.host?.trimmed.isEmpty ?? true, "\(prefix) URL host is empty.")
+            }
+        }
+
+        XCTAssertEqual(
+            references.first { $0.id == "saferep-ios" }?.url,
+            URL(string: "https://apps.apple.com/us/app/saferep/id1406996346"),
+            "SAFEREP App Store reference is missing or incorrect."
+        )
+    }
+
+    func testGlossaryTermsAreWellFormed() {
+        let terms = GlossaryContent.terms
+
+        XCTAssertGreaterThanOrEqual(terms.count, 40)
+        XCTAssertEqual(Set(terms.map(\.id)).count, terms.count, "Duplicate glossary IDs found.")
+
+        for term in terms {
+            let prefix = "[glossary:\(term.id)]"
+
+            XCTAssertFalse(term.term.trimmed.isEmpty, "\(prefix) term is empty.")
+            XCTAssertFalse(term.definition.trimmed.isEmpty, "\(prefix) definition is empty.")
+            XCTAssertFalse(term.fieldUse.trimmed.isEmpty, "\(prefix) field use is empty.")
+            XCTAssertFalse(term.sourceCitation.trimmed.isEmpty, "\(prefix) source citation is empty.")
+            XCTAssertFalse(term.moduleIds.isEmpty, "\(prefix) must link to at least one training module.")
+            XCTAssertTrue(term.keywords.allSatisfy { !$0.trimmed.isEmpty }, "\(prefix) has blank keyword values.")
+        }
+    }
+
+    func testGlossaryModuleLinksMatchTrainingModules() {
+        let validModuleIds = Set(TrainingContent.modules(for: .oneS0).map(\.id))
+        let linkedModuleIds = Set(GlossaryContent.terms.flatMap(\.moduleIds))
+
+        XCTAssertTrue(
+            linkedModuleIds.isSubset(of: validModuleIds),
+            "Glossary links missing modules: \(linkedModuleIds.subtracting(validModuleIds).sorted().joined(separator: ", "))"
+        )
+
+        XCTAssertTrue(
+            validModuleIds.isSubset(of: linkedModuleIds),
+            "Modules without glossary coverage: \(validModuleIds.subtracting(linkedModuleIds).sorted().joined(separator: ", "))"
+        )
+    }
+
+    func testGlossaryIncludesCoreSafetyVocabulary() {
+        let termIds = Set(GlossaryContent.terms.map(\.id))
+        let requiredTermIds: Set<String> = [
+            "daf-form-457",
+            "risk-assessment-code",
+            "lockout",
+            "tagout",
+            "permit-required-confined-space",
+            "personal-fall-arrest-system",
+            "safety-data-sheet",
+            "hazard-communication",
+            "exposed-live-parts",
+            "machine-guard",
+            "powered-industrial-truck",
+            "hot-work"
+        ]
+
+        XCTAssertTrue(
+            requiredTermIds.isSubset(of: termIds),
+            "Missing required glossary terms: \(requiredTermIds.subtracting(termIds).sorted().joined(separator: ", "))"
+        )
+    }
+
     private var allModulesByRole: [(roleName: String, modules: [TrainingModule])] {
         [
             (roleName: "OneS0", modules: TrainingContent.modules(for: .oneS0))

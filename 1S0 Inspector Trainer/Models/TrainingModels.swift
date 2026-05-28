@@ -186,6 +186,15 @@ struct ReferenceSource: Identifiable, Hashable {
     let title: String
     let date: String
     let notes: String
+    let url: URL?
+
+    init(id: String, title: String, date: String, notes: String, url: URL? = nil) {
+        self.id = id
+        self.title = title
+        self.date = date
+        self.notes = notes
+        self.url = url
+    }
 }
 
 enum ModuleStageKey: String, Codable {

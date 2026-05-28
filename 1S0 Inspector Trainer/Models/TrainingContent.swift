@@ -573,21 +573,21 @@ enum TrainingContent {
         ),
         TrainingModule(
             id: "roles-responsibilities",
-            title: "Roles & Responsibilities",
-            subtitle: "Clarify who does what in the safety program",
+            title: "Program Responsibilities",
+            subtitle: "Clarify how commanders, supervisors, workers, and 1S0 inspectors sustain the safety program",
             estimatedMinutes: 14,
             difficulty: "Core",
             tags: ["Safety Program", "DAFMAN 91-203"],
             objectives: [
-                "Identify key safety roles at the unit level",
-                "Describe supervisor and employee responsibilities",
-                "Explain the safety office role in inspections and guidance",
+                "Identify key safety responsibilities at the unit level",
+                "Describe commander, supervisor, and worker responsibilities",
+                "Explain how 1S0 inspectors support inspections and guidance",
                 "Apply responsibility boundaries during inspections"
             ],
             lessonPages: [
                 LessonPage(
                     id: "roles-1",
-                    title: "Program Roles",
+                    title: "Program Responsibilities",
                     bullets: [
                         "Commanders and directors set expectations and allocate resources.",
                         "Supervisors enforce safe procedures and ensure training.",
@@ -597,7 +597,7 @@ enum TrainingContent {
                 ),
                 LessonPage(
                     id: "roles-2",
-                    title: "Supervisor Duties",
+                    title: "Supervisor Responsibilities",
                     bullets: [
                         "Ensure job hazard analysis and safe work practices are in place.",
                         "Correct unsafe acts and conditions promptly.",
@@ -606,7 +606,7 @@ enum TrainingContent {
                 ),
                 LessonPage(
                     id: "roles-3",
-                    title: "Employee Duties",
+                    title: "Worker Responsibilities",
                     bullets: [
                         "Follow approved procedures and report unsafe conditions.",
                         "Use assigned PPE correctly and maintain it.",
@@ -615,7 +615,7 @@ enum TrainingContent {
                 ),
                 LessonPage(
                     id: "roles-4",
-                    title: "Inspector Focus",
+                    title: "1S0 Inspector Focus",
                     bullets: [
                         "Clarify expectations with leadership before inspections.",
                         "Document findings and coordinate corrective actions.",
@@ -624,7 +624,7 @@ enum TrainingContent {
                 )
             ],
             scenario: Scenario(
-                title: "Pre-Inspection Brief",
+                title: "Pre-Inspection Alignment",
                 intro: "You are preparing for a shop inspection and need to align responsibilities before the walkthrough.",
                 startStepId: "roles-step-1",
                 steps: [
@@ -689,8 +689,8 @@ enum TrainingContent {
                             ),
                             ScenarioOption(
                                 id: "roles-step-2-d",
-                                text: "The inspector should personally correct each employee during the shift.",
-                                feedback: "Not the primary fix. Inspectors can coach, but supervisors own sustained enforcement and training.",
+                                text: "The 1S0 inspector should personally correct each employee during the shift.",
+                                feedback: "Not the primary fix. 1S0 inspectors can coach, but supervisors own sustained enforcement and training.",
                                 isCorrect: false,
                                 nextStepId: "roles-step-3"
                             )
@@ -1123,6 +1123,601 @@ enum TrainingContent {
             ),
             quiz: QuizBank.ppeDecision
         ),
+        TrainingModule(
+            id: "hazcom",
+            title: "Hazard Communication",
+            subtitle: "Classify, label, and communicate chemical hazards",
+            estimatedMinutes: 16,
+            difficulty: "Core",
+            tags: ["HazCom", "OSHA 1910.1200"],
+            objectives: [
+                "Verify chemical labels and Safety Data Sheet access",
+                "Identify when HazCom training is required",
+                "Assess secondary containers and non-routine task briefings",
+                "Connect SDS hazards to storage, PPE, and emergency procedures"
+            ],
+            lessonPages: [
+                LessonPage(
+                    id: "hazcom-1",
+                    title: "Chemical Right-To-Know",
+                    bullets: [
+                        "Workers must understand the chemical hazards in their work area.",
+                        "HazCom uses labels, Safety Data Sheets, and training to communicate those hazards.",
+                        "A written program explains how the organization manages labels, SDS access, and training."
+                    ]
+                ),
+                LessonPage(
+                    id: "hazcom-2",
+                    title: "Labels And SDSs",
+                    bullets: [
+                        "Shipped-container labels identify the product, hazards, precautions, pictograms, and supplier.",
+                        "Secondary containers need identity and hazard information unless an immediate-use exception applies.",
+                        "SDSs must be readily accessible during each work shift."
+                    ]
+                ),
+                LessonPage(
+                    id: "hazcom-3",
+                    title: "Training Triggers",
+                    bullets: [
+                        "Train workers at initial assignment and when new chemical hazards are introduced.",
+                        "Non-routine tasks require a specific hazard briefing before work starts.",
+                        "Storage compatibility comes from SDS data, not from broad hazard class names alone."
+                    ]
+                )
+            ],
+            scenario: Scenario(
+                title: "Unknown Solvent Bottle",
+                intro: "During an inspection, you find an unlabeled spray bottle near a parts washer and workers cannot identify the solvent.",
+                startStepId: "hazcom-step-1",
+                steps: [
+                    ScenarioStep(
+                        id: "hazcom-step-1",
+                        prompt: "What is your first correction?",
+                        options: [
+                            ScenarioOption(
+                                id: "hazcom-step-1-a",
+                                text: "Remove it from use until the identity, label information, and SDS are confirmed.",
+                                feedback: "Correct. Workers cannot safely use an unknown chemical.",
+                                isCorrect: true,
+                                nextStepId: "hazcom-step-2"
+                            ),
+                            ScenarioOption(
+                                id: "hazcom-step-1-b",
+                                text: "Smell it to identify the product.",
+                                feedback: "Incorrect. Intentional sniff testing is not a safe identification method.",
+                                isCorrect: false,
+                                nextStepId: "hazcom-step-2"
+                            ),
+                            ScenarioOption(
+                                id: "hazcom-step-1-c",
+                                text: "Let experienced workers keep using it.",
+                                feedback: "Incorrect. Experience does not replace labels, SDS access, and hazard communication.",
+                                isCorrect: false,
+                                nextStepId: "hazcom-step-2"
+                            ),
+                            ScenarioOption(
+                                id: "hazcom-step-1-d",
+                                text: "Move it to a cabinet and close the finding.",
+                                feedback: "Not enough. Storage does not resolve unknown identity or missing hazard information.",
+                                isCorrect: false,
+                                nextStepId: "hazcom-step-2"
+                            )
+                        ]
+                    ),
+                    ScenarioStep(
+                        id: "hazcom-step-2",
+                        prompt: "Workers say they have never been trained on the solvent. What do you recommend?",
+                        options: [
+                            ScenarioOption(
+                                id: "hazcom-step-2-a",
+                                text: "Conduct HazCom training on hazards, labels, SDS location, PPE, and emergency actions before further use.",
+                                feedback: "Correct. Training must cover the specific hazards and protective measures.",
+                                isCorrect: true,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "hazcom-step-2-b",
+                                text: "Have workers initial the SDS and resume work.",
+                                feedback: "Incorrect. Initialing a document is not the same as effective training.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "hazcom-step-2-c",
+                                text: "Wait for the annual safety day.",
+                                feedback: "Incorrect. New chemical hazards require training before exposure continues.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "hazcom-step-2-d",
+                                text: "Assign only one worker to use the solvent.",
+                                feedback: "Incorrect. Limiting users does not fix missing hazard communication.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            )
+                        ]
+                    )
+                ]
+            ),
+            quiz: QuizBank.hazardCommunication
+        ),
+        TrainingModule(
+            id: "electrical",
+            title: "Electrical Safety",
+            subtitle: "Control shock, arc, and temporary wiring hazards",
+            estimatedMinutes: 18,
+            difficulty: "Core",
+            tags: ["Electrical", "OSHA 1910 Subpart S"],
+            objectives: [
+                "Recognize exposed live parts and inadequate guarding",
+                "Evaluate electrical working space and cord use",
+                "Apply de-energized work and LOTO principles",
+                "Identify when qualified electrical personnel are required"
+            ],
+            lessonPages: [
+                LessonPage(
+                    id: "electrical-1",
+                    title: "Guard Live Parts",
+                    bullets: [
+                        "Live parts at 50 volts or more must be guarded against accidental contact.",
+                        "Missing covers, open panels, and damaged cords create direct shock hazards.",
+                        "Warnings do not replace approved covers, enclosures, or barriers."
+                    ]
+                ),
+                LessonPage(
+                    id: "electrical-2",
+                    title: "Working Space",
+                    bullets: [
+                        "Electrical panels need clear access for safe operation and maintenance.",
+                        "Storage in electrical working space slows emergency response and exposes workers to arc and shock hazards.",
+                        "Disconnects and circuits must be identifiable for normal operation and isolation."
+                    ]
+                ),
+                LessonPage(
+                    id: "electrical-3",
+                    title: "Safe Work Condition",
+                    bullets: [
+                        "De-energize equipment before servicing unless energized work is justified and controlled.",
+                        "Use LOTO and verify absence of voltage before touching conductors or parts.",
+                        "Qualified workers must know the equipment, hazards, and safe work practices."
+                    ]
+                )
+            ],
+            scenario: Scenario(
+                title: "Open Panel In A Shop",
+                intro: "A 480V panel is open, storage blocks the approach, and a mechanic wants to reset a breaker for production.",
+                startStepId: "electrical-step-1",
+                steps: [
+                    ScenarioStep(
+                        id: "electrical-step-1",
+                        prompt: "What should you do first?",
+                        options: [
+                            ScenarioOption(
+                                id: "electrical-step-1-a",
+                                text: "Restrict access, keep unqualified personnel away, and have qualified electrical personnel make the area safe.",
+                                feedback: "Correct. Exposed live parts and blocked working space require immediate control.",
+                                isCorrect: true,
+                                nextStepId: "electrical-step-2"
+                            ),
+                            ScenarioOption(
+                                id: "electrical-step-1-b",
+                                text: "Let the mechanic reset the breaker if they wear gloves.",
+                                feedback: "Incorrect. PPE alone does not make unqualified energized work acceptable.",
+                                isCorrect: false,
+                                nextStepId: "electrical-step-2"
+                            ),
+                            ScenarioOption(
+                                id: "electrical-step-1-c",
+                                text: "Close the panel door and ignore the storage.",
+                                feedback: "Not enough. Working space must remain clear.",
+                                isCorrect: false,
+                                nextStepId: "electrical-step-2"
+                            ),
+                            ScenarioOption(
+                                id: "electrical-step-1-d",
+                                text: "Post caution tape and return during the next inspection cycle.",
+                                feedback: "Incorrect. This is an immediate exposure hazard.",
+                                isCorrect: false,
+                                nextStepId: "electrical-step-2"
+                            )
+                        ]
+                    ),
+                    ScenarioStep(
+                        id: "electrical-step-2",
+                        prompt: "A repair is required inside the panel. What standard control should be planned?",
+                        options: [
+                            ScenarioOption(
+                                id: "electrical-step-2-a",
+                                text: "De-energize, lock/tag, verify absence of voltage, and follow qualified electrical work procedures.",
+                                feedback: "Correct. Establish an electrically safe work condition before repair.",
+                                isCorrect: true,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "electrical-step-2-b",
+                                text: "Work energized because troubleshooting is faster.",
+                                feedback: "Incorrect. Energized work requires strict justification and controls.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "electrical-step-2-c",
+                                text: "Have a coworker stand by the breaker instead of using LOTO.",
+                                feedback: "Incorrect. A spotter is not an energy-isolation device.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "electrical-step-2-d",
+                                text: "Turn off nearby lights to remind others work is underway.",
+                                feedback: "Incorrect. Visual cues do not verify zero energy.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            )
+                        ]
+                    )
+                ]
+            ),
+            quiz: QuizBank.electricalSafety
+        ),
+        TrainingModule(
+            id: "machine-guarding",
+            title: "Machine Guarding",
+            subtitle: "Prevent contact with moving machine hazards",
+            estimatedMinutes: 18,
+            difficulty: "Core",
+            tags: ["Machine Guarding", "OSHA 1910 Subpart O"],
+            objectives: [
+                "Identify point-of-operation and rotating-part hazards",
+                "Verify guards are effective and do not create new hazards",
+                "Inspect abrasive wheel guarding and setup",
+                "Connect machine clearing and maintenance to LOTO"
+            ],
+            lessonPages: [
+                LessonPage(
+                    id: "machine-1",
+                    title: "Guard The Hazard",
+                    bullets: [
+                        "Machine guards protect against points of operation, nip points, rotating parts, and flying material.",
+                        "A guard must prevent contact while allowing the work to be performed safely.",
+                        "Signs and emergency stops supplement guarding; they do not replace required guards."
+                    ]
+                ),
+                LessonPage(
+                    id: "machine-2",
+                    title: "Abrasive Wheels",
+                    bullets: [
+                        "Bench grinder tongue guards are adjusted close to the wheel.",
+                        "Work rests are kept close enough to prevent material from being pulled into the wheel.",
+                        "Damaged wheels and missing guards require removal from service."
+                    ]
+                ),
+                LessonPage(
+                    id: "machine-3",
+                    title: "Clearing Jams",
+                    bullets: [
+                        "Jam clearing exposes workers to unexpected motion and stored energy.",
+                        "Stop, isolate, lock/tag, and verify before reaching into danger zones.",
+                        "Return guards and tools to safe condition before restart."
+                    ]
+                )
+            ],
+            scenario: Scenario(
+                title: "Bench Grinder Setup",
+                intro: "A shop bench grinder has a wide tongue-guard gap and the work rest is far from the wheel.",
+                startStepId: "machine-step-1",
+                steps: [
+                    ScenarioStep(
+                        id: "machine-step-1",
+                        prompt: "What is the correct inspection action?",
+                        options: [
+                            ScenarioOption(
+                                id: "machine-step-1-a",
+                                text: "Stop use until guards and work rest are adjusted within required limits and the wheel is inspected.",
+                                feedback: "Correct. The setup can pull material into the wheel or allow fragments to escape.",
+                                isCorrect: true,
+                                nextStepId: "machine-step-2"
+                            ),
+                            ScenarioOption(
+                                id: "machine-step-1-b",
+                                text: "Allow use if operators wear face shields.",
+                                feedback: "Incorrect. PPE does not replace machine guarding.",
+                                isCorrect: false,
+                                nextStepId: "machine-step-2"
+                            ),
+                            ScenarioOption(
+                                id: "machine-step-1-c",
+                                text: "Mark it for monthly maintenance and continue use.",
+                                feedback: "Incorrect. Guarding deficiencies require immediate control.",
+                                isCorrect: false,
+                                nextStepId: "machine-step-2"
+                            ),
+                            ScenarioOption(
+                                id: "machine-step-1-d",
+                                text: "Reduce grinder speed by half and continue.",
+                                feedback: "Incorrect. Speed reduction does not correct improper guarding.",
+                                isCorrect: false,
+                                nextStepId: "machine-step-2"
+                            )
+                        ]
+                    ),
+                    ScenarioStep(
+                        id: "machine-step-2",
+                        prompt: "A worker wants to clear a jam inside a guarded machine. What should happen?",
+                        options: [
+                            ScenarioOption(
+                                id: "machine-step-2-a",
+                                text: "Use the energy control procedure before reaching into the machine.",
+                                feedback: "Correct. Jam clearing often requires LOTO and zero-energy verification.",
+                                isCorrect: true,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "machine-step-2-b",
+                                text: "Jog the machine while pulling the jam free.",
+                                feedback: "Incorrect. Jogging exposes the worker to moving parts.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "machine-step-2-c",
+                                text: "Use a long screwdriver while the machine idles.",
+                                feedback: "Incorrect. Tools can pull the worker into the hazard.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "machine-step-2-d",
+                                text: "Let the most experienced worker decide whether to lock out.",
+                                feedback: "Incorrect. The energy control requirement is based on exposure, not seniority.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            )
+                        ]
+                    )
+                ]
+            ),
+            quiz: QuizBank.machineGuarding
+        ),
+        TrainingModule(
+            id: "material-handling",
+            title: "Material Handling",
+            subtitle: "Control storage, forklift, and hoisting hazards",
+            estimatedMinutes: 18,
+            difficulty: "Core",
+            tags: ["Warehouse", "OSHA 1910.176/178"],
+            objectives: [
+                "Assess aisle clearance and stable storage",
+                "Verify powered industrial truck condition and operator controls",
+                "Recognize load, capacity, and elevated-load hazards",
+                "Inspect hoisting equipment for rating and condition"
+            ],
+            lessonPages: [
+                LessonPage(
+                    id: "material-1",
+                    title: "Storage And Aisles",
+                    bullets: [
+                        "Aisles must be clear, maintained, and marked where mechanical handling equipment is used.",
+                        "Materials must be stacked and secured so they do not collapse, slide, or obstruct egress.",
+                        "Housekeeping findings often point to deeper traffic-flow and supervision issues."
+                    ]
+                ),
+                LessonPage(
+                    id: "material-2",
+                    title: "Powered Trucks",
+                    bullets: [
+                        "Operators must be trained, evaluated, and authorized for the equipment and conditions.",
+                        "Defective powered industrial trucks are removed from service.",
+                        "Capacity plates and approved attachments define what the truck can safely lift."
+                    ]
+                ),
+                LessonPage(
+                    id: "material-3",
+                    title: "Hoisting Discipline",
+                    bullets: [
+                        "Use rated lifting gear compatible with the load and environment.",
+                        "Damaged slings, hooks, or hoist components are removed from service.",
+                        "No one should stand or pass beneath elevated loads."
+                    ]
+                )
+            ],
+            scenario: Scenario(
+                title: "Warehouse Reset",
+                intro: "Pallets are blocking marked aisles, a forklift has a missing capacity plate, and a worker is about to walk under an elevated load.",
+                startStepId: "material-step-1",
+                steps: [
+                    ScenarioStep(
+                        id: "material-step-1",
+                        prompt: "Which hazard should be controlled immediately?",
+                        options: [
+                            ScenarioOption(
+                                id: "material-step-1-a",
+                                text: "Stop the elevated-load exposure and move pedestrians out of the lift path.",
+                                feedback: "Correct. Personnel under loads face immediate crushing risk.",
+                                isCorrect: true,
+                                nextStepId: "material-step-2"
+                            ),
+                            ScenarioOption(
+                                id: "material-step-1-b",
+                                text: "Start repainting aisle lines first.",
+                                feedback: "Incorrect. Markings matter, but the elevated-load exposure is immediate.",
+                                isCorrect: false,
+                                nextStepId: "material-step-2"
+                            ),
+                            ScenarioOption(
+                                id: "material-step-1-c",
+                                text: "Ask the operator to hurry before the pedestrian crosses.",
+                                feedback: "Incorrect. Speed increases risk and does not control the hazard.",
+                                isCorrect: false,
+                                nextStepId: "material-step-2"
+                            ),
+                            ScenarioOption(
+                                id: "material-step-1-d",
+                                text: "Document only the blocked aisles.",
+                                feedback: "Not enough. Multiple material-handling hazards are present.",
+                                isCorrect: false,
+                                nextStepId: "material-step-2"
+                            )
+                        ]
+                    ),
+                    ScenarioStep(
+                        id: "material-step-2",
+                        prompt: "What should happen to the forklift with the missing capacity plate?",
+                        options: [
+                            ScenarioOption(
+                                id: "material-step-2-a",
+                                text: "Remove it from service until capacity information is restored and verified.",
+                                feedback: "Correct. Operators need verified capacity and configuration data.",
+                                isCorrect: true,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "material-step-2-b",
+                                text: "Use it only for light pallets.",
+                                feedback: "Incorrect. Guessing load capacity is not a control.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "material-step-2-c",
+                                text: "Let the senior operator approve each lift.",
+                                feedback: "Incorrect. Operator experience does not replace required equipment information.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "material-step-2-d",
+                                text: "Photograph the missing plate and close the finding.",
+                                feedback: "Incorrect. Documentation without removal from service leaves the hazard active.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            )
+                        ]
+                    )
+                ]
+            ),
+            quiz: QuizBank.materialHandling
+        ),
+        TrainingModule(
+            id: "fire-hot-work",
+            title: "Fire / Hot Work",
+            subtitle: "Prevent ignition, blocked egress, and extinguisher failures",
+            estimatedMinutes: 18,
+            difficulty: "Core",
+            tags: ["Fire", "Hot Work", "OSHA 1910.157/252"],
+            objectives: [
+                "Verify hot work permits and fire-watch controls",
+                "Inspect fire extinguisher access and maintenance status",
+                "Recognize blocked exits and ignition paths",
+                "Assess flammable storage and cylinder separation"
+            ],
+            lessonPages: [
+                LessonPage(
+                    id: "fire-1",
+                    title: "Hot Work Controls",
+                    bullets: [
+                        "Hot work requires area inspection, combustible control, authorization, and emergency readiness.",
+                        "Fire watch is required when combustibles cannot be moved or protected adequately.",
+                        "Sparks can travel through openings into concealed spaces."
+                    ]
+                ),
+                LessonPage(
+                    id: "fire-2",
+                    title: "Extinguishers And Exits",
+                    bullets: [
+                        "Portable extinguishers must be accessible and maintained.",
+                        "Exit routes must remain free and unobstructed.",
+                        "Fire equipment deficiencies require immediate replacement or correction."
+                    ]
+                ),
+                LessonPage(
+                    id: "fire-3",
+                    title: "Flammables",
+                    bullets: [
+                        "Flammable liquids require compatible containers, labels, closed storage, and quantity control.",
+                        "Oxygen and fuel-gas cylinders need proper separation or a rated barrier when stored.",
+                        "Never weld or cut on containers until residues are removed and the container is made safe."
+                    ]
+                )
+            ],
+            scenario: Scenario(
+                title: "Maintenance Bay Hot Work",
+                intro: "A welder is ready to cut brackets near cardboard packaging, a wall opening, and a blocked extinguisher.",
+                startStepId: "fire-step-1",
+                steps: [
+                    ScenarioStep(
+                        id: "fire-step-1",
+                        prompt: "What must happen before hot work starts?",
+                        options: [
+                            ScenarioOption(
+                                id: "fire-step-1-a",
+                                text: "Move or protect combustibles, clear extinguisher access, cover openings, and complete hot work authorization.",
+                                feedback: "Correct. Fire prevention controls come before ignition sources are introduced.",
+                                isCorrect: true,
+                                nextStepId: "fire-step-2"
+                            ),
+                            ScenarioOption(
+                                id: "fire-step-1-b",
+                                text: "Start cutting and assign someone to watch for smoke.",
+                                feedback: "Incorrect. Fire watch does not replace pre-work hazard control.",
+                                isCorrect: false,
+                                nextStepId: "fire-step-2"
+                            ),
+                            ScenarioOption(
+                                id: "fire-step-1-c",
+                                text: "Move the cardboard but leave the wall opening uncovered.",
+                                feedback: "Not enough. Sparks can travel into concealed spaces.",
+                                isCorrect: false,
+                                nextStepId: "fire-step-2"
+                            ),
+                            ScenarioOption(
+                                id: "fire-step-1-d",
+                                text: "Use a smaller torch tip and continue.",
+                                feedback: "Incorrect. Reducing torch size does not control combustibles or blocked fire equipment.",
+                                isCorrect: false,
+                                nextStepId: "fire-step-2"
+                            )
+                        ]
+                    ),
+                    ScenarioStep(
+                        id: "fire-step-2",
+                        prompt: "Combustibles cannot be moved more than 35 feet away. What control is required?",
+                        options: [
+                            ScenarioOption(
+                                id: "fire-step-2-a",
+                                text: "Protect the combustibles and post a fire watch during work and for at least 30 minutes after.",
+                                feedback: "Correct. Fire watch addresses ignition risk that remains after protection measures.",
+                                isCorrect: true,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "fire-step-2-b",
+                                text: "Proceed if the welder has completed annual training.",
+                                feedback: "Incorrect. Training does not eliminate the fire-watch requirement.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "fire-step-2-c",
+                                text: "Stop only if flames are visible.",
+                                feedback: "Incorrect. Prevention happens before ignition.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            ),
+                            ScenarioOption(
+                                id: "fire-step-2-d",
+                                text: "Leave a note for the next shift to inspect the area.",
+                                feedback: "Incorrect. The post-work fire watch is part of the active control.",
+                                isCorrect: false,
+                                nextStepId: nil
+                            )
+                        ]
+                    )
+                ]
+            ),
+            quiz: QuizBank.fireHotWork
+        ),
 
         // MARK: - Deployed ORM
 
@@ -1148,7 +1743,7 @@ enum TrainingContent {
                         "Deployed locations rarely have a fully established safety office, reference library, or inspection history.",
                         "Standards that are clear-cut in garrison become ambiguous in austere settings — temporary structures, expedient repairs, and improvised work areas are the norm.",
                         "Decision timelines compress dramatically. Commanders need answers in hours, not weeks.",
-                        "Your role as the safety professional does not change: identify hazards, assess risk, recommend controls, and inform the commander."
+                        "Your responsibilities as the 1S0 safety inspector do not change: identify hazards, assess risk, recommend controls, and inform the commander."
                     ]
                 ),
                 LessonPage(
@@ -1198,7 +1793,7 @@ enum TrainingContent {
             ],
             scenario: Scenario(
                 title: "Sandstorm Damage Assessment",
-                intro: "You are the deployed safety representative at a bare base in Southwest Asia. A major sandstorm has damaged several temporary structures and equipment. The Operations Group Commander needs your risk assessment before resuming flight operations. You have 2 hours before the next launch window.",
+                intro: "You are the deployed 1S0 safety inspector at a bare base in Southwest Asia. A major sandstorm has damaged several temporary structures and equipment. The Operations Group Commander needs your risk assessment before resuming flight operations. You have 2 hours before the next launch window.",
                 startStepId: "storm-1",
                 steps: [
                     ScenarioStep(
@@ -1263,7 +1858,7 @@ enum TrainingContent {
                             ScenarioOption(
                                 id: "storm-2-d",
                                 text: "This is a fuels issue, not a safety issue. Defer to the POL team.",
-                                feedback: "Incorrect. A fuel leak on the flight line is absolutely a safety issue — fire/explosion risk and environmental contamination fall within your scope. Coordinate with POL, but do not abdicate your assessment role.",
+                                feedback: "Incorrect. A fuel leak on the flight line is absolutely a safety issue — fire/explosion risk and environmental contamination fall within your scope. Coordinate with POL, but do not abdicate your assessment responsibility.",
                                 isCorrect: false,
                                 nextStepId: "storm-3"
                             )
@@ -1276,7 +1871,7 @@ enum TrainingContent {
                             ScenarioOption(
                                 id: "storm-3-a",
                                 text: "Support the vehicle-based alternative, document the tower as off-limits, and request a structural engineering assessment.",
-                                feedback: "Correct. The commander proposed a creative alternative that avoids the structural risk. Your role is to validate that the alternative is safe and ensure the damaged structure is formally restricted. Requesting engineering assessment is the right follow-up for the permanent fix.",
+                                feedback: "Correct. The commander proposed a creative alternative that avoids the structural risk. Your responsibility is to validate that the alternative is safe and ensure the damaged structure is formally restricted. Requesting engineering assessment is the right follow-up for the permanent fix.",
                                 isCorrect: true,
                                 nextStepId: "storm-4"
                             ),
@@ -1317,7 +1912,7 @@ enum TrainingContent {
                             ScenarioOption(
                                 id: "storm-4-b",
                                 text: "Sign it — you have assessed the risks and your mitigations are in place.",
-                                feedback: "Incorrect. Signing a risk acceptance letter exceeds your authority and role. If something goes wrong, you have taken personal liability for a command decision. Your role is to inform, not to accept risk on behalf of the organization.",
+                                feedback: "Incorrect. Signing a risk acceptance letter exceeds your authority as the 1S0 inspector. If something goes wrong, you have taken personal liability for a command decision. Your job is to inform, not to accept risk on behalf of the organization.",
                                 isCorrect: false,
                                 nextStepId: nil
                             ),
@@ -1356,46 +1951,95 @@ enum TrainingContent {
 
     static let references: [ReferenceSource] = [
         ReferenceSource(
+            id: "saferep-ios",
+            title: "SAFEREP - Air Force Safety Center App Store Listing",
+            date: "Accessed May 28, 2026",
+            notes: "Official Air Force Safety Center app for reporting hazardous conditions or events.",
+            url: URL(string: "https://apps.apple.com/us/app/saferep/id1406996346")
+        ),
+        ReferenceSource(
             id: "osha-1910-95",
             title: "OSHA 29 CFR 1910.95 - Occupational noise exposure",
-            date: "Accessed Feb 2, 2026",
+            date: "Accessed May 27, 2026",
             notes: "Hearing conservation program elements and exposure requirements."
         ),
         ReferenceSource(
             id: "osha-1910-147",
             title: "OSHA 29 CFR 1910.147 - The control of hazardous energy (lockout/tagout)",
-            date: "Accessed Feb 2, 2026",
+            date: "Accessed May 27, 2026",
             notes: "Sequence of lockout/tagout and program requirements."
         ),
         ReferenceSource(
             id: "osha-1910-146",
             title: "OSHA 29 CFR 1910.146 - Permit-required confined spaces",
-            date: "Accessed Feb 2, 2026",
+            date: "Accessed May 27, 2026",
             notes: "Confined space entry requirements and roles."
+        ),
+        ReferenceSource(
+            id: "osha-1910-1200",
+            title: "OSHA 29 CFR 1910.1200 - Hazard Communication",
+            date: "Accessed May 27, 2026",
+            notes: "Chemical labels, safety data sheets, and hazard communication training requirements."
+        ),
+        ReferenceSource(
+            id: "osha-1910-132-134",
+            title: "OSHA 29 CFR 1910.132 and 1910.134 - PPE and Respiratory Protection",
+            date: "Accessed May 27, 2026",
+            notes: "PPE assessment, selection, and respiratory protection terminology."
+        ),
+        ReferenceSource(
+            id: "osha-1910-subpart-s",
+            title: "OSHA 29 CFR 1910 Subpart S - Electrical",
+            date: "Accessed May 27, 2026",
+            notes: "Electrical guarding, working space, flexible cord, and safe installation requirements."
+        ),
+        ReferenceSource(
+            id: "osha-1910-subpart-o",
+            title: "OSHA 29 CFR 1910 Subpart O - Machinery and Machine Guarding",
+            date: "Accessed May 27, 2026",
+            notes: "Machine guarding, abrasive wheel, and mechanical power transmission requirements."
+        ),
+        ReferenceSource(
+            id: "osha-1910-176-178",
+            title: "OSHA 29 CFR 1910.176 and 1910.178 - Material Handling and Powered Industrial Trucks",
+            date: "Accessed May 27, 2026",
+            notes: "Storage, aisle, powered industrial truck, operator evaluation, and equipment condition requirements."
         ),
         ReferenceSource(
             id: "osha-1910-252",
             title: "OSHA 29 CFR 1910 Subpart Q - Welding, Cutting, and Brazing",
-            date: "Accessed Feb 2, 2026",
+            date: "Accessed May 27, 2026",
             notes: "Hot work controls, fire prevention, and related requirements."
         ),
         ReferenceSource(
+            id: "osha-1910-157",
+            title: "OSHA 29 CFR 1910.157 - Portable Fire Extinguishers",
+            date: "Accessed May 27, 2026",
+            notes: "Portable extinguisher access, inspection, maintenance, and training requirements."
+        ),
+        ReferenceSource(
             id: "osha-1910-subpart-d",
-            title: "OSHA 29 CFR 1910.28 and 1910.30 - Walking-Working Surfaces and Training",
-            date: "Accessed Feb 2, 2026",
+            title: "OSHA 29 CFR 1910 Subpart D - Walking-Working Surfaces and Training",
+            date: "Accessed May 27, 2026",
             notes: "Fall protection thresholds, systems, and training requirements."
+        ),
+        ReferenceSource(
+            id: "dafi-91-202",
+            title: "DAFI 91-202 - Department of the Air Force Mishap Prevention Program",
+            date: "20 Mar 2020, incorporating Change 1 (10 Apr 2024) and DAFGM2026-01 (26 Feb 2026)",
+            notes: "DAF hazard reporting, near-miss reporting, hazard abatement, and mishap prevention program responsibilities."
         ),
         ReferenceSource(
             id: "dafi-91-207",
             title: "DAFI 91-207 - The US Air Force Traffic Safety Program",
-            date: "Accessed Feb 2, 2026",
+            date: "Accessed May 27, 2026",
             notes: "Motorcycle safety program requirements and rider responsibilities."
         ),
         ReferenceSource(
             id: "dafman-91-203",
             title: "DAFMAN 91-203 - Air Force Occupational Safety, Fire, and Health Standards",
-            date: "25 Mar 2022 with DAFGM 2025-01 (12 May 2025)",
-            notes: "Roles, responsibilities, and hazard abatement references for the AF safety program."
+            date: "24 Feb 2026",
+            notes: "Safety program responsibilities and hazard abatement references for the Air Force safety program."
         ),
         ReferenceSource(
             id: "dafpam-90-803",

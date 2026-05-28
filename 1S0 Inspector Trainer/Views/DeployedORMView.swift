@@ -678,7 +678,7 @@ struct DeployedORMView: View {
         } else if scorePercent >= 50 {
             return "Needs improvement. Several ORM decision points were incorrect."
         } else {
-            return "Review AFMAN 90-802 ORM procedures and deployed safety guidance, then try again."
+            return "Review DAFPAM 90-803 RM procedures and deployed safety guidance, then try again."
         }
     }
 
