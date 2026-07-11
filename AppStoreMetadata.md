@@ -59,7 +59,7 @@ The DAF e-Publishing service may return an access-restricted response on some ma
 
 Content is aligned with publicly available OSHA standards and Air Force safety guidance. This is not an official Air Force product and does not replace current publications, local procedures, supervisor direction, or qualified safety judgment.
 
-## What's New — Version 1.5
+## What's New — Version 1.6
 • Added Live DAF e-Pubs access for core safety publications.
 • Watch regulations and see when server revision metadata changes.
 • Save official PDFs to Files for offline field use.
