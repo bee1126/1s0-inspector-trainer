@@ -101,7 +101,7 @@ Dry-run the API operations:
 source .env.appstoreconnect
 python3 scripts/asc_release.py submit \
   --version 1.6 \
-  --build-number 1 \
+  --build-number 5 \
   --whats-new-file /tmp/1s0-release-notes.txt \
   --dry-run
 ```
@@ -111,7 +111,7 @@ Submit for review:
 ```sh
 python3 scripts/asc_release.py submit \
   --version 1.6 \
-  --build-number 1 \
+  --build-number 5 \
   --whats-new-file /tmp/1s0-release-notes.txt \
   --submit-for-review
 ```
