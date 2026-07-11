@@ -15,7 +15,7 @@ struct BackgroundView: View {
             .ignoresSafeArea()
 
             // Scanline texture
-            GeometryReader { proxy in
+            GeometryReader { _ in
                 Canvas { context, size in
                     let step: CGFloat = 3
                     for y in stride(from: 0, through: size.height, by: step) {

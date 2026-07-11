@@ -17,21 +17,6 @@ enum AppTheme {
     static let muted    = Color(red: 0.35, green: 0.40, blue: 0.47)
     static let info     = Color(red: 0.4, green: 0.6, blue: 1.0)
 
-    // Semantic aliases (backward-compatible names)
-    static let navy        = bg
-    static let blue        = info
-    static let sky         = info.opacity(0.4)
-    static let safetyGreen = primary
-    static let mint        = primary.opacity(0.3)
-    static let sand        = text
-    static let charcoal    = text
-    static let xpGold      = accent
-
-    static let backgroundGradient = LinearGradient(
-        gradient: Gradient(colors: [bg, surface]),
-        startPoint: .top,
-        endPoint: .bottom
-    )
 }
 
 enum AppSpacing {

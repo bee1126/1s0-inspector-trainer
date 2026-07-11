@@ -9,6 +9,7 @@ struct PPELoadoutView: View {
     @State private var scenario: PPEScenario = PPELoadoutBank.allScenarios[0]
     @State private var selectedIds: Set<String> = []
     @State private var rewardSummary: RewardSummary? = nil
+    @State private var earnedBadgeThisRun = false
 
     private enum GamePhase {
         case picker
@@ -82,6 +83,7 @@ struct PPELoadoutView: View {
             transition(to: .picker)
             selectedIds = []
             rewardSummary = nil
+            earnedBadgeThisRun = false
         }
     }
 
@@ -154,6 +156,7 @@ struct PPELoadoutView: View {
                     scenario = s
                     selectedIds = []
                     rewardSummary = nil
+                    earnedBadgeThisRun = false
                     transition(to: .briefing)
                 } label: {
                     scenarioRow(s)
@@ -455,7 +458,7 @@ struct PPELoadoutView: View {
                 RewardSummaryCard(summary: rewardSummary, xpToNextLevel: progress.xpToNextLevel)
             }
 
-            if progress.allPPEScenariosCompleted && !hadBadgeBefore {
+            if earnedBadgeThisRun {
                 GlassCard(glow: AppTheme.accent.opacity(0.6)) {
                     HStack(spacing: 10) {
                         Image(systemName: "medal.fill")
@@ -479,6 +482,7 @@ struct PPELoadoutView: View {
                 transition(to: .picker)
                 selectedIds = []
                 rewardSummary = nil
+                earnedBadgeThisRun = false
             } label: {
                 HStack {
                     Text("Choose Another Scenario")
@@ -499,13 +503,6 @@ struct PPELoadoutView: View {
             }
             .buttonStyle(OutlineButtonStyle())
         }
-    }
-
-    // Tracks whether the badge was already earned before this round
-    private var hadBadgeBefore: Bool {
-        let allIds = Set(PPELoadoutBank.allScenarios.map(\.id))
-        let withoutCurrent = progress.completedPPEScenarios.subtracting([scenario.id])
-        return allIds.isSubset(of: withoutCurrent)
     }
 
     // MARK: - Sub-views
@@ -632,10 +629,12 @@ struct PPELoadoutView: View {
     }
 
     private func submitScore() {
+        let hadBadgeBefore = progress.allPPEScenariosCompleted
         let total = scenario.requiredItemIds.count
         let score = max(0, correctSelections - unnecessaryCount)
         rewardSummary = progress.completePractice(score: score, total: total)
         progress.markPPEScenarioCompleted(scenario.id)
+        earnedBadgeThisRun = !hadBadgeBefore && progress.allPPEScenariosCompleted
 
         if scorePercent >= 70 {
             AppFeedback.correct()

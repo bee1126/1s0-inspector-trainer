@@ -1,0 +1,7 @@
+No login or account is required. Training progress, favorites, and publication revision metadata are stored on-device. There are no analytics, advertising, or third-party SDKs.
+
+To review Live e-Pubs, open Refs → Live DAF e-Pubs. The screen sends HEAD requests to official e-publishing.af.mil HTTPS endpoints to check reachability and available revision headers. “Open Official PDF” opens the government-hosted PDF. “Save to Files for Offline Use” downloads the selected PDF and presents Apple’s standard file exporter. No feature depends on e-Pubs being reachable, and the rest of the training app remains fully functional offline.
+
+The government service may return an access-restricted response on some managed or automated networks. The app reports that state as “Open to Verify” and provides the official catalog search as a fallback.
+
+This is not an official Department of the Air Force product. It is a supplemental training aid and does not replace current publications, local procedures, supervisor direction, or qualified safety judgment.

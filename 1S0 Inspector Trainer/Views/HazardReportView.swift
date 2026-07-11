@@ -12,6 +12,7 @@ struct HazardReportView: View {
     @State private var stepResults: [String: Bool] = [:]
     @State private var selectedAnswers: [String: Int] = [:]
     @State private var rewardSummary: RewardSummary? = nil
+    @State private var earnedBadgeThisRun = false
 
     private enum GamePhase {
         case picker
@@ -99,6 +100,7 @@ struct HazardReportView: View {
         stepResults = [:]
         selectedAnswers = [:]
         rewardSummary = nil
+        earnedBadgeThisRun = false
         transition(to: .picker)
     }
 
@@ -174,6 +176,7 @@ struct HazardReportView: View {
                     stepResults = [:]
                     selectedAnswers = [:]
                     rewardSummary = nil
+                    earnedBadgeThisRun = false
                     transition(to: .reportReview)
                 } label: {
                     scenarioRow(s)
@@ -676,7 +679,7 @@ struct HazardReportView: View {
                 RewardSummaryCard(summary: rewardSummary, xpToNextLevel: progress.xpToNextLevel)
             }
 
-            if progress.allHazardReportsCompleted && !hadBadgeBefore {
+            if earnedBadgeThisRun {
                 GlassCard(glow: AppTheme.accent.opacity(0.6)) {
                     HStack(spacing: 10) {
                         Image(systemName: "medal.fill")
@@ -720,12 +723,6 @@ struct HazardReportView: View {
         }
     }
 
-    private var hadBadgeBefore: Bool {
-        let allIds = Set(HazardReportBank.allScenarios.map(\.id))
-        let withoutCurrent = progress.completedHazardReports.subtracting([scenario.id])
-        return allIds.isSubset(of: withoutCurrent)
-    }
-
     // MARK: - Scoring
 
     private var correctCount: Int {
@@ -754,8 +751,10 @@ struct HazardReportView: View {
     }
 
     private func submitScore() {
+        let hadBadgeBefore = progress.allHazardReportsCompleted
         rewardSummary = progress.completePractice(score: correctCount, total: steps.count)
         progress.markHazardReportCompleted(scenario.id)
+        earnedBadgeThisRun = !hadBadgeBefore && progress.allHazardReportsCompleted
         if scorePercent >= 70 {
             AppFeedback.correct()
         } else {

@@ -272,23 +272,6 @@ struct StreakPopupView: View {
     }
 }
 
-// MARK: - Challenge Row
-
-struct ChallengeRow: View {
-    let title: String
-    let isComplete: Bool
-
-    var body: some View {
-        HStack(spacing: 8) {
-            Image(systemName: isComplete ? "checkmark.square.fill" : "square")
-                .foregroundColor(isComplete ? AppTheme.primary : AppTheme.muted)
-            Text(title)
-                .font(AppFont.body(13))
-                .foregroundColor(AppTheme.text)
-        }
-    }
-}
-
 // MARK: - Form Fields
 
 struct FormFieldLabel: View {
@@ -453,4 +436,3 @@ struct FeedbackView: View {
         .accessibilityHint(accessibilityHint ?? "")
     }
 }
-

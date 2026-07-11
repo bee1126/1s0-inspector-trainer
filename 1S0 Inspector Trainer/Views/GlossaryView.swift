@@ -172,10 +172,13 @@ private struct GlossaryDetailView: View {
                     }
 
                     GlossaryDetailSection(title: "Source") {
-                        Text(term.sourceCitation)
-                            .font(AppFont.body(13))
-                            .foregroundColor(AppTheme.muted)
-                            .fixedSize(horizontal: false, vertical: true)
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text(term.sourceCitation)
+                                .font(AppFont.body(13))
+                                .foregroundColor(AppTheme.muted)
+                                .fixedSize(horizontal: false, vertical: true)
+                            EpubsCitationLinks(citation: term.sourceCitation)
+                        }
                     }
 
                     if !term.keywords.isEmpty {

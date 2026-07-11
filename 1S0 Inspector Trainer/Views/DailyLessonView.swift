@@ -89,13 +89,16 @@ struct DailyLessonView: View {
     // MARK: - Regulation Badge
 
     private func regulationBadge(_ regulation: String) -> some View {
-        HStack(spacing: 8) {
-            Image(systemName: "book.closed.fill")
-                .font(.system(size: 12, weight: .semibold))
-                .foregroundColor(AppTheme.info)
-            Text(regulation)
-                .font(AppFont.mono(12))
-                .foregroundColor(AppTheme.info)
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 8) {
+                Image(systemName: "book.closed.fill")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(AppTheme.info)
+                Text(regulation)
+                    .font(AppFont.mono(12))
+                    .foregroundColor(AppTheme.info)
+            }
+            EpubsCitationLinks(citation: regulation)
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 8)
@@ -183,9 +186,13 @@ struct DailyLessonCard: View {
         }
     }
 
-    private var todayFormatted: String {
+    private static let dayFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd MMM"
-        return formatter.string(from: Date()).uppercased()
+        return formatter
+    }()
+
+    private var todayFormatted: String {
+        Self.dayFormatter.string(from: Date()).uppercased()
     }
 }

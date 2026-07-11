@@ -204,6 +204,60 @@ final class TrainingContentIntegrityTests: XCTestCase {
         )
     }
 
+    func testEpubsCatalogUsesOfficialUniqueHTTPSLinks() {
+        let publications = EpubsCatalog.publications
+
+        XCTAssertFalse(publications.isEmpty)
+        XCTAssertEqual(Set(publications.map(\.id)).count, publications.count)
+        XCTAssertEqual(Set(publications.map(\.number)).count, publications.count)
+
+        for publication in publications {
+            let prefix = "[e-pubs:\(publication.id)]"
+            XCTAssertFalse(publication.number.trimmed.isEmpty, "\(prefix) number is empty.")
+            XCTAssertFalse(publication.title.trimmed.isEmpty, "\(prefix) title is empty.")
+            XCTAssertFalse(publication.summary.trimmed.isEmpty, "\(prefix) summary is empty.")
+            XCTAssertEqual(publication.pdfURL.scheme, "https", "\(prefix) must use HTTPS.")
+            XCTAssertEqual(
+                publication.pdfURL.host,
+                "static.e-publishing.af.mil",
+                "\(prefix) must use the official e-Pubs document host."
+            )
+            XCTAssertEqual(publication.pdfURL.pathExtension.lowercased(), "pdf")
+        }
+    }
+
+    func testEpubsSearchRemovesSpacesAndUsesOfficialHost() {
+        let url = EpubsCatalog.searchURL(for: " DAFI 91-202 ")
+        let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+
+        XCTAssertEqual(url.scheme, "https")
+        XCTAssertEqual(url.host, "www.e-publishing.af.mil")
+        XCTAssertEqual(
+            components?.queryItems?.first { $0.name == "txtSearchWord" }?.value,
+            "DAFI91-202"
+        )
+    }
+
+    func testEpubsCatalogMatchesTrackedCitations() {
+        let matches = EpubsCatalog.matchingPublications(
+            in: "DAFI 91-202 and DAFMAN 91-203 hazard abatement guidance"
+        )
+
+        XCTAssertEqual(Set(matches.map(\.id)), ["dafi91-202", "dafman91-203"])
+        XCTAssertTrue(EpubsCatalog.matchingPublications(in: "OSHA 29 CFR 1910.147").isEmpty)
+    }
+
+    func testPublicationDeepLinkRoutesOnlyKnownEpubsEntries() {
+        let router = DeepLinkRouter()
+
+        router.handle(url: URL(string: "inspectortrainer://reference/dafi91-204")!)
+        XCTAssertEqual(router.target, .publication("dafi91-204"))
+
+        router.target = nil
+        router.handle(url: URL(string: "inspectortrainer://reference/not-a-publication")!)
+        XCTAssertNil(router.target)
+    }
+
     func testGlossaryTermsAreWellFormed() {
         let terms = GlossaryContent.terms
 

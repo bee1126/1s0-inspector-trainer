@@ -20,7 +20,8 @@ This repo includes a ready-to-host set of pages in `docs/`:
 Host them (GitHub Pages or any static host) and paste the resulting URLs into App Store Connect and `AppStoreMetadata.md`.
 
 ## 3) Privacy / export compliance
-- The app stores progress **on-device** (UserDefaults) and does not include analytics/ads by default.
+- The app stores progress, e-Pubs favorites, and revision metadata **on-device** (UserDefaults) and does not include analytics/ads.
+- Live e-Pubs makes user-visible HTTPS requests to official DAF e-Publishing hosts. Keep the hosted privacy policy and App Store privacy answers aligned with this behavior.
 - `ITSAppUsesNonExemptEncryption` is set to `false` in `1S0 Inspector Trainer/Resources/Info.plist`.
 - A privacy manifest is included at `1S0 Inspector Trainer/Resources/PrivacyInfo.xcprivacy` (no tracking / no collected data declared).
 
@@ -45,3 +46,4 @@ Include:
 - No account / login required.
 - On-device only; no analytics/ads by default.
 - “Not an official Air Force product” disclaimer.
+- Live e-Pubs path: `Refs → Live DAF e-Pubs`; no login required and all training remains available if the government site is unreachable.

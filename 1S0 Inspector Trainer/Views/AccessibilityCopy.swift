@@ -1,7 +1,7 @@
 import Foundation
 
 enum AccessibilityCopy {
-    static func scoreLabel(score: Int) -> String {
+    static func scoreLabel(score _: Int) -> String {
         "Score"
     }
 
@@ -30,7 +30,7 @@ enum AccessibilityCopy {
         isCorrect ? "Correct feedback" : "Incorrect feedback"
     }
 
-    static func progressLabel(name: String, current: Int, total: Int) -> String {
+    static func progressLabel(name: String, current _: Int, total _: Int) -> String {
         "\(name) progress"
     }
 

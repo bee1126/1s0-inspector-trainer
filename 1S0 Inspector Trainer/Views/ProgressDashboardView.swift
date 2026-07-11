@@ -13,7 +13,7 @@ struct ProgressDashboardView: View {
         MissionFocusRecommendation.make(modules: modules, progress: progress)
     }
 
-    private let dateFormatter: DateFormatter = {
+    private static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         formatter.timeStyle = .none
@@ -192,8 +192,7 @@ struct ProgressDashboardView: View {
                                 .foregroundColor(AppTheme.muted)
                                 .tracking(1.5)
 
-                            ForEach(prioritizedModules.indices, id: \.self) { index in
-                                let module = prioritizedModules[index]
+                            ForEach(Array(prioritizedModules.enumerated()), id: \.element.id) { index, module in
                                 HStack {
                                     VStack(alignment: .leading, spacing: 4) {
                                         Text(module.title)
@@ -207,7 +206,7 @@ struct ProgressDashboardView: View {
                                                     : AppTheme.muted
                                             )
                                         if let date = progress.lastCompletionDate(for: module.id) {
-                                            Text("Last completed \(dateFormatter.string(from: date))")
+                                            Text("Last completed \(Self.dateFormatter.string(from: date))")
                                                 .font(AppFont.body(11))
                                                 .foregroundColor(AppTheme.muted)
                                         }
@@ -351,63 +350,54 @@ struct ProgressDashboardView: View {
                 id: "first-completion",
                 icon: "star.fill",
                 title: "First Mission",
-                detail: "Complete your first module",
                 isEarned: completedCount >= 1
             ),
             BadgeState(
                 id: "full-crew",
                 icon: "person.3.fill",
                 title: "Full Crew",
-                detail: "Complete all modules",
                 isEarned: completedCount == modules.count && !modules.isEmpty
             ),
             BadgeState(
                 id: "precision",
                 icon: "scope",
                 title: "Precision Operator",
-                detail: "Score 90% or higher on any module",
                 isEarned: perfectScores >= 1
             ),
             BadgeState(
                 id: "ace",
                 icon: "shield.checkered",
                 title: "Safety Ace",
-                detail: "Score 90% or higher on all modules",
                 isEarned: perfectScores == modules.count && !modules.isEmpty
             ),
             BadgeState(
                 id: "scenario-master",
                 icon: "theatermasks.fill",
                 title: "Scenario Master",
-                detail: "Perfect scenario run on any module",
                 isEarned: !progress.perfectScenario.isEmpty
             ),
             BadgeState(
                 id: "quiz-sharp",
                 icon: "bolt.fill",
                 title: "Quiz Sharp",
-                detail: "Perfect quiz on any module",
                 isEarned: !progress.perfectQuiz.isEmpty
             ),
             BadgeState(
                 id: "streak-starter",
                 icon: "flame.fill",
                 title: "Streak Starter",
-                detail: "Maintain a 3-day daily goal streak",
                 isEarned: progress.dailyStreak >= 3
             ),
             BadgeState(
                 id: "streak-veteran",
                 icon: "flame.circle.fill",
                 title: "Streak Veteran",
-                detail: "Maintain a 7-day daily goal streak",
                 isEarned: progress.dailyStreak >= 7
             ),
             BadgeState(
                 id: "xp-collector",
                 icon: "sparkles",
                 title: "XP Collector",
-                detail: "Earn 500 total XP",
                 isEarned: progress.xp >= 500
             )
         ]
@@ -494,7 +484,6 @@ struct BadgeState: Identifiable {
     let id: String
     let icon: String
     let title: String
-    let detail: String
     let isEarned: Bool
 }
 
@@ -552,13 +541,14 @@ struct MissionFocusRecommendation: Equatable {
 
     static func make(modules: [TrainingModule], progress: ProgressStore) -> MissionFocusRecommendation {
         let validModules = modules.filter(\.isIntegrityValid)
-        let totalDue = progress.overdueCount()
+        let overdueCountsByModule = progress.overdueCountsByModule()
+        let totalDue = overdueCountsByModule.values.reduce(0, +)
         let moduleSnapshots: [ModuleSnapshot] = validModules.map { module in
             let prefix = ModuleHelper.modulePrefix(for: module.quiz.first?.id ?? module.id)
             return ModuleSnapshot(
                 module: module,
                 proficiency: progress.moduleProficiency[prefix],
-                overdueCount: progress.overdueCount(for: prefix)
+                overdueCount: overdueCountsByModule[prefix, default: 0]
             )
         }
 

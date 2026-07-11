@@ -93,7 +93,7 @@ struct ModuleDetailView: View {
                                 .foregroundColor(AppTheme.muted)
                             Text("Up to \(maxXp) XP")
                                 .font(AppFont.title(22))
-                                .foregroundColor(AppTheme.xpGold)
+                                .foregroundColor(AppTheme.accent)
                             Text("Test your knowledge with scenarios and quizzes.")
                                 .font(AppFont.body(12))
                                 .foregroundColor(AppTheme.muted)

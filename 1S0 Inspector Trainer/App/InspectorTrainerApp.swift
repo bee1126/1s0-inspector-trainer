@@ -4,6 +4,7 @@ enum AppDeepLink: Equatable {
     case home
     case module(String)
     case dailyFive
+    case publication(String)
 }
 
 final class DeepLinkRouter: ObservableObject {
@@ -24,6 +25,11 @@ final class DeepLinkRouter: ObservableObject {
         case "module":
             if let moduleId = pathComponents.first, !moduleId.isEmpty {
                 target = .module(moduleId)
+            }
+        case "reference", "epubs":
+            if let publicationId = pathComponents.first,
+               EpubsCatalog.publication(id: publicationId) != nil {
+                target = .publication(publicationId)
             }
         default:
             break

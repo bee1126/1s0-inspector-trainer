@@ -2027,25 +2027,36 @@ enum TrainingContent {
             id: "dafi-91-202",
             title: "DAFI 91-202 - Department of the Air Force Mishap Prevention Program",
             date: "20 Mar 2020, incorporating Change 1 (10 Apr 2024) and DAFGM2026-01 (26 Feb 2026)",
-            notes: "DAF hazard reporting, near-miss reporting, hazard abatement, and mishap prevention program responsibilities."
+            notes: "DAF hazard reporting, near-miss reporting, hazard abatement, and mishap prevention program responsibilities.",
+            url: URL(string: "https://static.e-publishing.af.mil/production/1/af_se/publication/dafi91-202/dafi91-202.pdf")
+        ),
+        ReferenceSource(
+            id: "dafi-91-204",
+            title: "DAFI 91-204 - Safety Investigations and Reports",
+            date: "Access the current edition through DAF e-Publishing",
+            notes: "Safety investigation, notification, reporting, and recommendation requirements.",
+            url: URL(string: "https://static.e-publishing.af.mil/production/1/af_se/publication/dafi91-204/dafi91-204.pdf")
         ),
         ReferenceSource(
             id: "dafi-91-207",
             title: "DAFI 91-207 - The US Air Force Traffic Safety Program",
             date: "Accessed May 27, 2026",
-            notes: "Motorcycle safety program requirements and rider responsibilities."
+            notes: "Motorcycle safety program requirements and rider responsibilities.",
+            url: URL(string: "https://static.e-publishing.af.mil/production/1/af_se/publication/dafi91-207/dafi91-207.pdf")
         ),
         ReferenceSource(
             id: "dafman-91-203",
             title: "DAFMAN 91-203 - Air Force Occupational Safety, Fire, and Health Standards",
             date: "24 Feb 2026",
-            notes: "Safety program responsibilities and hazard abatement references for the Air Force safety program."
+            notes: "Safety program responsibilities and hazard abatement references for the Air Force safety program.",
+            url: URL(string: "https://static.e-publishing.af.mil/production/1/af_se/publication/dafman91-203/dafman91-203.pdf")
         ),
         ReferenceSource(
             id: "dafpam-90-803",
             title: "DAFPAM 90-803 - Risk Management (RM) Guidelines and Tools",
             date: "23 Mar 2022",
-            notes: "Five-step RM process and risk assessment matrix guidance."
+            notes: "Five-step RM process and risk assessment matrix guidance.",
+            url: URL(string: "https://static.e-publishing.af.mil/production/1/af_se/publication/dafpam90-803/dafpam90-803.pdf")
         ),
         ReferenceSource(
             id: "cfetp-1s0x1",

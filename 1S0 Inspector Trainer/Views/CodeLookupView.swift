@@ -26,7 +26,6 @@ struct CodeLookupView: View {
     @State private var selectedAnswer: String? = nil
     @State private var wasCorrect: Bool = false
     @State private var pointsEarned: Int = 0
-    @State private var showingFeedback: Bool = false
     @State private var advanceWorkItem: DispatchWorkItem? = nil
 
     // Results state
@@ -34,6 +33,7 @@ struct CodeLookupView: View {
     @State private var categoryStats: [String: (correct: Int, total: Int)] = [:]
     @State private var rewardSummary: RewardSummary? = nil
     @State private var animatedScore: Int = 0
+    @State private var scoreAnimationTimer: Timer? = nil
 
     private enum GamePhase {
         case ready
@@ -90,6 +90,7 @@ struct CodeLookupView: View {
         }
         .onDisappear {
             stopTimer()
+            stopScoreAnimation()
             advanceWorkItem?.cancel()
         }
     }
@@ -659,6 +660,7 @@ struct CodeLookupView: View {
         selectedAnswer = nil
         rewardSummary = nil
         animatedScore = 0
+        stopScoreAnimation()
 
         prepareQuestion()
         transition(to: .playing)
@@ -679,9 +681,9 @@ struct CodeLookupView: View {
         selectedAnswer = nil
         wasCorrect = false
         pointsEarned = 0
-        showingFeedback = false
         rewardSummary = nil
         animatedScore = 0
+        stopScoreAnimation()
     }
 
     private func prepareQuestion() {
@@ -801,6 +803,7 @@ struct CodeLookupView: View {
     }
 
     private func animateScore() {
+        stopScoreAnimation()
         animatedScore = 0
         let target = score
         guard target > 0 else { return }
@@ -809,15 +812,21 @@ struct CodeLookupView: View {
         let increment = max(target / steps, 1)
         var current = 0
 
-        Timer.scheduledTimer(withTimeInterval: 0.03, repeats: true) { timer in
+        scoreAnimationTimer = Timer.scheduledTimer(withTimeInterval: 0.03, repeats: true) { timer in
             current += increment
             if current >= target {
                 animatedScore = target
                 timer.invalidate()
+                scoreAnimationTimer = nil
             } else {
                 animatedScore = current
             }
         }
+    }
+
+    private func stopScoreAnimation() {
+        scoreAnimationTimer?.invalidate()
+        scoreAnimationTimer = nil
     }
 
     // MARK: - Timer

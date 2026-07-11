@@ -42,14 +42,42 @@ struct SourcesView: View {
                     }
                     .buttonStyle(.plain)
 
+                    NavigationLink {
+                        EpubsLibraryView()
+                    } label: {
+                        GlassCard(glow: AppTheme.primary.opacity(0.35)) {
+                            HStack(spacing: 12) {
+                                Image(systemName: "checkmark.shield.fill")
+                                    .font(.system(size: 22, weight: .semibold))
+                                    .foregroundColor(AppTheme.primary)
+                                    .frame(width: 34, height: 34)
+
+                                VStack(alignment: .leading, spacing: 5) {
+                                    Text("Live DAF e-Pubs")
+                                        .font(AppFont.subtitle(17))
+                                        .foregroundColor(AppTheme.text)
+                                    Text("Open and verify official safety publications.")
+                                        .font(AppFont.body(13))
+                                        .foregroundColor(AppTheme.muted)
+                                }
+
+                                Spacer()
+
+                                Image(systemName: "chevron.right")
+                                    .font(.system(size: 12, weight: .semibold))
+                                    .foregroundColor(AppTheme.muted)
+                            }
+                        }
+                    }
+                    .buttonStyle(.plain)
+
                     GlassCard {
                         VStack(alignment: .leading, spacing: 10) {
                             Text("REFERENCE MATERIALS")
                                 .font(AppFont.mono(11))
                                 .foregroundColor(AppTheme.muted)
 
-                            ForEach(references.indices, id: \.self) { index in
-                                let source = references[index]
+                            ForEach(Array(references.enumerated()), id: \.element.id) { index, source in
                                 VStack(alignment: .leading, spacing: 6) {
                                     Text(source.title)
                                         .font(AppFont.subtitle(15))
@@ -62,7 +90,7 @@ struct SourcesView: View {
                                         .foregroundColor(AppTheme.muted)
                                     if let url = source.url {
                                         Link(destination: url) {
-                                            Label("Open in App Store", systemImage: "arrow.up.right.square")
+                                            Label("Open Reference", systemImage: "arrow.up.right.square")
                                                 .font(AppFont.subtitle(12))
                                                 .foregroundColor(AppTheme.primary)
                                         }
@@ -81,7 +109,7 @@ struct SourcesView: View {
                             Text("PRIVACY & DATA USE")
                                 .font(AppFont.mono(11))
                                 .foregroundColor(AppTheme.muted)
-                            Text("This app stores training progress only on your device. No analytics, advertising, or external data sharing is enabled by default.")
+                            Text("This app stores training progress only on your device. No analytics or advertising is enabled. The Live e-Pubs screen contacts the official DAF e-Publishing service only when you open or refresh it.")
                                 .font(AppFont.body(13))
                                 .foregroundColor(AppTheme.muted)
                         }

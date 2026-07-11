@@ -29,7 +29,7 @@ final class ProgressStoreTests: XCTestCase {
     }
 
     func testCompleteModuleXPAndProgress() {
-        var now = Date(timeIntervalSince1970: 0)
+        let now = Date(timeIntervalSince1970: 0)
         let store = ProgressStore(defaults: defaults, calendar: calendar, dateProvider: { now })
 
         let reward = store.completeModule(
@@ -47,7 +47,7 @@ final class ProgressStoreTests: XCTestCase {
     }
 
     func testPracticeLevelsUp() {
-        var now = Date(timeIntervalSince1970: 0)
+        let now = Date(timeIntervalSince1970: 0)
         let store = ProgressStore(defaults: defaults, calendar: calendar, dateProvider: { now })
 
         _ = store.completeModule(
@@ -160,6 +160,41 @@ final class ProgressStoreTests: XCTestCase {
         XCTAssertNil(thirdStore.pendingCompletion(for: "m1"))
     }
 
+    func testEpubsFavoritesAndRevisionStatePersist() {
+        var now = Date(timeIntervalSince1970: 1_000)
+        let firstStore = ProgressStore(defaults: defaults, calendar: calendar, dateProvider: { now })
+        let firstMetadata = EpubsRemoteMetadata(
+            etag: "revision-a",
+            lastModified: "Mon, 01 Jun 2026 12:00:00 GMT",
+            contentLength: 1_024
+        )
+
+        firstStore.toggleFavoriteEpubPublication("dafi91-202")
+        firstStore.recordEpubsChecks(["dafi91-202": firstMetadata])
+
+        XCTAssertTrue(firstStore.isFavoriteEpubPublication("dafi91-202"))
+        XCTAssertFalse(firstStore.epubPublicationSnapshots["dafi91-202"]?.hasUnreadRevision ?? true)
+
+        now = Date(timeIntervalSince1970: 2_000)
+        let revisedMetadata = EpubsRemoteMetadata(
+            etag: "revision-b",
+            lastModified: "Tue, 02 Jun 2026 12:00:00 GMT",
+            contentLength: 2_048
+        )
+        firstStore.recordEpubsChecks(["dafi91-202": revisedMetadata])
+
+        XCTAssertTrue(firstStore.epubPublicationSnapshots["dafi91-202"]?.hasUnreadRevision ?? false)
+        XCTAssertEqual(firstStore.epubPublicationSnapshots["dafi91-202"]?.lastChecked, now)
+
+        let secondStore = ProgressStore(defaults: defaults, calendar: calendar, dateProvider: { now })
+        XCTAssertTrue(secondStore.isFavoriteEpubPublication("dafi91-202"))
+        XCTAssertTrue(secondStore.epubPublicationSnapshots["dafi91-202"]?.hasUnreadRevision ?? false)
+
+        secondStore.markEpubsPublicationViewed("dafi91-202")
+        let thirdStore = ProgressStore(defaults: defaults, calendar: calendar, dateProvider: { now })
+        XCTAssertFalse(thirdStore.epubPublicationSnapshots["dafi91-202"]?.hasUnreadRevision ?? true)
+    }
+
     func testResumeStatePersistsAnsweredQuestionMetadata() {
         let now = Date(timeIntervalSince1970: 0)
         let store = ProgressStore(defaults: defaults, calendar: calendar, dateProvider: { now })
@@ -245,8 +280,33 @@ final class ProgressStoreTests: XCTestCase {
         XCTAssertEqual(plan.questions.count, 5)
         XCTAssertEqual(plan.items.prefix(2).map(\.reason), [.recentMiss, .recentMiss])
         XCTAssertEqual(plan.items.prefix(2).map(\.question.id), ["ppe-q1", "hazcom-q1"])
-        XCTAssertTrue(plan.items.contains(where: { $0.question.id == "fall-q1" && $0.reason == .overdueReview }))
-        XCTAssertTrue(plan.items.contains(where: { $0.question.id == "loto-q1" && $0.reason == .weakModule }))
+        let planSummary = plan.items.map { "\($0.question.id):\($0.reason.rawValue)" }.joined(separator: ", ")
+        XCTAssertTrue(
+            plan.items.contains(where: { $0.question.id == "fall-q1" && $0.reason == .overdueReview }),
+            planSummary
+        )
+        XCTAssertTrue(
+            plan.items.contains(where: { $0.question.id == "loto-q1" && $0.reason == .weakModule }),
+            planSummary
+        )
+    }
+
+    func testOverdueCountsByModuleGroupsDueCards() {
+        var now = Date(timeIntervalSince1970: 0)
+        let store = ProgressStore(defaults: defaults, calendar: calendar, dateProvider: { now })
+
+        store.updateSRCard(questionId: "loto-q1", quality: 1)
+        store.updateSRCard(questionId: "loto-q2", quality: 1)
+        store.updateSRCard(questionId: "fall-q1", quality: 1)
+
+        XCTAssertTrue(store.overdueCountsByModule().isEmpty)
+
+        now = calendar.date(byAdding: .day, value: 2, to: now)!
+
+        XCTAssertEqual(store.overdueCountsByModule()["loto"], 2)
+        XCTAssertEqual(store.overdueCountsByModule()["fall"], 1)
+        XCTAssertEqual(store.overdueCount(), 3)
+        XCTAssertEqual(store.overdueCount(for: "loto"), 2)
     }
 
     func testCompleteAdaptiveRemediationAwardsCleanSweepBonusAndTracksDailyFive() {

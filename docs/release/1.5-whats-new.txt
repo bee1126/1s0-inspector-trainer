@@ -1,0 +1,5 @@
+Added Live DAF e-Pubs access for core safety publications.
+
+Watch regulations and see when server revision metadata changes. Save official PDFs to Files for offline field use, open supported glossary and daily-lesson citations directly in Live e-Pubs, and report broken publication links with a prefilled diagnostic email.
+
+Also expanded adaptive practice, progress insights, daily lessons, and field-tool usability, with accessibility, tactical styling, safety-content, and stability refinements throughout the app.

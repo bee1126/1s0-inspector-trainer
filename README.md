@@ -20,7 +20,8 @@ This repository contains the SwiftUI source and Xcode project for a native iOS t
 - Pass/fail assessments with completion summaries
 - XP, levels, daily goals, streaks, and badges (Duolingo-style loop)
 - Progress tracking and badges (on-device)
-- References screen and disclaimer
+- References screen, searchable glossary, and Live DAF e-Pubs library
+- Watched-publication revision indicators, Save to Files, citation links, and broken-link reporting
 - Draft App Store metadata in `AppStoreMetadata.md`
 - App Store submission checklist in `AppStoreSubmissionChecklist.md`
 - Ready-to-host Support / Privacy pages in `docs/`

@@ -5,11 +5,16 @@ enum HomeDeepLinkDestination: Hashable {
     case dailyFive
 }
 
+enum RefsDeepLinkDestination: Hashable {
+    case publication(String)
+}
+
 struct RootView: View {
     @EnvironmentObject private var progress: ProgressStore
     @EnvironmentObject private var deepLinkRouter: DeepLinkRouter
     @State private var selectedTab: Int = 0
     @State private var homePath: [HomeDeepLinkDestination] = []
+    @State private var refsPath: [RefsDeepLinkDestination] = []
 
     var body: some View {
         ZStack {
@@ -47,8 +52,14 @@ struct RootView: View {
                 }
                 .tag(1)
 
-                NavigationStack {
+                NavigationStack(path: $refsPath) {
                     SourcesView()
+                        .navigationDestination(for: RefsDeepLinkDestination.self) { destination in
+                            switch destination {
+                            case .publication(let publicationId):
+                                EpubsLibraryView(focusPublicationId: publicationId)
+                            }
+                        }
                 }
                 .tabItem {
                     Label("Refs", systemImage: "book")
@@ -125,6 +136,9 @@ struct RootView: View {
         case .dailyFive:
             selectedTab = 0
             homePath = [.dailyFive]
+        case .publication(let publicationId):
+            selectedTab = 2
+            refsPath = [.publication(publicationId)]
         }
 
         DispatchQueue.main.async {

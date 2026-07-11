@@ -346,6 +346,7 @@ def patch_whats_new(
 def find_build(
     client: AscClient,
     app_id: str,
+    version_string: str,
     build_number: str,
     *,
     include_processing: bool = False,
@@ -355,34 +356,55 @@ def find_build(
         "filter[version]": build_number,
         "sort": "-uploadedDate",
         "limit": "10",
+        "include": "preReleaseVersion",
+        "fields[builds]": "version,uploadedDate,processingState,preReleaseVersion",
+        "fields[preReleaseVersions]": "version,platform",
     }
     if not include_processing:
         query["filter[processingState]"] = "VALID"
     response = client.request("GET", "/builds", query=query)
-    builds = response.get("data", [])
-    return builds[0] if builds else None
+    included = {item["id"]: item for item in response.get("included", [])}
+    for build in response.get("data", []):
+        pre_release_data = (
+            build.get("relationships", {})
+            .get("preReleaseVersion", {})
+            .get("data")
+            or {}
+        )
+        pre_release = included.get(pre_release_data.get("id"), {})
+        attrs = pre_release.get("attributes", {})
+        if attrs.get("version") == version_string:
+            return build
+    return None
 
 
 def wait_for_build(
     client: AscClient,
     app_id: str,
+    version_string: str,
     build_number: str,
     *,
     timeout_minutes: int,
 ) -> dict[str, Any]:
     deadline = time.time() + timeout_minutes * 60
     while True:
-        build = find_build(client, app_id, build_number)
+        build = find_build(client, app_id, version_string, build_number)
         if build:
             return build
-        processing = find_build(client, app_id, build_number, include_processing=True)
+        processing = find_build(
+            client,
+            app_id,
+            version_string,
+            build_number,
+            include_processing=True,
+        )
         if processing:
             state = processing.get("attributes", {}).get("processingState", "UNKNOWN")
-            print(f"Build {build_number} processing state: {state}")
+            print(f"Build {version_string} ({build_number}) processing state: {state}")
         else:
-            print(f"Build {build_number} not visible yet")
+            print(f"Build {version_string} ({build_number}) not visible yet")
         if time.time() > deadline:
-            raise AscError(f"Timed out waiting for valid build {build_number}")
+            raise AscError(f"Timed out waiting for valid build {version_string} ({build_number})")
         time.sleep(30)
 
 
@@ -513,6 +535,7 @@ def command_submit(args: argparse.Namespace) -> None:
     build = wait_for_build(
         client,
         app_id,
+        args.version,
         build_number,
         timeout_minutes=args.wait_for_build_minutes,
     )

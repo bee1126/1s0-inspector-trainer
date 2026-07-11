@@ -12,6 +12,7 @@ struct DeployedORMView: View {
     @State private var stepResults: [String: Bool] = [:]
     @State private var selectedAnswers: [String: Int] = [:]
     @State private var rewardSummary: RewardSummary? = nil
+    @State private var earnedBadgeThisRun = false
 
     private enum GamePhase {
         case picker
@@ -99,6 +100,7 @@ struct DeployedORMView: View {
         stepResults = [:]
         selectedAnswers = [:]
         rewardSummary = nil
+        earnedBadgeThisRun = false
         transition(to: .picker)
     }
 
@@ -174,6 +176,7 @@ struct DeployedORMView: View {
                     stepResults = [:]
                     selectedAnswers = [:]
                     rewardSummary = nil
+                    earnedBadgeThisRun = false
                     transition(to: .situationBrief)
                 } label: {
                     scenarioRow(s)
@@ -605,7 +608,7 @@ struct DeployedORMView: View {
                 RewardSummaryCard(summary: rewardSummary, xpToNextLevel: progress.xpToNextLevel)
             }
 
-            if progress.allORMScenariosCompleted && !hadBadgeBefore {
+            if earnedBadgeThisRun {
                 GlassCard(glow: AppTheme.accent.opacity(0.6)) {
                     HStack(spacing: 10) {
                         Image(systemName: "medal.fill")
@@ -649,12 +652,6 @@ struct DeployedORMView: View {
         }
     }
 
-    private var hadBadgeBefore: Bool {
-        let allIds = Set(DeployedORMBank.allScenarios.map(\.id))
-        let withoutCurrent = progress.completedORMScenarios.subtracting([scenario.id])
-        return allIds.isSubset(of: withoutCurrent)
-    }
-
     // MARK: - Scoring
 
     private var correctCount: Int {
@@ -683,8 +680,10 @@ struct DeployedORMView: View {
     }
 
     private func submitScore() {
+        let hadBadgeBefore = progress.allORMScenariosCompleted
         rewardSummary = progress.completePractice(score: correctCount, total: steps.count)
         progress.markORMScenarioCompleted(scenario.id)
+        earnedBadgeThisRun = !hadBadgeBefore && progress.allORMScenariosCompleted
         if scorePercent >= 70 {
             AppFeedback.correct()
         } else {

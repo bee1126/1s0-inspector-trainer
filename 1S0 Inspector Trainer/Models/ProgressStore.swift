@@ -87,12 +87,12 @@ final class ProgressStore: ObservableObject {
     @Published private(set) var codeLookupGamesPlayed: Int = 0
     @Published private(set) var codeLookupBestStreak: Int = 0
     @Published private(set) var pendingCompletion: PendingModuleCompletion? = nil
+    @Published private(set) var favoriteEpubPublicationIds: Set<String> = []
+    @Published private(set) var epubPublicationSnapshots: [String: EpubsPublicationSnapshot] = [:]
     private var recentQuestionMisses: [RecentQuestionMiss] = []
     private let defaults: UserDefaults
     private let calendar: Calendar
     private let dateProvider: () -> Date
-    private var autoSaveCancellable: AnyCancellable?
-    private var hasPendingChanges = false
     private var mutationTransactionDepth = 0
     private var saveRequestedInTransaction = false
 
@@ -126,6 +126,8 @@ final class ProgressStore: ObservableObject {
     private let codeLookupStreakKey = "codeLookupStreak"
     private let pendingCompletionKey = "pendingModuleCompletion"
     private let recentQuestionMissesKey = "recentQuestionMisses_v1"
+    private let favoriteEpubPublicationsKey = "favoriteEpubPublications_v1"
+    private let epubPublicationSnapshotsKey = "epubPublicationSnapshots_v1"
     private var onboardingStateByRole: [String: RoleOnboardingState] = [:]
 
     init(defaults: UserDefaults = .standard, calendar: Calendar = .current, dateProvider: @escaping () -> Date = Date.init) {
@@ -133,18 +135,6 @@ final class ProgressStore: ObservableObject {
         self.calendar = calendar
         self.dateProvider = dateProvider
         load()
-        configureAutomaticSaving()
-    }
-
-    private func configureAutomaticSaving() {
-        autoSaveCancellable = objectWillChange
-            .handleEvents(receiveOutput: { [weak self] _ in
-                self?.hasPendingChanges = true
-            })
-            .debounce(for: .milliseconds(250), scheduler: RunLoop.main)
-            .sink { [weak self] _ in
-                self?.persistIfNeeded()
-            }
     }
 
     @discardableResult
@@ -154,24 +144,17 @@ final class ProgressStore: ObservableObject {
             mutationTransactionDepth -= 1
             if mutationTransactionDepth == 0 && saveRequestedInTransaction {
                 saveRequestedInTransaction = false
-                persistIfNeeded()
+                persistToDefaults()
             }
         }
         return updates()
     }
 
     private func requestSave() {
-        hasPendingChanges = true
         if mutationTransactionDepth > 0 {
             saveRequestedInTransaction = true
             return
         }
-        persistIfNeeded()
-    }
-
-    private func persistIfNeeded() {
-        guard hasPendingChanges, mutationTransactionDepth == 0 else { return }
-        hasPendingChanges = false
         persistToDefaults()
     }
 
@@ -223,6 +206,8 @@ final class ProgressStore: ObservableObject {
         codeLookupGamesPlayed = 0
         codeLookupBestStreak = 0
         pendingCompletion = nil
+        favoriteEpubPublicationIds = []
+        epubPublicationSnapshots = [:]
         recentQuestionMisses = []
         onboardingStartDate = nil
         onboardingCheckIns = []
@@ -287,22 +272,40 @@ final class ProgressStore: ObservableObject {
     }
 
     func overdueCards() -> [SRCard] {
-        let now = dateProvider()
+        overdueCards(at: dateProvider())
+    }
+
+    private func overdueCards(at now: Date) -> [SRCard] {
         return srCards.values
             .filter { $0.nextReviewDate <= now }
             .sorted { $0.nextReviewDate < $1.nextReviewDate }
     }
 
+    func overdueCountsByModule() -> [String: Int] {
+        overdueCountsByModule(at: dateProvider())
+    }
+
+    private func overdueCountsByModule(at now: Date) -> [String: Int] {
+        srCards.values.reduce(into: [:]) { counts, card in
+            guard card.nextReviewDate <= now else { return }
+            counts[ModuleHelper.modulePrefix(for: card.questionId), default: 0] += 1
+        }
+    }
+
     func overdueCount() -> Int {
         let now = dateProvider()
-        return srCards.values.filter { $0.nextReviewDate <= now }.count
+        return srCards.values.reduce(0) { count, card in
+            card.nextReviewDate <= now ? count + 1 : count
+        }
     }
 
     func overdueCount(for moduleId: String) -> Int {
         let now = dateProvider()
-        return srCards.values.filter {
-            ModuleHelper.modulePrefix(for: $0.questionId) == moduleId && $0.nextReviewDate <= now
-        }.count
+        return srCards.values.reduce(0) { count, card in
+            ModuleHelper.modulePrefix(for: card.questionId) == moduleId && card.nextReviewDate <= now
+                ? count + 1
+                : count
+        }
     }
 
     func recordModuleAnswer(moduleId: String, correct: Bool) {
@@ -345,12 +348,16 @@ final class ProgressStore: ObservableObject {
         let questionMap = Dictionary(uniqueKeysWithValues: allQuestions.map { ($0.id, $0) })
         let questionsByModule = Dictionary(grouping: allQuestions, by: { ModuleHelper.modulePrefix(for: $0.id) })
         let missedById = Dictionary(uniqueKeysWithValues: recentQuestionMisses.map { ($0.questionId, $0) })
-        let overdue = overdueCards()
+        let now = dateProvider()
+        let overdue = overdueCards(at: now)
         let overdueIds = Set(overdue.filter { $0.lastQuality > 0 }.map(\.questionId))
+        let overdueCounts = overdueCountsByModule(at: now)
 
         // Pre-compute module weights so sort comparators are O(1)
         let moduleWeights = Dictionary(
-            uniqueKeysWithValues: questionsByModule.keys.map { ($0, adaptiveMissionWeight(for: $0)) }
+            uniqueKeysWithValues: questionsByModule.keys.map {
+                ($0, adaptiveMissionWeight(for: $0, overdueCountsByModule: overdueCounts))
+            }
         )
 
         var selectedItems: [AdaptiveMissionItem] = []
@@ -392,7 +399,8 @@ final class ProgressStore: ObservableObject {
                     questionsByModule[moduleId] ?? [],
                     missedById: missedById,
                     overdueIds: overdueIds,
-                    moduleWeights: moduleWeights
+                    moduleWeights: moduleWeights,
+                    now: now
                 )
             )
         }
@@ -419,7 +427,8 @@ final class ProgressStore: ObservableObject {
                 allQuestions,
                 missedById: missedById,
                 overdueIds: overdueIds,
-                moduleWeights: moduleWeights
+                moduleWeights: moduleWeights,
+                now: now
             )
             for question in fallbackQuestions where selectedItems.count < questionCount {
                 append(question: question, reason: .fallback)
@@ -429,10 +438,10 @@ final class ProgressStore: ObservableObject {
         return AdaptiveMissionPlan(items: selectedItems)
     }
 
-    private func adaptiveMissionWeight(for moduleId: String) -> Double {
+    private func adaptiveMissionWeight(for moduleId: String, overdueCountsByModule: [String: Int]) -> Double {
         let proficiency = moduleProficiency[moduleId] ?? ModuleProficiency(moduleId: moduleId)
-        let accuracyPenalty = 1.0 - proficiency.recentAccuracy
-        let overduePressure = min(Double(overdueCount(for: moduleId)) * 0.15, 0.45)
+        let accuracyPenalty = proficiency.totalAttempts > 0 ? 1.0 - proficiency.recentAccuracy : 0
+        let overduePressure = min(Double(overdueCountsByModule[moduleId, default: 0]) * 0.15, 0.45)
         let missedPressure = recentQuestionMisses.contains {
             ModuleHelper.modulePrefix(for: $0.questionId) == moduleId
         } ? 0.25 : 0
@@ -444,11 +453,12 @@ final class ProgressStore: ObservableObject {
         _ questions: [QuizQuestion],
         missedById: [String: RecentQuestionMiss],
         overdueIds: Set<String>,
-        moduleWeights: [String: Double]
+        moduleWeights: [String: Double],
+        now: Date
     ) -> [QuizQuestion] {
         questions.sorted { left, right in
-            let leftWeight = fallbackQuestionWeight(question: left, missedById: missedById, overdueIds: overdueIds, moduleWeights: moduleWeights)
-            let rightWeight = fallbackQuestionWeight(question: right, missedById: missedById, overdueIds: overdueIds, moduleWeights: moduleWeights)
+            let leftWeight = fallbackQuestionWeight(question: left, missedById: missedById, overdueIds: overdueIds, moduleWeights: moduleWeights, now: now)
+            let rightWeight = fallbackQuestionWeight(question: right, missedById: missedById, overdueIds: overdueIds, moduleWeights: moduleWeights, now: now)
             if leftWeight == rightWeight { return left.id < right.id }
             return leftWeight > rightWeight
         }
@@ -458,12 +468,13 @@ final class ProgressStore: ObservableObject {
         question: QuizQuestion,
         missedById: [String: RecentQuestionMiss],
         overdueIds: Set<String>,
-        moduleWeights: [String: Double]
+        moduleWeights: [String: Double],
+        now: Date
     ) -> Double {
         let moduleWeight = moduleWeights[ModuleHelper.modulePrefix(for: question.id), default: 0]
         let missWeight: Double
         if let miss = missedById[question.id] {
-            let hoursSinceMiss = max(0, dateProvider().timeIntervalSince(miss.missedAt) / 3600)
+            let hoursSinceMiss = max(0, now.timeIntervalSince(miss.missedAt) / 3600)
             missWeight = max(0.2, 1.4 - min(hoursSinceMiss / 24, 1.0))
         } else {
             missWeight = 0
@@ -548,6 +559,14 @@ final class ProgressStore: ObservableObject {
         if let data = defaults.data(forKey: recentQuestionMissesKey),
            let decoded = try? JSONDecoder().decode([RecentQuestionMiss].self, from: data) {
             recentQuestionMisses = decoded
+        }
+        if let data = defaults.data(forKey: favoriteEpubPublicationsKey),
+           let decoded = try? JSONDecoder().decode([String].self, from: data) {
+            favoriteEpubPublicationIds = Set(decoded)
+        }
+        if let data = defaults.data(forKey: epubPublicationSnapshotsKey),
+           let decoded = try? JSONDecoder().decode([String: EpubsPublicationSnapshot].self, from: data) {
+            epubPublicationSnapshots = decoded
         }
         if let data = defaults.data(forKey: onboardingByRoleKey),
            let decoded = try? JSONDecoder().decode([String: RoleOnboardingState].self, from: data) {
@@ -637,6 +656,12 @@ final class ProgressStore: ObservableObject {
         if let data = try? JSONEncoder().encode(recentQuestionMisses) {
             defaults.set(data, forKey: recentQuestionMissesKey)
         }
+        if let data = try? JSONEncoder().encode(Array(favoriteEpubPublicationIds).sorted()) {
+            defaults.set(data, forKey: favoriteEpubPublicationsKey)
+        }
+        if let data = try? JSONEncoder().encode(epubPublicationSnapshots) {
+            defaults.set(data, forKey: epubPublicationSnapshotsKey)
+        }
         if let data = try? JSONEncoder().encode(onboardingStateByRole) {
             defaults.set(data, forKey: onboardingByRoleKey)
         }
@@ -651,6 +676,46 @@ final class ProgressStore: ObservableObject {
         persistCurrentOnboardingState()
         selectedRole = role
         applyOnboardingState(for: selectedRole)
+        save()
+    }
+
+    func isFavoriteEpubPublication(_ publicationId: String) -> Bool {
+        favoriteEpubPublicationIds.contains(publicationId)
+    }
+
+    func toggleFavoriteEpubPublication(_ publicationId: String) {
+        if favoriteEpubPublicationIds.contains(publicationId) {
+            favoriteEpubPublicationIds.remove(publicationId)
+        } else {
+            favoriteEpubPublicationIds.insert(publicationId)
+        }
+        save()
+    }
+
+    func recordEpubsChecks(_ metadataByPublication: [String: EpubsRemoteMetadata]) {
+        guard !metadataByPublication.isEmpty else { return }
+
+        performMutationTransaction {
+            let checkedAt = dateProvider()
+            for (publicationId, metadata) in metadataByPublication {
+                let previous = epubPublicationSnapshots[publicationId]
+                let detectedRevision = previous.map {
+                    metadata.indicatesRevisionChange(from: $0.metadata)
+                } ?? false
+                epubPublicationSnapshots[publicationId] = EpubsPublicationSnapshot(
+                    metadata: metadata,
+                    lastChecked: checkedAt,
+                    hasUnreadRevision: (previous?.hasUnreadRevision ?? false) || detectedRevision
+                )
+            }
+            save()
+        }
+    }
+
+    func markEpubsPublicationViewed(_ publicationId: String) {
+        guard var snapshot = epubPublicationSnapshots[publicationId], snapshot.hasUnreadRevision else { return }
+        snapshot.hasUnreadRevision = false
+        epubPublicationSnapshots[publicationId] = snapshot
         save()
     }
 
