@@ -26,9 +26,16 @@ struct ProgressDashboardView: View {
 
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: AppSpacing.section) {
-                    Text("MISSION READINESS")
+                    NavigationLink { StudyHistoryView() } label: {
+                        ActionCard(title: "Session history", detail: "Review your answers and practice what you missed.", icon: "clock.arrow.circlepath")
+                    }.buttonStyle(.plain)
+                    NavigationLink { ToolsView() } label: {
+                        Label("Profile and feedback", systemImage: "person.crop.circle")
+                    }.buttonStyle(OutlineButtonStyle())
+
+                    Text("Your progress")
                         .font(AppFont.mono(13))
-                        .foregroundColor(AppTheme.muted)
+                        .foregroundColor(AppTheme.text.opacity(0.68))
                         .tracking(2)
 
                     GlassCard {
@@ -47,7 +54,7 @@ struct ProgressDashboardView: View {
                                     .foregroundColor(missionFocusRecommendation.priority.tint)
                                 Text("MISSION FOCUS")
                                     .font(AppFont.mono(11))
-                                    .foregroundColor(AppTheme.muted)
+                                    .foregroundColor(AppTheme.text.opacity(0.68))
                                     .tracking(1.5)
                             }
 
@@ -56,8 +63,8 @@ struct ProgressDashboardView: View {
                                 .foregroundColor(AppTheme.text)
 
                             Text(missionFocusRecommendation.detail)
-                                .font(AppFont.body(13))
-                                .foregroundColor(AppTheme.muted)
+                                .font(AppFont.body(16))
+                                .foregroundColor(AppTheme.text.opacity(0.68))
 
                             if !missionFocusRecommendation.supportingMetrics.isEmpty {
                                 HStack(spacing: 8) {
@@ -81,11 +88,11 @@ struct ProgressDashboardView: View {
                                     .font(AppFont.subtitle(18))
                                     .foregroundColor(AppTheme.text)
                                 Text("\(progress.xp) XP total")
-                                    .font(AppFont.body(13))
-                                    .foregroundColor(AppTheme.muted)
+                                    .font(AppFont.body(16))
+                                    .foregroundColor(AppTheme.text.opacity(0.68))
                                 Text("\(progress.xpToNextLevel) XP to next level")
                                     .font(AppFont.mono(11))
-                                    .foregroundColor(AppTheme.muted)
+                                    .foregroundColor(AppTheme.text.opacity(0.68))
                             }
                             Spacer()
                         }
@@ -96,10 +103,10 @@ struct ProgressDashboardView: View {
                         VStack(alignment: .leading, spacing: 10) {
                             Text("DAILY GOAL")
                                 .font(AppFont.mono(11))
-                                .foregroundColor(AppTheme.muted)
+                                .foregroundColor(AppTheme.text.opacity(0.68))
                                 .tracking(1.5)
                             Text("\(progress.dailyXp)/\(progress.dailyGoal) XP today")
-                                .font(AppFont.body(13))
+                                .font(AppFont.body(16))
                                 .foregroundColor(AppTheme.text)
                             ProgressView(value: progress.dailyGoalProgress)
                                 .tint(AppTheme.accent)
@@ -115,8 +122,8 @@ struct ProgressDashboardView: View {
 
                             HStack(spacing: 6) {
                                 Text("Adaptive Level:")
-                                    .font(AppFont.body(12))
-                                    .foregroundColor(AppTheme.muted)
+                                    .font(AppFont.body(16))
+                                    .foregroundColor(AppTheme.text.opacity(0.68))
                                 Text(adaptiveManager.currentDifficulty == .hard ? "Hard" : "Standard")
                                     .font(AppFont.mono(12))
                                     .foregroundColor(adaptiveManager.currentDifficulty == .hard ? AppTheme.accent : AppTheme.muted)
@@ -129,13 +136,13 @@ struct ProgressDashboardView: View {
                         VStack(alignment: .leading, spacing: 8) {
                             Text("REVIEW QUEUE")
                                 .font(AppFont.mono(11))
-                                .foregroundColor(AppTheme.muted)
+                                .foregroundColor(AppTheme.text.opacity(0.68))
                                 .tracking(1.5)
                             Text("\(progress.overdueCount())")
                                 .font(AppFont.title(28))
                                 .foregroundColor(AppTheme.accent)
                             Text("cards due for review")
-                                .font(AppFont.body(13))
+                                .font(AppFont.body(16))
                                 .foregroundColor(AppTheme.accent)
                         }
                     }
@@ -145,7 +152,7 @@ struct ProgressDashboardView: View {
                         VStack(alignment: .leading, spacing: 12) {
                             Text("OVERALL READINESS")
                                 .font(AppFont.mono(11))
-                                .foregroundColor(AppTheme.muted)
+                                .foregroundColor(AppTheme.text.opacity(0.68))
                                 .tracking(1.5)
                             ProgressView(value: completionRate)
                                 .tint(AppTheme.primary)
@@ -153,7 +160,7 @@ struct ProgressDashboardView: View {
                                 .accessibilityLabel(AccessibilityCopy.progressLabel(name: "Overall readiness", current: completedCount, total: modules.count))
                                 .accessibilityValue(AccessibilityCopy.progressValue(current: completedCount, total: modules.count))
                             Text("\(completedCount) of \(modules.count) modules completed")
-                                .font(AppFont.body(13))
+                                .font(AppFont.body(16))
                                 .foregroundColor(AppTheme.text)
 
                             HStack(spacing: 6) {
@@ -161,8 +168,8 @@ struct ProgressDashboardView: View {
                                     .font(.system(size: 14, weight: .semibold))
                                     .foregroundColor(AppTheme.accent)
                                 Text("Current Rank:")
-                                    .font(AppFont.body(13))
-                                    .foregroundColor(AppTheme.muted)
+                                    .font(AppFont.body(16))
+                                    .foregroundColor(AppTheme.text.opacity(0.68))
                                 Text(rankTitle)
                                     .font(AppFont.mono(14))
                                     .foregroundColor(AppTheme.accent)
@@ -174,8 +181,8 @@ struct ProgressDashboardView: View {
                                         .font(.system(size: 10, weight: .semibold))
                                         .foregroundColor(AppTheme.primary)
                                     Text("Projected:")
-                                        .font(AppFont.body(12))
-                                        .foregroundColor(AppTheme.muted)
+                                        .font(AppFont.body(16))
+                                        .foregroundColor(AppTheme.text.opacity(0.68))
                                     Text(projectedRankTitle)
                                         .font(AppFont.mono(12))
                                         .foregroundColor(AppTheme.primary)
@@ -189,7 +196,7 @@ struct ProgressDashboardView: View {
                         VStack(alignment: .leading, spacing: 10) {
                             Text("MODULE STATUS")
                                 .font(AppFont.mono(11))
-                                .foregroundColor(AppTheme.muted)
+                                .foregroundColor(AppTheme.text.opacity(0.68))
                                 .tracking(1.5)
 
                             ForEach(Array(prioritizedModules.enumerated()), id: \.element.id) { index, module in
@@ -208,7 +215,7 @@ struct ProgressDashboardView: View {
                                         if let date = progress.lastCompletionDate(for: module.id) {
                                             Text("Last completed \(Self.dateFormatter.string(from: date))")
                                                 .font(AppFont.body(11))
-                                                .foregroundColor(AppTheme.muted)
+                                                .foregroundColor(AppTheme.text.opacity(0.68))
                                         }
                                     }
                                     Spacer()
@@ -224,8 +231,8 @@ struct ProgressDashboardView: View {
                             }
                             if modules.count > prioritizedModules.count {
                                 Text("Showing \(prioritizedModules.count) of \(modules.count) modules")
-                                    .font(AppFont.body(12))
-                                    .foregroundColor(AppTheme.muted)
+                                    .font(AppFont.body(16))
+                                    .foregroundColor(AppTheme.text.opacity(0.68))
                             }
                         }
                     }
@@ -235,14 +242,14 @@ struct ProgressDashboardView: View {
                         VStack(alignment: .leading, spacing: 12) {
                             Text("MODULE PROFICIENCY")
                                 .font(AppFont.mono(11))
-                                .foregroundColor(AppTheme.muted)
+                                .foregroundColor(AppTheme.text.opacity(0.68))
                                 .tracking(1.5)
 
                             ForEach(moduleProficiencyRows) { row in
                                 VStack(alignment: .leading, spacing: 6) {
                                     HStack {
                                         Text(row.title)
-                                            .font(AppFont.body(13))
+                                            .font(AppFont.body(16))
                                             .foregroundColor(AppTheme.text)
                                         Spacer()
                                         Text("\(Int(round(row.recentAccuracy * 100)))%")
@@ -272,7 +279,7 @@ struct ProgressDashboardView: View {
                     VStack(alignment: .leading, spacing: 10) {
                         Text("BADGES")
                             .font(AppFont.mono(11))
-                            .foregroundColor(AppTheme.muted)
+                            .foregroundColor(AppTheme.text.opacity(0.68))
                             .tracking(1.5)
 
                         let columns = Array(repeating: GridItem(.flexible(), spacing: 12), count: 4)
@@ -297,7 +304,7 @@ struct ProgressDashboardView: View {
             }
             .scrollIndicators(.hidden)
         }
-        .navigationTitle("Progress")
+        .navigationTitle("Progress").navigationBarTitleDisplayMode(.inline)
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             progress.refreshForNewDayIfNeeded()
@@ -441,7 +448,7 @@ struct ProgressDashboardView: View {
         VStack(alignment: .leading, spacing: 4) {
             Text(title.uppercased())
                 .font(AppFont.mono(10))
-                .foregroundColor(AppTheme.muted)
+                .foregroundColor(AppTheme.text.opacity(0.68))
             Text(value)
                 .font(AppFont.subtitle(18))
                 .foregroundColor(tint)
@@ -491,159 +498,4 @@ struct ModuleProficiencyRow: Identifiable {
     let id: String
     let title: String
     let recentAccuracy: Double
-}
-
-struct MissionFocusRecommendation: Equatable {
-    enum Priority: Equatable {
-        case reviewQueue
-        case weakModule
-        case nextModule
-        case maintainReadiness
-
-        var iconName: String {
-            switch self {
-            case .reviewQueue:
-                return "clock.badge.exclamationmark.fill"
-            case .weakModule:
-                return "scope"
-            case .nextModule:
-                return "arrow.forward.circle.fill"
-            case .maintainReadiness:
-                return "shield.checkered"
-            }
-        }
-
-        var tint: Color {
-            switch self {
-            case .reviewQueue:
-                return AppTheme.accent
-            case .weakModule:
-                return AppTheme.danger
-            case .nextModule:
-                return AppTheme.primary
-            case .maintainReadiness:
-                return AppTheme.info
-            }
-        }
-    }
-
-    enum Destination: Equatable {
-        case adaptiveMission
-        case module(String)
-    }
-
-    let priority: Priority
-    let title: String
-    let detail: String
-    let supportingMetrics: [String]
-    let buttonLabel: String
-    let destination: Destination
-
-    static func make(modules: [TrainingModule], progress: ProgressStore) -> MissionFocusRecommendation {
-        let validModules = modules.filter(\.isIntegrityValid)
-        let overdueCountsByModule = progress.overdueCountsByModule()
-        let totalDue = overdueCountsByModule.values.reduce(0, +)
-        let moduleSnapshots: [ModuleSnapshot] = validModules.map { module in
-            let prefix = ModuleHelper.modulePrefix(for: module.quiz.first?.id ?? module.id)
-            return ModuleSnapshot(
-                module: module,
-                proficiency: progress.moduleProficiency[prefix],
-                overdueCount: overdueCountsByModule[prefix, default: 0]
-            )
-        }
-
-        if totalDue > 0 {
-            let topReviewModule = moduleSnapshots
-                .filter { $0.overdueCount > 0 }
-                .sorted { left, right in
-                    if left.overdueCount == right.overdueCount {
-                        return left.module.title < right.module.title
-                    }
-                    return left.overdueCount > right.overdueCount
-                }
-                .first
-
-            let detail: String
-            if let topReviewModule {
-                detail = "\(totalDue) review card\(totalDue == 1 ? "" : "s") due. \(topReviewModule.module.title) is the biggest backlog, so clear the queue before pushing into new material."
-            } else {
-                detail = "\(totalDue) review card\(totalDue == 1 ? "" : "s") due. Clear the queue before pushing into new material."
-            }
-
-            return MissionFocusRecommendation(
-                priority: .reviewQueue,
-                title: "Run Adaptive Mission",
-                detail: detail,
-                supportingMetrics: [
-                    "\(totalDue) due",
-                    progress.dailyFiveStreak > 0 ? "\(progress.dailyFiveStreak)d streak" : "Review queue"
-                ],
-                buttonLabel: "Start Review Run",
-                destination: .adaptiveMission
-            )
-        }
-
-        if let weakestModule = moduleSnapshots
-            .filter({ ($0.proficiency?.totalAttempts ?? 0) > 0 })
-            .sorted(by: weakerModuleFirst)
-            .first,
-           weakestModule.proficiency?.needsWork == true {
-            let recentAccuracy = Int(round((weakestModule.proficiency?.recentAccuracy ?? 0) * 100))
-            return MissionFocusRecommendation(
-                priority: .weakModule,
-                title: "Reinforce \(weakestModule.module.title)",
-                detail: "Recent accuracy is \(recentAccuracy)% in this module. A focused refresher now will tighten the gap before it becomes a pattern.",
-                supportingMetrics: [
-                    "\(recentAccuracy)% recent",
-                    "Best \(progress.bestScore(for: weakestModule.module.id))%"
-                ],
-                buttonLabel: "Open Refresher Module",
-                destination: .module(weakestModule.module.id)
-            )
-        }
-
-        if let nextModule = validModules.first(where: { !progress.isCompleted($0.id) }) {
-            return MissionFocusRecommendation(
-                priority: .nextModule,
-                title: "Start \(nextModule.title)",
-                detail: nextModule.subtitle,
-                supportingMetrics: [
-                    "\(nextModule.estimatedMinutes) min",
-                    nextModule.difficulty
-                ],
-                buttonLabel: "Open Module",
-                destination: .module(nextModule.id)
-            )
-        }
-
-        return MissionFocusRecommendation(
-            priority: .maintainReadiness,
-            title: "Maintain Readiness",
-            detail: "Core training is complete. Keep recall sharp with an adaptive mission built from your review history and weak spots.",
-            supportingMetrics: [
-                "\(progress.dailyFiveStreak)d streak",
-                "Best \(progress.bestDailyFiveScore)%"
-            ],
-            buttonLabel: "Run Adaptive Mission",
-            destination: .adaptiveMission
-        )
-    }
-
-    private static func weakerModuleFirst(_ left: ModuleSnapshot, _ right: ModuleSnapshot) -> Bool {
-        let leftAccuracy = left.proficiency?.recentAccuracy ?? 0
-        let rightAccuracy = right.proficiency?.recentAccuracy ?? 0
-        if leftAccuracy == rightAccuracy {
-            if left.overdueCount == right.overdueCount {
-                return left.module.title < right.module.title
-            }
-            return left.overdueCount > right.overdueCount
-        }
-        return leftAccuracy < rightAccuracy
-    }
-
-    private struct ModuleSnapshot {
-        let module: TrainingModule
-        let proficiency: ModuleProficiency?
-        let overdueCount: Int
-    }
 }

@@ -378,7 +378,7 @@ enum TrainingContent {
             subtitle: "Apply the Air Force RM process",
             estimatedMinutes: 16,
             difficulty: "Core",
-            tags: ["RM", "DAFPAM 90-803"],
+            tags: ["RM", "DAFI 90-802"],
             objectives: [
                 "Apply the five-step RM process",
                 "Use severity and probability to assess risk",
@@ -1761,11 +1761,11 @@ enum TrainingContent {
                     id: "dorm-3",
                     title: "Risk Acceptance Authority",
                     bullets: [
-                        "Low residual risk: Flight/CC or equivalent can accept.",
-                        "Medium residual risk: Squadron/CC level acceptance required.",
-                        "High residual risk: Group/CC (O-6) or equivalent must accept.",
-                        "Extremely High residual risk: Wing/CC or equivalent — rarely acceptable outside combat operations.",
-                        "The inspector NEVER accepts risk — you prepare the assessment and the appropriate commander signs. This distinction matters especially when pressured."
+                        "Determine acceptance authority from the current applicable command policy and mission context.",
+                        "Rank alone does not establish authority for a given risk level.",
+                        "Elevate residual risk above the decision maker's delegated authority.",
+                        "A risk acceptance memorandum does not itself waive a mandatory technical requirement.",
+                        "Safety staff assess hazards and recommend controls; the designated authority owns the acceptance decision."
                     ]
                 ),
                 LessonPage(
@@ -2050,6 +2050,13 @@ enum TrainingContent {
             date: "24 Feb 2026",
             notes: "Safety program responsibilities and hazard abatement references for the Air Force safety program.",
             url: URL(string: "https://static.e-publishing.af.mil/production/1/af_se/publication/dafman91-203/dafman91-203.pdf")
+        ),
+        ReferenceSource(
+            id: "dafi-90-802",
+            title: "DAFI 90-802 - Risk Management",
+            date: "20 Jan 2026",
+            notes: "Primary RM directive: principles, levels, five-step process, and decision authority.",
+            url: URL(string: "https://static.e-publishing.af.mil/production/1/af_se/publication/dafi90-802/dafi90-802.pdf")
         ),
         ReferenceSource(
             id: "dafpam-90-803",

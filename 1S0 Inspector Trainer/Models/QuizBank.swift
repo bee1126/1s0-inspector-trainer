@@ -13,7 +13,6 @@ enum QuizBank {
             id: "loto-q1",
             prompt: "A machine has three energy sources: electrical, pneumatic, and hydraulic. What must happen before servicing begins?",
             difficulty: .medium,
-            imageName: "hazard_scene_03_electrical",
             choices: [
                 QuizChoice(id: "loto-q1-a", text: "All three energy sources must be individually isolated, locked, and verified at zero energy", isCorrect: true),
                 QuizChoice(id: "loto-q1-b", text: "Only the primary electrical source needs lockout; the others will bleed down naturally", isCorrect: false),
@@ -33,14 +32,14 @@ enum QuizBank {
             ]
         ),
         QuizQuestion(
-            id: "loto-q3",
+            id: "loto-q103",
             prompt: "An authorized employee discovers that a lock belongs to a worker who is on extended leave. What is the proper procedure?",
             difficulty: .medium,
             choices: [
-                QuizChoice(id: "loto-q3-a", text: "Contact the absent employee if possible; if not, follow the employer's lock removal authorization procedure", isCorrect: true),
-                QuizChoice(id: "loto-q3-b", text: "Cut the lock immediately since the worker is not present", isCorrect: false),
-                QuizChoice(id: "loto-q3-c", text: "Leave the lock indefinitely until the employee returns", isCorrect: false),
-                QuizChoice(id: "loto-q3-d", text: "Have any available worker remove it with bolt cutters", isCorrect: false)
+                QuizChoice(id: "loto-q103-a", text: "Follow the employer's documented removal procedure: verify the worker is absent, make reasonable contact efforts, and ensure they know before returning to work", isCorrect: true),
+                QuizChoice(id: "loto-q103-b", text: "Cut the lock immediately since the worker is not present", isCorrect: false),
+                QuizChoice(id: "loto-q103-c", text: "Leave the lock indefinitely until the employee returns", isCorrect: false),
+                QuizChoice(id: "loto-q103-d", text: "Have any available worker remove it with bolt cutters", isCorrect: false)
             ]
         ),
         QuizQuestion(
@@ -55,32 +54,31 @@ enum QuizBank {
             ]
         ),
         QuizQuestion(
-            id: "loto-q5",
+            id: "loto-q105",
             prompt: "A contractor is performing work alongside facility employees on the same equipment. How should LOTO be coordinated?",
             difficulty: .medium,
             choices: [
-                QuizChoice(id: "loto-q5-a", text: "Both the facility and contractor must apply their own locks under a coordinated group lockout procedure", isCorrect: true),
-                QuizChoice(id: "loto-q5-b", text: "The facility's locks are sufficient since contractors work under the host employer's program", isCorrect: false),
-                QuizChoice(id: "loto-q5-c", text: "The contractor applies locks and the facility relies on their program exclusively", isCorrect: false),
-                QuizChoice(id: "loto-q5-d", text: "Only one set of locks is needed as long as someone is designated to manage them", isCorrect: false)
+                QuizChoice(id: "loto-q105-a", text: "Exchange energy-control procedures, coordinate responsibilities, and provide each servicing employee personal protection under the applicable group procedure", isCorrect: true),
+                QuizChoice(id: "loto-q105-b", text: "The facility's locks are sufficient since contractors work under the host employer's program", isCorrect: false),
+                QuizChoice(id: "loto-q105-c", text: "The contractor applies locks and the facility relies on their program exclusively", isCorrect: false),
+                QuizChoice(id: "loto-q105-d", text: "Only one set of locks is needed as long as someone is designated to manage them", isCorrect: false)
             ]
         ),
         QuizQuestion(
-            id: "loto-q6",
+            id: "loto-q106",
             prompt: "Under OSHA 1910.147, when can tagout be used instead of lockout?",
             difficulty: .medium,
             choices: [
-                QuizChoice(id: "loto-q6-a", text: "Only when the energy-isolating device is not capable of being locked out and equivalent safety is demonstrated", isCorrect: true),
-                QuizChoice(id: "loto-q6-b", text: "Whenever locks are not available in the immediate work area", isCorrect: false),
-                QuizChoice(id: "loto-q6-c", text: "When the job is expected to last less than 30 minutes", isCorrect: false),
-                QuizChoice(id: "loto-q6-d", text: "When the supervisor authorizes tagout as an alternative", isCorrect: false)
+                QuizChoice(id: "loto-q106-a", text: "Use tagout for devices that cannot be locked; on lockable devices, demonstrate full equivalent employee protection under a compliant tagout program", isCorrect: true),
+                QuizChoice(id: "loto-q106-b", text: "Whenever locks are not available in the immediate work area", isCorrect: false),
+                QuizChoice(id: "loto-q106-c", text: "When the job is expected to last less than 30 minutes", isCorrect: false),
+                QuizChoice(id: "loto-q106-d", text: "When the supervisor authorizes tagout as an alternative", isCorrect: false)
             ]
         ),
         QuizQuestion(
             id: "loto-q7",
             prompt: "Stored energy remains in a hydraulic system after the pump is isolated. What must be done?",
             difficulty: .medium,
-            imageName: "hazard_scene_06_loto",
             choices: [
                 QuizChoice(id: "loto-q7-a", text: "Relieve, disconnect, or restrain the stored energy before work begins", isCorrect: true),
                 QuizChoice(id: "loto-q7-b", text: "Proceed with caution since the pump isolation prevents new pressure", isCorrect: false),
@@ -111,14 +109,14 @@ enum QuizBank {
             ]
         ),
         QuizQuestion(
-            id: "loto-q10",
+            id: "loto-q110",
             prompt: "During group lockout, what is the role of the primary authorized employee?",
             difficulty: .medium,
             choices: [
-                QuizChoice(id: "loto-q10-a", text: "Coordinate the lockout, ensure all members are accounted for, and be the last to remove their lock", isCorrect: true),
-                QuizChoice(id: "loto-q10-b", text: "Apply a single lock on behalf of the entire group", isCorrect: false),
-                QuizChoice(id: "loto-q10-c", text: "Delegate lockout duties to the most experienced worker", isCorrect: false),
-                QuizChoice(id: "loto-q10-d", text: "Verify only that tags are attached; individual locks are optional in group lockout", isCorrect: false)
+                QuizChoice(id: "loto-q110-a", text: "Coordinate overall control and exposure status while ensuring each authorized employee applies and removes their personal device under the group procedure", isCorrect: true),
+                QuizChoice(id: "loto-q110-b", text: "Apply a single lock on behalf of the entire group", isCorrect: false),
+                QuizChoice(id: "loto-q110-c", text: "Delegate lockout duties to the most experienced worker", isCorrect: false),
+                QuizChoice(id: "loto-q110-d", text: "Verify only that tags are attached; individual locks are optional in group lockout", isCorrect: false)
             ]
         )
     ]
@@ -138,14 +136,14 @@ enum QuizBank {
             ]
         ),
         QuizQuestion(
-            id: "fall-q2",
-            prompt: "A worker's personal fall arrest system must limit free fall to what maximum distance?",
+            id: "fall-q102",
+            prompt: "Under the standard six-foot free-fall criterion in OSHA 1910.140, what limit applies unless the employer demonstrates the specified alternative performance requirements?",
             difficulty: .medium,
             choices: [
-                QuizChoice(id: "fall-q2-a", text: "6 feet", isCorrect: true),
-                QuizChoice(id: "fall-q2-b", text: "4 feet", isCorrect: false),
-                QuizChoice(id: "fall-q2-c", text: "10 feet", isCorrect: false),
-                QuizChoice(id: "fall-q2-d", text: "12 feet", isCorrect: false)
+                QuizChoice(id: "fall-q102-a", text: "6 feet, with no contact with a lower level", isCorrect: true),
+                QuizChoice(id: "fall-q102-b", text: "4 feet", isCorrect: false),
+                QuizChoice(id: "fall-q102-c", text: "10 feet", isCorrect: false),
+                QuizChoice(id: "fall-q102-d", text: "12 feet", isCorrect: false)
             ]
         ),
         QuizQuestion(
@@ -174,7 +172,6 @@ enum QuizBank {
             id: "fall-q5",
             prompt: "A worker needs to access a roof with an unprotected edge 20 feet above grade. No permanent guardrails exist. What is the best course of action?",
             difficulty: .medium,
-            imageName: "hazard_scene_02_rooftop",
             choices: [
                 QuizChoice(id: "fall-q5-a", text: "Use guardrails, travel restraint, or a personal fall arrest system before working near the edge", isCorrect: true),
                 QuizChoice(id: "fall-q5-b", text: "Stay 10 feet from the edge and no fall protection is needed", isCorrect: false),
@@ -216,15 +213,14 @@ enum QuizBank {
             ]
         ),
         QuizQuestion(
-            id: "fall-q9",
-            prompt: "An anchor point for a personal fall arrest system must be capable of supporting at least how much force per worker attached?",
+            id: "fall-q109",
+            prompt: "Under OSHA 1910.140, what anchorage strength is required when not using the qualified-person-designed complete-system alternative?",
             difficulty: .medium,
-            imageName: "hazard_scene_07_scaffold",
             choices: [
-                QuizChoice(id: "fall-q9-a", text: "5,000 pounds per worker", isCorrect: true),
-                QuizChoice(id: "fall-q9-b", text: "3,000 pounds per worker", isCorrect: false),
-                QuizChoice(id: "fall-q9-c", text: "Twice the worker's body weight", isCorrect: false),
-                QuizChoice(id: "fall-q9-d", text: "1,800 pounds per worker", isCorrect: false)
+                QuizChoice(id: "fall-q109-a", text: "5,000 pounds per worker", isCorrect: true),
+                QuizChoice(id: "fall-q109-b", text: "3,000 pounds per worker", isCorrect: false),
+                QuizChoice(id: "fall-q109-c", text: "Twice the worker's body weight", isCorrect: false),
+                QuizChoice(id: "fall-q109-d", text: "1,800 pounds per worker", isCorrect: false)
             ]
         ),
         QuizQuestion(
@@ -244,36 +240,36 @@ enum QuizBank {
 
     static let riskManagement: [QuizQuestion] = [
         QuizQuestion(
-            id: "rm-q1",
-            prompt: "In the ORM process, what is the correct sequence of the five steps?",
+            id: "rm-q101",
+            prompt: "In the DAF risk management (RM) process, what is the correct sequence of the five steps?",
             difficulty: .medium,
             choices: [
-                QuizChoice(id: "rm-q1-a", text: "Identify hazards, assess hazards, make risk decisions, implement controls, supervise and review", isCorrect: true),
-                QuizChoice(id: "rm-q1-b", text: "Assess hazards, identify controls, implement decisions, review results, supervise workers", isCorrect: false),
-                QuizChoice(id: "rm-q1-c", text: "Implement controls, identify hazards, assess risk, make decisions, document results", isCorrect: false),
-                QuizChoice(id: "rm-q1-d", text: "Supervise work, identify hazards, implement controls, assess risk, review decisions", isCorrect: false)
+                QuizChoice(id: "rm-q101-a", text: "Identify the hazards, assess the hazards, develop controls and make decisions, implement controls, supervise and evaluate", isCorrect: true),
+                QuizChoice(id: "rm-q101-b", text: "Assess hazards, identify controls, implement decisions, review results, supervise workers", isCorrect: false),
+                QuizChoice(id: "rm-q101-c", text: "Implement controls, identify hazards, assess risk, make decisions, document results", isCorrect: false),
+                QuizChoice(id: "rm-q101-d", text: "Supervise work, identify hazards, implement controls, assess risk, review decisions", isCorrect: false)
             ]
         ),
         QuizQuestion(
-            id: "rm-q2",
-            prompt: "A risk assessment results in a 'High' residual risk. Who should normally accept this level of risk in the Air Force chain of command?",
+            id: "rm-q102",
+            prompt: "A risk assessment results in High residual risk. How should the required acceptance authority be determined?",
             difficulty: .medium,
             choices: [
-                QuizChoice(id: "rm-q2-a", text: "The group commander (O-6) or equivalent, following the unit's risk acceptance matrix", isCorrect: true),
-                QuizChoice(id: "rm-q2-b", text: "The on-scene supervisor, as long as they document the decision", isCorrect: false),
-                QuizChoice(id: "rm-q2-c", text: "Any SNCO with safety training", isCorrect: false),
-                QuizChoice(id: "rm-q2-d", text: "The safety office alone can accept any level of residual risk", isCorrect: false)
+                QuizChoice(id: "rm-q102-a", text: "Use the current applicable command risk-acceptance policy and elevate to its designated authority; do not infer authority from rank alone", isCorrect: true),
+                QuizChoice(id: "rm-q102-b", text: "The on-scene supervisor, as long as they document the decision", isCorrect: false),
+                QuizChoice(id: "rm-q102-c", text: "Any SNCO with safety training", isCorrect: false),
+                QuizChoice(id: "rm-q102-d", text: "The safety office alone can accept any level of residual risk", isCorrect: false)
             ]
         ),
         QuizQuestion(
-            id: "rm-q3",
-            prompt: "What is the difference between 'deliberate' and 'time-critical' risk management?",
+            id: "rm-q103",
+            prompt: "What is the difference between deliberate and real-time risk management (RTRM)?",
             difficulty: .medium,
             choices: [
-                QuizChoice(id: "rm-q3-a", text: "Deliberate uses a thorough analysis with full documentation; time-critical is a rapid mental assessment when time is limited", isCorrect: true),
-                QuizChoice(id: "rm-q3-b", text: "Deliberate is for combat operations; time-critical is for garrison activities", isCorrect: false),
-                QuizChoice(id: "rm-q3-c", text: "They are the same process but deliberate involves more people", isCorrect: false),
-                QuizChoice(id: "rm-q3-d", text: "Time-critical allows skipping the hazard identification step", isCorrect: false)
+                QuizChoice(id: "rm-q103-a", text: "Deliberate RM applies the full 5-step process during planning, normally documented; RTRM is a rapid, often mental, application of the same steps during execution when time is limited", isCorrect: true),
+                QuizChoice(id: "rm-q103-b", text: "Deliberate is for combat operations; real-time is for garrison activities", isCorrect: false),
+                QuizChoice(id: "rm-q103-c", text: "They are the same process but deliberate involves more people", isCorrect: false),
+                QuizChoice(id: "rm-q103-d", text: "RTRM allows skipping the hazard identification step", isCorrect: false)
             ]
         ),
         QuizQuestion(
@@ -299,14 +295,14 @@ enum QuizBank {
             ]
         ),
         QuizQuestion(
-            id: "rm-q6",
-            prompt: "A team completes risk assessment and implements controls, but conditions change mid-task. What should happen?",
+            id: "rm-q106",
+            prompt: "Conditions change mid-task and the existing controls may no longer protect the team. What should happen?",
             difficulty: .medium,
             choices: [
-                QuizChoice(id: "rm-q6-a", text: "Stop work, reassess hazards with the new conditions, and adjust controls before resuming", isCorrect: true),
-                QuizChoice(id: "rm-q6-b", text: "Continue under the original assessment since it was already approved", isCorrect: false),
-                QuizChoice(id: "rm-q6-c", text: "Add PPE as a precaution and continue the task", isCorrect: false),
-                QuizChoice(id: "rm-q6-d", text: "Note the change in the post-task debrief for future reference", isCorrect: false)
+                QuizChoice(id: "rm-q106-a", text: "Stop work, reassess hazards with the new conditions, and adjust controls before resuming", isCorrect: true),
+                QuizChoice(id: "rm-q106-b", text: "Continue under the original assessment since it was already approved", isCorrect: false),
+                QuizChoice(id: "rm-q106-c", text: "Add PPE as a precaution and continue the task", isCorrect: false),
+                QuizChoice(id: "rm-q106-d", text: "Note the change in the post-task debrief for future reference", isCorrect: false)
             ]
         ),
         QuizQuestion(
@@ -322,7 +318,7 @@ enum QuizBank {
         ),
         QuizQuestion(
             id: "rm-q8",
-            prompt: "During 'supervise and review,' what is the inspector's primary focus?",
+            prompt: "During the 'supervise and evaluate' step, what is the inspector's primary focus?",
             difficulty: .medium,
             choices: [
                 QuizChoice(id: "rm-q8-a", text: "Verifying that controls are in place, effective, and being followed as planned", isCorrect: true),
@@ -333,11 +329,11 @@ enum QuizBank {
         ),
         QuizQuestion(
             id: "rm-q9",
-            prompt: "A supervisor decides to accept moderate risk for a routine maintenance task. Is this appropriate?",
+            prompt: "A supervisor decides to accept Medium risk for a routine maintenance task. Is this appropriate?",
             difficulty: .medium,
             choices: [
                 QuizChoice(id: "rm-q9-a", text: "Only if the risk acceptance authority level matches the residual risk level per command policy", isCorrect: true),
-                QuizChoice(id: "rm-q9-b", text: "Yes — supervisors can always accept moderate risk for routine tasks", isCorrect: false),
+                QuizChoice(id: "rm-q9-b", text: "Yes — supervisors can always accept Medium risk for routine tasks", isCorrect: false),
                 QuizChoice(id: "rm-q9-c", text: "No — all risk must be reduced to low before any work begins", isCorrect: false),
                 QuizChoice(id: "rm-q9-d", text: "Yes — as long as PPE is provided to all workers", isCorrect: false)
             ]
@@ -414,14 +410,14 @@ enum QuizBank {
             ]
         ),
         QuizQuestion(
-            id: "roles-q6",
-            prompt: "What is the purpose of a unit or wing safety council?",
+            id: "roles-q106",
+            prompt: "What is the purpose of the installation Environmental, Safety, and Occupational Health Council (ESOHC) and its optional Safety Sub-Group?",
             difficulty: .medium,
             choices: [
-                QuizChoice(id: "roles-q6-a", text: "Review mishap trends, monitor program effectiveness, and recommend corrective actions to leadership", isCorrect: true),
-                QuizChoice(id: "roles-q6-b", text: "Conduct every workplace inspection on behalf of supervisors", isCorrect: false),
-                QuizChoice(id: "roles-q6-c", text: "Approve all hazardous work permits before operations begin", isCorrect: false),
-                QuizChoice(id: "roles-q6-d", text: "Replace commanders and supervisors as the safety decision-makers", isCorrect: false)
+                QuizChoice(id: "roles-q106-a", text: "Give leadership a forum to review mishap and hazard trends and program performance, decide on corrective actions and resources, and track them to closure", isCorrect: true),
+                QuizChoice(id: "roles-q106-b", text: "Conduct every workplace inspection on behalf of supervisors", isCorrect: false),
+                QuizChoice(id: "roles-q106-c", text: "Approve all hazardous work permits before operations begin", isCorrect: false),
+                QuizChoice(id: "roles-q106-d", text: "Replace commanders and supervisors as the safety decision-makers", isCorrect: false)
             ]
         ),
         QuizQuestion(
@@ -477,7 +473,6 @@ enum QuizBank {
             id: "cs-q1",
             prompt: "What three criteria define a confined space before permit-required hazards are evaluated?",
             difficulty: .hard,
-            imageName: "hazard_scene_04_confined",
             choices: [
                 QuizChoice(id: "cs-q1-a", text: "Large enough to enter, has limited means of entry/exit, and is not designed for continuous occupancy", isCorrect: true),
                 QuizChoice(id: "cs-q1-b", text: "Contains hazardous atmosphere, has limited ventilation, and is below ground level", isCorrect: false),
@@ -508,14 +503,14 @@ enum QuizBank {
             ]
         ),
         QuizQuestion(
-            id: "cs-q4",
+            id: "cs-q104",
             prompt: "What is the attendant's most critical responsibility during a confined space entry?",
             difficulty: .hard,
             choices: [
-                QuizChoice(id: "cs-q4-a", text: "Maintain continuous communication with entrants, monitor conditions, and summon rescue if needed — never enter the space", isCorrect: true),
-                QuizChoice(id: "cs-q4-b", text: "Operate the ventilation equipment and monitor air quality instruments inside the space", isCorrect: false),
-                QuizChoice(id: "cs-q4-c", text: "Enter the space immediately if an entrant calls for help", isCorrect: false),
-                QuizChoice(id: "cs-q4-d", text: "Complete the entry permit paperwork while entrants work", isCorrect: false)
+                QuizChoice(id: "cs-q104-a", text: "Remain outside, track and communicate with entrants, order evacuation when required, and summon rescue; do not enter while assigned attendant duties", isCorrect: true),
+                QuizChoice(id: "cs-q104-b", text: "Operate the ventilation equipment and monitor air quality instruments inside the space", isCorrect: false),
+                QuizChoice(id: "cs-q104-c", text: "Enter the space immediately if an entrant calls for help", isCorrect: false),
+                QuizChoice(id: "cs-q104-d", text: "Complete the entry permit paperwork while entrants work", isCorrect: false)
             ]
         ),
         QuizQuestion(
@@ -634,14 +629,14 @@ enum QuizBank {
             ]
         ),
         QuizQuestion(
-            id: "hc-q5",
-            prompt: "An employee's NRR-rated earplugs have an NRR of 29. Using the OSHA derating method, what is the estimated real-world noise reduction?",
+            id: "hc-q105",
+            prompt: "For an NRR of 29, what value results from OSHA's A-weighting adjustment alone, before any additional field derating?",
             difficulty: .hard,
             choices: [
-                QuizChoice(id: "hc-q5-a", text: "Approximately 11 dB — subtract 7, then divide by 2; this is a conservative field rule, not OSHA's Appendix B method", isCorrect: false),
-                QuizChoice(id: "hc-q5-b", text: "The full 29 dB as stated on the label", isCorrect: false),
-                QuizChoice(id: "hc-q5-c", text: "Approximately 22 dB — subtract 7 from the NRR when using A-weighted measurements", isCorrect: true),
-                QuizChoice(id: "hc-q5-d", text: "The NRR only applies in laboratory conditions and cannot be estimated for field use", isCorrect: false)
+                QuizChoice(id: "hc-q105-a", text: "Approximately 11 dB — subtract 7, then divide by 2; this is a conservative field rule, not OSHA's Appendix B method", isCorrect: false),
+                QuizChoice(id: "hc-q105-b", text: "The full 29 dB as stated on the label", isCorrect: false),
+                QuizChoice(id: "hc-q105-c", text: "22 dB: 29 minus 7; this adjustment alone is not a guarantee of actual worker protection", isCorrect: true),
+                QuizChoice(id: "hc-q105-d", text: "The NRR only applies in laboratory conditions and cannot be estimated for field use", isCorrect: false)
             ]
         ),
         QuizQuestion(
@@ -705,14 +700,14 @@ enum QuizBank {
 
     static let mishapReporting: [QuizQuestion] = [
         QuizQuestion(
-            id: "mishap-q1",
+            id: "mishap-q101",
             prompt: "A Class A mishap is defined by which threshold?",
             difficulty: .hard,
             choices: [
-                QuizChoice(id: "mishap-q1-a", text: "A fatality, permanent total disability, or property damage of $2.5 million or more", isCorrect: true),
-                QuizChoice(id: "mishap-q1-b", text: "Any injury requiring hospitalization regardless of cost", isCorrect: false),
-                QuizChoice(id: "mishap-q1-c", text: "Property damage exceeding $500,000", isCorrect: false),
-                QuizChoice(id: "mishap-q1-d", text: "Any lost workday case or restricted duty assignment", isCorrect: false)
+                QuizChoice(id: "mishap-q101-a", text: "A fatality, permanent total disability, a destroyed DoD aircraft, or direct mishap cost of $2.5 million or more", isCorrect: true),
+                QuizChoice(id: "mishap-q101-b", text: "Any injury requiring hospitalization regardless of cost", isCorrect: false),
+                QuizChoice(id: "mishap-q101-c", text: "Property damage exceeding $500,000", isCorrect: false),
+                QuizChoice(id: "mishap-q101-d", text: "Any lost workday case or restricted duty assignment", isCorrect: false)
             ]
         ),
         QuizQuestion(
@@ -741,7 +736,6 @@ enum QuizBank {
             id: "mishap-q4",
             prompt: "What is the primary purpose of preserving the mishap scene?",
             difficulty: .hard,
-            imageName: "hazard_scene_08_flightline",
             choices: [
                 QuizChoice(id: "mishap-q4-a", text: "To maintain physical evidence so investigators can accurately determine root causes", isCorrect: true),
                 QuizChoice(id: "mishap-q4-b", text: "To prevent workers from returning to work until the area is cleaned", isCorrect: false),
@@ -762,7 +756,7 @@ enum QuizBank {
         ),
         QuizQuestion(
             id: "mishap-q6",
-            prompt: "What information must be included in an initial mishap report?",
+            prompt: "What information should an initial mishap notification include?",
             difficulty: .hard,
             choices: [
                 QuizChoice(id: "mishap-q6-a", text: "Who was involved, what happened, when and where it occurred, immediate actions taken, and severity assessment", isCorrect: true),
@@ -846,7 +840,6 @@ enum QuizBank {
             id: "ppe-q3",
             prompt: "A worker is exposed to both impact and chemical splash hazards. What eye protection is required?",
             difficulty: .hard,
-            imageName: "hazard_scene_01_shop",
             choices: [
                 QuizChoice(id: "ppe-q3-a", text: "Impact-rated chemical splash goggles, with a face shield added when splash severity warrants", isCorrect: true),
                 QuizChoice(id: "ppe-q3-b", text: "Standard safety glasses are sufficient for all eye hazards", isCorrect: false),
@@ -855,25 +848,25 @@ enum QuizBank {
             ]
         ),
         QuizQuestion(
-            id: "ppe-q4",
+            id: "ppe-q104",
             prompt: "Who is responsible for the cost of required PPE under OSHA?",
             difficulty: .hard,
             choices: [
-                QuizChoice(id: "ppe-q4-a", text: "The employer must provide required PPE at no cost to the employee", isCorrect: true),
-                QuizChoice(id: "ppe-q4-b", text: "The cost is split equally between employer and employee", isCorrect: false),
-                QuizChoice(id: "ppe-q4-c", text: "The employee pays for PPE but can deduct it from taxes", isCorrect: false),
-                QuizChoice(id: "ppe-q4-d", text: "The employer pays only for PPE costing over $50", isCorrect: false)
+                QuizChoice(id: "ppe-q104-a", text: "The employer pays for required PPE except the specific exceptions allowed by OSHA, such as certain non-specialty footwear and prescription eyewear", isCorrect: true),
+                QuizChoice(id: "ppe-q104-b", text: "The cost is split equally between employer and employee", isCorrect: false),
+                QuizChoice(id: "ppe-q104-c", text: "The employee pays for PPE but can deduct it from taxes", isCorrect: false),
+                QuizChoice(id: "ppe-q104-d", text: "The employer pays only for PPE costing over $50", isCorrect: false)
             ]
         ),
         QuizQuestion(
-            id: "ppe-q5",
-            prompt: "An employee's respirator has a protection factor of 10. The workplace has 5x the PEL of a contaminant. Is this respirator adequate?",
+            id: "ppe-q105",
+            prompt: "A respirator has an assigned protection factor of 10, and exposure is 5 times the PEL. Is that comparison alone enough to approve its use?",
             difficulty: .hard,
             choices: [
-                QuizChoice(id: "ppe-q5-a", text: "Yes — the assigned protection factor of 10 exceeds the 5x hazard ratio, providing adequate protection", isCorrect: true),
-                QuizChoice(id: "ppe-q5-b", text: "No — the protection factor must be at least 20x the exposure level", isCorrect: false),
-                QuizChoice(id: "ppe-q5-c", text: "Protection factors are not used to select respirators", isCorrect: false),
-                QuizChoice(id: "ppe-q5-d", text: "Only a supplied-air respirator is acceptable above the PEL", isCorrect: false)
+                QuizChoice(id: "ppe-q105-a", text: "No. The APF comparison is only one check; confirm the contaminant, atmosphere, respirator approval, cartridge or filter, fit, and program requirements", isCorrect: true),
+                QuizChoice(id: "ppe-q105-b", text: "No — the protection factor must be at least 20x the exposure level", isCorrect: false),
+                QuizChoice(id: "ppe-q105-c", text: "Protection factors are not used to select respirators", isCorrect: false),
+                QuizChoice(id: "ppe-q105-d", text: "Only a supplied-air respirator is acceptable above the PEL", isCorrect: false)
             ]
         ),
         QuizQuestion(
@@ -891,7 +884,6 @@ enum QuizBank {
             id: "ppe-q7",
             prompt: "A worker complains that their safety gloves make it difficult to perform fine motor tasks. What should the supervisor do?",
             difficulty: .hard,
-            imageName: "hazard_scene_05_warehouse",
             choices: [
                 QuizChoice(id: "ppe-q7-a", text: "Evaluate alternative gloves that provide the required protection level while allowing better dexterity", isCorrect: true),
                 QuizChoice(id: "ppe-q7-b", text: "Allow the worker to remove gloves for tasks requiring fine motor skills", isCorrect: false),
@@ -911,14 +903,14 @@ enum QuizBank {
             ]
         ),
         QuizQuestion(
-            id: "ppe-q9",
-            prompt: "A worker is required to wear a respirator. Under OSHA, what must happen before they can use it?",
+            id: "ppe-q109",
+            prompt: "Before a worker uses a required tight-fitting respirator, what must happen?",
             difficulty: .hard,
             choices: [
-                QuizChoice(id: "ppe-q9-a", text: "Medical evaluation, fit testing, and training on proper use, maintenance, and limitations", isCorrect: true),
-                QuizChoice(id: "ppe-q9-b", text: "Only a fit test to ensure proper seal", isCorrect: false),
-                QuizChoice(id: "ppe-q9-c", text: "Supervisor approval and a signed waiver", isCorrect: false),
-                QuizChoice(id: "ppe-q9-d", text: "Completing an online respiratory protection course", isCorrect: false)
+                QuizChoice(id: "ppe-q109-a", text: "Medical evaluation, fit testing, and training on proper use, maintenance, and limitations", isCorrect: true),
+                QuizChoice(id: "ppe-q109-b", text: "Only a fit test to ensure proper seal", isCorrect: false),
+                QuizChoice(id: "ppe-q109-c", text: "Supervisor approval and a signed waiver", isCorrect: false),
+                QuizChoice(id: "ppe-q109-d", text: "Completing an online respiratory protection course", isCorrect: false)
             ]
         ),
         QuizQuestion(
@@ -938,47 +930,47 @@ enum QuizBank {
 
     static let deployedORM: [QuizQuestion] = [
         QuizQuestion(
-            id: "dorm-q1",
+            id: "dorm-q101",
             prompt: "At a deployed location, a squadron commander directs you to sign a risk acceptance letter for a generator placement that violates setback distances. What is the correct response?",
             difficulty: .hard,
             choices: [
-                QuizChoice(id: "dorm-q1-a", text: "Prepare the risk assessment documenting the hazard, but the commander — not the safety inspector — signs the risk acceptance", isCorrect: true),
-                QuizChoice(id: "dorm-q1-b", text: "Sign the letter since the commander has directed it and they outrank you", isCorrect: false),
-                QuizChoice(id: "dorm-q1-c", text: "Refuse to participate and file an IG complaint immediately", isCorrect: false),
-                QuizChoice(id: "dorm-q1-d", text: "Sign it but annotate 'under protest' to protect yourself", isCorrect: false)
+                QuizChoice(id: "dorm-q101-a", text: "Do not sign it as a waiver: document the hazard and interim controls and elevate it; a risk acceptance letter cannot waive a mandatory setback, which needs a waiver or variance from the proper approval authority", isCorrect: true),
+                QuizChoice(id: "dorm-q101-b", text: "Sign the letter since the commander has directed it and they outrank you", isCorrect: false),
+                QuizChoice(id: "dorm-q101-c", text: "Refuse to participate and file an IG complaint immediately", isCorrect: false),
+                QuizChoice(id: "dorm-q101-d", text: "Sign it but annotate 'under protest' to protect yourself", isCorrect: false)
             ]
         ),
         QuizQuestion(
-            id: "dorm-q2",
-            prompt: "Under Air Force RM guidance, who normally accepts 'High' residual risk when the unit risk matrix does not set a stricter level?",
+            id: "dorm-q102",
+            prompt: "At a deployed location, how do you determine who can accept High residual risk?",
             difficulty: .medium,
             choices: [
-                QuizChoice(id: "dorm-q2-a", text: "Group Commander (O-6) or equivalent", isCorrect: true),
-                QuizChoice(id: "dorm-q2-b", text: "Squadron Commander (O-5)", isCorrect: false),
-                QuizChoice(id: "dorm-q2-c", text: "Flight Commander (O-3/O-4)", isCorrect: false),
-                QuizChoice(id: "dorm-q2-d", text: "Wing Commander (O-7+)", isCorrect: false)
+                QuizChoice(id: "dorm-q102-a", text: "Consult the applicable command risk-acceptance policy and elevate to the designated authority; there is no universal rank-only answer", isCorrect: true),
+                QuizChoice(id: "dorm-q102-b", text: "Squadron Commander (O-5)", isCorrect: false),
+                QuizChoice(id: "dorm-q102-c", text: "Flight Commander (O-3/O-4)", isCorrect: false),
+                QuizChoice(id: "dorm-q102-d", text: "Wing Commander (O-7+)", isCorrect: false)
             ]
         ),
         QuizQuestion(
-            id: "dorm-q3",
+            id: "dorm-q103",
             prompt: "Host-nation construction workers on your installation are not using fall protection at 18 feet. The contract says host-nation labor laws apply, which have no fall protection requirement. What is your obligation?",
             difficulty: .hard,
             choices: [
-                QuizChoice(id: "dorm-q3-a", text: "Protect exposed DAF personnel, document the hazard, and elevate through command and contracting channels for controls", isCorrect: true),
-                QuizChoice(id: "dorm-q3-b", text: "Host-nation labor laws govern — you have no authority to impose US standards on foreign workers", isCorrect: false),
-                QuizChoice(id: "dorm-q3-c", text: "Only US military personnel fall under your safety purview at deployed locations", isCorrect: false),
-                QuizChoice(id: "dorm-q3-d", text: "Document the observation but take no action since it is a contracting issue", isCorrect: false)
+                QuizChoice(id: "dorm-q103-a", text: "If the exposure is critical/imminent danger, act to stop the operation and immediately contact the contracting officer; then document the hazard and elevate through command and contracting channels", isCorrect: true),
+                QuizChoice(id: "dorm-q103-b", text: "Host-nation labor laws govern — you have no authority to impose US standards on foreign workers", isCorrect: false),
+                QuizChoice(id: "dorm-q103-c", text: "Only US military personnel fall under your safety purview at deployed locations", isCorrect: false),
+                QuizChoice(id: "dorm-q103-d", text: "Document the observation but take no action since it is a contracting issue", isCorrect: false)
             ]
         ),
         QuizQuestion(
-            id: "dorm-q4",
+            id: "dorm-q104",
             prompt: "A diesel generator is positioned 10 feet from occupied sleeping tents at a deployed location. Personnel report exhaust odor inside. No CO monitors are available. What is the MOST critical immediate action?",
             difficulty: .medium,
             choices: [
-                QuizChoice(id: "dorm-q4-a", text: "Relocate the generator to establish adequate setback distance from occupied structures", isCorrect: true),
-                QuizChoice(id: "dorm-q4-b", text: "Install expedient exhaust ducting to redirect fumes away from the tents", isCorrect: false),
-                QuizChoice(id: "dorm-q4-c", text: "Issue a directive for personnel to ventilate tents by opening flaps during generator operation", isCorrect: false),
-                QuizChoice(id: "dorm-q4-d", text: "Reduce generator run time and rotate which tents receive AC", isCorrect: false)
+                QuizChoice(id: "dorm-q104-a", text: "Move exposed personnel to fresh air, shut the generator down if safe, and obtain emergency or medical help as indicated; assess and relocate it before reuse", isCorrect: true),
+                QuizChoice(id: "dorm-q104-b", text: "Install expedient exhaust ducting to redirect fumes away from the tents", isCorrect: false),
+                QuizChoice(id: "dorm-q104-c", text: "Issue a directive for personnel to ventilate tents by opening flaps during generator operation", isCorrect: false),
+                QuizChoice(id: "dorm-q104-d", text: "Reduce generator run time and rotate which tents receive AC", isCorrect: false)
             ]
         ),
         QuizQuestion(
@@ -993,14 +985,14 @@ enum QuizBank {
             ]
         ),
         QuizQuestion(
-            id: "dorm-q6",
+            id: "dorm-q106",
             prompt: "Vehicle operators on a night convoy have been on duty for 16 hours. Fog has reduced visibility to 100 meters. The route has unmarked construction hazards. What type of ORM is most appropriate?",
             difficulty: .medium,
             choices: [
-                QuizChoice(id: "dorm-q6-a", text: "Time-Critical ORM — the compressed timeline and multiple compounding hazards require rapid but structured risk assessment", isCorrect: true),
-                QuizChoice(id: "dorm-q6-b", text: "Deliberate ORM — a full risk assessment with brainstorming and detailed analysis before any movement", isCorrect: false),
-                QuizChoice(id: "dorm-q6-c", text: "Strategic ORM — this requires a long-term planning effort to address systemic convoy safety issues", isCorrect: false),
-                QuizChoice(id: "dorm-q6-d", text: "No formal ORM is needed — the mission priority overrides the process requirement", isCorrect: false)
+                QuizChoice(id: "dorm-q106-a", text: "Real-Time RM (RTRM) — the convoy is in execution, so apply the 5-step process rapidly to the compounding hazards, including the option to delay or stop", isCorrect: true),
+                QuizChoice(id: "dorm-q106-b", text: "Deliberate RM — a full risk assessment with brainstorming and detailed analysis before any movement", isCorrect: false),
+                QuizChoice(id: "dorm-q106-c", text: "Strategic RM — this requires a long-term planning effort to address systemic convoy safety issues", isCorrect: false),
+                QuizChoice(id: "dorm-q106-d", text: "No formal ORM is needed — the mission priority overrides the process requirement", isCorrect: false)
             ]
         ),
         QuizQuestion(
@@ -1037,14 +1029,14 @@ enum QuizBank {
             ]
         ),
         QuizQuestion(
-            id: "dorm-q10",
+            id: "dorm-q210",
             prompt: "If DAFMAN 91-203, federal standards, and local deployed guidance appear to conflict, what is the best inspector action?",
             difficulty: .hard,
             choices: [
-                QuizChoice(id: "dorm-q10-a", text: "Use the most protective workable control, document the conflict, and elevate through the safety chain for interpretation", isCorrect: true),
-                QuizChoice(id: "dorm-q10-b", text: "Ignore DAFMAN 91-203 because deployed locations are exempt from occupational safety standards", isCorrect: false),
-                QuizChoice(id: "dorm-q10-c", text: "Apply only host-nation rules because they supersede DAF guidance on installations", isCorrect: false),
-                QuizChoice(id: "dorm-q10-d", text: "Choose the least restrictive standard to preserve mission tempo", isCorrect: false)
+                QuizChoice(id: "dorm-q210-a", text: "Apply the guidance that gives the most protection until the conflict is resolved, and report the conflict through the MAJCOM/FLDCOM safety office to AFSEC; risk acceptance is not permission to waive requirements", isCorrect: true),
+                QuizChoice(id: "dorm-q210-b", text: "Ignore DAFMAN 91-203 because deployed locations are exempt from occupational safety standards", isCorrect: false),
+                QuizChoice(id: "dorm-q210-c", text: "Apply only host-nation rules because they supersede DAF guidance on installations", isCorrect: false),
+                QuizChoice(id: "dorm-q210-d", text: "Choose the least restrictive standard to preserve mission tempo", isCorrect: false)
             ]
         )
     ]
@@ -1171,7 +1163,6 @@ enum QuizBank {
             id: "electrical-q1",
             prompt: "Live electrical parts operating at 50 volts or more must generally be:",
             difficulty: .medium,
-            imageName: "hazard_scene_03_electrical",
             choices: [
                 QuizChoice(id: "electrical-q1-a", text: "Guarded against accidental contact by approved enclosures or other effective means", isCorrect: true),
                 QuizChoice(id: "electrical-q1-b", text: "Marked with caution tape only if the panel is indoors", isCorrect: false),
@@ -1328,14 +1319,14 @@ enum QuizBank {
             ]
         ),
         QuizQuestion(
-            id: "machine-guarding-q5",
-            prompt: "Why must abrasive wheels be ring-tested before mounting?",
+            id: "machine-guarding-q105",
+            prompt: "Why are applicable abrasive wheels visually inspected and ring-tested before mounting, following the wheel manufacturer's instructions?",
             difficulty: .hard,
             choices: [
-                QuizChoice(id: "machine-guarding-q5-a", text: "To help detect cracks or defects that could cause the wheel to shatter during use", isCorrect: true),
-                QuizChoice(id: "machine-guarding-q5-b", text: "To confirm the wheel is the correct color for the grinder", isCorrect: false),
-                QuizChoice(id: "machine-guarding-q5-c", text: "To measure the wheel's RPM rating", isCorrect: false),
-                QuizChoice(id: "machine-guarding-q5-d", text: "To remove dust from the wheel surface", isCorrect: false)
+                QuizChoice(id: "machine-guarding-q105-a", text: "To help detect cracks or defects that could cause the wheel to shatter during use", isCorrect: true),
+                QuizChoice(id: "machine-guarding-q105-b", text: "To confirm the wheel is the correct color for the grinder", isCorrect: false),
+                QuizChoice(id: "machine-guarding-q105-c", text: "To measure the wheel's RPM rating", isCorrect: false),
+                QuizChoice(id: "machine-guarding-q105-d", text: "To remove dust from the wheel surface", isCorrect: false)
             ]
         ),
         QuizQuestion(
@@ -1402,7 +1393,6 @@ enum QuizBank {
             id: "material-handling-q1",
             prompt: "What is required for aisles where mechanical handling equipment operates?",
             difficulty: .medium,
-            imageName: "hazard_scene_05_warehouse",
             choices: [
                 QuizChoice(id: "material-handling-q1-a", text: "Aisles must be kept clear, in good repair, and marked where mechanical handling equipment is used", isCorrect: true),
                 QuizChoice(id: "material-handling-q1-b", text: "Aisle markings are optional if forklift horns work", isCorrect: false),
@@ -1515,14 +1505,14 @@ enum QuizBank {
 
     static let fireHotWork: [QuizQuestion] = [
         QuizQuestion(
-            id: "fire-hot-work-q1",
-            prompt: "When welding or cutting near combustible material that cannot be moved, what is normally required?",
+            id: "fire-hot-work-q101",
+            prompt: "Under OSHA 1910.252, when fire-watch criteria apply and hot work can safely proceed near protected combustibles, what is the minimum watch duration?",
             difficulty: .medium,
             choices: [
-                QuizChoice(id: "fire-hot-work-q1-a", text: "Protect combustibles and post a fire watch during hot work and for at least 30 minutes after", isCorrect: true),
-                QuizChoice(id: "fire-hot-work-q1-b", text: "Proceed if the welder has a fire extinguisher nearby", isCorrect: false),
-                QuizChoice(id: "fire-hot-work-q1-c", text: "Wet the floor only and skip the fire watch", isCorrect: false),
-                QuizChoice(id: "fire-hot-work-q1-d", text: "Rely on building sprinklers as the sole control", isCorrect: false)
+                QuizChoice(id: "fire-hot-work-q101-a", text: "Maintain a fire watch during work and for at least 30 minutes afterward; applicable DAF or local requirements may require longer", isCorrect: true),
+                QuizChoice(id: "fire-hot-work-q101-b", text: "Proceed if the welder has a fire extinguisher nearby", isCorrect: false),
+                QuizChoice(id: "fire-hot-work-q101-c", text: "Wet the floor only and skip the fire watch", isCorrect: false),
+                QuizChoice(id: "fire-hot-work-q101-d", text: "Rely on building sprinklers as the sole control", isCorrect: false)
             ]
         ),
         QuizQuestion(

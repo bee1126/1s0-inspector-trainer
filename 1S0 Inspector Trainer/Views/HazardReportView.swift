@@ -64,7 +64,7 @@ struct HazardReportView: View {
                             Image(systemName: "chevron.left")
                                 .font(.system(size: 14, weight: .semibold))
                             Text("Back")
-                                .font(AppFont.body(14))
+                                .font(AppFont.body(16))
                         }
                         .foregroundColor(AppTheme.primary)
                     }
@@ -110,7 +110,7 @@ struct HazardReportView: View {
         HStack {
             Text("FIELD EXERCISE")
                 .font(AppFont.mono(11))
-                .foregroundColor(AppTheme.muted)
+                .foregroundColor(AppTheme.text.opacity(0.68))
                 .tracking(1.5)
             Spacer()
         }
@@ -132,7 +132,7 @@ struct HazardReportView: View {
                                 .foregroundColor(AppTheme.accent)
                                 .tracking(1)
                             Text("All reports processed. Badge earned!")
-                                .font(AppFont.body(13))
+                                .font(AppFont.body(16))
                                 .foregroundColor(AppTheme.text)
                         }
                         Spacer()
@@ -142,15 +142,15 @@ struct HazardReportView: View {
                 GlassCard {
                     VStack(alignment: .leading, spacing: 6) {
                         Text("Process DAF Form 457 hazard reports through the correct workflow. Complete all \(HazardReportBank.allScenarios.count) to earn the Hazard Analyst badge.")
-                            .font(AppFont.body(13))
-                            .foregroundColor(AppTheme.muted)
+                            .font(AppFont.body(16))
+                            .foregroundColor(AppTheme.text.opacity(0.68))
                         HStack(spacing: 4) {
                             Text("\(progress.completedHazardReports.count)/\(HazardReportBank.allScenarios.count)")
                                 .font(AppFont.mono(12))
                                 .foregroundColor(AppTheme.text)
                             Text("completed")
                                 .font(AppFont.mono(12))
-                                .foregroundColor(AppTheme.muted)
+                                .foregroundColor(AppTheme.text.opacity(0.68))
                         }
                         GeometryReader { geo in
                             ZStack(alignment: .leading) {
@@ -215,7 +215,7 @@ struct HazardReportView: View {
                 } else {
                     Image(systemName: "chevron.right")
                         .font(.system(size: 12, weight: .semibold))
-                        .foregroundColor(AppTheme.muted)
+                        .foregroundColor(AppTheme.text.opacity(0.68))
                 }
             }
         }
@@ -250,17 +250,17 @@ struct HazardReportView: View {
                     HStack(spacing: 8) {
                         Text("HAZARD TYPE")
                             .font(AppFont.mono(10))
-                            .foregroundColor(AppTheme.muted)
+                            .foregroundColor(AppTheme.text.opacity(0.68))
                         TagPill(text: scenario.hazardType)
                     }
 
                     VStack(alignment: .leading, spacing: 4) {
                         Text("DESCRIPTION OF HAZARD")
                             .font(AppFont.mono(10))
-                            .foregroundColor(AppTheme.muted)
+                            .foregroundColor(AppTheme.text.opacity(0.68))
                             .tracking(0.5)
                         Text(scenario.hazardDescription)
-                            .font(AppFont.body(14))
+                            .font(AppFont.body(16))
                             .foregroundColor(AppTheme.text)
                             .fixedSize(horizontal: false, vertical: true)
                     }
@@ -268,10 +268,10 @@ struct HazardReportView: View {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("ADDITIONAL DETAILS")
                             .font(AppFont.mono(10))
-                            .foregroundColor(AppTheme.muted)
+                            .foregroundColor(AppTheme.text.opacity(0.68))
                             .tracking(0.5)
                         Text(scenario.additionalDetails)
-                            .font(AppFont.body(13))
+                            .font(AppFont.body(16))
                             .foregroundColor(AppTheme.text.opacity(0.85))
                             .fixedSize(horizontal: false, vertical: true)
                     }
@@ -281,11 +281,11 @@ struct HazardReportView: View {
             GlassCard {
                 VStack(alignment: .leading, spacing: 6) {
                     Text("You will process this report through 6 decision steps per DAFMAN 91-203.")
-                        .font(AppFont.body(13))
-                        .foregroundColor(AppTheme.muted)
+                        .font(AppFont.body(16))
+                        .foregroundColor(AppTheme.text.opacity(0.68))
                     Text("Each step is scored independently. Read the report carefully before proceeding.")
-                        .font(AppFont.body(12))
-                        .foregroundColor(AppTheme.muted)
+                        .font(AppFont.body(16))
+                        .foregroundColor(AppTheme.text.opacity(0.68))
                 }
             }
 
@@ -306,10 +306,10 @@ struct HazardReportView: View {
         VStack(alignment: .leading, spacing: 2) {
             Text(label)
                 .font(AppFont.mono(10))
-                .foregroundColor(AppTheme.muted)
+                .foregroundColor(AppTheme.text.opacity(0.68))
                 .tracking(0.5)
             Text(value)
-                .font(AppFont.body(14))
+                .font(AppFont.body(16))
                 .foregroundColor(AppTheme.text)
         }
     }
@@ -332,7 +332,7 @@ struct HazardReportView: View {
                         .tracking(1)
 
                     Text(currentStep.prompt)
-                        .font(AppFont.body(14))
+                        .font(AppFont.body(16))
                         .foregroundColor(AppTheme.text)
                         .fixedSize(horizontal: false, vertical: true)
                 }
@@ -376,7 +376,7 @@ struct HazardReportView: View {
                 )
 
             Text(text)
-                .font(AppFont.body(14))
+                .font(AppFont.body(16))
                 .foregroundColor(AppTheme.text)
                 .fixedSize(horizontal: false, vertical: true)
 
@@ -397,7 +397,7 @@ struct HazardReportView: View {
         HStack(spacing: 6) {
             Text("STEP \(currentStepIndex + 1) OF \(steps.count)")
                 .font(AppFont.mono(11))
-                .foregroundColor(AppTheme.muted)
+                .foregroundColor(AppTheme.text.opacity(0.68))
                 .tracking(1)
 
             Spacer()
@@ -427,7 +427,7 @@ struct HazardReportView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text("RAC MATRIX REFERENCE")
                     .font(AppFont.mono(10))
-                    .foregroundColor(AppTheme.muted)
+                    .foregroundColor(AppTheme.text.opacity(0.68))
                     .tracking(1)
 
                 let severities = HazardSeverity.allCases
@@ -440,7 +440,7 @@ struct HazardReportView: View {
                     ForEach(probabilities) { prob in
                         Text(prob.short)
                             .font(AppFont.mono(10))
-                            .foregroundColor(AppTheme.muted)
+                            .foregroundColor(AppTheme.text.opacity(0.68))
                             .frame(maxWidth: .infinity)
                     }
                 }
@@ -449,7 +449,7 @@ struct HazardReportView: View {
                     HStack(spacing: 0) {
                         Text(sev.short)
                             .font(AppFont.mono(10))
-                            .foregroundColor(AppTheme.muted)
+                            .foregroundColor(AppTheme.text.opacity(0.68))
                             .frame(width: 32, alignment: .leading)
 
                         ForEach(probabilities) { prob in
@@ -498,18 +498,18 @@ struct HazardReportView: View {
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Your answer:")
                                 .font(AppFont.mono(10))
-                                .foregroundColor(AppTheme.muted)
+                                .foregroundColor(AppTheme.text.opacity(0.68))
                             Text(step.options[selectedIndex])
-                                .font(AppFont.body(13))
+                                .font(AppFont.body(16))
                                 .foregroundColor(AppTheme.danger)
                         }
 
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Correct answer:")
                                 .font(AppFont.mono(10))
-                                .foregroundColor(AppTheme.muted)
+                                .foregroundColor(AppTheme.text.opacity(0.68))
                             Text(step.options[step.correctIndex])
-                                .font(AppFont.body(13))
+                                .font(AppFont.body(16))
                                 .foregroundColor(AppTheme.primary)
                         }
                     }
@@ -520,10 +520,10 @@ struct HazardReportView: View {
                 VStack(alignment: .leading, spacing: 6) {
                     Text("EXPLANATION")
                         .font(AppFont.mono(10))
-                        .foregroundColor(AppTheme.muted)
+                        .foregroundColor(AppTheme.text.opacity(0.68))
                         .tracking(1)
                     Text(step.explanation)
-                        .font(AppFont.body(13))
+                        .font(AppFont.body(16))
                         .foregroundColor(AppTheme.text)
                         .fixedSize(horizontal: false, vertical: true)
                 }
@@ -575,14 +575,14 @@ struct HazardReportView: View {
                             .foregroundColor(scoreColor)
                         Text("\(correctCount)/\(steps.count) correct")
                             .font(AppFont.mono(12))
-                            .foregroundColor(AppTheme.muted)
+                            .foregroundColor(AppTheme.text.opacity(0.68))
                     }
                 }
             }
 
             Text("STEP RESULTS")
                 .font(AppFont.mono(10))
-                .foregroundColor(AppTheme.muted)
+                .foregroundColor(AppTheme.text.opacity(0.68))
                 .tracking(1)
 
             ForEach(steps) { step in
@@ -623,7 +623,7 @@ struct HazardReportView: View {
                             .tracking(1)
                     }
                     Text(scenario.correctiveAction)
-                        .font(AppFont.body(13))
+                        .font(AppFont.body(16))
                         .foregroundColor(AppTheme.text)
                         .fixedSize(horizontal: false, vertical: true)
                 }
@@ -665,11 +665,11 @@ struct HazardReportView: View {
                         ScoreBadge(score: scorePercent)
                         VStack(alignment: .leading, spacing: 4) {
                             Text(scoreMessage)
-                                .font(AppFont.body(14))
+                                .font(AppFont.body(16))
                                 .foregroundColor(AppTheme.text)
                             Text("\(correctCount)/\(steps.count) steps correct")
                                 .font(AppFont.mono(11))
-                                .foregroundColor(AppTheme.muted)
+                                .foregroundColor(AppTheme.text.opacity(0.68))
                         }
                     }
                 }
@@ -691,7 +691,7 @@ struct HazardReportView: View {
                                 .foregroundColor(AppTheme.accent)
                                 .tracking(1)
                             Text("Hazard Analyst \u{2014} All reports processed")
-                                .font(AppFont.body(13))
+                                .font(AppFont.body(16))
                                 .foregroundColor(AppTheme.text)
                         }
                         Spacer()

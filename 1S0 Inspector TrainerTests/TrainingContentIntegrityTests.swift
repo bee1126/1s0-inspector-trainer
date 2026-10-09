@@ -333,3 +333,45 @@ private extension String {
         trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }
+
+extension TrainingContentIntegrityTests {
+    func testEveryQuestionHasSpecificExplanationAndHTTPSReference() throws {
+        let questions = TrainingContent.allQuizQuestions(for: .oneS0)
+        XCTAssertEqual(Set(questions.map(\.id)), Set(QuestionExplanations.entries.keys))
+        for question in questions {
+            XCTAssertGreaterThan(question.explanation.count, 50, question.id)
+            let reference = try XCTUnwrap(question.reference, question.id)
+            XCTAssertFalse(reference.section.isEmpty, question.id)
+            XCTAssertEqual(reference.url.scheme, "https", question.id)
+            let host = try XCTUnwrap(reference.url.host)
+            XCTAssertTrue(["www.osha.gov", "static.e-publishing.af.mil", "www.cdc.gov"].contains(host), question.id)
+        }
+    }
+
+    func testMateriallyCorrectedQuestionsUseNewIDs() {
+        let ids = Set(TrainingContent.allQuizQuestions(for: .oneS0).map(\.id))
+        for retired in QuestionExplanations.retiredQuestionIDs {
+            XCTAssertFalse(ids.contains(retired))
+        }
+        XCTAssertTrue(ids.contains("loto-q106"))
+        XCTAssertTrue(ids.contains("ppe-q105"))
+    }
+}
+
+
+extension TrainingContentIntegrityTests {
+    func testRelease17CurrencyAndRetirement() throws {
+        let questions = Dictionary(uniqueKeysWithValues: TrainingContent.allQuizQuestions(for: .oneS0).map { ($0.id, $0) })
+        for id in ["rm-q101", "rm-q103", "roles-q106", "mishap-q101", "dorm-q103", "dorm-q106", "dorm-q210"] {
+            XCTAssertNotNil(questions[id], id)
+        }
+        for id in ["rm-q101", "rm-q102", "rm-q103", "rm-q4", "rm-q106", "rm-q7", "rm-q8", "rm-q9", "rm-q10", "dorm-q101", "dorm-q102", "dorm-q106", "dorm-q7"] {
+            XCTAssertEqual(questions[id]?.reference?.title, "DAFI 90-802", id)
+        }
+        let hearing = try XCTUnwrap(EpubsCatalog.publication(id: "dafi48-127"))
+        XCTAssertEqual(hearing.pdfURL.lastPathComponent, "dafi48-127.pdf")
+        XCTAssertEqual(questions["dorm-q210"]?.reference?.title, "DAFMAN 91-203")
+        XCTAssertTrue(questions["dorm-q103"]?.explanation.contains("act to stop the operation") == true)
+        XCTAssertTrue(questions["mishap-q101"]?.explanation.contains("destruction of a DoD aircraft") == true)
+    }
+}

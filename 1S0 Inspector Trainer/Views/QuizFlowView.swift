@@ -18,7 +18,13 @@ struct QuizFlowView: View {
     var statusLabelText: String? = nil
     var statusLabelColor: Color? = nil
     var useAdaptiveDifficulty: Bool = true
+    var historyKind: StudySessionKind = .module
 
+    @State private var sessionID = UUID()
+    @State private var answers: [String: String] = [:]
+    @State private var didComplete = false
+    @State private var didPrepare = false
+    @State private var resumeRestarted = false
     @State private var index = 0
     @State private var selectedChoiceId: String? = nil
     @State private var correctCount = 0
@@ -41,7 +47,7 @@ struct QuizFlowView: View {
                     VStack(alignment: .leading, spacing: AppSpacing.stack) {
                         Text(title)
                             .font(AppFont.mono(12))
-                            .foregroundColor(AppTheme.muted)
+                            .foregroundColor(AppTheme.text.opacity(0.68))
                         Text(emptyStateText)
                             .font(AppFont.subtitle(18))
                             .foregroundColor(AppTheme.text)
@@ -51,14 +57,18 @@ struct QuizFlowView: View {
                     let question = filtered[safeIndex]
 
                     VStack(alignment: .leading, spacing: AppSpacing.stack) {
+                        if resumeRestarted {
+                            Text("This quiz changed since your last attempt. It has restarted with current questions; your completed training is preserved.")
+                                .font(AppFont.body(16)).foregroundStyle(AppTheme.accent)
+                        }
                         HStack {
                             Text(title)
                                 .font(AppFont.mono(12))
-                                .foregroundColor(AppTheme.muted)
+                                .foregroundColor(AppTheme.text.opacity(0.68))
                             Spacer()
                             Text("\(safeIndex + 1)/\(filtered.count)")
                                 .font(AppFont.mono(12))
-                                .foregroundColor(AppTheme.muted)
+                                .foregroundColor(AppTheme.text.opacity(0.68))
                             if let currentStatusLabelText {
                                 Text(currentStatusLabelText)
                                     .font(AppFont.mono(11))
@@ -80,29 +90,33 @@ struct QuizFlowView: View {
                                 .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                         }
 
-                        Text(question.prompt)
-                            .font(AppFont.subtitle(18))
-                            .foregroundColor(AppTheme.text)
+                        HStack(alignment: .top) {
+                            Text(question.prompt)
+                                .font(AppFont.subtitle(22))
+                                .foregroundColor(AppTheme.text)
+                            BookmarkQuestionButton(questionID: question.id)
+                        }
 
                         Text("Select the best answer.")
-                            .font(AppFont.body(13))
-                            .foregroundColor(AppTheme.muted)
+                            .font(AppFont.body(16))
+                            .foregroundColor(AppTheme.text.opacity(0.68))
 
                         VStack(spacing: 10) {
                             ForEach(question.choices, id: \.id) { choice in
                                 Button {
                                     guard selectedChoiceId == nil else { return }
                                     selectedChoiceId = choice.id
+                                    answers[question.id] = choice.id
                                     let isCorrect = choice.isCorrect
                                     if isCorrect {
                                         correctCount += 1
                                         registerCorrectAnswer()
-                                        adaptiveManager.recordCorrect()
+                                        if useAdaptiveDifficulty { adaptiveManager.recordCorrect() }
                                         AppFeedback.correct()
                                     } else {
                                         onWrongAnswer?()
                                         registerIncorrectAnswer()
-                                        adaptiveManager.recordWrong()
+                                        if useAdaptiveDifficulty { adaptiveManager.recordWrong() }
                                         AppFeedback.incorrect()
                                     }
                                     progress.updateSRCard(questionId: question.id, quality: isCorrect ? 4 : 1)
@@ -133,10 +147,7 @@ struct QuizFlowView: View {
                         }
 
                         if showFeedback {
-                            Button(safeIndex == filtered.count - 1 ? "Finish Quiz" : "Next Question") {
-                                advance()
-                            }
-                            .buttonStyle(PrimaryButtonStyle())
+                            QuestionExplanationView(explanation: question.explanation, reference: question.reference)
                         }
                     }
                 }
@@ -151,7 +162,14 @@ struct QuizFlowView: View {
                 }
             }
         }
+        .id(index)
         .scrollIndicators(.hidden)
+        .safeAreaInset(edge: .bottom) {
+            if showFeedback && !filtered.isEmpty {
+                Button(index == filtered.count - 1 ? "Finish quiz" : "Next question") { advance() }
+                    .buttonStyle(PrimaryButtonStyle()).disabled(didComplete).studyActionBar()
+            }
+        }
         .simultaneousGesture(
             DragGesture(minimumDistance: 20)
                 .onEnded { value in
@@ -183,12 +201,16 @@ struct QuizFlowView: View {
 
     private func advance() {
         let list = preparedQuestions.isEmpty ? filteredQuestions : preparedQuestions
-        guard !list.isEmpty else { return }
+        guard !list.isEmpty, selectedChoiceId != nil, !didComplete else { return }
         if index == list.count - 1 {
+            didComplete = true
             let summary = QuizStreakSummary(
                 maxStreak: bestStreakCount,
                 multiplier: 1.0 + Double(bestStreakTier) * 0.1
             )
+            progress.recordQuizHistory(id: sessionID, kind: historyKind, questions: list, answers: answers,
+                                       result: AssessmentResult(score: clampedCorrectCount(for: list.count), total: list.count),
+                                       multiplier: summary.multiplier)
             onComplete(
                 AssessmentResult(score: clampedCorrectCount(for: list.count), total: list.count),
                 summary
@@ -244,8 +266,16 @@ struct QuizFlowView: View {
     }
 
     private func prepareQuestions() {
+        guard !didPrepare else { return }
+        didPrepare = true
         resetStreak()
-        if let resumeState {
+        if let resumeState, !resumeState.questionIds.isEmpty,
+           resumeState.questionIds.allSatisfy({ id in
+               guard let question = questions.first(where: { $0.id == id }) else { return false }
+               return Set(resumeState.choiceOrder[id] ?? []) == Set(question.choices.map(\.id))
+           }) {
+            sessionID = resumeState.sessionID
+            answers = resumeState.answers
             let questionMap = Dictionary(uniqueKeysWithValues: questions.map { ($0.id, $0) })
             let ordered = resumeState.questionIds.compactMap { questionMap[$0] }
             if !ordered.isEmpty {
@@ -271,6 +301,7 @@ struct QuizFlowView: View {
             }
         }
 
+        if resumeState != nil { resumeRestarted = true }
         var list = filteredQuestions
         if shuffleQuestions {
             list.shuffle()
@@ -418,7 +449,9 @@ struct QuizFlowView: View {
                 streakCount: streakCount,
                 bestStreakCount: bestStreakCount,
                 streakTier: streakTier,
-                bestStreakTier: bestStreakTier
+                bestStreakTier: bestStreakTier,
+                sessionID: sessionID,
+                answers: answers
             )
         )
     }

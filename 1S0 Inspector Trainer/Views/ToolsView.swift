@@ -10,7 +10,7 @@ struct ToolsView: View {
 
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: AppSpacing.stack) {
-                    Text("Comms & Tools")
+                    Text("Profile & Feedback")
                         .font(AppFont.title(26))
                         .foregroundColor(AppTheme.text)
 
@@ -42,7 +42,7 @@ struct ToolsView: View {
             }
             .scrollIndicators(.hidden)
         }
-        .navigationTitle("Comms")
+        .navigationTitle("Profile")
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showInspectorProfile) {
             RoleSelectionView(
@@ -71,7 +71,7 @@ struct ToolSection<Content: View>: View {
         VStack(alignment: .leading, spacing: 10) {
             Text(title.uppercased())
                 .font(AppFont.mono(11))
-                .foregroundColor(AppTheme.muted)
+                .foregroundColor(AppTheme.text.opacity(0.68))
             content
         }
     }
@@ -88,8 +88,8 @@ struct ToolCard: View {
                     .font(AppFont.subtitle(17))
                     .foregroundColor(AppTheme.text)
                 Text(detail)
-                    .font(AppFont.body(13))
-                    .foregroundColor(AppTheme.muted)
+                    .font(AppFont.body(16))
+                    .foregroundColor(AppTheme.text.opacity(0.68))
             }
         }
     }

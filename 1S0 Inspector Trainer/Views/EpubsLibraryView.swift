@@ -23,6 +23,7 @@ struct EpubsLibraryView: View {
     @EnvironmentObject private var progress: ProgressStore
     @Environment(\.openURL) private var openURL
     @StateObject private var service = EpubsCatalogService()
+    @State private var favoritesOnly: Bool
     @State private var searchText: String
     @State private var downloadingPublicationId: String?
     @State private var exportDocument: EpubsPDFDocument?
@@ -31,7 +32,8 @@ struct EpubsLibraryView: View {
     @State private var alertMessage = ""
     @State private var showAlert = false
 
-    init(focusPublicationId: String? = nil) {
+    init(focusPublicationId: String? = nil, favoritesOnly: Bool = false) {
+        _favoritesOnly = State(initialValue: favoritesOnly)
         let initialSearch = focusPublicationId
             .flatMap(EpubsCatalog.publication(id:))?
             .number ?? ""
@@ -51,7 +53,7 @@ struct EpubsLibraryView: View {
             }
         }
 
-        return matches.sorted { left, right in
+        return matches.filter { !favoritesOnly || progress.isFavoriteEpubPublication($0.id) }.sorted { left, right in
             let leftFavorite = progress.isFavoriteEpubPublication(left.id)
             let rightFavorite = progress.isFavoriteEpubPublication(right.id)
             if leftFavorite != rightFavorite { return leftFavorite }
@@ -67,6 +69,7 @@ struct EpubsLibraryView: View {
                 LazyVStack(alignment: .leading, spacing: AppSpacing.section) {
                     introCard
                     searchCard
+                    Toggle("Saved publications only", isOn: $favoritesOnly).tint(AppTheme.primary).foregroundStyle(AppTheme.text)
 
                     if filteredPublications.isEmpty {
                         emptyState
@@ -153,13 +156,13 @@ struct EpubsLibraryView: View {
                 }
 
                 Text("Check official DAF publication links, watch key regulations for server revisions, or save a copy to Files for offline field use.")
-                    .font(AppFont.body(13))
-                    .foregroundColor(AppTheme.muted)
+                    .font(AppFont.body(16))
+                    .foregroundColor(AppTheme.text.opacity(0.68))
 
                 if let lastChecked = service.lastChecked {
                     Text("CHECKED \(lastChecked.formatted(date: .abbreviated, time: .shortened).uppercased())")
                         .font(AppFont.mono(10))
-                        .foregroundColor(AppTheme.muted)
+                        .foregroundColor(AppTheme.text.opacity(0.68))
                 }
             }
         }
@@ -170,13 +173,13 @@ struct EpubsLibraryView: View {
             VStack(alignment: .leading, spacing: 10) {
                 Text("FIND A PUBLICATION")
                     .font(AppFont.mono(11))
-                    .foregroundColor(AppTheme.muted)
+                    .foregroundColor(AppTheme.text.opacity(0.68))
 
                 HStack(spacing: 10) {
                     Image(systemName: "magnifyingglass")
-                        .foregroundColor(AppTheme.muted)
+                        .foregroundColor(AppTheme.text.opacity(0.68))
                     TextField("Publication number or title", text: $searchText)
-                        .font(AppFont.body(14))
+                        .font(AppFont.body(16))
                         .foregroundColor(AppTheme.text)
                         .textInputAutocapitalization(.characters)
                         .autocorrectionDisabled()
@@ -253,21 +256,21 @@ struct EpubsLibraryView: View {
                 }
 
                 Text(publication.summary)
-                    .font(AppFont.body(13))
-                    .foregroundColor(AppTheme.muted)
+                    .font(AppFont.body(16))
+                    .foregroundColor(AppTheme.text.opacity(0.68))
 
                 if let metadata = currentMetadata(for: publication),
                    let lastModified = metadata.lastModified,
                    !lastModified.isEmpty {
                     Text("SERVER MODIFIED \(lastModified.uppercased())")
                         .font(AppFont.mono(9))
-                        .foregroundColor(AppTheme.muted)
+                        .foregroundColor(AppTheme.text.opacity(0.68))
                 }
 
                 if let lastChecked = snapshot?.lastChecked {
                     Text("REVISION CHECK \(lastChecked.formatted(date: .abbreviated, time: .shortened).uppercased())")
                         .font(AppFont.mono(9))
-                        .foregroundColor(AppTheme.muted)
+                        .foregroundColor(AppTheme.text.opacity(0.68))
                 }
 
                 Divider().opacity(0.3)
@@ -413,12 +416,12 @@ struct EpubsLibraryView: View {
     private var emptyState: some View {
         GlassCard {
             VStack(alignment: .leading, spacing: 8) {
-                Text("No tracked publication matches your search.")
+                Text(favoritesOnly ? "No saved publication matches this search." : "No tracked publication matches your search.")
                     .font(AppFont.subtitle(15))
                     .foregroundColor(AppTheme.text)
-                Text("Use the e-Pubs search above to look across the full official catalog.")
-                    .font(AppFont.body(13))
-                    .foregroundColor(AppTheme.muted)
+                Text(favoritesOnly ? "Turn off the saved filter and use the bookmark on a publication to keep it here." : "Use the e-Pubs search above to look across the full official catalog.")
+                    .font(AppFont.body(16))
+                    .foregroundColor(AppTheme.text.opacity(0.68))
             }
         }
     }
@@ -428,10 +431,10 @@ struct EpubsLibraryView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text("FIELD USE NOTE")
                     .font(AppFont.mono(11))
-                    .foregroundColor(AppTheme.muted)
+                    .foregroundColor(AppTheme.text.opacity(0.68))
                 Text("Reachability and server-change indicators do not validate a paragraph or guarantee that a saved copy is still current. Review the official PDF title page, incorporated changes, guidance memoranda, supplements, and local procedures before applying a requirement.")
-                    .font(AppFont.body(13))
-                    .foregroundColor(AppTheme.muted)
+                    .font(AppFont.body(16))
+                    .foregroundColor(AppTheme.text.opacity(0.68))
             }
         }
     }

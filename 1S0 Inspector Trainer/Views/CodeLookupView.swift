@@ -81,7 +81,7 @@ struct CodeLookupView: View {
                             Image(systemName: "chevron.left")
                                 .font(.system(size: 14, weight: .semibold))
                             Text("Back")
-                                .font(AppFont.body(14))
+                                .font(AppFont.body(16))
                         }
                         .foregroundColor(AppTheme.primary)
                     }
@@ -128,7 +128,7 @@ struct CodeLookupView: View {
         HStack {
             Text("FIELD EXERCISE")
                 .font(AppFont.mono(11))
-                .foregroundColor(AppTheme.muted)
+                .foregroundColor(AppTheme.text.opacity(0.68))
                 .tracking(1.5)
             Spacer()
         }
@@ -149,8 +149,8 @@ struct CodeLookupView: View {
                         .foregroundColor(AppTheme.text)
 
                     Text("Match each violation to its correct OSHA or DAFMAN citation. Build your regulation recall under time pressure.")
-                        .font(AppFont.body(13))
-                        .foregroundColor(AppTheme.muted)
+                        .font(AppFont.body(16))
+                        .foregroundColor(AppTheme.text.opacity(0.68))
                         .multilineTextAlignment(.center)
                 }
                 .frame(maxWidth: .infinity)
@@ -162,7 +162,7 @@ struct CodeLookupView: View {
                 VStack(alignment: .leading, spacing: 12) {
                     Text("DIFFICULTY")
                         .font(AppFont.mono(11))
-                        .foregroundColor(AppTheme.muted)
+                        .foregroundColor(AppTheme.text.opacity(0.68))
                         .tracking(1.2)
 
                     Picker("Difficulty", selection: $difficulty) {
@@ -178,7 +178,7 @@ struct CodeLookupView: View {
                         Label("\(Int(difficulty.timePerQuestion))s each", systemImage: "timer")
                     }
                     .font(AppFont.mono(12))
-                    .foregroundColor(AppTheme.muted)
+                    .foregroundColor(AppTheme.text.opacity(0.68))
                 }
             }
 
@@ -189,7 +189,7 @@ struct CodeLookupView: View {
                         VStack(alignment: .leading, spacing: 4) {
                             Text("BEST SCORE")
                                 .font(AppFont.mono(11))
-                                .foregroundColor(AppTheme.muted)
+                                .foregroundColor(AppTheme.text.opacity(0.68))
                                 .tracking(1.2)
                             Text("\(progress.bestCodeLookupScore)")
                                 .font(AppFont.title(22))
@@ -199,7 +199,7 @@ struct CodeLookupView: View {
                         VStack(alignment: .trailing, spacing: 4) {
                             Text("BEST STREAK")
                                 .font(AppFont.mono(11))
-                                .foregroundColor(AppTheme.muted)
+                                .foregroundColor(AppTheme.text.opacity(0.68))
                                 .tracking(1.2)
                             HStack(spacing: 4) {
                                 Image(systemName: "flame.fill")
@@ -290,7 +290,7 @@ struct CodeLookupView: View {
 
                     Text("Which regulation applies?")
                         .font(AppFont.mono(12))
-                        .foregroundColor(AppTheme.muted)
+                        .foregroundColor(AppTheme.text.opacity(0.68))
                         .italic()
                 }
             }
@@ -378,8 +378,8 @@ struct CodeLookupView: View {
                     TagPill(text: currentQuestion.category)
 
                     Text(currentQuestion.violationDescription)
-                        .font(AppFont.body(14))
-                        .foregroundColor(AppTheme.muted)
+                        .font(AppFont.body(16))
+                        .foregroundColor(AppTheme.text.opacity(0.68))
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }
@@ -440,8 +440,8 @@ struct CodeLookupView: View {
                             .foregroundColor(AppTheme.info)
                     }
                     Text(currentQuestion.explanation)
-                        .font(AppFont.body(13))
-                        .foregroundColor(AppTheme.muted)
+                        .font(AppFont.body(16))
+                        .foregroundColor(AppTheme.text.opacity(0.68))
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }
@@ -461,7 +461,7 @@ struct CodeLookupView: View {
                 VStack(spacing: 12) {
                     Text("FINAL SCORE")
                         .font(AppFont.mono(12))
-                        .foregroundColor(AppTheme.muted)
+                        .foregroundColor(AppTheme.text.opacity(0.68))
                         .tracking(1.5)
 
                     Text("\(animatedScore)")
@@ -504,13 +504,13 @@ struct CodeLookupView: View {
                     VStack(alignment: .leading, spacing: 10) {
                         Text("CATEGORY BREAKDOWN")
                             .font(AppFont.mono(11))
-                            .foregroundColor(AppTheme.muted)
+                            .foregroundColor(AppTheme.text.opacity(0.68))
                             .tracking(1.2)
 
                         ForEach(categoryStats.sorted(by: { $0.key < $1.key }), id: \.key) { cat, stats in
                             HStack {
                                 Text(cat)
-                                    .font(AppFont.body(13))
+                                    .font(AppFont.body(16))
                                     .foregroundColor(AppTheme.text)
                                 Spacer()
                                 Text("\(stats.correct)/\(stats.total)")
@@ -545,7 +545,7 @@ struct CodeLookupView: View {
                 VStack(alignment: .leading, spacing: 10) {
                     Text("REVIEW: MISSED QUESTIONS")
                         .font(AppFont.mono(11))
-                        .foregroundColor(AppTheme.muted)
+                        .foregroundColor(AppTheme.text.opacity(0.68))
                         .tracking(1.2)
 
                     ForEach(Array(missedQuestions.enumerated()), id: \.offset) { _, item in
@@ -557,7 +557,7 @@ struct CodeLookupView: View {
                                         .font(.system(size: 14))
                                         .padding(.top, 2)
                                     Text(item.question.violationDescription)
-                                        .font(AppFont.body(13))
+                                        .font(AppFont.body(16))
                                         .foregroundColor(AppTheme.text)
                                         .fixedSize(horizontal: false, vertical: true)
                                 }
@@ -566,7 +566,7 @@ struct CodeLookupView: View {
                                     HStack(spacing: 6) {
                                         Text("You picked:")
                                             .font(AppFont.mono(11))
-                                            .foregroundColor(AppTheme.muted)
+                                            .foregroundColor(AppTheme.text.opacity(0.68))
                                         Text(picked)
                                             .font(AppFont.mono(12))
                                             .foregroundColor(AppTheme.danger)
@@ -581,15 +581,15 @@ struct CodeLookupView: View {
                                 HStack(spacing: 6) {
                                     Text("Correct:")
                                         .font(AppFont.mono(11))
-                                        .foregroundColor(AppTheme.muted)
+                                        .foregroundColor(AppTheme.text.opacity(0.68))
                                     Text(item.question.correctCitation)
                                         .font(AppFont.mono(12))
                                         .foregroundColor(AppTheme.primary)
                                 }
 
                                 Text(item.question.explanation)
-                                    .font(AppFont.body(12))
-                                    .foregroundColor(AppTheme.muted)
+                                    .font(AppFont.body(16))
+                                    .foregroundColor(AppTheme.text.opacity(0.68))
                                     .italic()
                                     .fixedSize(horizontal: false, vertical: true)
                             }
@@ -630,7 +630,7 @@ struct CodeLookupView: View {
         VStack(spacing: 4) {
             Text(label)
                 .font(AppFont.mono(10))
-                .foregroundColor(AppTheme.muted)
+                .foregroundColor(AppTheme.text.opacity(0.68))
                 .tracking(1.0)
             HStack(spacing: 4) {
                 if let icon = icon {

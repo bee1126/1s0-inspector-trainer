@@ -66,6 +66,8 @@ struct ORMScenario: Identifiable {
 
     let recommendedAction: String
     let explanations: [String: String]
+
+    var trainingPolicy: String { "Exercise assumption: this mission policy assigns the residual-risk decision to \(correctAuthority.rawValue). This is a scenario assumption, not a universal DAF authority matrix. Risk ratings assume the described controls are actually effective." }
 }
 
 // MARK: - Processing Step
@@ -136,10 +138,10 @@ enum DeployedORMBank {
             ORMProcessingStep(
                 id: "authority",
                 title: "RISK ACCEPTANCE AUTHORITY",
-                prompt: "Who is the lowest-level commander authorized to accept this residual risk?",
+                prompt: "Under the exercise policy stated in the situation brief, which authority receives this decision?",
                 options: authorityOptions,
                 correctIndex: scenario.correctAuthority.index,
-                explanation: scenario.explanations["authority"] ?? ""
+                explanation: "For this exercise, the stated policy assigns this decision to \(scenario.correctAuthority.rawValue). Real operations require the applicable command policy; rank alone does not establish authority."
             ),
         ]
     }
@@ -167,7 +169,7 @@ enum DeployedORMBank {
         correctHazardIndex: 0,
         correctInitialRisk: .extremelyHigh,
         mitigationOptions: [
-            "Relocate generator to minimum 25-foot setback, extend power cables, and order CO monitors",
+            "Move occupants to fresh air, shut down if safe, assess air and equipment placement, and verify controls before reuse",
             "Build expedient exhaust ducting from salvaged materials as the commander requested",
             "Issue a memo directing personnel to ventilate tents by opening flaps during generator operations",
             "Reduce generator run time to 6 hours per day and rotate which tents receive AC"
@@ -175,12 +177,12 @@ enum DeployedORMBank {
         correctMitigationIndex: 0,
         correctResidualRisk: .medium,
         correctAuthority: .sqCC,
-        recommendedAction: "Immediately relocate generator to establish minimum 25-foot setback from occupied structures. Extend power cables as needed. Requisition CO monitors through emergency supply channels. Establish SOPs for generator positioning at deployed locations referencing AFMAN 32-1068 guidance.",
+        recommendedAction: "Move exposed personnel to fresh air and obtain emergency or medical assistance as indicated. Shut down the generator if safe. Have qualified personnel assess atmospheric conditions and placement, implement applicable separation and electrical requirements, and verify conditions before reoccupation. Provide suitable monitoring and operating procedures.",
         explanations: [
             "hazard": "Carbon monoxide is an odorless, colorless gas that can be fatal at high concentrations. Personnel reporting exhaust odor indicates inadequate separation. CO poisoning in sleeping quarters is the most immediately dangerous to life and health (IDLH) hazard in this scenario.",
-            "initial-risk": "Extremely High: CO exposure in enclosed sleeping areas can cause death. Personnel are exposed during sleep when they cannot detect symptoms. No monitoring capability means exposure levels are completely unknown. This is an uncontrolled IDLH atmosphere.",
-            "mitigation": "Relocation with proper setback is the only control that addresses the root cause. Expedient ducting from untested materials could fail or melt, creating a false sense of safety. Administrative controls (memos, tent flaps) do not reliably prevent CO accumulation. Reducing run time still exposes personnel during operating hours.",
-            "residual-risk": "Medium: With proper setback distance, CO exposure risk drops significantly but is not eliminated. Extended power cables introduce some electrical risk, and CO monitors are not yet on hand. The risk is manageable but requires monitoring until detection equipment arrives.",
+            "initial-risk": "Extremely High: CO exposure in enclosed sleeping areas can cause death. Personnel are exposed during sleep when they cannot detect symptoms. No monitoring capability means exposure levels are completely unknown. Treat the unknown atmosphere as a potential serious exposure; an IDLH concentration has not been measured.",
+            "mitigation": "Remove exposed people first and control the source. Safe relocation and verified air conditions address the exposure. Expedient ducting from untested materials could fail or melt, creating a false sense of safety. Administrative controls (memos, tent flaps) do not reliably prevent CO accumulation. Reducing run time still exposes personnel during operating hours.",
+            "residual-risk": "Medium: With proper setback distance, CO exposure risk drops significantly but is not eliminated. Extended power cables introduce some electrical risk, and CO monitors are not yet on hand. This exercise rating assumes qualified assessment confirms safe conditions; distance alone does not establish acceptable exposure.",
             "authority": "Squadron/CC: Medium residual risk with a life-safety component requires Sq/CC-level acceptance. The inspector's role is to present the risk assessment — the commander decides whether to accept. Flight/CC authority is insufficient for residual risk that still involves potential CO exposure.",
         ]
     )

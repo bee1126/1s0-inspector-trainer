@@ -17,12 +17,12 @@ struct GlassCard<Content: View>: View {
             .padding(AppSpacing.cardPadding)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
                     .fill(AppTheme.surface)
             )
             .overlay(
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .stroke(glowColor.opacity(0.5), lineWidth: 1)
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .stroke(glowColor.opacity(0.22), lineWidth: 1)
             )
     }
 }
@@ -55,7 +55,7 @@ struct TagPill: View {
     var body: some View {
         Text(text)
             .font(AppFont.mono(10))
-            .foregroundColor(AppTheme.muted)
+            .foregroundColor(AppTheme.text.opacity(0.68))
             .padding(.horizontal, 8)
             .padding(.vertical, 4)
             .background(
@@ -114,7 +114,7 @@ struct XPProgressRing: View {
             VStack(spacing: 1) {
                 Text("LVL")
                     .font(AppFont.mono(8))
-                    .foregroundColor(AppTheme.muted)
+                    .foregroundColor(AppTheme.text.opacity(0.68))
                 Text("\(level)")
                     .font(AppFont.title(18))
                     .foregroundColor(AppTheme.text)
@@ -212,14 +212,14 @@ struct RewardSummaryCard: View {
                         Image(systemName: "flame.fill")
                             .foregroundColor(AppTheme.accent)
                         Text("Streak increased!")
-                            .font(AppFont.body(13))
+                            .font(AppFont.body(16))
                             .foregroundColor(AppTheme.text)
                     }
                 }
 
                 Text("\(xpToNextLevel) XP to next level")
                     .font(AppFont.mono(11))
-                    .foregroundColor(AppTheme.muted)
+                    .foregroundColor(AppTheme.text.opacity(0.68))
             }
         }
     }
@@ -280,7 +280,7 @@ struct FormFieldLabel: View {
     var body: some View {
         Text(text.uppercased())
             .font(AppFont.mono(10))
-            .foregroundColor(AppTheme.muted)
+            .foregroundColor(AppTheme.text.opacity(0.68))
     }
 }
 
@@ -290,7 +290,7 @@ struct AppTextField: View {
 
     var body: some View {
         TextField(placeholder, text: $text)
-            .font(AppFont.body(14))
+            .font(AppFont.body(16))
             .foregroundColor(AppTheme.text)
             .padding(12)
             .background(
@@ -310,7 +310,7 @@ struct AppTextEditor: View {
 
     var body: some View {
         TextEditor(text: $text)
-            .font(AppFont.body(14))
+            .font(AppFont.body(16))
             .foregroundColor(AppTheme.text)
             .scrollContentBackground(.hidden)
             .padding(8)
@@ -345,7 +345,7 @@ struct OptionRow: View {
                 .frame(width: 10, height: 10)
                 .padding(.top, 6)
             Text(text)
-                .font(AppFont.body(14))
+                .font(AppFont.body(16))
                 .foregroundColor(AppTheme.text)
                 .multilineTextAlignment(.leading)
                 .lineLimit(nil)
@@ -418,7 +418,7 @@ struct FeedbackView: View {
                 .frame(width: 10, height: 10)
                 .padding(.top, 6)
             Text(text)
-                .font(AppFont.body(14))
+                .font(AppFont.body(16))
                 .foregroundColor(AppTheme.text)
                 .multilineTextAlignment(.leading)
                 .lineLimit(nil)

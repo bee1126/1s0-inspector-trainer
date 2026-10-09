@@ -410,3 +410,223 @@ final class ProgressStoreTests: XCTestCase {
     }
 
 }
+
+extension ProgressStoreTests {
+    private func studyStore() -> ProgressStore {
+        ProgressStore(defaults: defaults, calendar: calendar, dateProvider: { Date(timeIntervalSince1970: 1_000_000) })
+    }
+    private var bank: [QuizQuestion] { TrainingContent.allQuizQuestions(for: .oneS0) }
+
+    func testStudyMigrationPreservesLegacyProgress() {
+        defaults.set(240, forKey: "xpTotal")
+        defaults.set(7, forKey: "dailyStreak")
+        let store = studyStore()
+        XCTAssertEqual(store.xp, 240)
+        XCTAssertEqual(store.dailyStreak, 7)
+        XCTAssertNil(store.activeStudySession)
+        XCTAssertTrue(store.studyHistory.isEmpty)
+        store.toggleSavedQuestion(bank[0].id)
+        let restored = studyStore()
+        XCTAssertEqual(restored.xp, 240)
+        XCTAssertTrue(restored.isQuestionSaved(bank[0].id))
+    }
+
+    func testStudyFiltersIntersectAndNeverSubstituteOrDuplicate() {
+        let store = studyStore()
+        let q = bank[0]
+        store.toggleSavedQuestion(q.id)
+        let matching = store.studyQuestions(for: StudyConfiguration(pool: .saved, moduleIDs: [ModuleHelper.modulePrefix(for: q.id)], difficulty: q.difficulty), from: bank + bank)
+        XCTAssertEqual(matching.map(\.id), [q.id])
+        XCTAssertTrue(store.studyQuestions(for: StudyConfiguration(pool: .saved, moduleIDs: ["missing"]), from: bank).isEmpty)
+        XCTAssertFalse(store.startStudySession(configuration: StudyConfiguration(pool: .due), questions: bank))
+        XCTAssertTrue(store.startStudySession(configuration: StudyConfiguration(pool: .saved, questionCount: 20), questions: bank))
+        XCTAssertEqual(store.activeStudySession?.questions.count, 1)
+    }
+
+    func testStudyResumePreservesAnswersOrderAndIndependentModuleState() throws {
+        let store = studyStore()
+        store.updateResume(moduleId: "loto", stage: .lesson, lessonIndex: 1)
+        XCTAssertTrue(store.startStudySession(configuration: StudyConfiguration(mode: .exam, questionCount: 5), questions: bank))
+        let session = try XCTUnwrap(store.activeStudySession)
+        let first = session.questions[0]
+        store.selectStudyAnswer(questionID: first.id, choiceID: first.choices[0].id)
+        store.moveStudyQuestion(to: 3)
+        let restored = studyStore()
+        XCTAssertEqual(restored.activeStudySession?.id, session.id)
+        XCTAssertEqual(restored.activeStudySession?.questions, session.questions)
+        XCTAssertEqual(restored.activeStudySession?.answers[first.id], first.choices[0].id)
+        XCTAssertEqual(restored.activeStudySession?.index, 3)
+        XCTAssertEqual(restored.resumeState?.lessonIndex, 1)
+        XCTAssertFalse(restored.startStudySession(configuration: StudyConfiguration(), questions: bank))
+    }
+
+    func testStudyLocksAnswerAndUpdatesLearningOnce() throws {
+        let store = studyStore()
+        XCTAssertTrue(store.startStudySession(configuration: StudyConfiguration(questionCount: 5), questions: bank))
+        let q = try XCTUnwrap(store.activeStudySession?.questions.first)
+        let correct = try XCTUnwrap(q.choices.first(where: \.isCorrect))
+        store.selectStudyAnswer(questionID: q.id, choiceID: correct.id)
+        store.selectStudyAnswer(questionID: q.id, choiceID: q.choices.first(where: { !$0.isCorrect })!.id)
+        XCTAssertEqual(store.activeStudySession?.answers[q.id], correct.id)
+        XCTAssertEqual(store.moduleProficiency[ModuleHelper.modulePrefix(for: q.id)]?.totalAttempts, 1)
+        XCTAssertEqual(store.xp, 0)
+    }
+
+    func testExamDefersLearningAllowsEditsAndCommitsExactlyOnce() throws {
+        let store = studyStore()
+        let adaptive = AdaptiveDifficultyManager(defaults: defaults)
+        XCTAssertTrue(store.startStudySession(configuration: StudyConfiguration(mode: .exam, questionCount: 5), questions: bank))
+        let session = try XCTUnwrap(store.activeStudySession)
+        let q = session.questions[0]
+        store.selectStudyAnswer(questionID: q.id, choiceID: q.choices.first(where: { !$0.isCorrect })!.id)
+        XCTAssertNil(store.finishStudySession(id: session.id, questions: bank))
+        for question in session.questions {
+            store.selectStudyAnswer(questionID: question.id, choiceID: question.choices.first(where: \.isCorrect)!.id)
+        }
+        XCTAssertTrue(store.srCards.isEmpty)
+        XCTAssertTrue(store.moduleProficiency.isEmpty)
+        XCTAssertEqual(store.xp, 0)
+        let result = try XCTUnwrap(store.finishStudySession(id: session.id, questions: bank))
+        XCTAssertEqual(result.score, 5)
+        XCTAssertEqual(store.xp, 35)
+        XCTAssertEqual(store.dailyFiveStreak, 0)
+        XCTAssertEqual(store.moduleProficiency.values.reduce(0) { $0 + $1.totalAttempts }, 5)
+        XCTAssertEqual(adaptive.currentDifficulty, .medium)
+        XCTAssertEqual(adaptive.consecutiveCorrect, 0)
+        XCTAssertNil(store.activeStudySession)
+        XCTAssertNotNil(store.finishStudySession(id: session.id, questions: bank))
+        let restored = studyStore()
+        XCTAssertNotNil(restored.finishStudySession(id: session.id, questions: bank))
+        XCTAssertEqual(restored.xp, 35)
+        XCTAssertEqual(restored.studyHistory.count, 1)
+        XCTAssertEqual(restored.moduleProficiency.values.reduce(0) { $0 + $1.totalAttempts }, 5)
+    }
+
+    func testStudyContentChangeInvalidatesUnfinishedSession() throws {
+        let store = studyStore()
+        XCTAssertTrue(store.startStudySession(configuration: StudyConfiguration(), questions: bank))
+        let session = try XCTUnwrap(store.activeStudySession)
+        XCTAssertTrue(store.studySessionIsValid(questions: bank))
+        XCTAssertFalse(store.studySessionIsValid(questions: bank.filter { $0.id != session.questions[0].id }))
+        store.discardStudySession()
+        XCTAssertNil(studyStore().activeStudySession)
+        XCTAssertEqual(store.xp, 0)
+    }
+
+    func testUnresolvedMissesDoNotDisappearAfterTwentyFourOtherMisses() {
+        let store = studyStore()
+        for q in bank.prefix(30) { store.recordQuestionAttempt(questionId: q.id, correct: false) }
+        XCTAssertEqual(store.studyQuestions(for: StudyConfiguration(pool: .missed), from: bank).count, 30)
+        store.recordQuestionAttempt(questionId: bank[0].id, correct: true)
+        XCTAssertEqual(studyStore().studyQuestions(for: StudyConfiguration(pool: .missed), from: bank).count, 29)
+    }
+
+    func testAllMatchingLengthAndInvalidSelections() throws {
+        let store = studyStore()
+        XCTAssertTrue(store.startStudySession(configuration: StudyConfiguration(questionCount: 0), questions: bank + bank))
+        XCTAssertEqual(store.activeStudySession?.questions.count, 140)
+        store.selectStudyAnswer(questionID: bank[0].id, choiceID: "not-a-choice")
+        store.moveStudyQuestion(to: -1)
+        store.moveStudyQuestion(to: 999)
+        XCTAssertEqual(store.activeStudySession?.index, 0)
+        let session = try XCTUnwrap(store.activeStudySession)
+        XCTAssertTrue(session.answers.isEmpty)
+    }
+
+    func testHistoryPruningDoesNotAllowOldDailyRewardAgain() {
+        let store = studyStore()
+        let oldestID = UUID()
+        store.recordQuizHistory(id: oldestID, kind: .dailyFive, questions: Array(bank.prefix(5)), answers: [:], result: AssessmentResult(score: 5, total: 5))
+        let xp = store.xp
+        for _ in 0..<201 {
+            store.recordQuizHistory(id: UUID(), kind: .module, questions: [bank[0]], answers: [:], result: AssessmentResult(score: 1, total: 1))
+        }
+        XCTAssertEqual(store.studyHistory.count, 200)
+        XCTAssertFalse(store.studyHistory.contains { $0.id == oldestID })
+        let restored = studyStore()
+        XCTAssertNil(restored.recordQuizHistory(id: oldestID, kind: .dailyFive, questions: Array(bank.prefix(5)), answers: [:], result: AssessmentResult(score: 5, total: 5)))
+        XCTAssertEqual(restored.xp, xp)
+        XCTAssertEqual(restored.dailyFiveStreak, 1)
+    }
+
+    func testResetClearsNewStateAndBookmarkReviewDoesNotAwardXP() {
+        let store = studyStore()
+        store.toggleSavedQuestion(bank[0].id)
+        _ = store.studyQuestions(for: StudyConfiguration(pool: .saved), from: bank)
+        XCTAssertEqual(store.xp, 0)
+        XCTAssertTrue(store.startStudySession(configuration: StudyConfiguration(), questions: bank))
+        store.resetAll()
+        let restored = studyStore()
+        XCTAssertFalse(restored.isQuestionSaved(bank[0].id))
+        XCTAssertNil(restored.activeStudySession)
+        XCTAssertTrue(restored.studyHistory.isEmpty)
+    }
+}
+
+extension ProgressStoreTests {
+    func testStudyTopicFiltersResolveEveryModuleID() {
+        let store = studyStore()
+        for module in TrainingContent.modules(for: .oneS0) {
+            let questions = store.studyQuestions(for: StudyConfiguration(moduleIDs: [module.id]), from: bank)
+            XCTAssertEqual(Set(questions.map(\.id)), Set(module.quiz.map(\.id)), module.id)
+        }
+    }
+
+    func testStudyDifficultyAndDebriefMissesAreStrictFilters() {
+        let store = studyStore()
+        let selected = Set(bank.prefix(20).map(\.id))
+        let questions = store.studyQuestions(for: StudyConfiguration(difficulty: .hard, questionIDs: selected), from: bank)
+        XCTAssertTrue(questions.allSatisfy { $0.difficulty == .hard && selected.contains($0.id) })
+        XCTAssertEqual(questions.count, bank.prefix(20).filter { $0.difficulty == .hard }.count)
+    }
+
+    func testModuleRewardRemainsIdempotentAfterPendingCompletionCleared() {
+        let store = studyStore()
+        let id = UUID()
+        let result = AssessmentResult(score: 10, total: 10)
+        store.recordQuizHistory(id: id, kind: .module, questions: Array(bank.prefix(10)), answers: [:], result: result)
+        let first = store.completeModule(moduleId: "loto", score: 100, scenarioResult: result, quizResult: result, sessionID: id)
+        store.clearPendingCompletion(for: "loto")
+        let restored = studyStore()
+        let second = restored.completeModule(moduleId: "loto", score: 100, scenarioResult: result, quizResult: result, sessionID: id)
+        XCTAssertEqual(second.xpGained, 0)
+        XCTAssertEqual(restored.xp, first.xpGained)
+        XCTAssertEqual(restored.studyHistory.first?.xpEarned, first.xpGained)
+    }
+
+    func testRetiredQuestionReviewDoesNotRecommendUnavailableCards() {
+        var now = Date(timeIntervalSince1970: 0)
+        let store = ProgressStore(defaults: defaults, calendar: calendar, dateProvider: { now })
+        store.updateSRCard(questionId: "loto-q6", quality: 1)
+        now.addTimeInterval(10 * 86400)
+        XCTAssertEqual(store.overdueCount(), 0)
+        XCTAssertNotNil(store.srCards["loto-q6"], "Historical state is preserved, but retired cards are not scheduled.")
+    }
+
+    func testStudySubmissionUsesInjectedDayAfterMidnight() throws {
+        var now = Date(timeIntervalSince1970: 86_390)
+        let store = ProgressStore(defaults: defaults, calendar: calendar, dateProvider: { now })
+        XCTAssertTrue(store.startStudySession(configuration: StudyConfiguration(mode: .exam, questionCount: 5), questions: bank))
+        let session = try XCTUnwrap(store.activeStudySession)
+        for q in session.questions { store.selectStudyAnswer(questionID: q.id, choiceID: q.choices.first(where: \.isCorrect)!.id) }
+        now.addTimeInterval(20)
+        let entry = try XCTUnwrap(store.finishStudySession(id: session.id, questions: bank))
+        XCTAssertEqual(entry.completedAt, now)
+        XCTAssertEqual(store.dailyXp, 35)
+        XCTAssertEqual(store.dailyStreak, 1)
+        XCTAssertEqual(store.lastDailyGoalDate, calendar.startOfDay(for: now))
+    }
+
+    func testUnfinishedExamDiscardDoesNotRecordAnswers() throws {
+        let store = studyStore()
+        XCTAssertTrue(store.startStudySession(configuration: StudyConfiguration(mode: .exam), questions: bank))
+        let question = try XCTUnwrap(store.activeStudySession?.questions.first)
+        store.selectStudyAnswer(questionID: question.id, choiceID: question.choices[0].id)
+        store.discardStudySession()
+        let restored = studyStore()
+        XCTAssertEqual(restored.xp, 0)
+        XCTAssertTrue(restored.srCards.isEmpty)
+        XCTAssertTrue(restored.moduleProficiency.isEmpty)
+        XCTAssertTrue(restored.studyHistory.isEmpty)
+    }
+}

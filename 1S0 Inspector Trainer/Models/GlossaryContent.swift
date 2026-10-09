@@ -80,7 +80,7 @@ enum GlossaryContent {
             category: .airForceProgram,
             definition: "A real or potential condition that can cause injury, illness, death, property damage, mission degradation, or environmental harm.",
             fieldUse: "Write hazards as conditions with credible consequences, not just as administrative concerns or preferences.",
-            sourceCitation: "DAFPAM 90-803, Risk Management Guidelines and Tools",
+            sourceCitation: "DAFI 90-802, Risk Management (20 January 2026)",
             moduleIds: ["risk-management", "mishap-reporting", "deployed-orm"],
             keywords: ["unsafe condition", "risk", "threat", "exposure"]
         ),
@@ -102,7 +102,7 @@ enum GlossaryContent {
             category: .riskManagement,
             definition: "A decision-making process used to identify hazards, assess risk, develop controls, make decisions, implement controls, and supervise results.",
             fieldUse: "Use RM language when briefing commanders: hazard, initial risk, controls, residual risk, and acceptance authority.",
-            sourceCitation: "DAFPAM 90-803, Department of the Air Force Risk Management process",
+            sourceCitation: "DAFI 90-802, Department of the Air Force Risk Management process",
             moduleIds: ["risk-management", "deployed-orm"],
             keywords: ["ORM", "process", "controls", "commander"]
         ),
@@ -124,7 +124,7 @@ enum GlossaryContent {
             category: .riskManagement,
             definition: "The assessed risk level before new controls are applied.",
             fieldUse: "Record initial risk before selecting controls so leaders can see the original exposure and the value of mitigation.",
-            sourceCitation: "DAFPAM 90-803, Risk Management Guidelines and Tools",
+            sourceCitation: "DAFI 90-802, Risk Management (20 January 2026)",
             moduleIds: ["risk-management", "deployed-orm"],
             keywords: ["before controls", "baseline", "assessment"]
         ),
@@ -135,7 +135,7 @@ enum GlossaryContent {
             category: .riskManagement,
             definition: "The risk that remains after controls are selected and implemented.",
             fieldUse: "Residual risk is what the appropriate leader accepts, rejects, or elevates.",
-            sourceCitation: "DAFPAM 90-803, Risk Management Guidelines and Tools",
+            sourceCitation: "DAFI 90-802, Risk Management (20 January 2026)",
             moduleIds: ["risk-management", "deployed-orm"],
             keywords: ["remaining risk", "controls", "acceptance"]
         ),
@@ -146,7 +146,7 @@ enum GlossaryContent {
             category: .riskManagement,
             definition: "The commander or leader authorized by policy or local direction to accept a given level of residual risk.",
             fieldUse: "A 1S0 inspector informs the decision and documents the assessment; the inspector does not personally accept organizational risk.",
-            sourceCitation: "DAFPAM 90-803, Risk Management Guidelines and Tools",
+            sourceCitation: "DAFI 90-802, Risk Management (20 January 2026)",
             moduleIds: ["risk-management", "deployed-orm", "roles-responsibilities"],
             keywords: ["commander", "residual risk", "authority", "decision"]
         ),

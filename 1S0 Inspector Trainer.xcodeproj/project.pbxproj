@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		498803E8BC11C5535E2FEABB /* DeepLinkRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2691524A045503D65B6C5FFE /* DeepLinkRouter.swift */; };
+		AC3CF2B2A714EE3FFD1F8EBC /* MissionFocusRecommendation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F2B742DEF57641F507C0FB /* MissionFocusRecommendation.swift */; };
+		46E762994AF105ED1FC3FB0A /* TrainingHubViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82B3542E911F480904DD728E /* TrainingHubViews.swift */; };
+		8AE42A3E05167FAB437AA138 /* StudyViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB0364FB25C4F686069A8F4 /* StudyViews.swift */; };
+		3F3FC1B3BAA8ACC2C0CEB2B0 /* QuestionExplanations.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C00731011C45A92F696733 /* QuestionExplanations.swift */; };
+		AE339D12A9AB99E18BFA8527 /* StudyModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1CED3377DFA8B918A8415F /* StudyModels.swift */; };
 		05913B87B18360AF583623ED /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 9B985BD79A7D2983D60E5E5A /* PrivacyInfo.xcprivacy */; };
 		0E91ED6632454A578EE1F04D /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AEBFFBDDE847C4A5C225B5 /* Components.swift */; };
 		184A33BE966D40AC984D48F9 /* TrainingRole.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0C3EDD2069644FCA0930019 /* TrainingRole.swift */; };
@@ -66,6 +72,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2691524A045503D65B6C5FFE /* DeepLinkRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkRouter.swift; sourceTree = "<group>"; };
+		F1F2B742DEF57641F507C0FB /* MissionFocusRecommendation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionFocusRecommendation.swift; sourceTree = "<group>"; };
+		82B3542E911F480904DD728E /* TrainingHubViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingHubViews.swift; sourceTree = "<group>"; };
+		7AB0364FB25C4F686069A8F4 /* StudyViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyViews.swift; sourceTree = "<group>"; };
+		D3C00731011C45A92F696733 /* QuestionExplanations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionExplanations.swift; sourceTree = "<group>"; };
+		ED1CED3377DFA8B918A8415F /* StudyModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyModels.swift; sourceTree = "<group>"; };
 		0468BD1193644207B5426AC2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		072153175F864C95A13A7416 /* ModuleFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleFlowView.swift; sourceTree = "<group>"; };
 		0F087354F1FB468AB89CEEBD /* TrainingModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingModels.swift; sourceTree = "<group>"; };
@@ -185,6 +197,8 @@
 		A68CB731C9B34082B43DDC93 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				82B3542E911F480904DD728E /* TrainingHubViews.swift */,
+				7AB0364FB25C4F686069A8F4 /* StudyViews.swift */,
 				A11CC3557B9E4A7D8F612340 /* AccessibilityCopy.swift */,
 				5D6583B73C5E4CA089EA252A /* AppTheme.swift */,
 				19302FDEB72143C5A663AE4E /* BackgroundView.swift */,
@@ -225,6 +239,10 @@
 		F8244479B7E84984BA1665CB /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				2691524A045503D65B6C5FFE /* DeepLinkRouter.swift */,
+				F1F2B742DEF57641F507C0FB /* MissionFocusRecommendation.swift */,
+				D3C00731011C45A92F696733 /* QuestionExplanations.swift */,
+				ED1CED3377DFA8B918A8415F /* StudyModels.swift */,
 				23300B9FDEF1494197E818B3 /* AppFeedback.swift */,
 				B3F9C0D21A3344558899AABB /* AdaptiveDifficultyManager.swift */,
 				E71000000000000000000003 /* EpubsCatalog.swift */,
@@ -360,6 +378,12 @@
 				3E4AB0E655E94B92BBFC3B33 /* BackgroundView.swift in Sources */,
 				0E91ED6632454A578EE1F04D /* Components.swift in Sources */,
 				BCCA7070DA45411BAD68AD85 /* HomeView.swift in Sources */,
+				498803E8BC11C5535E2FEABB /* DeepLinkRouter.swift in Sources */,
+				AC3CF2B2A714EE3FFD1F8EBC /* MissionFocusRecommendation.swift in Sources */,
+				46E762994AF105ED1FC3FB0A /* TrainingHubViews.swift in Sources */,
+				8AE42A3E05167FAB437AA138 /* StudyViews.swift in Sources */,
+				3F3FC1B3BAA8ACC2C0CEB2B0 /* QuestionExplanations.swift in Sources */,
+				AE339D12A9AB99E18BFA8527 /* StudyModels.swift in Sources */,
 				361FFA23D609407A81CF69EA /* LessonPagerView.swift in Sources */,
 				D9B3C1AD08F942C0BAAF87D9 /* ModuleDetailView.swift in Sources */,
 				67F52C395D294862B5195B86 /* ModuleFlowView.swift in Sources */,
@@ -461,7 +485,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				INFOPLIST_FILE = "1S0 Inspector Trainer/Resources/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "1S0 Inspector Trainer";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
@@ -470,7 +494,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6;
+				MARKETING_VERSION = 1.7;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.abdoulbah.1s0-inspector-trainer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -484,7 +508,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				INFOPLIST_FILE = "1S0 Inspector Trainer/Resources/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "1S0 Inspector Trainer";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
@@ -493,7 +517,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6;
+				MARKETING_VERSION = 1.7;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.abdoulbah.1s0-inspector-trainer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;

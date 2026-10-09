@@ -13,6 +13,16 @@ This repository contains the SwiftUI source and Xcode project for a native iOS t
 - Fallback compile command when simulator execution is unstable:
   `xcodebuild -scheme "1S0 Inspector Trainer" -project "1S0 Inspector Trainer.xcodeproj" -destination "generic/platform=iOS Simulator" build`
 
+## Modern dark / personalized study update
+- Five tabs: Today, Learn, Practice, Library, and Progress.
+- Custom study and exam sessions with topic, difficulty, length, and saved/missed/due pools.
+- Resumable sessions, saved questions, 140 offline explanations with official references, and the latest 200 session debriefs.
+- Existing on-device XP, streaks, modules, and publication favorites are retained.
+- [Validation and remaining release checks](docs/release/StudyUpdateValidation.md).
+- [Question corrections and source verification status](docs/ContentReview.md).
+
+When full Xcode is unavailable, `python3 scripts/check_core.py` executes the core test bodies using the macOS Swift toolchain and a minimal assertion adapter. It is not an iOS build or a substitute for simulator XCTest and UI validation.
+
 ## What is Included
 - Interactive modules for Lockout/Tagout, Fall Protection, Risk Management, Roles & Responsibilities, Hazard Abatement, and RAC System
 - Additional modules for Confined Space, Hot Work, Hearing Conservation, Mishap Reporting, Investigation Basics, JHA Fundamentals, Safety Briefing, and PPE Decision

@@ -58,7 +58,7 @@ struct PPELoadoutView: View {
                             Image(systemName: "chevron.left")
                                 .font(.system(size: 14, weight: .semibold))
                             Text("Back")
-                                .font(AppFont.body(14))
+                                .font(AppFont.body(16))
                         }
                         .foregroundColor(AppTheme.primary)
                     }
@@ -93,7 +93,7 @@ struct PPELoadoutView: View {
         HStack {
             Text("FIELD EXERCISE")
                 .font(AppFont.mono(11))
-                .foregroundColor(AppTheme.muted)
+                .foregroundColor(AppTheme.text.opacity(0.68))
                 .tracking(1.5)
             Spacer()
         }
@@ -115,7 +115,7 @@ struct PPELoadoutView: View {
                                 .foregroundColor(AppTheme.accent)
                                 .tracking(1)
                             Text("All scenarios completed. Badge earned!")
-                                .font(AppFont.body(13))
+                                .font(AppFont.body(16))
                                 .foregroundColor(AppTheme.text)
                         }
                         Spacer()
@@ -125,15 +125,15 @@ struct PPELoadoutView: View {
                 GlassCard {
                     VStack(alignment: .leading, spacing: 6) {
                         Text("Select a scenario to gear up for. Complete all \(PPELoadoutBank.allScenarios.count) to earn the PPE Specialist badge.")
-                            .font(AppFont.body(13))
-                            .foregroundColor(AppTheme.muted)
+                            .font(AppFont.body(16))
+                            .foregroundColor(AppTheme.text.opacity(0.68))
                         HStack(spacing: 4) {
                             Text("\(progress.completedPPEScenarios.count)/\(PPELoadoutBank.allScenarios.count)")
                                 .font(AppFont.mono(12))
                                 .foregroundColor(AppTheme.text)
                             Text("completed")
                                 .font(AppFont.mono(12))
-                                .foregroundColor(AppTheme.muted)
+                                .foregroundColor(AppTheme.text.opacity(0.68))
                         }
                         GeometryReader { geo in
                             ZStack(alignment: .leading) {
@@ -191,7 +191,7 @@ struct PPELoadoutView: View {
                         if s.hazards.count > 2 {
                             Text("+\(s.hazards.count - 2)")
                                 .font(AppFont.mono(9))
-                                .foregroundColor(AppTheme.muted)
+                                .foregroundColor(AppTheme.text.opacity(0.68))
                         }
                     }
                 }
@@ -203,7 +203,7 @@ struct PPELoadoutView: View {
                 } else {
                     Image(systemName: "chevron.right")
                         .font(.system(size: 12, weight: .semibold))
-                        .foregroundColor(AppTheme.muted)
+                        .foregroundColor(AppTheme.text.opacity(0.68))
                 }
             }
         }
@@ -243,15 +243,15 @@ struct PPELoadoutView: View {
                 }
 
                 Text(scenario.description)
-                    .font(AppFont.body(14))
+                    .font(AppFont.body(16))
                     .foregroundColor(AppTheme.text)
                     .fixedSize(horizontal: false, vertical: true)
 
                 hazardsList
 
                 Text("Select the correct PPE for this scenario. Choosing unnecessary equipment will cost you points.")
-                    .font(AppFont.body(12))
-                    .foregroundColor(AppTheme.muted)
+                    .font(AppFont.body(16))
+                    .foregroundColor(AppTheme.text.opacity(0.68))
 
                 Button {
                     transition(to: .selection)
@@ -283,7 +283,7 @@ struct PPELoadoutView: View {
                         .font(.system(size: 10))
                         .foregroundColor(AppTheme.danger)
                     Text(hazard)
-                        .font(AppFont.body(13))
+                        .font(AppFont.body(16))
                         .foregroundColor(AppTheme.text)
                 }
             }
@@ -308,8 +308,8 @@ struct PPELoadoutView: View {
 
                     HStack {
                         Text("Tap items to add to your loadout.")
-                            .font(AppFont.body(13))
-                            .foregroundColor(AppTheme.muted)
+                            .font(AppFont.body(16))
+                            .foregroundColor(AppTheme.text.opacity(0.68))
                         Spacer()
                         HStack(spacing: 4) {
                             Image(systemName: "checkmark.circle.fill")
@@ -376,7 +376,7 @@ struct PPELoadoutView: View {
                             .foregroundColor(scoreColor)
                         Text("\(correctSelections)/\(scenario.requiredItemIds.count) correct")
                             .font(AppFont.mono(12))
-                            .foregroundColor(AppTheme.muted)
+                            .foregroundColor(AppTheme.text.opacity(0.68))
                     }
                 }
             }
@@ -439,11 +439,11 @@ struct PPELoadoutView: View {
                         ScoreBadge(score: scorePercent)
                         VStack(alignment: .leading, spacing: 4) {
                             Text(scoreMessage)
-                                .font(AppFont.body(14))
+                                .font(AppFont.body(16))
                                 .foregroundColor(AppTheme.text)
                             Text("\(correctSelections)/\(scenario.requiredItemIds.count) correct picks")
                                 .font(AppFont.mono(11))
-                                .foregroundColor(AppTheme.muted)
+                                .foregroundColor(AppTheme.text.opacity(0.68))
                             if unnecessaryCount > 0 {
                                 Text("\(unnecessaryCount) unnecessary pick\(unnecessaryCount == 1 ? "" : "s")")
                                     .font(AppFont.mono(11))
@@ -470,7 +470,7 @@ struct PPELoadoutView: View {
                                 .foregroundColor(AppTheme.accent)
                                 .tracking(1)
                             Text("PPE Specialist \u{2014} All scenarios completed")
-                                .font(AppFont.body(13))
+                                .font(AppFont.body(16))
                                 .foregroundColor(AppTheme.text)
                         }
                         Spacer()
@@ -553,8 +553,8 @@ struct PPELoadoutView: View {
 
                 if let note = scenario.debriefNotes[item.id] {
                     Text(note)
-                        .font(AppFont.body(12))
-                        .foregroundColor(AppTheme.muted)
+                        .font(AppFont.body(16))
+                        .foregroundColor(AppTheme.text.opacity(0.68))
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }

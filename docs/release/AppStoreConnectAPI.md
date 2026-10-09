@@ -127,3 +127,11 @@ does not perform the final submit action.
   account-level and app-level settings are valid.
 - Apple can change App Store Connect API validation rules. Run the dry run and
   `status` checks before unattended releases.
+
+## Full listing metadata (1.7 and later)
+
+Run `python3 scripts/asc_release.py listing --version 1.7 --listing-file /path/to/listing_final_v2.md --dry-run` after sourcing the credentials. Remove `--dry-run` to create the version if needed, update the en-US description, keywords, promotional text, release notes, and editable app-info subtitle, and set `AFTER_APPROVAL` automatic release. The helper validates all five sections before mutations and rereads every saved value. Other locales are preserved.
+
+Limits: subtitle 30 characters, promotional text 170, keywords 100 UTF-8 bytes, description and release notes 4,000 each. Sources: [Apple product page](https://developer.apple.com/app-store/product-page/) and [platform version information](https://developer.apple.com/help/app-store-connect/reference/app-information/platform-version-information).
+
+The helper does not upload screenshots. Existing App Store screenshots are retained unless uploaded separately. The `listing` command does not create or submit a review; use `submit` after the exact build has processed.

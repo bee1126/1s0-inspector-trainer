@@ -21,11 +21,11 @@ enum AppTheme {
 
 enum AppSpacing {
     static let screenPadding: CGFloat = 20
-    static let section: CGFloat = 16
+    static let section: CGFloat = 24
     static let stack: CGFloat = 14
     static let item: CGFloat = 10
     static let compact: CGFloat = 6
-    static let cardPadding: CGFloat = 16
+    static let cardPadding: CGFloat = 20
     static let minTapTarget: CGFloat = 44
 }
 
@@ -37,7 +37,7 @@ enum AppFont {
     static func title(_ size: CGFloat, relativeTo textStyle: UIFont.TextStyle) -> Font {
         scaledSystemFont(
             size: size,
-            weight: .black,
+            weight: .bold,
             textStyle: textStyle
         )
     }
@@ -99,38 +99,43 @@ enum AppFont {
 // MARK: - Button Styles
 
 struct PrimaryButtonStyle: ButtonStyle {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.isEnabled) private var isEnabled
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(AppFont.subtitle(14))
+            .font(AppFont.subtitle(17))
             .foregroundColor(AppTheme.bg)
             .frame(maxWidth: .infinity, minHeight: AppSpacing.minTapTarget)
             .padding(.vertical, 12)
             .padding(.horizontal, 20)
             .background(
-                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
                     .fill(AppTheme.primary)
             )
             .contentShape(Rectangle())
-            .shadow(color: AppTheme.primary.opacity(0.3), radius: 8, x: 0, y: 4)
-            .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
-            .animation(.easeOut(duration: 0.15), value: configuration.isPressed)
+            .opacity(isEnabled ? 1 : 0.4)
+            .scaleEffect(configuration.isPressed && !reduceMotion ? 0.98 : 1.0)
+            .animation(reduceMotion ? nil : .easeOut(duration: 0.15), value: configuration.isPressed)
     }
 }
 
 struct OutlineButtonStyle: ButtonStyle {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.isEnabled) private var isEnabled
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(AppFont.subtitle(14))
+            .font(AppFont.subtitle(17))
             .foregroundColor(AppTheme.primary)
             .frame(maxWidth: .infinity, minHeight: AppSpacing.minTapTarget)
             .padding(.vertical, 10)
             .padding(.horizontal, 18)
             .background(
-                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
                     .stroke(AppTheme.primary.opacity(0.5), lineWidth: 1)
             )
             .contentShape(Rectangle())
-            .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
-            .animation(.easeOut(duration: 0.15), value: configuration.isPressed)
+            .opacity(isEnabled ? 1 : 0.4)
+            .scaleEffect(configuration.isPressed && !reduceMotion ? 0.98 : 1.0)
+            .animation(reduceMotion ? nil : .easeOut(duration: 0.15), value: configuration.isPressed)
     }
 }

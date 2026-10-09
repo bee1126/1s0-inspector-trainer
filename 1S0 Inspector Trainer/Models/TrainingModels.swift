@@ -106,6 +106,10 @@ struct QuizQuestion: Identifiable, Hashable {
     let choices: [QuizChoice]
     let difficulty: QuizDifficulty
 
+    var explanation: String { QuestionExplanations.entries[id]?.text ?? "" }
+    var reference: QuestionReference? { QuestionExplanations.entries[id]?.reference }
+    var contentRevision: Int { QuestionExplanations.entries[id]?.revision ?? 1 }
+
     init(id: String, prompt: String, difficulty: QuizDifficulty = .easy, imageName: String? = nil, choices: [QuizChoice]) {
         self.id = id
         self.prompt = prompt
@@ -115,7 +119,7 @@ struct QuizQuestion: Identifiable, Hashable {
     }
 }
 
-struct QuizChoice: Identifiable, Hashable {
+struct QuizChoice: Identifiable, Hashable, Codable {
     let id: String
     let text: String
     let isCorrect: Bool
@@ -131,7 +135,7 @@ struct QuizStreakSummary: Codable, Hashable {
     let multiplier: Double
 }
 
-enum QuizDifficulty: String, CaseIterable, Identifiable {
+enum QuizDifficulty: String, CaseIterable, Identifiable, Codable {
     case easy = "Easy"
     case medium = "Medium"
     case hard = "Hard"
@@ -205,6 +209,8 @@ enum ModuleStageKey: String, Codable {
 }
 
 struct QuizResumeState: Codable, Hashable {
+    let sessionID: UUID
+    let answers: [String: String]
     let questionIds: [String]
     let choiceOrder: [String: [String]]
     let index: Int
@@ -226,8 +232,12 @@ struct QuizResumeState: Codable, Hashable {
         streakCount: Int = 0,
         bestStreakCount: Int = 0,
         streakTier: Int = 0,
-        bestStreakTier: Int = 0
+        bestStreakTier: Int = 0,
+        sessionID: UUID = UUID(),
+        answers: [String: String] = [:]
     ) {
+        self.sessionID = sessionID
+        self.answers = answers
         self.questionIds = questionIds
         self.choiceOrder = choiceOrder
         self.index = index
@@ -241,6 +251,7 @@ struct QuizResumeState: Codable, Hashable {
     }
 
     private enum CodingKeys: String, CodingKey {
+        case sessionID, answers
         case questionIds
         case choiceOrder
         case index
@@ -255,6 +266,8 @@ struct QuizResumeState: Codable, Hashable {
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        sessionID = try container.decodeIfPresent(UUID.self, forKey: .sessionID) ?? UUID()
+        answers = try container.decodeIfPresent([String: String].self, forKey: .answers) ?? [:]
         questionIds = try container.decode([String].self, forKey: .questionIds)
         choiceOrder = try container.decode([String: [String]].self, forKey: .choiceOrder)
         index = try container.decode(Int.self, forKey: .index)
@@ -277,6 +290,7 @@ struct ModuleResumeState: Codable, Hashable {
 }
 
 struct PendingModuleCompletion: Codable, Hashable {
+    var sessionID: UUID? = nil
     let moduleId: String
     let scenarioResult: AssessmentResult
     let quizResult: AssessmentResult

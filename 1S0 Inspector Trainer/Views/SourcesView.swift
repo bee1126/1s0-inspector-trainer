@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct SourcesView: View {
+    @EnvironmentObject private var progress: ProgressStore
     private let references = TrainingContent.references
 
     var body: some View {
@@ -9,9 +10,13 @@ struct SourcesView: View {
 
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: AppSpacing.section) {
-                    Text("Sources")
+                    Text("Your reference library")
                         .font(AppFont.title(26))
                         .foregroundColor(AppTheme.text)
+
+                    NavigationLink { EpubsLibraryView(favoritesOnly: true) } label: {
+                        ActionCard(title: "Saved publications", detail: "\(progress.favoriteEpubPublicationIds.count) watched references", icon: "bookmark")
+                    }.buttonStyle(.plain)
 
                     NavigationLink {
                         GlossaryView()
@@ -28,15 +33,15 @@ struct SourcesView: View {
                                         .font(AppFont.subtitle(17))
                                         .foregroundColor(AppTheme.text)
                                     Text("Search verified 1S0, OSHA, DAFMAN, and risk management terms.")
-                                        .font(AppFont.body(13))
-                                        .foregroundColor(AppTheme.muted)
+                                        .font(AppFont.body(16))
+                                        .foregroundColor(AppTheme.text.opacity(0.68))
                                 }
 
                                 Spacer()
 
                                 Image(systemName: "chevron.right")
                                     .font(.system(size: 12, weight: .semibold))
-                                    .foregroundColor(AppTheme.muted)
+                                    .foregroundColor(AppTheme.text.opacity(0.68))
                             }
                         }
                     }
@@ -57,15 +62,15 @@ struct SourcesView: View {
                                         .font(AppFont.subtitle(17))
                                         .foregroundColor(AppTheme.text)
                                     Text("Open and verify official safety publications.")
-                                        .font(AppFont.body(13))
-                                        .foregroundColor(AppTheme.muted)
+                                        .font(AppFont.body(16))
+                                        .foregroundColor(AppTheme.text.opacity(0.68))
                                 }
 
                                 Spacer()
 
                                 Image(systemName: "chevron.right")
                                     .font(.system(size: 12, weight: .semibold))
-                                    .foregroundColor(AppTheme.muted)
+                                    .foregroundColor(AppTheme.text.opacity(0.68))
                             }
                         }
                     }
@@ -75,7 +80,7 @@ struct SourcesView: View {
                         VStack(alignment: .leading, spacing: 10) {
                             Text("REFERENCE MATERIALS")
                                 .font(AppFont.mono(11))
-                                .foregroundColor(AppTheme.muted)
+                                .foregroundColor(AppTheme.text.opacity(0.68))
 
                             ForEach(Array(references.enumerated()), id: \.element.id) { index, source in
                                 VStack(alignment: .leading, spacing: 6) {
@@ -84,10 +89,10 @@ struct SourcesView: View {
                                         .foregroundColor(AppTheme.text)
                                     Text(source.date)
                                         .font(AppFont.mono(11))
-                                        .foregroundColor(AppTheme.muted)
+                                        .foregroundColor(AppTheme.text.opacity(0.68))
                                     Text(source.notes)
-                                        .font(AppFont.body(12))
-                                        .foregroundColor(AppTheme.muted)
+                                        .font(AppFont.body(16))
+                                        .foregroundColor(AppTheme.text.opacity(0.68))
                                     if let url = source.url {
                                         Link(destination: url) {
                                             Label("Open Reference", systemImage: "arrow.up.right.square")
@@ -108,10 +113,10 @@ struct SourcesView: View {
                         VStack(alignment: .leading, spacing: 8) {
                             Text("PRIVACY & DATA USE")
                                 .font(AppFont.mono(11))
-                                .foregroundColor(AppTheme.muted)
+                                .foregroundColor(AppTheme.text.opacity(0.68))
                             Text("This app stores training progress only on your device. No analytics or advertising is enabled. The Live e-Pubs screen contacts the official DAF e-Publishing service only when you open or refresh it.")
-                                .font(AppFont.body(13))
-                                .foregroundColor(AppTheme.muted)
+                                .font(AppFont.body(16))
+                                .foregroundColor(AppTheme.text.opacity(0.68))
                         }
                     }
 
@@ -119,10 +124,10 @@ struct SourcesView: View {
                         VStack(alignment: .leading, spacing: 8) {
                             Text("DISCLAIMER")
                                 .font(AppFont.mono(11))
-                                .foregroundColor(AppTheme.muted)
-                            Text("This application is not an official Air Force product. It is a training aid intended to reinforce published guidance and OSHA standards. Always follow unit-specific procedures and the most current official publications.")
-                                .font(AppFont.body(13))
-                                .foregroundColor(AppTheme.muted)
+                                .foregroundColor(AppTheme.text.opacity(0.68))
+                            Text("This app is not an official Department of the Air Force product. It is a supplemental training aid intended to reinforce published guidance and OSHA standards. Always follow unit-specific procedures and the most current official publications.")
+                                .font(AppFont.body(16))
+                                .foregroundColor(AppTheme.text.opacity(0.68))
                         }
                     }
                 }
@@ -131,7 +136,7 @@ struct SourcesView: View {
             }
             .scrollIndicators(.hidden)
         }
-        .navigationTitle("Sources")
+        .navigationTitle("Library").navigationBarTitleDisplayMode(.inline)
         .navigationBarTitleDisplayMode(.inline)
     }
 }

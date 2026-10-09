@@ -14,6 +14,8 @@ struct RootView: View {
     @EnvironmentObject private var deepLinkRouter: DeepLinkRouter
     @State private var selectedTab: Int = 0
     @State private var homePath: [HomeDeepLinkDestination] = []
+    @State private var learnPath: [HomeDeepLinkDestination] = []
+    @State private var practicePath: [HomeDeepLinkDestination] = []
     @State private var refsPath: [RefsDeepLinkDestination] = []
 
     var body: some View {
@@ -23,34 +25,18 @@ struct RootView: View {
             TabView(selection: $selectedTab) {
                 NavigationStack(path: $homePath) {
                     HomeView()
-                        .navigationDestination(for: HomeDeepLinkDestination.self) { destination in
-                            switch destination {
-                            case .module(let moduleId):
-                                if let module = TrainingContent.modules(for: progress.selectedRole)
-                                    .first(where: { $0.id == moduleId }) {
-                                    ModuleDetailView(module: module)
-                                } else {
-                                    ModuleUnavailableView(moduleId: moduleId)
-                                }
-                            case .dailyFive:
-                                PracticeSessionView()
-                            }
-                        }
                 }
                 .tabItem {
-                    Label("HQ", systemImage: "shield.lefthalf.filled")
-                        .accessibilityLabel("HQ Home")
+                    Label("Today", systemImage: "sun.max")
+                        .accessibilityLabel("Today")
                 }
                 .tag(0)
 
-                NavigationStack {
-                    ProgressDashboardView()
-                }
-                .tabItem {
-                    Label("Intel", systemImage: "chart.bar.xaxis")
-                        .accessibilityLabel("Intel Progress")
-                }
-                .tag(1)
+                NavigationStack(path: $learnPath) { LearnView().navigationDestination(for: HomeDeepLinkDestination.self, destination: trainingDestination) }
+                    .tabItem { Label("Learn", systemImage: "book.closed") }.tag(1)
+
+                NavigationStack(path: $practicePath) { PracticeHubView().navigationDestination(for: HomeDeepLinkDestination.self, destination: trainingDestination) }
+                    .tabItem { Label("Practice", systemImage: "scope") }.tag(2)
 
                 NavigationStack(path: $refsPath) {
                     SourcesView()
@@ -62,19 +48,19 @@ struct RootView: View {
                         }
                 }
                 .tabItem {
-                    Label("Refs", systemImage: "book")
+                    Label("Library", systemImage: "books.vertical")
                         .accessibilityLabel("References")
                 }
-                .tag(2)
+                .tag(3)
 
                 NavigationStack {
-                    ToolsView()
+                    ProgressDashboardView()
                 }
                 .tabItem {
-                    Label("Comms", systemImage: "bubble.left.and.bubble.right")
-                        .accessibilityLabel("Comms Feedback")
+                    Label("Progress", systemImage: "chart.bar.xaxis")
+                        .accessibilityLabel("Progress")
                 }
-                .tag(3)
+                .tag(4)
             }
             .tint(AppTheme.primary)
         }
@@ -89,12 +75,22 @@ struct RootView: View {
         .preferredColorScheme(.dark)
     }
 
+    @ViewBuilder private func trainingDestination(_ destination: HomeDeepLinkDestination) -> some View {
+        switch destination {
+        case .module(let id):
+            if let module = TrainingContent.modules(for: progress.selectedRole).first(where: { $0.id == id }) {
+                ModuleDetailView(module: module)
+            } else { ModuleUnavailableView(moduleId: id) }
+        case .dailyFive: PracticeSessionView()
+        }
+    }
+
     private func configureTacticalTabBar() {
         let tabBarAppearance = UITabBarAppearance()
         tabBarAppearance.configureWithOpaqueBackground()
         tabBarAppearance.backgroundColor = UIColor(AppTheme.surface)
 
-        let normalColor = UIColor(AppTheme.muted)
+        let normalColor = UIColor(AppTheme.text.opacity(0.65))
         let selectedColor = UIColor(AppTheme.primary)
 
         let itemAppearance = UITabBarItemAppearance()
@@ -131,13 +127,13 @@ struct RootView: View {
             selectedTab = 0
             homePath = []
         case .module(let moduleId):
-            selectedTab = 0
-            homePath = [.module(moduleId)]
+            selectedTab = 1
+            learnPath = [.module(moduleId)]
         case .dailyFive:
-            selectedTab = 0
-            homePath = [.dailyFive]
-        case .publication(let publicationId):
             selectedTab = 2
+            practicePath = [.dailyFive]
+        case .publication(let publicationId):
+            selectedTab = 3
             refsPath = [.publication(publicationId)]
         }
 
@@ -159,8 +155,8 @@ private struct ModuleUnavailableView: View {
                         .font(AppFont.subtitle(18))
                         .foregroundColor(AppTheme.text)
                     Text("No module found for id: \(moduleId)")
-                        .font(AppFont.body(13))
-                        .foregroundColor(AppTheme.muted)
+                        .font(AppFont.body(16))
+                        .foregroundColor(AppTheme.text.opacity(0.68))
                 }
             }
             .tacticalReadableWidth()

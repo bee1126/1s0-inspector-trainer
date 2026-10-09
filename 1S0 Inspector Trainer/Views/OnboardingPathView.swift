@@ -31,8 +31,8 @@ struct OnboardingPathView: View {
                                     .font(AppFont.subtitle(18))
                                     .foregroundColor(AppTheme.text)
                                 Text("Complete one short check-in each day to build momentum.")
-                                    .font(AppFont.body(13))
-                                    .foregroundColor(AppTheme.muted)
+                                    .font(AppFont.body(16))
+                                    .foregroundColor(AppTheme.text.opacity(0.68))
                                 Button("Start Program") {
                                     progress.startOnboardingIfNeeded()
                                 }
@@ -44,14 +44,14 @@ struct OnboardingPathView: View {
                             VStack(alignment: .leading, spacing: 12) {
                                 Text("PROGRESS")
                                     .font(AppFont.mono(11))
-                                    .foregroundColor(AppTheme.muted)
+                                    .foregroundColor(AppTheme.text.opacity(0.68))
 
                                 ProgressView(value: progressValue)
                                     .tint(AppTheme.primary)
 
                                 Text("\(completedCount)/\(totalDays) check-ins")
-                                    .font(AppFont.body(13))
-                                    .foregroundColor(AppTheme.muted)
+                                    .font(AppFont.body(16))
+                                    .foregroundColor(AppTheme.text.opacity(0.68))
 
                                 if let dayNumber = currentDayNumber {
                                     Text("Day \(dayNumber) of \(totalDays)")
@@ -66,8 +66,8 @@ struct OnboardingPathView: View {
                                     .buttonStyle(PrimaryButtonStyle())
                                 } else {
                                     Text("Check-in complete for today.")
-                                        .font(AppFont.body(12))
-                                        .foregroundColor(AppTheme.muted)
+                                        .font(AppFont.body(16))
+                                        .foregroundColor(AppTheme.text.opacity(0.68))
                                 }
                             }
                         }
@@ -109,14 +109,14 @@ struct OnboardingPathView: View {
                                     .foregroundColor(AppTheme.text)
 
                                 Text(day.summary)
-                                    .font(AppFont.body(13))
-                                    .foregroundColor(AppTheme.muted)
+                                    .font(AppFont.body(16))
+                                    .foregroundColor(AppTheme.text.opacity(0.68))
 
                                 VStack(alignment: .leading, spacing: 4) {
                                     ForEach(day.tasks, id: \.self) { task in
                                         Text("• \(task)")
-                                            .font(AppFont.body(12))
-                                            .foregroundColor(AppTheme.muted)
+                                            .font(AppFont.body(16))
+                                            .foregroundColor(AppTheme.text.opacity(0.68))
                                     }
                                 }
 

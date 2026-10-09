@@ -18,8 +18,8 @@ struct ModuleDetailView: View {
                                 .font(AppFont.title(24))
                                 .foregroundColor(AppTheme.text)
                             Text(module.subtitle)
-                                .font(AppFont.body(14))
-                                .foregroundColor(AppTheme.muted)
+                                .font(AppFont.body(16))
+                                .foregroundColor(AppTheme.text.opacity(0.68))
 
                             HStack(spacing: 10) {
                                 TagPill(text: module.difficulty)
@@ -31,14 +31,14 @@ struct ModuleDetailView: View {
                         VStack(alignment: .leading, spacing: 10) {
                             Text("OBJECTIVES")
                                 .font(AppFont.mono(11))
-                                .foregroundColor(AppTheme.muted)
+                                .foregroundColor(AppTheme.text.opacity(0.68))
                             ForEach(module.objectives, id: \.self) { objective in
                                 HStack(alignment: .top, spacing: 8) {
                                     Text("-")
                                         .font(AppFont.subtitle(14))
                                         .foregroundColor(AppTheme.primary)
                                     Text(objective)
-                                        .font(AppFont.body(14))
+                                        .font(AppFont.body(16))
                                         .foregroundColor(AppTheme.text.opacity(0.8))
                                 }
                             }
@@ -53,8 +53,8 @@ struct ModuleDetailView: View {
                                     .foregroundColor(AppTheme.danger)
                                 ForEach(integrityIssues) { issue in
                                     Text("• \(issue.message)")
-                                        .font(AppFont.body(13))
-                                        .foregroundColor(AppTheme.muted)
+                                        .font(AppFont.body(16))
+                                        .foregroundColor(AppTheme.text.opacity(0.68))
                                 }
                             }
                         }
@@ -71,6 +71,10 @@ struct ModuleDetailView: View {
                     }
                     .buttonStyle(PrimaryButtonStyle())
                     .disabled(!canStartModule)
+
+                    NavigationLink { StudyBuilderView(moduleID: module.id) } label: {
+                        Label("Practice this topic", systemImage: "scope")
+                    }.buttonStyle(OutlineButtonStyle())
 
                     if progress.resumeState(for: module.id) != nil {
                         NavigationLink {
@@ -90,13 +94,13 @@ struct ModuleDetailView: View {
                         VStack(alignment: .leading, spacing: 8) {
                             Text("REWARDS")
                                 .font(AppFont.mono(11))
-                                .foregroundColor(AppTheme.muted)
+                                .foregroundColor(AppTheme.text.opacity(0.68))
                             Text("Up to \(maxXp) XP")
                                 .font(AppFont.title(22))
                                 .foregroundColor(AppTheme.accent)
                             Text("Test your knowledge with scenarios and quizzes.")
-                                .font(AppFont.body(12))
-                                .foregroundColor(AppTheme.muted)
+                                .font(AppFont.body(16))
+                                .foregroundColor(AppTheme.text.opacity(0.68))
                         }
                         .accessibilityElement(children: .combine)
                         .accessibilityLabel("Rewards")
@@ -108,7 +112,7 @@ struct ModuleDetailView: View {
                             VStack(alignment: .leading, spacing: 6) {
                                 Text("BEST SCORE")
                                     .font(AppFont.mono(11))
-                                    .foregroundColor(AppTheme.muted)
+                                    .foregroundColor(AppTheme.text.opacity(0.68))
                                 Text("\(progress.bestScore(for: module.id))%")
                                     .font(AppFont.title(30))
                                     .foregroundColor(AppTheme.info)

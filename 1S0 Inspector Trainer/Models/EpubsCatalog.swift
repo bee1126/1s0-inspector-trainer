@@ -76,6 +76,13 @@ enum EpubsCatalog {
             pdfURL: URL(string: "https://static.e-publishing.af.mil/production/1/af_se/publication/dafi91-207/dafi91-207.pdf")!
         ),
         EpubsPublication(
+            id: "dafi90-802",
+            number: "DAFI 90-802",
+            title: "Risk Management",
+            summary: "20 January 2026 directive: RM principles, decision authority, and the five-step process.",
+            pdfURL: URL(string: "https://static.e-publishing.af.mil/production/1/af_se/publication/dafi90-802/dafi90-802.pdf")!
+        ),
+        EpubsPublication(
             id: "dafpam90-803",
             number: "DAFPAM 90-803",
             title: "Risk Management Guidelines and Tools",
@@ -86,8 +93,8 @@ enum EpubsCatalog {
             id: "dafi48-127",
             number: "DAFI 48-127",
             title: "Occupational Noise and Hearing Conservation Program",
-            summary: "Noise surveillance, exposure controls, hearing protection, and audiometric monitoring.",
-            pdfURL: URL(string: "https://static.e-publishing.af.mil/production/1/af_sg/publication/afi48-127/afi48-127.pdf")!
+            summary: "17 March 2026 edition. Noise surveillance, exposure controls, hearing protection, and audiometric monitoring.",
+            pdfURL: URL(string: "https://static.e-publishing.af.mil/production/1/af_sg/publication/dafi48-127/dafi48-127.pdf")!
         )
     ]
 

@@ -8,6 +8,7 @@ struct ModuleFlowView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let module: TrainingModule
 
+    @State private var completionSessionID: UUID?
     @State private var stage: ModuleStage = .lesson
     @State private var scenarioResult = AssessmentResult(score: 0, total: 0)
     @State private var quizResult = AssessmentResult(score: 0, total: 0)
@@ -56,6 +57,7 @@ struct ModuleFlowView: View {
                         case .quiz:
                             QuizFlowView(questions: module.quiz, onWrongAnswer: {
                             }, onComplete: { result, streak in
+                                completionSessionID = progress.resumeState(for: module.id)?.quizState?.sessionID
                                 quizResult = result
                                 quizStreakSummary = streak
                                 progress.savePendingCompletion(
@@ -82,7 +84,8 @@ struct ModuleFlowView: View {
                                     score: finalScore,
                                     scenarioResult: scenarioResult,
                                     quizResult: quizResult,
-                                    quizMultiplier: quizStreakSummary.multiplier
+                                    quizMultiplier: quizStreakSummary.multiplier,
+                                    sessionID: completionSessionID
                                 )
                                 progress.clearPendingCompletion(for: module.id)
                                 progress.clearResume(for: module.id)
@@ -112,8 +115,8 @@ struct ModuleFlowView: View {
                                     .foregroundColor(AppTheme.text)
                                 ForEach(module.integrityIssues) { issue in
                                     Text("• \(issue.message)")
-                                        .font(AppFont.body(13))
-                                        .foregroundColor(AppTheme.muted)
+                                        .font(AppFont.body(16))
+                                        .foregroundColor(AppTheme.text.opacity(0.68))
                                 }
                                 Button("Return to Modules") {
                                     dismiss()
@@ -194,6 +197,7 @@ struct ModuleFlowView: View {
         if let resume = progress.resumeState(for: module.id) {
             lessonIndex = min(resume.lessonIndex, max(0, module.lessonPages.count - 1))
         }
+        completionSessionID = pending.sessionID
         scenarioResult = pending.scenarioResult
         quizResult = pending.quizResult
         quizStreakSummary = pending.quizStreakSummary
@@ -223,7 +227,7 @@ struct StageProgressView: View {
                 .tint(AppTheme.primary)
             Text("Stage \(currentStep) of 4")
                 .font(AppFont.mono(11))
-                .foregroundColor(AppTheme.muted)
+                .foregroundColor(AppTheme.text.opacity(0.68))
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Training stage")
@@ -287,13 +291,13 @@ struct CompletionView: View {
 
                     Text(moduleTitle)
                         .font(AppFont.subtitle(16))
-                        .foregroundColor(AppTheme.muted)
+                        .foregroundColor(AppTheme.text.opacity(0.68))
 
                     HStack(spacing: 12) {
                         VStack(alignment: .leading) {
                             Text("Scenario")
                                 .font(AppFont.mono(12))
-                                .foregroundColor(AppTheme.muted)
+                                .foregroundColor(AppTheme.text.opacity(0.68))
                             Text("\(scenarioResult.score)/\(scenarioResult.total)")
                                 .font(AppFont.subtitle(18))
                                 .foregroundColor(AppTheme.text)
@@ -301,7 +305,7 @@ struct CompletionView: View {
                         VStack(alignment: .leading) {
                             Text("Quiz")
                                 .font(AppFont.mono(12))
-                                .foregroundColor(AppTheme.muted)
+                                .foregroundColor(AppTheme.text.opacity(0.68))
                             Text("\(quizResult.score)/\(quizResult.total)")
                                 .font(AppFont.subtitle(18))
                                 .foregroundColor(AppTheme.text)
@@ -313,14 +317,14 @@ struct CompletionView: View {
                     HStack(spacing: 10) {
                         Text("Status")
                             .font(AppFont.mono(12))
-                            .foregroundColor(AppTheme.muted)
+                            .foregroundColor(AppTheme.text.opacity(0.68))
                         Text(passed ? "Pass" : "Remediate")
                             .font(AppFont.subtitle(16))
                             .foregroundColor(passed ? AppTheme.primary : AppTheme.danger)
                     }
                     Text("Pass threshold: 80%")
-                        .font(AppFont.body(12))
-                        .foregroundColor(AppTheme.muted)
+                        .font(AppFont.body(16))
+                        .foregroundColor(AppTheme.text.opacity(0.68))
 
                     if showRacInput {
                         FormFieldLabel(text: "RAC Justification")
@@ -328,8 +332,8 @@ struct CompletionView: View {
                     } else if !racJustification.isEmpty {
                         FormFieldLabel(text: "RAC Justification")
                         Text(racJustification)
-                            .font(AppFont.body(12))
-                            .foregroundColor(AppTheme.muted)
+                            .font(AppFont.body(16))
+                            .foregroundColor(AppTheme.text.opacity(0.68))
                     }
 
                     if didSave {

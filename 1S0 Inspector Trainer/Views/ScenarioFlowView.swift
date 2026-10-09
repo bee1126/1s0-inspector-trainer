@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 
 struct ScenarioFlowView: View {
     @EnvironmentObject private var progress: ProgressStore
@@ -40,21 +41,21 @@ struct ScenarioFlowView: View {
                     VStack(alignment: .leading, spacing: AppSpacing.stack) {
                         Text("Scenario")
                             .font(AppFont.mono(12))
-                            .foregroundColor(AppTheme.muted)
+                            .foregroundColor(AppTheme.text.opacity(0.68))
 
                         Text(scenario.title)
                             .font(AppFont.title(22))
                             .foregroundColor(AppTheme.text)
 
                         Text(scenario.intro)
-                            .font(AppFont.body(14))
-                            .foregroundColor(AppTheme.muted)
+                            .font(AppFont.body(16))
+                            .foregroundColor(AppTheme.text.opacity(0.68))
 
                         if let stepPosition = stepPosition(for: step.id) {
                             VStack(alignment: .leading, spacing: 6) {
                                 Text("Step \(stepPosition)/\(scenario.steps.count)")
                                     .font(AppFont.mono(11))
-                                    .foregroundColor(AppTheme.muted)
+                                    .foregroundColor(AppTheme.text.opacity(0.68))
                                 ProgressView(value: Double(stepPosition), total: Double(max(1, scenario.steps.count)))
                                     .tint(AppTheme.info)
                             }
@@ -68,7 +69,7 @@ struct ScenarioFlowView: View {
                         HStack {
                             Text("Time")
                                 .font(AppFont.mono(12))
-                                .foregroundColor(AppTheme.muted)
+                                .foregroundColor(AppTheme.text.opacity(0.68))
                             Text("\(timeLeft)s")
                                 .font(AppFont.subtitle(14))
                                 .foregroundColor(timeLeft <= 5 ? AppTheme.danger : AppTheme.text)
@@ -84,8 +85,8 @@ struct ScenarioFlowView: View {
                             .foregroundColor(AppTheme.text)
 
                         Text("Choose the best response.")
-                            .font(AppFont.body(13))
-                            .foregroundColor(AppTheme.muted)
+                            .font(AppFont.body(16))
+                            .foregroundColor(AppTheme.text.opacity(0.68))
 
                         VStack(spacing: 10) {
                             ForEach(options, id: \.id) { option in
@@ -134,13 +135,13 @@ struct ScenarioFlowView: View {
                     VStack(alignment: .leading, spacing: AppSpacing.stack) {
                         Text("Scenario")
                             .font(AppFont.mono(12))
-                            .foregroundColor(AppTheme.muted)
+                            .foregroundColor(AppTheme.text.opacity(0.68))
                         Text("Scenario Unavailable")
                             .font(AppFont.subtitle(18))
                             .foregroundColor(AppTheme.text)
                         Text("This scenario has no steps. Complete the stage and continue.")
-                            .font(AppFont.body(14))
-                            .foregroundColor(AppTheme.muted)
+                            .font(AppFont.body(16))
+                            .foregroundColor(AppTheme.text.opacity(0.68))
                         Button("Finish Scenario") {
                             onComplete(AssessmentResult(score: 0, total: 0))
                         }

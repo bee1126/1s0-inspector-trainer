@@ -46,8 +46,8 @@ struct DailyLessonView: View {
                 .foregroundColor(AppTheme.text)
 
             Text(lesson.subtitle)
-                .font(AppFont.body(14))
-                .foregroundColor(AppTheme.muted)
+                .font(AppFont.body(16))
+                .foregroundColor(AppTheme.text.opacity(0.68))
         }
     }
 
@@ -57,7 +57,7 @@ struct DailyLessonView: View {
         VStack(alignment: .leading, spacing: 12) {
             Text("KEY POINTS")
                 .font(AppFont.mono(11))
-                .foregroundColor(AppTheme.muted)
+                .foregroundColor(AppTheme.text.opacity(0.68))
                 .tracking(1.5)
 
             ForEach(Array(lesson.keyPoints.enumerated()), id: \.offset) { index, point in
@@ -79,7 +79,7 @@ struct DailyLessonView: View {
                     )
 
                 Text(text)
-                    .font(AppFont.body(14))
+                    .font(AppFont.body(16))
                     .foregroundColor(AppTheme.text)
                     .fixedSize(horizontal: false, vertical: true)
             }
@@ -128,7 +128,7 @@ struct DailyLessonView: View {
                 }
 
                 Text(lesson.proTip)
-                    .font(AppFont.body(14))
+                    .font(AppFont.body(16))
                     .foregroundColor(AppTheme.text)
                     .fixedSize(horizontal: false, vertical: true)
             }
@@ -154,7 +154,7 @@ struct DailyLessonCard: View {
                     Spacer()
                     Text(todayFormatted)
                         .font(AppFont.mono(10))
-                        .foregroundColor(AppTheme.muted)
+                        .foregroundColor(AppTheme.text.opacity(0.68))
                 }
 
                 Text(lesson.title)
@@ -162,8 +162,8 @@ struct DailyLessonCard: View {
                     .foregroundColor(AppTheme.text)
 
                 Text(lesson.subtitle)
-                    .font(AppFont.body(13))
-                    .foregroundColor(AppTheme.muted)
+                    .font(AppFont.body(16))
+                    .foregroundColor(AppTheme.text.opacity(0.68))
 
                 HStack(spacing: 8) {
                     TagPill(text: lesson.moduleTag)

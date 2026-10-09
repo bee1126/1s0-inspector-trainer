@@ -53,8 +53,8 @@ struct RoleSelectionView: View {
                             .multilineTextAlignment(.center)
 
                         Text(subtitle)
-                            .font(AppFont.body(14))
-                            .foregroundColor(AppTheme.muted)
+                            .font(AppFont.body(16))
+                            .foregroundColor(AppTheme.text.opacity(0.68))
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, 20)
                     }
@@ -178,8 +178,8 @@ private struct OnboardingRoleCard: View {
                         .foregroundColor(isSelected ? AppTheme.primary : AppTheme.text)
 
                     Text(role.displayName)
-                        .font(AppFont.body(13))
-                        .foregroundColor(AppTheme.muted)
+                        .font(AppFont.body(16))
+                        .foregroundColor(AppTheme.text.opacity(0.68))
                 }
 
                 Spacer()
@@ -200,7 +200,7 @@ private struct OnboardingRoleCard: View {
 
             // Description
             Text(tagline)
-                .font(AppFont.body(13))
+                .font(AppFont.body(16))
                 .foregroundColor(AppTheme.muted.opacity(0.8))
 
             // Context

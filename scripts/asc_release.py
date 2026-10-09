@@ -552,6 +552,100 @@ def command_submit(args: argparse.Namespace) -> None:
     print(f"Review submission id: {submission_id}")
 
 
+LISTING_FIELDS = {
+    "Subtitle": ("subtitle", 30),
+    "Promotional Text": ("promotionalText", 170),
+    "Keywords": ("keywords", 100),
+    "Description": ("description", 4000),
+    "What's New": ("whatsNew", 4000),
+}
+
+
+def read_listing(path: str) -> dict[str, str]:
+    sections: dict[str, str] = {}
+    heading = None
+    lines: list[str] = []
+    for line in Path(path).read_text(encoding="utf-8").splitlines():
+        if line.startswith("## "):
+            if heading is not None:
+                sections[heading] = "\n".join(lines).strip()
+            heading = line[3:].split(" (")[0].strip()
+            if heading in sections:
+                raise AscError(f"Duplicate listing section: {heading}")
+            lines = []
+        elif heading is not None:
+            lines.append(line)
+    if heading is not None:
+        sections[heading] = "\n".join(lines).strip()
+    result = {}
+    for heading, (field, limit) in LISTING_FIELDS.items():
+        value = sections.get(heading, "")
+        if not value:
+            raise AscError(f"Missing listing section: {heading}")
+        count = len(value.encode("utf-8")) if field == "keywords" else len(value)
+        if count > limit:
+            raise AscError(f"{field}: {count} exceeds Apple limit {limit}")
+        result[field] = value
+    return result
+
+
+def apply_listing(client: AscClient, app_id: str, version_id: str,
+                  listing: dict[str, str], *, locale: str, dry_run: bool) -> None:
+    version_fields = {key: value for key, value in listing.items() if key != "subtitle"}
+    if dry_run:
+        print_json("would_update_version_localization", {"locale": locale, **version_fields})
+        print_json("would_update_app_info_localization", {"locale": locale, "subtitle": listing["subtitle"]})
+        print_json("would_set_release_type", {"releaseType": "AFTER_APPROVAL"})
+        return
+    # Update only the supplied language; never overwrite other translations.
+    for parent_type, parent_id, resource, attributes in [
+        ("appStoreVersions", version_id, "appStoreVersionLocalizations", version_fields),
+        ("appInfos", editable_app_info(client, app_id), "appInfoLocalizations", {"subtitle": listing["subtitle"]}),
+    ]:
+        rows = client.request("GET", f"/{parent_type}/{parent_id}/{resource}", query={"limit": "200"})["data"]
+        row = next((row for row in rows if row["attributes"]["locale"] == locale), None)
+        data: dict[str, Any] = {"type": resource, "attributes": attributes}
+        if row:
+            data["id"] = row["id"]
+            client.request("PATCH", f"/{resource}/{row['id']}", body={"data": data})
+        else:
+            relation = "appStoreVersion" if parent_type == "appStoreVersions" else "appInfo"
+            data["attributes"] = {"locale": locale, **attributes}
+            data["relationships"] = {relation: {"data": {"type": parent_type, "id": parent_id}}}
+            row = client.request("POST", f"/{resource}", body={"data": data})["data"]
+        actual = client.request("GET", f"/{resource}/{row['id']}")["data"]["attributes"]
+        for key, expected in attributes.items():
+            if actual.get(key) != expected:
+                raise AscError(f"Readback mismatch for {resource} {key}")
+        print(f"Verified {resource} {locale}: {', '.join(attributes)}")
+    client.request("PATCH", f"/appStoreVersions/{version_id}", body={"data": {
+        "type": "appStoreVersions", "id": version_id,
+        "attributes": {"releaseType": "AFTER_APPROVAL"},
+    }})
+    actual = client.request("GET", f"/appStoreVersions/{version_id}")["data"]["attributes"]
+    if actual.get("releaseType") != "AFTER_APPROVAL":
+        raise AscError("Automatic release readback failed")
+
+
+def editable_app_info(client: AscClient, app_id: str) -> str:
+    rows = client.request("GET", f"/apps/{app_id}/appInfos", query={"limit": "200"})["data"]
+    editable = [row for row in rows if (row["attributes"].get("appStoreState") or
+                row["attributes"].get("state")) in {"PREPARE_FOR_SUBMISSION", "DEVELOPER_REJECTED", "REJECTED", "METADATA_REJECTED"}]
+    if len(editable) != 1:
+        raise AscError(f"Expected one editable app info record; found {len(editable)}")
+    return editable[0]["id"]
+
+
+def command_listing(args: argparse.Namespace) -> None:
+    listing = read_listing(args.listing_file)  # Validate every field before any API mutation.
+    print_json("validated_listing_lengths", {k: len(v) for k, v in listing.items()})
+    client = client_from_env()
+    app_id = app_id_from_args(client, args.app_id, args.bundle_id)
+    version = ensure_version(client, app_id, args.version, create=True, dry_run=args.dry_run)
+    apply_listing(client, app_id, version["id"], listing, locale=args.locale, dry_run=args.dry_run)
+    print(f"Version id: {version['id']}")
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--app-id", default=os.environ.get("ASC_APP_ID", DEFAULT_APP_ID))
@@ -560,6 +654,13 @@ def build_parser() -> argparse.ArgumentParser:
 
     status = subparsers.add_parser("status", help="Show app versions and review submissions")
     status.set_defaults(func=command_status)
+
+    listing = subparsers.add_parser("listing", help="Validate and apply all English listing metadata and automatic release")
+    listing.add_argument("--version", required=True)
+    listing.add_argument("--listing-file", required=True)
+    listing.add_argument("--locale", default="en-US")
+    listing.add_argument("--dry-run", action="store_true")
+    listing.set_defaults(func=command_listing)
 
     submit = subparsers.add_parser("submit", help="Prepare or submit an App Store version")
     submit.add_argument("--version", required=True, help="Marketing version, e.g. 1.5")

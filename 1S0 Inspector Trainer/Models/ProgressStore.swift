@@ -59,6 +59,9 @@ final class ProgressStore: ObservableObject {
         let checkIns: [Int]
     }
 
+    @Published private(set) var studyState = StudyPersistence()
+    private let studyStateKey = "study_state_v1"
+
     @Published private(set) var completedModules: Set<String> = []
     @Published private(set) var bestScores: [String: Int] = [:]
     @Published private(set) var lastCompleted: [String: Date] = [:]
@@ -183,6 +186,7 @@ final class ProgressStore: ObservableObject {
     }
 
     func resetAll() {
+        studyState = StudyPersistence()
         completedModules = []
         bestScores = [:]
         lastCompleted = [:]
@@ -277,7 +281,7 @@ final class ProgressStore: ObservableObject {
 
     private func overdueCards(at now: Date) -> [SRCard] {
         return srCards.values
-            .filter { $0.nextReviewDate <= now }
+            .filter { $0.nextReviewDate <= now && !QuestionExplanations.retiredQuestionIDs.contains($0.questionId) }
             .sorted { $0.nextReviewDate < $1.nextReviewDate }
     }
 
@@ -286,26 +290,15 @@ final class ProgressStore: ObservableObject {
     }
 
     private func overdueCountsByModule(at now: Date) -> [String: Int] {
-        srCards.values.reduce(into: [:]) { counts, card in
-            guard card.nextReviewDate <= now else { return }
+        overdueCards(at: now).reduce(into: [:]) { counts, card in
             counts[ModuleHelper.modulePrefix(for: card.questionId), default: 0] += 1
         }
     }
 
-    func overdueCount() -> Int {
-        let now = dateProvider()
-        return srCards.values.reduce(0) { count, card in
-            card.nextReviewDate <= now ? count + 1 : count
-        }
-    }
+    func overdueCount() -> Int { overdueCards().count }
 
     func overdueCount(for moduleId: String) -> Int {
-        let now = dateProvider()
-        return srCards.values.reduce(0) { count, card in
-            ModuleHelper.modulePrefix(for: card.questionId) == moduleId && card.nextReviewDate <= now
-                ? count + 1
-                : count
-        }
+        overdueCards().filter { ModuleHelper.modulePrefix(for: $0.questionId) == moduleId }.count
     }
 
     func recordModuleAnswer(moduleId: String, correct: Bool) {
@@ -324,6 +317,9 @@ final class ProgressStore: ObservableObject {
     }
 
     func recordQuestionAttempt(questionId: String, correct: Bool) {
+        if correct { studyState.unresolvedQuestionIDs.remove(questionId) }
+        else { studyState.unresolvedQuestionIDs.insert(questionId) }
+        save()
         let previousMisses = recentQuestionMisses
         recentQuestionMisses.removeAll { $0.questionId == questionId }
         if !correct {
@@ -485,6 +481,10 @@ final class ProgressStore: ObservableObject {
     }
 
     private func load() {
+        if let data = defaults.data(forKey: studyStateKey),
+           let state = try? JSONDecoder().decode(StudyPersistence.self, from: data) {
+            studyState = state
+        }
         if let data = defaults.data(forKey: completedKey),
            let decoded = try? JSONDecoder().decode([String].self, from: data) {
             completedModules = Set(decoded)
@@ -588,6 +588,9 @@ final class ProgressStore: ObservableObject {
                 )
             }
         }
+        if defaults.data(forKey: studyStateKey) == nil {
+            studyState.unresolvedQuestionIDs = Set(recentQuestionMisses.map(\.questionId))
+        }
         applyOnboardingState(for: selectedRole)
     }
 
@@ -596,6 +599,9 @@ final class ProgressStore: ObservableObject {
     }
 
     private func persistToDefaults() {
+        if let data = try? JSONEncoder().encode(studyState) {
+            defaults.set(data, forKey: studyStateKey)
+        }
         persistCurrentOnboardingState()
         if let data = try? JSONEncoder().encode(Array(completedModules)) {
             defaults.set(data, forKey: completedKey)
@@ -757,8 +763,13 @@ final class ProgressStore: ObservableObject {
         }
     }
 
-    func completeModule(moduleId: String, score: Int, scenarioResult: AssessmentResult, quizResult: AssessmentResult, quizMultiplier: Double = 1.0) -> RewardSummary {
+    func completeModule(moduleId: String, score: Int, scenarioResult: AssessmentResult, quizResult: AssessmentResult, quizMultiplier: Double = 1.0, sessionID: UUID? = nil) -> RewardSummary {
         performMutationTransaction {
+            if let id = sessionID ?? pendingCompletion(for: moduleId)?.sessionID {
+                guard studyState.rewardedModuleSessionIDs.insert(id).inserted else {
+                    return RewardSummary(xpGained: 0, leveledUp: false, streakIncreased: false, streakMultiplier: 1)
+                }
+            }
             if score >= 80 {
                 markCompleted(
                     moduleId: moduleId,
@@ -774,6 +785,12 @@ final class ProgressStore: ObservableObject {
             let passBonus = score >= 80 ? 20 : 0
             let perfectBonus = score == 100 ? 10 : 0
             let totalXp = lessonXp + scenarioXp + quizXp + passBonus + perfectBonus
+            if let id = sessionID ?? pendingCompletion(for: moduleId)?.sessionID,
+               let index = studyState.history.firstIndex(where: { $0.id == id }) {
+                let entry = studyState.history[index]
+                studyState.history[index] = StudyHistoryEntry(id: entry.id, kind: entry.kind, completedAt: entry.completedAt,
+                    questions: entry.questions, answers: entry.answers, score: entry.score, total: entry.total, xpEarned: totalXp)
+            }
             return earnXp(totalXp, streakMultiplier: quizMultiplier)
         }
     }
@@ -947,6 +964,7 @@ final class ProgressStore: ObservableObject {
         quizStreakSummary: QuizStreakSummary
     ) {
         pendingCompletion = PendingModuleCompletion(
+            sessionID: resumeState(for: moduleId)?.quizState?.sessionID ?? UUID(),
             moduleId: moduleId,
             scenarioResult: scenarioResult,
             quizResult: quizResult,
@@ -1017,4 +1035,135 @@ struct RewardSummary {
     let leveledUp: Bool
     let streakIncreased: Bool
     let streakMultiplier: Double
+}
+
+// MARK: - Personalized study
+extension ProgressStore {
+    var activeStudySession: StudySession? { studyState.activeSession }
+    var studyHistory: [StudyHistoryEntry] { studyState.history }
+
+    func isQuestionSaved(_ id: String) -> Bool { studyState.savedQuestionIDs.contains(id) }
+
+    func toggleSavedQuestion(_ id: String) {
+        if !studyState.savedQuestionIDs.insert(id).inserted { studyState.savedQuestionIDs.remove(id) }
+        save()
+    }
+
+    func studyQuestions(for configuration: StudyConfiguration, from questions: [QuizQuestion]) -> [QuizQuestion] {
+        let due = Set(overdueCards().map(\.questionId))
+        var seen: Set<String> = []
+        return questions.filter { question in
+            guard seen.insert(question.id).inserted,
+                  configuration.moduleIDs.isEmpty || configuration.moduleIDs.contains(ModuleHelper.moduleID(for: question.id)),
+                  configuration.difficulty == .all || question.difficulty == configuration.difficulty,
+                  configuration.questionIDs?.contains(question.id) ?? true else { return false }
+            switch configuration.pool {
+            case .all: return true
+            case .saved: return isQuestionSaved(question.id)
+            case .missed: return studyState.unresolvedQuestionIDs.contains(question.id)
+            case .due: return due.contains(question.id)
+            }
+        }
+    }
+
+    @discardableResult
+    func startStudySession(configuration: StudyConfiguration, questions: [QuizQuestion]) -> Bool {
+        guard activeStudySession == nil, configuration.questionCount >= 0 else { return false }
+        let matching = studyQuestions(for: configuration, from: questions).shuffled()
+        let selected = configuration.questionCount == 0 ? matching : Array(matching.prefix(configuration.questionCount))
+        guard !selected.isEmpty else { return false }
+        let now = dateProvider()
+        studyState.activeSession = StudySession(id: UUID(), configuration: configuration, startedAt: now,
+                                               questions: selected.map { StudyQuestion($0) }, updatedAt: now)
+        save()
+        return true
+    }
+
+    func discardStudySession() {
+        studyState.activeSession = nil
+        save()
+    }
+
+    func studySessionIsValid(questions: [QuizQuestion]) -> Bool {
+        guard let session = activeStudySession else { return false }
+        let current = Dictionary(questions.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+        return !session.questions.isEmpty && session.questions.allSatisfy { saved in
+            guard let question = current[saved.id] else { return false }
+            return question.contentRevision == saved.revision && question.prompt == saved.prompt
+                && Set(question.choices) == Set(saved.choices)
+        }
+    }
+
+    func selectStudyAnswer(questionID: String, choiceID: String) {
+        guard var session = activeStudySession,
+              let question = session.questions.first(where: { $0.id == questionID }),
+              question.choices.contains(where: { $0.id == choiceID }),
+              session.configuration.mode == .exam || session.answers[questionID] == nil else { return }
+        performMutationTransaction {
+            session.answers[questionID] = choiceID
+            session.updatedAt = dateProvider()
+            studyState.activeSession = session
+            if session.configuration.mode == .study { recordStudyAnswer(question, choiceID: choiceID) }
+            save()
+        }
+    }
+
+    func moveStudyQuestion(to index: Int) {
+        guard var session = activeStudySession, session.questions.indices.contains(index) else { return }
+        session.index = index
+        session.updatedAt = dateProvider()
+        studyState.activeSession = session
+        save()
+    }
+
+    @discardableResult
+    func finishStudySession(id: UUID, questions: [QuizQuestion]) -> StudyHistoryEntry? {
+        if let existing = studyHistory.first(where: { $0.id == id }) { return existing }
+        guard !studyState.completedSessionIDs.contains(id),
+              let session = activeStudySession, session.id == id, session.isComplete,
+              studySessionIsValid(questions: questions) else { return nil }
+        return performMutationTransaction {
+            if session.configuration.mode == .exam {
+                for question in session.questions { recordStudyAnswer(question, choiceID: session.answers[question.id]) }
+            }
+            let reward = completePractice(score: session.score, total: session.questions.count)
+            let entry = StudyHistoryEntry(id: id, kind: session.configuration.mode == .study ? .study : .exam,
+                                         completedAt: dateProvider(), questions: session.questions, answers: session.answers,
+                                         score: session.score, total: session.questions.count, xpEarned: reward.xpGained)
+            appendStudyHistory(entry)
+            studyState.activeSession = nil
+            save()
+            return entry
+        }
+    }
+
+    /// Existing quiz flows have already recorded answers; this records completion without replaying them.
+    @discardableResult
+    func recordQuizHistory(id: UUID, kind: StudySessionKind, questions: [QuizQuestion], answers: [String: String],
+                           result: AssessmentResult, multiplier: Double = 1) -> StudyHistoryEntry? {
+        guard !studyState.completedSessionIDs.contains(id), result.total > 0 else { return nil }
+        return performMutationTransaction {
+            let reward = kind == .dailyFive
+                ? completeAdaptiveRemediation(score: result.score, total: result.total, streakMultiplier: multiplier).xpGained : 0
+            let entry = StudyHistoryEntry(id: id, kind: kind, completedAt: dateProvider(),
+                                         questions: questions.map { StudyQuestion($0, shuffle: false) }, answers: answers,
+                                         score: result.score, total: result.total, xpEarned: reward)
+            appendStudyHistory(entry)
+            save()
+            return entry
+        }
+    }
+
+    private func recordStudyAnswer(_ question: StudyQuestion, choiceID: String?) {
+        let correct = question.isCorrect(choiceID)
+        updateSRCard(questionId: question.id, quality: correct ? 4 : 1)
+        recordQuestionAttempt(questionId: question.id, correct: correct)
+        recordModuleAnswer(moduleId: ModuleHelper.modulePrefix(for: question.id), correct: correct)
+    }
+
+    private func appendStudyHistory(_ entry: StudyHistoryEntry) {
+        studyState.completedSessionIDs.insert(entry.id)
+        studyState.history.insert(entry, at: 0)
+        studyState.history = Array(studyState.history.prefix(200))
+    }
 }

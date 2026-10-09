@@ -122,7 +122,7 @@ enum DailyLessonBank {
                 "Probability asks: 'How likely is it?' — from unlikely to frequent.",
                 "A risk matrix combines both to determine whether the risk is acceptable, needs mitigation, or is unacceptable."
             ],
-            regulation: "DAFPAM 90-803",
+            regulation: "DAFI 90-802",
             proTip: "High-severity, low-probability events are the most commonly under-managed. Rare does not mean safe."
         ),
 
@@ -137,7 +137,7 @@ enum DailyLessonBank {
                 "Residual risk must be formally accepted by the appropriate authority level.",
                 "If residual risk is still high, add more controls or escalate the decision."
             ],
-            regulation: "DAFPAM 90-803",
+            regulation: "DAFI 90-802",
             proTip: "Document what residual risk you accepted and why. Future auditors (and you) will thank you."
         ),
 

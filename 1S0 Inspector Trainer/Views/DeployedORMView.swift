@@ -64,7 +64,7 @@ struct DeployedORMView: View {
                             Image(systemName: "chevron.left")
                                 .font(.system(size: 14, weight: .semibold))
                             Text("Back")
-                                .font(AppFont.body(14))
+                                .font(AppFont.body(16))
                         }
                         .foregroundColor(AppTheme.primary)
                     }
@@ -110,7 +110,7 @@ struct DeployedORMView: View {
         HStack {
             Text("FIELD EXERCISE")
                 .font(AppFont.mono(11))
-                .foregroundColor(AppTheme.muted)
+                .foregroundColor(AppTheme.text.opacity(0.68))
                 .tracking(1.5)
             Spacer()
         }
@@ -132,7 +132,7 @@ struct DeployedORMView: View {
                                 .foregroundColor(AppTheme.accent)
                                 .tracking(1)
                             Text("All scenarios assessed. Badge earned!")
-                                .font(AppFont.body(13))
+                                .font(AppFont.body(16))
                                 .foregroundColor(AppTheme.text)
                         }
                         Spacer()
@@ -142,15 +142,15 @@ struct DeployedORMView: View {
                 GlassCard {
                     VStack(alignment: .leading, spacing: 6) {
                         Text("Assess deployed operational risks through a 5-step ORM workflow. Complete all \(DeployedORMBank.allScenarios.count) to earn the ORM Field Advisor badge.")
-                            .font(AppFont.body(13))
-                            .foregroundColor(AppTheme.muted)
+                            .font(AppFont.body(16))
+                            .foregroundColor(AppTheme.text.opacity(0.68))
                         HStack(spacing: 4) {
                             Text("\(progress.completedORMScenarios.count)/\(DeployedORMBank.allScenarios.count)")
                                 .font(AppFont.mono(12))
                                 .foregroundColor(AppTheme.text)
                             Text("completed")
                                 .font(AppFont.mono(12))
-                                .foregroundColor(AppTheme.muted)
+                                .foregroundColor(AppTheme.text.opacity(0.68))
                         }
                         GeometryReader { geo in
                             ZStack(alignment: .leading) {
@@ -208,7 +208,7 @@ struct DeployedORMView: View {
                 } else {
                     Image(systemName: "chevron.right")
                         .font(.system(size: 12, weight: .semibold))
-                        .foregroundColor(AppTheme.muted)
+                        .foregroundColor(AppTheme.text.opacity(0.68))
                 }
             }
         }
@@ -239,19 +239,20 @@ struct DeployedORMView: View {
                     sitrepField(label: "LOCATION", value: scenario.location)
                     sitrepField(label: "MISSION CONTEXT", value: scenario.missionContext)
                     sitrepField(label: "SITUATION", value: scenario.situationBrief)
+                    sitrepField(label: "EXERCISE POLICY", value: scenario.trainingPolicy)
 
                     VStack(alignment: .leading, spacing: 4) {
                         Text("COMPLICATING FACTORS")
                             .font(AppFont.mono(10))
-                            .foregroundColor(AppTheme.muted)
+                            .foregroundColor(AppTheme.text.opacity(0.68))
                             .tracking(0.5)
                         ForEach(Array(scenario.complicatingFactors.enumerated()), id: \.offset) { _, factor in
                             HStack(alignment: .top, spacing: 6) {
                                 Text("\u{2022}")
-                                    .font(AppFont.body(13))
+                                    .font(AppFont.body(16))
                                     .foregroundColor(AppTheme.danger)
                                 Text(factor)
-                                    .font(AppFont.body(13))
+                                    .font(AppFont.body(16))
                                     .foregroundColor(AppTheme.text)
                                     .fixedSize(horizontal: false, vertical: true)
                             }
@@ -263,11 +264,11 @@ struct DeployedORMView: View {
             GlassCard {
                 VStack(alignment: .leading, spacing: 6) {
                     Text("You will process this scenario through 5 ORM decision steps.")
-                        .font(AppFont.body(13))
-                        .foregroundColor(AppTheme.muted)
+                        .font(AppFont.body(16))
+                        .foregroundColor(AppTheme.text.opacity(0.68))
                     Text("Read the situation brief carefully before proceeding. Consider the complicating factors — they represent the 'gray area' pressures you will face.")
-                        .font(AppFont.body(12))
-                        .foregroundColor(AppTheme.muted)
+                        .font(AppFont.body(16))
+                        .foregroundColor(AppTheme.text.opacity(0.68))
                 }
             }
 
@@ -288,10 +289,10 @@ struct DeployedORMView: View {
         VStack(alignment: .leading, spacing: 2) {
             Text(label)
                 .font(AppFont.mono(10))
-                .foregroundColor(AppTheme.muted)
+                .foregroundColor(AppTheme.text.opacity(0.68))
                 .tracking(0.5)
             Text(value)
-                .font(AppFont.body(14))
+                .font(AppFont.body(16))
                 .foregroundColor(AppTheme.text)
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -315,7 +316,7 @@ struct DeployedORMView: View {
                         .tracking(1)
 
                     Text(currentStep.prompt)
-                        .font(AppFont.body(14))
+                        .font(AppFont.body(16))
                         .foregroundColor(AppTheme.text)
                         .fixedSize(horizontal: false, vertical: true)
                 }
@@ -355,7 +356,7 @@ struct DeployedORMView: View {
                 )
 
             Text(text)
-                .font(AppFont.body(14))
+                .font(AppFont.body(16))
                 .foregroundColor(AppTheme.text)
                 .fixedSize(horizontal: false, vertical: true)
 
@@ -376,7 +377,7 @@ struct DeployedORMView: View {
         HStack(spacing: 6) {
             Text("STEP \(currentStepIndex + 1) OF \(steps.count)")
                 .font(AppFont.mono(11))
-                .foregroundColor(AppTheme.muted)
+                .foregroundColor(AppTheme.text.opacity(0.68))
                 .tracking(1)
 
             Spacer()
@@ -425,9 +426,9 @@ struct DeployedORMView: View {
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Your answer:")
                                 .font(AppFont.mono(10))
-                                .foregroundColor(AppTheme.muted)
+                                .foregroundColor(AppTheme.text.opacity(0.68))
                             Text(step.options[selectedIndex])
-                                .font(AppFont.body(13))
+                                .font(AppFont.body(16))
                                 .foregroundColor(AppTheme.danger)
                                 .fixedSize(horizontal: false, vertical: true)
                         }
@@ -435,9 +436,9 @@ struct DeployedORMView: View {
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Correct answer:")
                                 .font(AppFont.mono(10))
-                                .foregroundColor(AppTheme.muted)
+                                .foregroundColor(AppTheme.text.opacity(0.68))
                             Text(step.options[step.correctIndex])
-                                .font(AppFont.body(13))
+                                .font(AppFont.body(16))
                                 .foregroundColor(AppTheme.primary)
                                 .fixedSize(horizontal: false, vertical: true)
                         }
@@ -449,10 +450,10 @@ struct DeployedORMView: View {
                 VStack(alignment: .leading, spacing: 6) {
                     Text("EXPLANATION")
                         .font(AppFont.mono(10))
-                        .foregroundColor(AppTheme.muted)
+                        .foregroundColor(AppTheme.text.opacity(0.68))
                         .tracking(1)
                     Text(step.explanation)
-                        .font(AppFont.body(13))
+                        .font(AppFont.body(16))
                         .foregroundColor(AppTheme.text)
                         .fixedSize(horizontal: false, vertical: true)
                 }
@@ -504,14 +505,14 @@ struct DeployedORMView: View {
                             .foregroundColor(scoreColor)
                         Text("\(correctCount)/\(steps.count) correct")
                             .font(AppFont.mono(12))
-                            .foregroundColor(AppTheme.muted)
+                            .foregroundColor(AppTheme.text.opacity(0.68))
                     }
                 }
             }
 
             Text("STEP RESULTS")
                 .font(AppFont.mono(10))
-                .foregroundColor(AppTheme.muted)
+                .foregroundColor(AppTheme.text.opacity(0.68))
                 .tracking(1)
 
             ForEach(steps) { step in
@@ -552,7 +553,7 @@ struct DeployedORMView: View {
                             .tracking(1)
                     }
                     Text(scenario.recommendedAction)
-                        .font(AppFont.body(13))
+                        .font(AppFont.body(16))
                         .foregroundColor(AppTheme.text)
                         .fixedSize(horizontal: false, vertical: true)
                 }
@@ -594,11 +595,11 @@ struct DeployedORMView: View {
                         ScoreBadge(score: scorePercent)
                         VStack(alignment: .leading, spacing: 4) {
                             Text(scoreMessage)
-                                .font(AppFont.body(14))
+                                .font(AppFont.body(16))
                                 .foregroundColor(AppTheme.text)
                             Text("\(correctCount)/\(steps.count) steps correct")
                                 .font(AppFont.mono(11))
-                                .foregroundColor(AppTheme.muted)
+                                .foregroundColor(AppTheme.text.opacity(0.68))
                         }
                     }
                 }
@@ -620,7 +621,7 @@ struct DeployedORMView: View {
                                 .foregroundColor(AppTheme.accent)
                                 .tracking(1)
                             Text("ORM Field Advisor \u{2014} All scenarios assessed")
-                                .font(AppFont.body(13))
+                                .font(AppFont.body(16))
                                 .foregroundColor(AppTheme.text)
                         }
                         Spacer()
@@ -675,7 +676,7 @@ struct DeployedORMView: View {
         } else if scorePercent >= 50 {
             return "Needs improvement. Several ORM decision points were incorrect."
         } else {
-            return "Review DAFPAM 90-803 RM procedures and deployed safety guidance, then try again."
+            return "Review DAFI 90-802 RM procedures and deployed safety guidance, then try again."
         }
     }
 

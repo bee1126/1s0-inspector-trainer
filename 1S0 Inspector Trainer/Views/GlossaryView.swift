@@ -25,8 +25,8 @@ struct GlossaryView: View {
                             .font(AppFont.title(26))
                             .foregroundColor(AppTheme.text)
                         Text("\(GlossaryContent.terms.count) verified field terms for safety inspections, hazard reports, and practice scenarios.")
-                            .font(AppFont.body(13))
-                            .foregroundColor(AppTheme.muted)
+                            .font(AppFont.body(16))
+                            .foregroundColor(AppTheme.text.opacity(0.68))
                     }
 
                     categoryRail
@@ -38,8 +38,8 @@ struct GlossaryView: View {
                                     .font(AppFont.subtitle(16))
                                     .foregroundColor(AppTheme.text)
                                 Text("Try a different term, acronym, source, or category.")
-                                    .font(AppFont.body(13))
-                                    .foregroundColor(AppTheme.muted)
+                                    .font(AppFont.body(16))
+                                    .foregroundColor(AppTheme.text.opacity(0.68))
                             }
                         }
                     } else {
@@ -104,13 +104,13 @@ private struct GlossaryTermCard: View {
 
                     Image(systemName: "chevron.right")
                         .font(.system(size: 12, weight: .semibold))
-                        .foregroundColor(AppTheme.muted)
+                        .foregroundColor(AppTheme.text.opacity(0.68))
                         .padding(.top, 3)
                 }
 
                 Text(term.definition)
-                    .font(AppFont.body(13))
-                    .foregroundColor(AppTheme.muted)
+                    .font(AppFont.body(16))
+                    .foregroundColor(AppTheme.text.opacity(0.68))
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
@@ -153,14 +153,14 @@ private struct GlossaryDetailView: View {
 
                     GlossaryDetailSection(title: "Definition") {
                         Text(term.definition)
-                            .font(AppFont.body(14))
+                            .font(AppFont.body(16))
                             .foregroundColor(AppTheme.text)
                             .fixedSize(horizontal: false, vertical: true)
                     }
 
                     GlossaryDetailSection(title: "Inspector Use") {
                         Text(term.fieldUse)
-                            .font(AppFont.body(14))
+                            .font(AppFont.body(16))
                             .foregroundColor(AppTheme.text)
                             .fixedSize(horizontal: false, vertical: true)
                     }
@@ -174,8 +174,8 @@ private struct GlossaryDetailView: View {
                     GlossaryDetailSection(title: "Source") {
                         VStack(alignment: .leading, spacing: 8) {
                             Text(term.sourceCitation)
-                                .font(AppFont.body(13))
-                                .foregroundColor(AppTheme.muted)
+                                .font(AppFont.body(16))
+                                .foregroundColor(AppTheme.text.opacity(0.68))
                                 .fixedSize(horizontal: false, vertical: true)
                             EpubsCitationLinks(citation: term.sourceCitation)
                         }
@@ -211,7 +211,7 @@ private struct GlossaryDetailSection<Content: View>: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text(title.uppercased())
                     .font(AppFont.mono(11))
-                    .foregroundColor(AppTheme.muted)
+                    .foregroundColor(AppTheme.text.opacity(0.68))
                     .tracking(1)
                 content
             }
@@ -254,7 +254,7 @@ private struct FlowPillLayout: View {
             ForEach(items, id: \.self) { item in
                 Text(item)
                     .font(AppFont.mono(10))
-                    .foregroundColor(AppTheme.muted)
+                    .foregroundColor(AppTheme.text.opacity(0.68))
                     .lineLimit(2)
                     .minimumScaleFactor(0.85)
                     .frame(maxWidth: .infinity, minHeight: 30, alignment: .leading)
