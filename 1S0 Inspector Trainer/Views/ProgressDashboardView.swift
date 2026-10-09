@@ -351,33 +351,31 @@ struct ProgressDashboardView: View {
     }
 
     private var badges: [BadgeState] {
-        let badgeModules = TrainingContent.modules.filter { !OSHAExpansion.moduleIDs.contains($0.id) }
-        let globalCompleted = badgeModules.filter { progress.isCompleted($0.id) }.count
-        let perfectScores = badgeModules.filter { progress.bestScore(for: $0.id) >= 90 }.count
+        let milestones = progress.badgeMilestones
         return [
             BadgeState(
                 id: "first-completion",
                 icon: "star.fill",
                 title: "First Mission",
-                isEarned: globalCompleted >= 1
+                isEarned: milestones.firstCompletion
             ),
             BadgeState(
                 id: "full-crew",
                 icon: "person.3.fill",
                 title: "Full Crew",
-                isEarned: globalCompleted == badgeModules.count && !badgeModules.isEmpty
+                isEarned: milestones.fullCatalog
             ),
             BadgeState(
                 id: "precision",
                 icon: "scope",
                 title: "Precision Operator",
-                isEarned: perfectScores >= 1
+                isEarned: milestones.firstHighScore
             ),
             BadgeState(
                 id: "ace",
                 icon: "shield.checkered",
                 title: "Safety Ace",
-                isEarned: perfectScores == badgeModules.count && !badgeModules.isEmpty
+                isEarned: milestones.allHighScores
             ),
             BadgeState(
                 id: "scenario-master",

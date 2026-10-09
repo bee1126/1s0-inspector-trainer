@@ -63,6 +63,25 @@ final class ProgressStore: ObservableObject {
     @Published private(set) var showTrackBanner = false
     @Published private(set) var recoveryNotice: String?
     private var legacyStudyIsCorrupt = false
+    struct BadgeMilestones: Equatable {
+        let firstCompletion: Bool
+        let fullCatalog: Bool
+        let firstHighScore: Bool
+        let allHighScores: Bool
+    }
+    /// Global, monotonic criteria: preserve original AF awards and let the OSHA
+    /// catalog earn the same milestones without requiring hidden AF modules.
+    var badgeMilestones: BadgeMilestones {
+        let all = ContentCatalog.visible(for: .airForce).modules
+        let legacy = all.filter { !OSHAExpansion.moduleIDs.contains($0.id) }
+        let civilian = ContentCatalog.visible(for: .osha).modules
+        func complete(_ modules: [TrainingModule]) -> Bool { !modules.isEmpty && modules.allSatisfy { isCompleted($0.id) } }
+        func highScores(_ modules: [TrainingModule]) -> Bool { !modules.isEmpty && modules.allSatisfy { bestScore(for: $0.id) >= 90 } }
+        return BadgeMilestones(firstCompletion: all.contains { isCompleted($0.id) },
+            fullCatalog: complete(legacy) || complete(civilian),
+            firstHighScore: all.contains { bestScore(for: $0.id) >= 90 },
+            allHighScores: highScores(legacy) || highScores(civilian))
+    }
     var todayLesson: DailyLesson { catalog.dailyLesson(on: dateProvider(), calendar: calendar) }
     var catalog: ContentCatalog { ContentCatalog.visible(for: selectedTrack ?? .airForce) }
     var hiddenBookmarkCount: Int { studyState.savedQuestionIDs.subtracting(catalog.questionIDs).count }

@@ -71,6 +71,26 @@ final class TrackSwitchTests: TrackTestCase {
         store.selectTrack(.airForce); XCTAssertEqual(store.hiddenBookmarkCount, 0)
         for (key, value) in before { XCTAssertEqual(defaults.object(forKey: key) as? NSObject, value as? NSObject, key) }
     }
+    func testNewModulesEarnFirstMilestonesGlobally() {
+        let store = ProgressStore(defaults: defaults); store.selectTrack(.osha)
+        store.markCompleted(moduleId: "ppeha", score: 90, scenarioPerfect: false, quizPerfect: false)
+        XCTAssertTrue(store.badgeMilestones.firstCompletion); XCTAssertTrue(store.badgeMilestones.firstHighScore)
+        let before = store.badgeMilestones; store.selectTrack(.airForce)
+        XCTAssertEqual(store.badgeMilestones, before)
+    }
+    func testCivilianCatalogCanEarnCompletionMilestonesWithoutHiddenModules() {
+        let store = ProgressStore(defaults: defaults); store.selectTrack(.osha)
+        for module in store.catalog.modules { store.markCompleted(moduleId: module.id, score: 90, scenarioPerfect: false, quizPerfect: false) }
+        XCTAssertTrue(store.badgeMilestones.fullCatalog); XCTAssertTrue(store.badgeMilestones.allHighScores)
+        XCTAssertFalse(store.isCompleted("risk-management"))
+        let before = store.badgeMilestones; store.selectTrack(.airForce); XCTAssertEqual(store.badgeMilestones, before)
+    }
+    func testOriginalFourteenModuleAwardsRemainEarned() {
+        let store = ProgressStore(defaults: defaults); store.selectTrack(.airForce)
+        for module in store.catalog.modules where !OSHAExpansion.moduleIDs.contains(module.id) { store.markCompleted(moduleId: module.id, score: 90, scenarioPerfect: false, quizPerfect: false) }
+        XCTAssertTrue(store.badgeMilestones.fullCatalog); XCTAssertTrue(store.badgeMilestones.allHighScores)
+        let before = store.badgeMilestones; store.selectTrack(.osha); XCTAssertEqual(store.badgeMilestones, before)
+    }
     func testExactCatalogSetsAndCounts() {
         let shared: Set<String> = ["loto", "fall-protection", "confined-space", "hearing-conservation", "ppe-decision", "hazcom", "electrical", "machine-guarding", "material-handling", "fire-hot-work", "wws", "ppeha", "rk", "eap", "resp"]
         XCTAssertEqual(ContentCatalog.visible(for: .osha).moduleIDs, shared)
