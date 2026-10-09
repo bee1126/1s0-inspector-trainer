@@ -1,47 +1,32 @@
-# 1S0 Inspector Trainer
+# SafetyXP
 
-This repository contains the SwiftUI source and Xcode project for a native iOS training app tailored to Air Force safety inspectors.
+Native SwiftUI training for OSHA general industry and Air Force safety inspectors. iOS 17 or later, Apple frameworks only, no account, ads, analytics, or third-party SDKs.
 
-## Quick Start (Xcode)
-1. Open `1S0 Inspector Trainer.xcodeproj` in Xcode.
-2. Select the `1S0 Inspector Trainer` target and set your team and bundle identifier.
-3. Run on an iOS simulator or device.
+## Version 1.8 (build 7)
 
-## Verification
-- Preferred test command:
-  `xcodebuild -scheme "1S0 Inspector Trainer" -project "1S0 Inspector Trainer.xcodeproj" -destination "platform=iOS Simulator,name=iPhone 17 Pro" test`
-- Fallback compile command when simulator execution is unstable:
-  `xcodebuild -scheme "1S0 Inspector Trainer" -project "1S0 Inspector Trainer.xcodeproj" -destination "generic/platform=iOS Simulator" build`
+- OSHA / Civilian: 15 modules, 150 questions; Air Force (1S0): 19 modules, 190 questions. The bank has 191 unique questions.
+- Five new shared modules: Walking-Working Surfaces, PPE Hazard Assessment, Recordkeeping, Emergency Action & Fire Prevention, and Respiratory Protection.
+- Five native tabs: Today, Learn, Practice, Library, and Progress. Light/dark appearance, Dynamic Type, and availability-gated Liquid Glass controls on iOS 26+.
+- Lessons, decision scenarios, adaptive Daily Five, custom study/exams, bookmarks, spaced review, and retained session history.
+- Track switches preserve global progress. Existing 1.7 installations default to Air Force and retain a raw study-state backup.
+- Hazard Report & Risk Matrix stores user-authored reports separately in Application Support. Text/PDF exports start only when requested. DAF-specific tools remain AF-only.
 
-## Modern dark / personalized study update
-- Five tabs: Today, Learn, Practice, Library, and Progress.
-- Custom study and exam sessions with topic, difficulty, length, and saved/missed/due pools.
-- Resumable sessions, saved questions, 140 offline explanations with official references, and the latest 200 session debriefs.
-- Existing on-device XP, streaks, modules, and publication favorites are retained.
-- [Validation and remaining release checks](docs/release/StudyUpdateValidation.md).
-- [Question corrections and source verification status](docs/ContentReview.md).
+## Build and verify
 
-When full Xcode is unavailable, `python3 scripts/check_core.py` executes the core test bodies using the macOS Swift toolchain and a minimal assertion adapter. It is not an iOS build or a substitute for simulator XCTest and UI validation.
+Open `1S0 Inspector Trainer.xcodeproj`; the scheme, target, bundle ID and signing team are unchanged.
 
-## What is Included
-- Interactive modules for Lockout/Tagout, Fall Protection, Risk Management, Roles & Responsibilities, Hazard Abatement, and RAC System
-- Additional modules for Confined Space, Hot Work, Hearing Conservation, Mishap Reporting, Investigation Basics, JHA Fundamentals, Safety Briefing, and PPE Decision
-- Scenario-driven decision paths and quick-check quizzes (with randomized answer order)
-- Pass/fail assessments with completion summaries
-- XP, levels, daily goals, streaks, and badges (Duolingo-style loop)
-- Progress tracking and badges (on-device)
-- References screen, searchable glossary, and Live DAF e-Pubs library
-- Watched-publication revision indicators, Save to Files, citation links, and broken-link reporting
-- Draft App Store metadata in `AppStoreMetadata.md`
-- App Store submission checklist in `AppStoreSubmissionChecklist.md`
-- Ready-to-host Support / Privacy pages in `docs/`
-- Feedback tab: shareable bug reports and feature requests
+```sh
+xcodebuild -scheme "1S0 Inspector Trainer" -project "1S0 Inspector Trainer.xcodeproj" -destination "platform=iOS Simulator,name=iPhone 17 Pro" -parallel-testing-enabled NO test
+```
 
-## Notes
-- All content is paraphrased to align with OSHA and Air Force guidance. Always verify with the latest official publications before release.
-- The UI uses Dynamic Type-aware system fonts and a tactical dark palette defined in `AppTheme`.
+Use an available simulator ID if that name is unavailable. If simulator execution is unstable, the compile-only fallback is:
 
-## Next Steps
-- Replace the placeholder app icon if you want a different look.
-- Expand modules with base-specific procedures or additional AFSC requirements.
-- Optional: add analytics or content updates via a local JSON file or remote CMS.
+```sh
+xcodebuild -scheme "1S0 Inspector Trainer" -project "1S0 Inspector Trainer.xcodeproj" -destination "generic/platform=iOS Simulator" build
+```
+
+[Content review and exact paragraph evidence](docs/ContentReview.md) • [1.8 validation](docs/release/SafetyXP18Validation.md) • [Local listing and icon assets](AppStoreAssets/safetyxp)
+
+`AppBrand.name` in `ContentCatalog.swift` is the shared name. For the InspectXP fallback, change that one line, then run `python3 scripts/sync_brand.py` to regenerate static bundle/site/listing outputs. CI can use `--check` to reject stale names.
+
+All content is paraphrased training material. Follow current official requirements and local procedures. Reference links require internet access; the bundled training and local reports work offline. The website in `docs/` and listing in `AppStoreAssets/safetyxp/` are prepared source files, not evidence of deployment or App Store publication.
