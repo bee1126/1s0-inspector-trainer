@@ -3,6 +3,9 @@ import SwiftUI
 struct ToolsView: View {
     @EnvironmentObject private var progress: ProgressStore
     @State private var showInspectorProfile = false
+    @State private var showTrackSettings = false
+    @State private var deleteReports = false
+    @State private var reportError: String?
 
     var body: some View {
         ZStack {
@@ -25,17 +28,15 @@ struct ToolsView: View {
                         .buttonStyle(.plain)
                     }
 
-                    ToolSection(title: "Profile") {
-                        Button {
-                            showInspectorProfile = true
-                        } label: {
-                            ToolCard(
-                                title: "Inspector Profile",
-                                detail: progress.selectedRole?.displayName ?? "1S0 Safety Inspector"
-                            )
-                        }
-                        .buttonStyle(.plain)
-                    }
+                    Button { showTrackSettings = true } label: { ToolCard(title: "Training track", detail: progress.selectedTrack?.title ?? "Choose a track") }.buttonStyle(.plain)
+                    GlassCard { VStack(alignment: .leading, spacing: 12) {
+                        Text(AppBrand.about).font(.headline)
+                        Link("abdoulbah1126@gmail.com", destination: URL(string: "mailto:abdoulbah1126@gmail.com")!)
+                        Text(AppBrand.disclaimer).font(.footnote).foregroundStyle(.secondary)
+                    } }
+                    Button("Delete all reports", role: .destructive) { deleteReports = true }.frame(minHeight: 44)
+                    if let reportError { Text(reportError).foregroundStyle(AppTheme.danger) }
+
                 }
                 .tacticalReadableWidth()
                 .padding(AppSpacing.screenPadding)
@@ -44,17 +45,13 @@ struct ToolsView: View {
         }
         .navigationTitle("Profile")
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(isPresented: $showInspectorProfile) {
-            RoleSelectionView(
-                title: "Inspector Profile",
-                subtitle: "Review the active 1S0 inspector profile used for content, progress, and onboarding.",
-                initialRole: progress.selectedRole,
-                onSelect: { role in
-                    progress.setRole(role)
-                    showInspectorProfile = false
-                }
-            )
+        .sheet(isPresented: $showTrackSettings) { TrackSettingsView() }
+        .confirmationDialog("Delete all local hazard reports?", isPresented: $deleteReports, titleVisibility: .visible) {
+            Button("Delete all reports", role: .destructive) {
+                do { try LocalHazardReportStore().deleteAll() } catch { reportError = error.localizedDescription }
+            }
         }
+
     }
 }
 
@@ -136,7 +133,7 @@ struct BugReportView: View {
                         AppTextEditor(text: $actual, height: 80)
 
                         Button("Submit Bug Report") {
-                            let subject = "Bug Report: \(title)"
+                            let subject = "\(AppBrand.name) feedback: Bug report — \(title)"
                             let body = """
 Bug Report
 
@@ -195,7 +192,7 @@ struct FeatureRequestView: View {
                         AppTextEditor(text: $details, height: 90)
 
                         Button("Submit Feature Request") {
-                            let subject = "Feature Request: \(title)"
+                            let subject = "\(AppBrand.name) feedback: Feature request — \(title)"
                             let body = """
 Feature Request
 

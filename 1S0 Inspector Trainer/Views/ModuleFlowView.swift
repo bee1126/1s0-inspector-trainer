@@ -374,7 +374,7 @@ struct CompletionView: View {
                     .buttonStyle(OutlineButtonStyle())
 
                     Button("Share Challenge") {
-                        let appName = progress.selectedRole?.appTitle ?? "Inspector Trainer"
+                        let appName = AppBrand.name
                         let verb = passed ? "completed" : "attempted"
                         let text = "I \(verb) \(moduleTitle) with a score of \(score)% in the \(appName)."
                         shareItems = [text]

@@ -110,7 +110,6 @@ struct XPProgressRing: View {
                 .trim(from: 0, to: min(progress, 1))
                 .stroke(AppTheme.accent, style: StrokeStyle(lineWidth: 6, lineCap: .round))
                 .rotationEffect(.degrees(-90))
-                .shadow(color: AppTheme.accent.opacity(0.4), radius: 6)
             VStack(spacing: 1) {
                 Text("LVL")
                     .font(AppFont.mono(8))
@@ -199,7 +198,7 @@ struct RewardSummaryCard: View {
 
                 if summary.leveledUp {
                     HStack(spacing: 6) {
-                        SparkleBurstView()
+                        Image(systemName: "checkmark.circle.fill").foregroundStyle(AppTheme.primary).accessibilityHidden(true)
                             .frame(width: 18, height: 18)
                         Text("LEVEL UP!")
                             .font(AppFont.mono(13))
@@ -225,35 +224,6 @@ struct RewardSummaryCard: View {
     }
 }
 
-// MARK: - Sparkle Burst
-
-struct SparkleBurstView: View {
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var animate = false
-
-    var body: some View {
-        ZStack {
-            ForEach(0..<6, id: \.self) { i in
-                Circle()
-                    .fill(AppTheme.accent)
-                    .frame(width: 3, height: 3)
-                    .offset(y: animate ? -10 : 0)
-                    .opacity(animate ? 0 : 1)
-                    .rotationEffect(.degrees(Double(i) * 60))
-            }
-        }
-        .onAppear {
-            guard !reduceMotion else {
-                animate = false
-                return
-            }
-            withAnimation(.easeOut(duration: 0.6).repeatForever(autoreverses: true)) {
-                animate = true
-            }
-        }
-    }
-}
-
 // MARK: - Streak Popup
 
 struct StreakPopupView: View {
@@ -268,7 +238,6 @@ struct StreakPopupView: View {
             .background(
                 Capsule().fill(AppTheme.accent)
             )
-            .shadow(color: AppTheme.accent.opacity(0.4), radius: 8)
     }
 }
 

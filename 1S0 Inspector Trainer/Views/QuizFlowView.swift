@@ -147,7 +147,7 @@ struct QuizFlowView: View {
                         }
 
                         if showFeedback {
-                            QuestionExplanationView(explanation: question.explanation, reference: question.reference)
+                            QuestionExplanationView(questionID: question.id, explanation: question.explanation, reference: question.reference)
                         }
                     }
                 }

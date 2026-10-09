@@ -9,7 +9,7 @@ enum TrainingRole: String, CaseIterable, Identifiable, Codable {
 
     var displayName: String { "1S0 Safety Inspector" }
 
-    var appTitle: String { "1S0 Inspector Trainer" }
+    var appTitle: String { AppBrand.name }
 
     var homeSubtitle: String { "Level up your inspection skills with daily practice." }
 

@@ -362,7 +362,7 @@ enum QuizBank {
                 QuizChoice(id: "roles-q1-a", text: "The commander or director", isCorrect: true),
                 QuizChoice(id: "roles-q1-b", text: "The 1S0 safety inspector", isCorrect: false),
                 QuizChoice(id: "roles-q1-c", text: "The most senior supervisor in the shop", isCorrect: false),
-                QuizChoice(id: "roles-q1-d", text: "The installation industrial hygienist", isCorrect: false)
+                QuizChoice(id: "roles-q1-d", text: "The facility industrial hygienist", isCorrect: false)
             ]
         ),
         QuizQuestion(
@@ -411,7 +411,7 @@ enum QuizBank {
         ),
         QuizQuestion(
             id: "roles-q106",
-            prompt: "What is the purpose of the installation Environmental, Safety, and Occupational Health Council (ESOHC) and its optional Safety Sub-Group?",
+            prompt: "What is the purpose of the facility Environmental, Safety, and Occupational Health Council (ESOHC) and its optional Safety Sub-Group?",
             difficulty: .medium,
             choices: [
                 QuizChoice(id: "roles-q106-a", text: "Give leadership a forum to review mishap and hazard trends and program performance, decide on corrective actions and resources, and track them to closure", isCorrect: true),
@@ -953,7 +953,7 @@ enum QuizBank {
         ),
         QuizQuestion(
             id: "dorm-q103",
-            prompt: "Host-nation construction workers on your installation are not using fall protection at 18 feet. The contract says host-nation labor laws apply, which have no fall protection requirement. What is your obligation?",
+            prompt: "Host-nation construction workers on your facility are not using fall protection at 18 feet. The contract says host-nation labor laws apply, which have no fall protection requirement. What is your obligation?",
             difficulty: .hard,
             choices: [
                 QuizChoice(id: "dorm-q103-a", text: "If the exposure is critical/imminent danger, act to stop the operation and immediately contact the contracting officer; then document the hazard and elevate through command and contracting channels", isCorrect: true),
@@ -1035,7 +1035,7 @@ enum QuizBank {
             choices: [
                 QuizChoice(id: "dorm-q210-a", text: "Apply the guidance that gives the most protection until the conflict is resolved, and report the conflict through the MAJCOM/FLDCOM safety office to AFSEC; risk acceptance is not permission to waive requirements", isCorrect: true),
                 QuizChoice(id: "dorm-q210-b", text: "Ignore DAFMAN 91-203 because deployed locations are exempt from occupational safety standards", isCorrect: false),
-                QuizChoice(id: "dorm-q210-c", text: "Apply only host-nation rules because they supersede DAF guidance on installations", isCorrect: false),
+                QuizChoice(id: "dorm-q210-c", text: "Apply only host-nation rules because they supersede DAF guidance on facilitys", isCorrect: false),
                 QuizChoice(id: "dorm-q210-d", text: "Choose the least restrictive standard to preserve mission tempo", isCorrect: false)
             ]
         )
@@ -1241,7 +1241,7 @@ enum QuizBank {
             prompt: "What is the main hazard of daisy-chaining power strips in an office or shop?",
             difficulty: .medium,
             choices: [
-                QuizChoice(id: "electrical-q8-a", text: "Overloading circuits and using temporary wiring in a way not approved for permanent installation", isCorrect: true),
+                QuizChoice(id: "electrical-q8-a", text: "Overloading circuits and using temporary wiring in a way not approved for permanent facility", isCorrect: true),
                 QuizChoice(id: "electrical-q8-b", text: "It only creates a housekeeping issue", isCorrect: false),
                 QuizChoice(id: "electrical-q8-c", text: "It is safe if all strips have surge protection", isCorrect: false),
                 QuizChoice(id: "electrical-q8-d", text: "It is allowed when the first strip is plugged into a GFCI", isCorrect: false)
@@ -1462,7 +1462,7 @@ enum QuizBank {
             choices: [
                 QuizChoice(id: "material-handling-q7-a", text: "Obtain manufacturer approval and update markings, capacity, and operating instructions as required", isCorrect: true),
                 QuizChoice(id: "material-handling-q7-b", text: "Test the modification with a heavy load and document the result", isCorrect: false),
-                QuizChoice(id: "material-handling-q7-c", text: "Use local commander approval instead of manufacturer approval", isCorrect: false),
+                QuizChoice(id: "material-handling-q7-c", text: "Use local management approval instead of manufacturer approval", isCorrect: false),
                 QuizChoice(id: "material-handling-q7-d", text: "Allow temporary use if the attachment fits the forks", isCorrect: false)
             ]
         ),
@@ -1522,7 +1522,7 @@ enum QuizBank {
             choices: [
                 QuizChoice(id: "fire-hot-work-q2-a", text: "Document authorization, hazards, fire prevention controls, fire watch, and area readiness before hot work starts", isCorrect: true),
                 QuizChoice(id: "fire-hot-work-q2-b", text: "Replace the need to inspect the work area", isCorrect: false),
-                QuizChoice(id: "fire-hot-work-q2-c", text: "Authorize any welding anywhere on the installation for one year", isCorrect: false),
+                QuizChoice(id: "fire-hot-work-q2-c", text: "Authorize any welding anywhere on the facility for one year", isCorrect: false),
                 QuizChoice(id: "fire-hot-work-q2-d", text: "Serve only as a maintenance work order", isCorrect: false)
             ]
         ),
@@ -1604,7 +1604,7 @@ enum QuizBank {
             ]
         ),
         QuizQuestion(
-            id: "fire-hot-work-q10",
+            id: "fire-hot-work-q10", tracks: [.airForce],
             prompt: "Who should approve Air Force hot work controls when local fire prevention requirements apply?",
             difficulty: .medium,
             choices: [

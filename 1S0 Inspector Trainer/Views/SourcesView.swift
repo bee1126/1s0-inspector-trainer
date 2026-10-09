@@ -14,10 +14,12 @@ struct SourcesView: View {
                         .font(AppFont.title(26))
                         .foregroundColor(AppTheme.text)
 
+                    if progress.catalog.showsDAFTools {
                     NavigationLink { EpubsLibraryView(favoritesOnly: true) } label: {
                         ActionCard(title: "Saved publications", detail: "\(progress.favoriteEpubPublicationIds.count) watched references", icon: "bookmark")
                     }.buttonStyle(.plain)
 
+                    }
                     NavigationLink {
                         GlossaryView()
                     } label: {
@@ -32,7 +34,7 @@ struct SourcesView: View {
                                     Text("Safety Glossary")
                                         .font(AppFont.subtitle(17))
                                         .foregroundColor(AppTheme.text)
-                                    Text("Search verified 1S0, OSHA, DAFMAN, and risk management terms.")
+                                    Text("Search terms and references for your training track.")
                                         .font(AppFont.body(16))
                                         .foregroundColor(AppTheme.text.opacity(0.68))
                                 }
@@ -47,6 +49,7 @@ struct SourcesView: View {
                     }
                     .buttonStyle(.plain)
 
+                    if progress.catalog.showsDAFTools {
                     NavigationLink {
                         EpubsLibraryView()
                     } label: {
@@ -76,6 +79,11 @@ struct SourcesView: View {
                     }
                     .buttonStyle(.plain)
 
+                    } else {
+                        NavigationLink { OSHAStandardsView() } label: { ActionCard(title: "OSHA Standards", detail: "Current eCFR section links", icon: "text.book.closed") }.buttonStyle(.plain)
+                    }
+                    NavigationLink { SavedQuestionsView() } label: { ActionCard(title: "Saved questions", detail: "\(progress.hiddenBookmarkCount) bookmarks hidden in this track.", icon: "bookmark") }.buttonStyle(.plain)
+                    if progress.catalog.showsDAFTools {
                     GlassCard {
                         VStack(alignment: .leading, spacing: 10) {
                             Text("REFERENCE MATERIALS")
@@ -109,12 +117,13 @@ struct SourcesView: View {
                         }
                     }
 
+                    }
                     GlassCard {
                         VStack(alignment: .leading, spacing: 8) {
                             Text("PRIVACY & DATA USE")
                                 .font(AppFont.mono(11))
                                 .foregroundColor(AppTheme.text.opacity(0.68))
-                            Text("This app stores training progress only on your device. No analytics or advertising is enabled. The Live e-Pubs screen contacts the official DAF e-Publishing service only when you open or refresh it.")
+                            Text("Progress and hazard reports stay on your device. No analytics, ads, or third-party SDKs. Links connect when opened; no account is required.")
                                 .font(AppFont.body(16))
                                 .foregroundColor(AppTheme.text.opacity(0.68))
                         }
@@ -125,7 +134,7 @@ struct SourcesView: View {
                             Text("DISCLAIMER")
                                 .font(AppFont.mono(11))
                                 .foregroundColor(AppTheme.text.opacity(0.68))
-                            Text("This app is not an official Department of the Air Force product. It is a supplemental training aid intended to reinforce published guidance and OSHA standards. Always follow unit-specific procedures and the most current official publications.")
+                            Text(AppBrand.disclaimer)
                                 .font(AppFont.body(16))
                                 .foregroundColor(AppTheme.text.opacity(0.68))
                         }

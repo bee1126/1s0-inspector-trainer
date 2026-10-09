@@ -11,6 +11,7 @@ struct TrainingModule: Identifiable, Hashable {
     let lessonPages: [LessonPage]
     let scenario: Scenario
     let quiz: [QuizQuestion]
+    var tracks: Set<Track> = Set(Track.allCases)
 }
 
 enum ModuleIntegrityIssue: Hashable, Identifiable {
@@ -105,13 +106,15 @@ struct QuizQuestion: Identifiable, Hashable {
     let imageName: String?
     let choices: [QuizChoice]
     let difficulty: QuizDifficulty
+    var tracks: Set<Track>? = nil
 
     var explanation: String { QuestionExplanations.entries[id]?.text ?? "" }
     var reference: QuestionReference? { QuestionExplanations.entries[id]?.reference }
     var contentRevision: Int { QuestionExplanations.entries[id]?.revision ?? 1 }
 
-    init(id: String, prompt: String, difficulty: QuizDifficulty = .easy, imageName: String? = nil, choices: [QuizChoice]) {
+    init(id: String, tracks: Set<Track>? = nil, prompt: String, difficulty: QuizDifficulty = .easy, imageName: String? = nil, choices: [QuizChoice]) {
         self.id = id
+        self.tracks = tracks
         self.prompt = prompt
         self.imageName = imageName
         self.difficulty = difficulty

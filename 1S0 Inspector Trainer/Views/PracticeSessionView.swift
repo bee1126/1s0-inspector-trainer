@@ -31,7 +31,7 @@ struct PracticeSessionView: View {
     }
     private func start() {
         progress.refreshForNewDayIfNeeded()
-        missionPlan = progress.adaptiveRemediationPlan(from: TrainingContent.allQuizQuestions(for: progress.selectedRole))
+        missionPlan = progress.adaptiveRemediationPlan(from: progress.catalog.questions)
         runID = UUID()
         completed = nil
     }

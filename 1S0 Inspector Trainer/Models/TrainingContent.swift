@@ -1,7 +1,7 @@
 import Foundation
 
 enum TrainingContent {
-    static let modules: [TrainingModule] = [
+    private static let legacyModules: [TrainingModule] = [
         TrainingModule(
             id: "loto",
             title: "Lockout / Tagout",
@@ -1938,6 +1938,12 @@ enum TrainingContent {
         )
     ]
 
+
+    static let modules: [TrainingModule] = (legacyModules + OSHAExpansion.modules).map { source in
+        var module = source
+        module.tracks = ContentCatalog.airForceOnly.contains(module.id) ? [.airForce] : Set(Track.allCases)
+        return module
+    }
 
     static let allQuizQuestions: [QuizQuestion] = modules.flatMap { $0.quiz }
 

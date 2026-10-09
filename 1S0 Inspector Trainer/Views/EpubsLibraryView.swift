@@ -392,7 +392,7 @@ struct EpubsLibraryView: View {
         components.scheme = "mailto"
         components.path = "abdoulbah1126@gmail.com"
         components.queryItems = [
-            URLQueryItem(name: "subject", value: "Broken e-Pubs Link: \(publication.number)"),
+            URLQueryItem(name: "subject", value: "\(AppBrand.name) feedback: Broken e-Pubs link — \(publication.number)"),
             URLQueryItem(
                 name: "body",
                 value: """

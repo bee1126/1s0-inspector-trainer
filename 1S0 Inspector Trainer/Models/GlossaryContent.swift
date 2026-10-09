@@ -50,7 +50,14 @@ struct GlossaryTerm: Identifiable, Hashable {
 }
 
 enum GlossaryContent {
-    static let terms: [GlossaryTerm] = [
+    static let terms: [GlossaryTerm] = legacyTerms + [
+        GlossaryTerm(id: "surface-correction", term: "Surface hazard correction", abbreviation: nil, category: .inspection, definition: "Correct hazardous surface conditions before reuse, or guard against use until corrected.", fieldUse: "Keep employees off a damaged walking route pending repair.", sourceCitation: "29 CFR 1910.22(d)(2)", moduleIds: ["wws"], keywords: ["floor", "ladder"]),
+        GlossaryTerm(id: "assessment-certification", term: "Hazard assessment certification", abbreviation: nil, category: .ppeHealth, definition: "Written identification of the evaluated workplace, certifier, and assessment dates, identified as a certification.", fieldUse: "Check the certification alongside the actual workplace assessment.", sourceCitation: "29 CFR 1910.132(d)(2)", moduleIds: ["ppeha"], keywords: ["PPE"]),
+        GlossaryTerm(id: "privacy-concern-case", term: "Privacy concern case", abbreviation: nil, category: .inspection, definition: "A listed injury or illness category that requires privacy treatment on the injury log.", fieldUse: "Keep the employee name off the public log for a qualifying case and maintain the confidential list.", sourceCitation: "29 CFR 1904.29(b)(6)–(7)", moduleIds: ["rk"], keywords: ["recordkeeping"]),
+        GlossaryTerm(id: "evacuation-accountability", term: "Evacuation accountability", abbreviation: nil, category: .inspection, definition: "Procedures to account for employees after evacuation.", fieldUse: "Identify missing employees at the assembly point without improvising reentry.", sourceCitation: "29 CFR 1910.38(c)(4)", moduleIds: ["eap"], keywords: ["emergency"]),
+        GlossaryTerm(id: "user-seal-check", term: "User seal check", abbreviation: nil, category: .ppeHealth, definition: "A check each time a tight-fitting respirator is put on to confirm it is seated properly.", fieldUse: "Perform the required seal check; it does not replace a fit test.", sourceCitation: "29 CFR 1910.134(g)(1)(iii)", moduleIds: ["resp"], keywords: ["respirator"])
+    ]
+    private static let legacyTerms: [GlossaryTerm] = [
         GlossaryTerm(
             id: "daf-form-457",
             term: "DAF Form 457",

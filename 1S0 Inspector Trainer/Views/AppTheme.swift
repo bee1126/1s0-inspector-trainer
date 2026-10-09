@@ -2,19 +2,19 @@ import SwiftUI
 import UIKit
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// TACTICAL DARK — Design System
+// Native adaptive design system
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 enum AppTheme {
     // Core palette
-    static let bg       = Color(red: 0.04, green: 0.055, blue: 0.08)
-    static let surface  = Color(red: 0.08, green: 0.10, blue: 0.13)
-    static let border   = Color(red: 0.12, green: 0.16, blue: 0.22)
-    static let primary  = Color(red: 0.0, green: 0.90, blue: 0.63)
-    static let accent   = Color(red: 1.0, green: 0.72, blue: 0.0)
+    static let bg       = Color(uiColor: .systemGroupedBackground)
+    static let surface  = Color(uiColor: .secondarySystemGroupedBackground)
+    static let border   = Color(uiColor: .separator)
+    static let primary = Color(uiColor: UIColor { $0.userInterfaceStyle == .dark ? UIColor(red: 0, green: 230/255, blue: 161/255, alpha: 1) : UIColor(red: 0, green: 0.43, blue: 0.30, alpha: 1) })
+    static let accent = Color(uiColor: UIColor { $0.userInterfaceStyle == .dark ? UIColor(red: 1, green: 184/255, blue: 0, alpha: 1) : UIColor(red: 0.53, green: 0.34, blue: 0, alpha: 1) })
     static let danger   = Color(red: 1.0, green: 0.23, blue: 0.36)
-    static let text     = Color(red: 0.91, green: 0.93, blue: 0.95)
-    static let muted    = Color(red: 0.35, green: 0.40, blue: 0.47)
+    static let text     = Color.primary
+    static let muted    = Color.secondary
     static let info     = Color(red: 0.4, green: 0.6, blue: 1.0)
 
 }
@@ -85,14 +85,22 @@ enum AppFont {
         textStyle: UIFont.TextStyle,
         design: UIFontDescriptor.SystemDesign? = nil
     ) -> Font {
-        var descriptor = UIFont.systemFont(ofSize: size, weight: weight).fontDescriptor
-        if let design,
-           let designedDescriptor = descriptor.withDesign(design) {
-            descriptor = designedDescriptor
+        // Semantic SwiftUI fonts react to runtime Dynamic Type changes. A UIFont
+        // scaled only when constructed does not pass the accessibility size audit.
+        let style: Font.TextStyle
+        switch size {
+        case ..<12: style = .caption2
+        case ..<14: style = .caption
+        case ..<16: style = .subheadline
+        case ..<18: style = .body
+        case ..<20: style = .headline
+        case ..<22: style = .title3
+        case ..<28: style = .title2
+        case ..<34: style = .title
+        default: style = .largeTitle
         }
-        let baseFont = UIFont(descriptor: descriptor, size: size)
-        let scaledFont = UIFontMetrics(forTextStyle: textStyle).scaledFont(for: baseFont)
-        return Font(scaledFont)
+        let fontWeight: Font.Weight = weight == .bold ? .bold : weight == .semibold ? .semibold : weight == .medium ? .medium : .regular
+        return .system(style, design: design == .monospaced ? .monospaced : .default, weight: fontWeight)
     }
 }
 

@@ -649,7 +649,7 @@ struct CodeLookupView: View {
 
     private func startGame() {
         // Shuffle and take the required number
-        questions = Array(CodeLookupContent.questions.shuffled().prefix(difficulty.questionCount))
+        questions = Array(progress.catalog.lookupQuestions.shuffled().prefix(difficulty.questionCount))
         currentIndex = 0
         score = 0
         streak = 0

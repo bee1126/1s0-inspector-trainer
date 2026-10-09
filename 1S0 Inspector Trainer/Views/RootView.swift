@@ -18,6 +18,8 @@ struct RootView: View {
     @State private var practicePath: [HomeDeepLinkDestination] = []
     @State private var refsPath: [RefsDeepLinkDestination] = []
 
+    init(initialTab: Int = 0) { _selectedTab = State(initialValue: initialTab) }
+
     var body: some View {
         ZStack {
             AppTheme.bg.ignoresSafeArea()
@@ -43,7 +45,7 @@ struct RootView: View {
                         .navigationDestination(for: RefsDeepLinkDestination.self) { destination in
                             switch destination {
                             case .publication(let publicationId):
-                                EpubsLibraryView(focusPublicationId: publicationId)
+                                if progress.selectedTrack == .airForce { EpubsLibraryView(focusPublicationId: publicationId) } else { OSHAStandardsView() }
                             }
                         }
                 }
@@ -65,58 +67,24 @@ struct RootView: View {
             .tint(AppTheme.primary)
         }
         .onAppear {
-            configureTacticalTabBar()
             progress.refreshForNewDayIfNeeded()
             handleDeepLinkTarget(deepLinkRouter.target)
         }
         .onChange(of: deepLinkRouter.target) { _, target in
             handleDeepLinkTarget(target)
         }
-        .preferredColorScheme(.dark)
+        .fullScreenCover(isPresented: Binding(get: { progress.selectedTrack == nil }, set: { _ in })) { TrackPickerView() }
+        .onChange(of: progress.selectedTrack) { _, _ in homePath = []; learnPath = []; practicePath = []; refsPath = [] }
     }
 
     @ViewBuilder private func trainingDestination(_ destination: HomeDeepLinkDestination) -> some View {
         switch destination {
         case .module(let id):
-            if let module = TrainingContent.modules(for: progress.selectedRole).first(where: { $0.id == id }) {
+            if let module = progress.catalog.modules.first(where: { $0.id == id }) {
                 ModuleDetailView(module: module)
             } else { ModuleUnavailableView(moduleId: id) }
         case .dailyFive: PracticeSessionView()
         }
-    }
-
-    private func configureTacticalTabBar() {
-        let tabBarAppearance = UITabBarAppearance()
-        tabBarAppearance.configureWithOpaqueBackground()
-        tabBarAppearance.backgroundColor = UIColor(AppTheme.surface)
-
-        let normalColor = UIColor(AppTheme.text.opacity(0.65))
-        let selectedColor = UIColor(AppTheme.primary)
-
-        let itemAppearance = UITabBarItemAppearance()
-        itemAppearance.normal.iconColor = normalColor
-        itemAppearance.normal.titleTextAttributes = [.foregroundColor: normalColor]
-        itemAppearance.selected.iconColor = selectedColor
-        itemAppearance.selected.titleTextAttributes = [.foregroundColor: selectedColor]
-
-        tabBarAppearance.stackedLayoutAppearance = itemAppearance
-        tabBarAppearance.inlineLayoutAppearance = itemAppearance
-        tabBarAppearance.compactInlineLayoutAppearance = itemAppearance
-
-        UITabBar.appearance().standardAppearance = tabBarAppearance
-        UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
-
-        // Navigation bar
-        let navAppearance = UINavigationBarAppearance()
-        navAppearance.configureWithOpaqueBackground()
-        navAppearance.backgroundColor = UIColor(AppTheme.surface)
-        navAppearance.titleTextAttributes = [.foregroundColor: UIColor(AppTheme.text)]
-        navAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor(AppTheme.text)]
-
-        UINavigationBar.appearance().standardAppearance = navAppearance
-        UINavigationBar.appearance().scrollEdgeAppearance = navAppearance
-        UINavigationBar.appearance().compactAppearance = navAppearance
-        UINavigationBar.appearance().tintColor = UIColor(AppTheme.primary)
     }
 
     private func handleDeepLinkTarget(_ target: AppDeepLink?) {

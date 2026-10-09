@@ -160,7 +160,6 @@ struct DeployedORMView: View {
                                 RoundedRectangle(cornerRadius: 3, style: .continuous)
                                     .fill(AppTheme.primary)
                                     .frame(width: geo.size.width * pickerProgress, height: 6)
-                                    .shadow(color: AppTheme.primary.opacity(0.4), radius: 4, x: 0, y: 0)
                             }
                         }
                         .frame(height: 6)

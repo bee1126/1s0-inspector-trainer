@@ -1,0 +1,22 @@
+{
+  "retrieved": "2026-10-10",
+  "reviewer": "Codex",
+  "title29": {
+    "number": 29,
+    "name": "Labor",
+    "latest_amended_on": "2026-10-06",
+    "latest_issue_date": "2026-10-06",
+    "up_to_date_as_of": "2026-10-07",
+    "reserved": false
+  },
+  "sources": [
+    {
+      "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-07/title-29.xml?part=1904",
+      "sha256": "15b490135189edd204adbf3414141e0e2219996218c2f7663c692c693f92025e"
+    },
+    {
+      "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-07/title-29.xml?part=1910",
+      "sha256": "65c51e3f40185c53864997402c82b3da81a1867f38c04562726b82f0d5e2c6ca"
+    }
+  ]
+}

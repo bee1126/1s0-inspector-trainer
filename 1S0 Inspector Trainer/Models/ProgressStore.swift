@@ -59,6 +59,47 @@ final class ProgressStore: ObservableObject {
         let checkIns: [Int]
     }
 
+    @Published private(set) var selectedTrack: Track?
+    @Published private(set) var showTrackBanner = false
+    @Published private(set) var recoveryNotice: String?
+    private var legacyStudyIsCorrupt = false
+    var todayLesson: DailyLesson { catalog.dailyLesson(on: dateProvider(), calendar: calendar) }
+    var catalog: ContentCatalog { ContentCatalog.visible(for: selectedTrack ?? .airForce) }
+    var hiddenBookmarkCount: Int { studyState.savedQuestionIDs.subtracting(catalog.questionIDs).count }
+    var hasHiddenSession: Bool {
+        studyState.activeSession?.questions.contains { !catalog.questionIDs.contains($0.id) } == true
+        || resumeState.map { !catalog.moduleIDs.contains($0.moduleId) || $0.quizState?.questionIds.contains(where: { !catalog.questionIDs.contains($0) }) == true } == true
+    }
+    func selectTrack(_ track: Track) {
+        selectedTrack = track
+        defaults.set(track.rawValue, forKey: "selected_track_v1")
+        defaults.removeObject(forKey: "track_picker_pending_v1")
+    }
+    func dismissTrackBanner() {
+        showTrackBanner = false
+        defaults.set(true, forKey: "track_banner_seen_v1")
+    }
+    func restartHiddenSession() {
+        if studyState.activeSession?.questions.contains(where: { !catalog.questionIDs.contains($0.id) }) == true { studyState.activeSession = nil }
+        if let resume = resumeState, !catalog.moduleIDs.contains(resume.moduleId) || resume.quizState?.questionIds.contains(where: { !catalog.questionIDs.contains($0) }) == true { resumeState = nil }
+        save()
+    }
+    private func migrateTrack() {
+        let raw = defaults.data(forKey: "study_state_v1")
+        let pendingPicker = defaults.bool(forKey: "track_picker_pending_v1")
+        if !pendingPicker, defaults.string(forKey: "selected_track_v1") == nil, let raw, defaults.data(forKey: "study_state_v1_backup_pre18") == nil { defaults.set(raw, forKey: "study_state_v1_backup_pre18") }
+        selectedTrack = defaults.string(forKey: "selected_track_v1").flatMap(Track.init(rawValue:))
+        if !pendingPicker && selectedTrack == nil && (raw != nil || defaults.object(forKey: "onboardingStartDate") != nil || defaults.integer(forKey: "xpTotal") > 0) {
+            selectTrack(.airForce)
+        }
+        if selectedTrack == nil { defaults.set(true, forKey: "track_picker_pending_v1") }
+        showTrackBanner = selectedTrack == .airForce && raw != nil && !defaults.bool(forKey: "track_banner_seen_v1")
+        if let raw, (try? JSONDecoder().decode(StudyPersistence.self, from: raw)) == nil {
+            legacyStudyIsCorrupt = true
+            recoveryNotice = "Some saved study data could not be read. Your original data and backup are preserved. New study progress is kept separately on this device."
+        }
+    }
+
     @Published private(set) var studyState = StudyPersistence()
     private let studyStateKey = "study_state_v1"
 
@@ -137,6 +178,7 @@ final class ProgressStore: ObservableObject {
         self.defaults = defaults
         self.calendar = calendar
         self.dateProvider = dateProvider
+        migrateTrack()
         load()
     }
 
@@ -281,7 +323,7 @@ final class ProgressStore: ObservableObject {
 
     private func overdueCards(at now: Date) -> [SRCard] {
         return srCards.values
-            .filter { $0.nextReviewDate <= now && !QuestionExplanations.retiredQuestionIDs.contains($0.questionId) }
+            .filter { $0.nextReviewDate <= now && !QuestionExplanations.retiredQuestionIDs.contains($0.questionId) && (selectedTrack == nil || catalog.questionIDs.contains($0.questionId)) }
             .sorted { $0.nextReviewDate < $1.nextReviewDate }
     }
 
@@ -341,6 +383,7 @@ final class ProgressStore: ObservableObject {
             return AdaptiveMissionPlan(items: [])
         }
 
+        let allQuestions = allQuestions.filter { selectedTrack == nil || catalog.questionIDs.contains($0.id) }
         let questionMap = Dictionary(uniqueKeysWithValues: allQuestions.map { ($0.id, $0) })
         let questionsByModule = Dictionary(grouping: allQuestions, by: { ModuleHelper.modulePrefix(for: $0.id) })
         let missedById = Dictionary(uniqueKeysWithValues: recentQuestionMisses.map { ($0.questionId, $0) })
@@ -591,6 +634,7 @@ final class ProgressStore: ObservableObject {
         if defaults.data(forKey: studyStateKey) == nil {
             studyState.unresolvedQuestionIDs = Set(recentQuestionMisses.map(\.questionId))
         }
+        if legacyStudyIsCorrupt, let data = defaults.data(forKey: "study_state_v18_recovery"), let recovered = try? JSONDecoder().decode(StudyPersistence.self, from: data) { studyState = recovered }
         applyOnboardingState(for: selectedRole)
     }
 
@@ -600,7 +644,7 @@ final class ProgressStore: ObservableObject {
 
     private func persistToDefaults() {
         if let data = try? JSONEncoder().encode(studyState) {
-            defaults.set(data, forKey: studyStateKey)
+            defaults.set(data, forKey: legacyStudyIsCorrupt ? "study_state_v18_recovery" : studyStateKey)
         }
         persistCurrentOnboardingState()
         if let data = try? JSONEncoder().encode(Array(completedModules)) {
@@ -1053,7 +1097,7 @@ extension ProgressStore {
         let due = Set(overdueCards().map(\.questionId))
         var seen: Set<String> = []
         return questions.filter { question in
-            guard seen.insert(question.id).inserted,
+            guard (selectedTrack == nil || catalog.questionIDs.contains(question.id)), seen.insert(question.id).inserted,
                   configuration.moduleIDs.isEmpty || configuration.moduleIDs.contains(ModuleHelper.moduleID(for: question.id)),
                   configuration.difficulty == .all || question.difficulty == configuration.difficulty,
                   configuration.questionIDs?.contains(question.id) ?? true else { return false }
@@ -1089,8 +1133,12 @@ extension ProgressStore {
         let current = Dictionary(questions.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         return !session.questions.isEmpty && session.questions.allSatisfy { saved in
             guard let question = current[saved.id] else { return false }
-            return question.contentRevision == saved.revision && question.prompt == saved.prompt
-                && Set(question.choices) == Set(saved.choices)
+            let promptMatches = question.prompt == saved.prompt || QuizBank.oshaTextOverrides[question.id] == question.prompt
+            let choicesMatch = question.choices.allSatisfy { choice in
+                guard let old = saved.choices.first(where: { $0.id == choice.id }), old.isCorrect == choice.isCorrect else { return false }
+                return old.text == choice.text || QuizBank.oshaTextOverrides[choice.id] == choice.text || QuizBank.oshaTextOverrides[choice.id] == old.text
+            }
+            return question.contentRevision == saved.revision && promptMatches && choicesMatch && question.choices.count == saved.choices.count
         }
     }
 

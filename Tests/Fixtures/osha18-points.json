@@ -1,0 +1,308 @@
+[
+  {
+    "id": "wws-q1",
+    "section": "1910.22",
+    "paragraph": "(d)(2)",
+    "point": "Prevent access until the hazardous condition is corrected; scheduling a repair is not an interim control."
+  },
+  {
+    "id": "wws-q2",
+    "section": "1910.22",
+    "paragraph": "(d)(3)",
+    "point": "Structural repairs require qualified performance or supervision, beyond ordinary housekeeping."
+  },
+  {
+    "id": "wws-q3",
+    "section": "1910.23",
+    "paragraph": "(b)(9)",
+    "point": "Inspection is shift-based and more frequent when necessary; yesterday's check is insufficient."
+  },
+  {
+    "id": "wws-q4",
+    "section": "1910.23",
+    "paragraph": "(b)(10)",
+    "point": "A visible defect requires immediate removal from service, not an improvised load reduction."
+  },
+  {
+    "id": "wws-q5",
+    "section": "1910.23",
+    "paragraph": "(c)(3)",
+    "point": "The intended load includes tools and materials, not just body weight."
+  },
+  {
+    "id": "wws-q6",
+    "section": "1910.23",
+    "paragraph": "(c)(8)",
+    "point": "The cap and top step are not standing steps; choose appropriate access equipment."
+  },
+  {
+    "id": "wws-q7",
+    "section": "1910.23",
+    "paragraph": "(c)(11)",
+    "point": "The side rails must extend at least three feet for this access arrangement."
+  },
+  {
+    "id": "wws-q8",
+    "section": "1910.23",
+    "paragraph": "(b)(13)",
+    "point": "Do not climb with a load that could cause loss of balance, even if its weight is low."
+  },
+  {
+    "id": "wws-q9",
+    "section": "1910.30",
+    "paragraph": "(c)(2)",
+    "point": "Equipment changes that invalidate previous training trigger retraining."
+  },
+  {
+    "id": "wws-q10",
+    "section": "1910.28",
+    "paragraph": "(b)(9)(i)(D)",
+    "point": "The final fixed-ladder transition requires a fall arrest or ladder safety system; a cage alone does not meet it."
+  },
+  {
+    "id": "ppeha-q1",
+    "section": "1910.132",
+    "paragraph": "(d)(2)",
+    "point": "Certification must identify the evaluation and who certified it; a generic checklist is insufficient."
+  },
+  {
+    "id": "ppeha-q2",
+    "section": "1910.132",
+    "paragraph": "(d)(1)(iii)",
+    "point": "Protection must fit the individual; chemical resistance alone does not establish suitability."
+  },
+  {
+    "id": "ppeha-q3",
+    "section": "1910.132",
+    "paragraph": "(f)(3)(i)",
+    "point": "Retraining follows changes that invalidate prior training, not merely a calendar cycle."
+  },
+  {
+    "id": "ppeha-q4",
+    "section": "1910.132",
+    "paragraph": "(f)(3)(ii)",
+    "point": "A change in PPE can invalidate earlier training and require retraining."
+  },
+  {
+    "id": "ppeha-q5",
+    "section": "1910.132",
+    "paragraph": "(f)(3)(iii)",
+    "point": "Observed knowledge or use deficiencies can trigger retraining despite prior attendance."
+  },
+  {
+    "id": "ppeha-q6",
+    "section": "1910.132",
+    "paragraph": "(h)(2)",
+    "point": "This narrow exception depends on non-specialty equipment and permission for off-site use."
+  },
+  {
+    "id": "ppeha-q7",
+    "section": "1910.132",
+    "paragraph": "(h)(4)(iii)",
+    "point": "Ordinary weather gear has a payment exception; chemical protective clothing is a different situation."
+  },
+  {
+    "id": "ppeha-q8",
+    "section": "1910.132",
+    "paragraph": "(h)(5)",
+    "point": "Normal wear is not loss or intentional damage; required replacement remains employer-paid."
+  },
+  {
+    "id": "ppeha-q9",
+    "section": "1910.132",
+    "paragraph": "(h)(6)",
+    "point": "Voluntary use can be allowed; it cannot become mandatory employee payment outside the exceptions."
+  },
+  {
+    "id": "ppeha-q10",
+    "section": "1910.133",
+    "paragraph": "(a)(3)",
+    "point": "Corrective lenses do not remove the need for suitable protection and compatible fit."
+  },
+  {
+    "id": "rk-q1",
+    "section": "1904.1",
+    "paragraph": "(a)(1)",
+    "point": "The small-employer exemption concerns routine records; it does not eliminate severe-event reporting."
+  },
+  {
+    "id": "rk-q2",
+    "section": "1904.29",
+    "paragraph": "(b)(3)",
+    "point": "The recording window uses calendar days and starts when recordability information is received."
+  },
+  {
+    "id": "rk-q3",
+    "section": "1904.29",
+    "paragraph": "(b)(4)",
+    "point": "Equivalent forms must preserve the required information and usability, not just their title."
+  },
+  {
+    "id": "rk-q4",
+    "section": "1904.29",
+    "paragraph": "(b)(7)(iv)",
+    "point": "HIV infection is a listed privacy concern; privacy treatment does not remove recordability."
+  },
+  {
+    "id": "rk-q5",
+    "section": "1904.32",
+    "paragraph": "(b)(3)",
+    "point": "Certification includes examination of the log and reasonable belief in completeness and accuracy."
+  },
+  {
+    "id": "rk-q6",
+    "section": "1904.32",
+    "paragraph": "(b)(4)(iii)",
+    "point": "The rule lists qualifying executive roles, including this establishment official."
+  },
+  {
+    "id": "rk-q7",
+    "section": "1904.32",
+    "paragraph": "(b)(6)",
+    "point": "The summary remains posted for the full February-through-April period."
+  },
+  {
+    "id": "rk-q8",
+    "section": "1904.39",
+    "paragraph": "(a)(1)",
+    "point": "The fatality reporting window is eight hours in these stated circumstances, separate from routine recording."
+  },
+  {
+    "id": "rk-q9",
+    "section": "1904.39",
+    "paragraph": "(a)(2)",
+    "point": "A single qualifying amputation triggers severe-event reporting within twenty-four hours."
+  },
+  {
+    "id": "rk-q10",
+    "section": "1904.39",
+    "paragraph": "(b)(10)",
+    "point": "The inpatient-reporting definition requires care or treatment; other reportable outcomes must still be evaluated separately."
+  },
+  {
+    "id": "eap-q1",
+    "section": "1910.38",
+    "paragraph": "(c)(1)",
+    "point": "Reporting procedures are a required element in addition to evacuation routes."
+  },
+  {
+    "id": "eap-q2",
+    "section": "1910.38",
+    "paragraph": "(c)(2)",
+    "point": "The plan needs actionable evacuation procedures, not just a general instruction."
+  },
+  {
+    "id": "eap-q3",
+    "section": "1910.38",
+    "paragraph": "(c)(3)",
+    "point": "Critical-operation duties need defined procedures before evacuation; the rule does not authorize indefinite exposure."
+  },
+  {
+    "id": "eap-q4",
+    "section": "1910.38",
+    "paragraph": "(c)(4)",
+    "point": "Accounting procedures help identify missing people without improvising reentry."
+  },
+  {
+    "id": "eap-q5",
+    "section": "1910.38",
+    "paragraph": "(c)(5)",
+    "point": "Assigned rescue or medical duties need procedures; a plan is not universal rescue qualification."
+  },
+  {
+    "id": "eap-q6",
+    "section": "1910.38",
+    "paragraph": "(f)(2)",
+    "point": "Changed responsibilities trigger review with the affected employee."
+  },
+  {
+    "id": "eap-q7",
+    "section": "1910.38",
+    "paragraph": "(f)(3)",
+    "point": "A changed plan triggers review; old instructions may no longer be usable."
+  },
+  {
+    "id": "eap-q8",
+    "section": "1910.39",
+    "paragraph": "(c)(1)",
+    "point": "The plan links major fire hazards to handling, ignition controls, and appropriate protection."
+  },
+  {
+    "id": "eap-q9",
+    "section": "1910.39",
+    "paragraph": "(c)(2)",
+    "point": "Waste accumulation controls are a distinct required plan element."
+  },
+  {
+    "id": "eap-q10",
+    "section": "1910.39",
+    "paragraph": "(c)(3)",
+    "point": "The plan must address maintenance that preserves the safeguards' preventive function."
+  },
+  {
+    "id": "resp-q1",
+    "section": "1910.134",
+    "paragraph": "(c)(1)",
+    "point": "Required use needs a written, site-specific program rather than purchasing alone."
+  },
+  {
+    "id": "resp-q2",
+    "section": "1910.134",
+    "paragraph": "(c)(2)(i)",
+    "point": "Voluntary users must receive Appendix D information even when respirator use is not required."
+  },
+  {
+    "id": "resp-q3",
+    "section": "1910.134",
+    "paragraph": "(c)(2)(ii)",
+    "point": "Voluntary elastomeric use needs the necessary medical and maintenance elements; filtering facepieces have a narrower exception."
+  },
+  {
+    "id": "resp-q4",
+    "section": "1910.134",
+    "paragraph": "(c)(3)",
+    "point": "Administrator qualifications must match the program, rather than a job title alone."
+  },
+  {
+    "id": "resp-q5",
+    "section": "1910.134",
+    "paragraph": "(d)(1)(ii)",
+    "point": "Certification applies to the approved configuration and its conditions of use."
+  },
+  {
+    "id": "resp-q6",
+    "section": "1910.134",
+    "paragraph": "(g)(1)(i)(A)",
+    "point": "Hair at the sealing surface or affecting valves prevents permitted tight-fitting use."
+  },
+  {
+    "id": "resp-q7",
+    "section": "1910.134",
+    "paragraph": "(g)(1)(iii)",
+    "point": "A seal check on each donning is separate from the fit test."
+  },
+  {
+    "id": "resp-q8",
+    "section": "1910.134",
+    "paragraph": "(h)(1)(ii)",
+    "point": "Shared equipment must be cleaned and disinfected before another person wears it."
+  },
+  {
+    "id": "resp-q9",
+    "section": "1910.134",
+    "paragraph": "(h)(2)(i)",
+    "point": "Storage must protect the equipment and preserve its shape, not merely keep it nearby."
+  },
+  {
+    "id": "resp-q10",
+    "section": "1910.134",
+    "paragraph": "(m)(2)(ii)",
+    "point": "Retain the current fit-test record until the next test replaces it."
+  },
+  {
+    "id": "fire-hot-work-q210",
+    "section": "1910.252",
+    "paragraph": "(a)(2)(vi)(B)",
+    "point": "Hot work is prohibited in sprinklered buildings while that protection is impaired; a fire watch does not remove the prohibition."
+  }
+]

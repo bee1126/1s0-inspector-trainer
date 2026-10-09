@@ -524,7 +524,7 @@ extension ProgressStoreTests {
     func testAllMatchingLengthAndInvalidSelections() throws {
         let store = studyStore()
         XCTAssertTrue(store.startStudySession(configuration: StudyConfiguration(questionCount: 0), questions: bank + bank))
-        XCTAssertEqual(store.activeStudySession?.questions.count, 140)
+        XCTAssertEqual(store.activeStudySession?.questions.count, 190)
         store.selectStudyAnswer(questionID: bank[0].id, choiceID: "not-a-choice")
         store.moveStudyQuestion(to: -1)
         store.moveStudyQuestion(to: 999)

@@ -39,7 +39,6 @@ struct RoleSelectionView: View {
                         Image(systemName: "shield.checkered")
                             .font(.system(size: 44, weight: .light))
                             .foregroundColor(AppTheme.primary)
-                            .shadow(color: AppTheme.primary.opacity(0.4), radius: 12, x: 0, y: 0)
                             .padding(.bottom, 4)
 
                         Text("1S0 INSPECTOR TRAINER")
@@ -218,7 +217,6 @@ private struct OnboardingRoleCard: View {
             RoundedRectangle(cornerRadius: 10, style: .continuous)
                 .stroke(isSelected ? AppTheme.primary.opacity(0.6) : AppTheme.border, lineWidth: isSelected ? 1.5 : 1)
         )
-        .shadow(color: isSelected ? AppTheme.primary.opacity(0.12) : .clear, radius: 8, x: 0, y: 2)
         .contentShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
     }
 }

@@ -5,7 +5,7 @@ struct OnboardingPathView: View {
     @State private var rewardSummary: RewardSummary?
     @State private var showRestartAlert = false
 
-    private var days: [OnboardingDay] { PracticeContent.onboardingDays(for: progress.selectedRole) }
+    private var days: [OnboardingDay] { progress.catalog.onboardingDays }
     private var completedCount: Int { progress.onboardingCheckIns.count }
     private var totalDays: Int { days.count }
     private var progressValue: Double {
@@ -131,6 +131,9 @@ struct OnboardingPathView: View {
                                         }
                                     }
                                     .buttonStyle(OutlineButtonStyle())
+                                    if progress.selectedTrack == .osha && day.id == 7 {
+                                        NavigationLink("Mixed Daily Five review") { PracticeSessionView() }.buttonStyle(OutlineButtonStyle())
+                                    }
                                 }
                             }
                         }
@@ -173,7 +176,7 @@ struct OnboardingPathView: View {
     private func destination(for action: OnboardingAction) -> some View {
         switch action {
         case .module(let id):
-            if let module = TrainingContent.modules(for: progress.selectedRole).first(where: { $0.id == id }) {
+            if let module = progress.catalog.modules.first(where: { $0.id == id }) {
                 ModuleFlowView(module: module)
             } else {
                 Text("Module unavailable")

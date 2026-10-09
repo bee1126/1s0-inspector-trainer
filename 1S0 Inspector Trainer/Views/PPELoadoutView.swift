@@ -6,7 +6,7 @@ struct PPELoadoutView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var phase: GamePhase = .picker
-    @State private var scenario: PPEScenario = PPELoadoutBank.allScenarios[0]
+    @State private var scenario: PPEScenario = ContentCatalog.civilianPPE[0]
     @State private var selectedIds: Set<String> = []
     @State private var rewardSummary: RewardSummary? = nil
     @State private var earnedBadgeThisRun = false
@@ -124,11 +124,11 @@ struct PPELoadoutView: View {
             } else {
                 GlassCard {
                     VStack(alignment: .leading, spacing: 6) {
-                        Text("Select a scenario to gear up for. Complete all \(PPELoadoutBank.allScenarios.count) to earn the PPE Specialist badge.")
+                        Text("Select a scenario to gear up for. Complete all \(progress.catalog.ppeScenarios.count) to earn the PPE Specialist badge.")
                             .font(AppFont.body(16))
                             .foregroundColor(AppTheme.text.opacity(0.68))
                         HStack(spacing: 4) {
-                            Text("\(progress.completedPPEScenarios.count)/\(PPELoadoutBank.allScenarios.count)")
+                            Text("\(progress.completedPPEScenarios.count)/\(progress.catalog.ppeScenarios.count)")
                                 .font(AppFont.mono(12))
                                 .foregroundColor(AppTheme.text)
                             Text("completed")
@@ -143,7 +143,6 @@ struct PPELoadoutView: View {
                                 RoundedRectangle(cornerRadius: 3, style: .continuous)
                                     .fill(AppTheme.primary)
                                     .frame(width: geo.size.width * ppeProgress, height: 6)
-                                    .shadow(color: AppTheme.primary.opacity(0.4), radius: 4, x: 0, y: 0)
                             }
                         }
                         .frame(height: 6)
@@ -151,7 +150,7 @@ struct PPELoadoutView: View {
                 }
             }
 
-            ForEach(PPELoadoutBank.allScenarios, id: \.id) { s in
+            ForEach(progress.catalog.ppeScenarios, id: \.id) { s in
                 Button {
                     scenario = s
                     selectedIds = []
@@ -210,7 +209,7 @@ struct PPELoadoutView: View {
     }
 
     private var ppeProgress: Double {
-        let total = PPELoadoutBank.allScenarios.count
+        let total = progress.catalog.ppeScenarios.count
         guard total > 0 else { return 0 }
         return Double(progress.completedPPEScenarios.count) / Double(total)
     }

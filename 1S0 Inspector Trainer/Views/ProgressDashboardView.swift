@@ -6,7 +6,7 @@ struct ProgressDashboardView: View {
     @State private var showResetAlert = false
 
     private var modules: [TrainingModule] {
-        TrainingContent.modules(for: progress.selectedRole)
+        progress.catalog.modules
     }
 
     private var missionFocusRecommendation: MissionFocusRecommendation {
@@ -351,19 +351,21 @@ struct ProgressDashboardView: View {
     }
 
     private var badges: [BadgeState] {
-        let perfectScores = modules.filter { progress.bestScore(for: $0.id) >= 90 }.count
+        let badgeModules = TrainingContent.modules.filter { !OSHAExpansion.moduleIDs.contains($0.id) }
+        let globalCompleted = badgeModules.filter { progress.isCompleted($0.id) }.count
+        let perfectScores = badgeModules.filter { progress.bestScore(for: $0.id) >= 90 }.count
         return [
             BadgeState(
                 id: "first-completion",
                 icon: "star.fill",
                 title: "First Mission",
-                isEarned: completedCount >= 1
+                isEarned: globalCompleted >= 1
             ),
             BadgeState(
                 id: "full-crew",
                 icon: "person.3.fill",
                 title: "Full Crew",
-                isEarned: completedCount == modules.count && !modules.isEmpty
+                isEarned: globalCompleted == badgeModules.count && !badgeModules.isEmpty
             ),
             BadgeState(
                 id: "precision",
@@ -375,7 +377,7 @@ struct ProgressDashboardView: View {
                 id: "ace",
                 icon: "shield.checkered",
                 title: "Safety Ace",
-                isEarned: perfectScores == modules.count && !modules.isEmpty
+                isEarned: perfectScores == badgeModules.count && !badgeModules.isEmpty
             ),
             BadgeState(
                 id: "scenario-master",

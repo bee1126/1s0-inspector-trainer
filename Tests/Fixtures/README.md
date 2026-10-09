@@ -1,0 +1,3 @@
+v17-install.plist was captured October 10, 2026 from a running simulator installation built without source changes from main 6379d33 (version 1.7, build 6). The separate iPhone 17 Pro Max simulator was seeded with existing QA progress from a 1.6 install, then launched and saved by 1.7 before capture. This is QA progress, not an export of an App Store user account. All separate legacy preference keys are included so migration tests compare the full state.
+
+osha18-points.json freezes each new question and its reviewed specific paragraph. Detailed paragraph-and-point distinctions from the exclusion list are in docs/ContentReview.md.

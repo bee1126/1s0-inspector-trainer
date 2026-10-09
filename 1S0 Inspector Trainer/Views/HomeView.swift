@@ -2,13 +2,27 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject private var progress: ProgressStore
-    private var modules: [TrainingModule] { TrainingContent.modules(for: progress.selectedRole) }
+    @State private var showTrackSettings = false
+    private var modules: [TrainingModule] { progress.catalog.modules }
 
     var body: some View {
         ZStack {
             BackgroundView()
             ScrollView {
                 VStack(alignment: .leading, spacing: AppSpacing.section) {
+                    if progress.showTrackBanner {
+                        GlassCard { VStack(alignment: .leading, spacing: 12) {
+                            Text("New: an OSHA / Civilian track. Switch in Settings.")
+                            Button("Dismiss") { progress.dismissTrackBanner() }
+                        } }
+                    }
+                    if let notice = progress.recoveryNotice { Text(notice).font(.callout).foregroundStyle(.secondary) }
+                    if progress.hasHiddenSession { HiddenSessionNotice() }
+                    TrackGlassContainer {
+                    Button { showTrackSettings = true } label: {
+                        Label(progress.selectedTrack?.title ?? "Training track", systemImage: "slider.horizontal.3").font(.subheadline.weight(.medium)).padding(.horizontal, 16).padding(.vertical, 12)
+                    }.buttonStyle(.plain).trackGlass().accessibilityIdentifier("today-track-chip")
+                    }
                     ScreenHeading(eyebrow: "YOUR DAILY TRAINING", title: "Build your judgment.", detail: "One focused session at a time.")
                     GlassCard {
                         HStack(spacing: 20) {
@@ -35,9 +49,9 @@ struct HomeView: View {
                     }.buttonStyle(.plain)
                     VStack(alignment: .leading, spacing: 12) {
                         Text("Today's lesson").font(AppFont.subtitle(21))
-                        DailyLessonCard(lesson: DailyLessonBank.lessonForToday())
+                        DailyLessonCard(lesson: progress.todayLesson)
                     }
-                    if progress.onboardingCheckIns.count < PracticeContent.onboardingDays(for: progress.selectedRole).count {
+                    if progress.onboardingCheckIns.count < progress.catalog.onboardingDays.count {
                         NavigationLink { OnboardingPathView() } label: {
                             ActionCard(title: "Your starter path", detail: "\(progress.onboardingCheckIns.count) of 7 check-ins complete", icon: "point.topleft.down.to.point.bottomright.curvepath")
                         }.buttonStyle(.plain)
@@ -51,11 +65,12 @@ struct HomeView: View {
         .foregroundStyle(AppTheme.text)
         .navigationTitle("Today").navigationBarTitleDisplayMode(.inline)
         .toolbar { ToolbarItem(placement: .topBarTrailing) { NavigationLink { ToolsView() } label: { Image(systemName: "person.crop.circle").accessibilityLabel("Profile and feedback") } } }
+        .sheet(isPresented: $showTrackSettings) { TrackSettingsView() }
         .onAppear { progress.refreshForNewDayIfNeeded() }
     }
 
     @ViewBuilder private var recommendation: some View {
-        if let session = progress.activeStudySession,
+        if !progress.hasHiddenSession, let session = progress.activeStudySession,
            progress.resumeState == nil || session.updatedAt >= progress.resumeState!.updatedAt {
             NavigationLink { StudySessionView() } label: {
                 ActionCard(title: "Continue your \(session.configuration.mode.rawValue.lowercased()) session", detail: "\(session.answers.count) of \(session.questions.count) answered", icon: "play.fill", prominent: true)

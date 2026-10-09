@@ -9,7 +9,7 @@ struct StudyBuilderView: View {
     init(initialPool: QuestionPool = .all, moduleID: String? = nil, questionIDs: Set<String>? = nil) {
         _configuration = State(initialValue: StudyConfiguration(pool: initialPool, moduleIDs: moduleID.map { [$0] } ?? [], questionIDs: questionIDs))
     }
-    private var questions: [QuizQuestion] { TrainingContent.allQuizQuestions(for: progress.selectedRole) }
+    private var questions: [QuizQuestion] { progress.catalog.questions }
     private var matching: [QuizQuestion] { progress.studyQuestions(for: configuration, from: questions) }
     private var count: Int { configuration.questionCount == 0 ? matching.count : min(configuration.questionCount, matching.count) }
     private var difficulties: [QuizDifficulty] { [.all] + QuizDifficulty.allCases.filter { difficulty in difficulty != .all && questions.contains { $0.difficulty == difficulty } } }
@@ -37,7 +37,7 @@ struct StudyBuilderView: View {
                             Text("Topics").font(AppFont.subtitle(20))
                             Text(configuration.moduleIDs.isEmpty ? "All topics selected" : "\(configuration.moduleIDs.count) topics selected").font(AppFont.body(16))
                             Button("Use all topics") { configuration.moduleIDs = [] }.tint(AppTheme.primary)
-                            ForEach(TrainingContent.modules(for: progress.selectedRole)) { module in
+                            ForEach(progress.catalog.modules) { module in
                                 Toggle(module.title, isOn: Binding(get: { configuration.moduleIDs.contains(module.id) }, set: { selected in
                                     if selected { configuration.moduleIDs.insert(module.id) } else { configuration.moduleIDs.remove(module.id) }
                                 })).font(AppFont.body(16)).tint(AppTheme.primary)
@@ -79,7 +79,7 @@ struct StudySessionView: View {
     @EnvironmentObject private var progress: ProgressStore
     @State private var completed: StudyHistoryEntry?
     @State private var confirmSubmit = false
-    private var questions: [QuizQuestion] { TrainingContent.allQuizQuestions(for: progress.selectedRole) }
+    private var questions: [QuizQuestion] { progress.catalog.questions }
 
     var body: some View {
         ZStack {
@@ -87,7 +87,7 @@ struct StudySessionView: View {
             if let completed {
                 StudyDebriefView(entry: completed)
             } else if let session = progress.activeStudySession {
-                if progress.studySessionIsValid(questions: questions) {
+                if progress.hasHiddenSession { HiddenSessionNotice() } else if progress.studySessionIsValid(questions: questions) {
                     sessionContent(session)
                 } else {
                     VStack(spacing: 20) {
@@ -179,12 +179,15 @@ struct BookmarkQuestionButton: View {
 }
 
 struct QuestionExplanationView: View {
+    @EnvironmentObject private var progress: ProgressStore
+    var questionID: String? = nil
     let explanation: String
     let reference: QuestionReference?
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Why this answer").font(AppFont.subtitle(18))
             Text(explanation).font(AppFont.body(17)).fixedSize(horizontal: false, vertical: true)
+            if progress.selectedTrack == .airForce, let id = questionID, let note = QuestionExplanations.entries[id]?.afNote { Text(note).font(.callout).foregroundStyle(.secondary) }
             if let reference {
                 Link(destination: reference.url) {
                     Label("\(reference.title) · \(reference.section)", systemImage: "arrow.up.right.square")
@@ -198,8 +201,13 @@ struct QuestionExplanationView: View {
 }
 
 struct StudyQuestionCard: View {
+    @EnvironmentObject private var progress: ProgressStore
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     let question: StudyQuestion
+    private var displayedQuestion: StudyQuestion {
+        if progress.selectedTrack == .osha, let current = progress.catalog.questions.first(where: { $0.id == question.id }) { return StudyQuestion(current, shuffle: false) }
+        return question
+    }
     let selectedID: String?
     var reveal: Bool
     var locked: Bool
@@ -207,27 +215,31 @@ struct StudyQuestionCard: View {
     var body: some View {
         GlassCard {
             VStack(alignment: .leading, spacing: 20) {
-                if let imageName = question.imageName {
+                if let imageName = displayedQuestion.imageName {
                     Image(imageName).resizable().scaledToFit().frame(maxHeight: 180)
                         .clipShape(RoundedRectangle(cornerRadius: 14)).accessibilityHidden(true)
                 }
                 (dynamicTypeSize.isAccessibilitySize ? AnyLayout(VStackLayout(alignment: .leading, spacing: 12)) : AnyLayout(HStackLayout(alignment: .top))) {
-                    Text(question.prompt).font(AppFont.subtitle(22)).fixedSize(horizontal: false, vertical: true)
-                    BookmarkQuestionButton(questionID: question.id)
+                    Text(displayedQuestion.prompt).font(AppFont.subtitle(22)).fixedSize(horizontal: false, vertical: true)
+                    BookmarkQuestionButton(questionID: displayedQuestion.id)
                 }
-                ForEach(question.choices) { choice in
-                    Button { onSelect(choice.id) } label: {
-                        HStack(alignment: .top, spacing: 12) {
-                            Image(systemName: symbol(choice)).frame(width: 22)
-                            Text(choice.text).font(AppFont.body(17)).frame(maxWidth: .infinity, alignment: .leading)
-                        }.padding(16).frame(minHeight: 52)
-                            .foregroundStyle(color(choice))
-                            .background(color(choice).opacity(selectedID == choice.id ? 0.1 : 0.035), in: RoundedRectangle(cornerRadius: 14))
-                            .overlay(RoundedRectangle(cornerRadius: 14).stroke(color(choice).opacity(selectedID == choice.id ? 0.7 : 0.15)))
-                    }.buttonStyle(.plain).disabled(locked)
+                ForEach(displayedQuestion.choices) { choice in
+                    let row = HStack(alignment: .top, spacing: 12) {
+                        Image(systemName: symbol(choice)).frame(width: 22).accessibilityHidden(true)
+                        Text(choice.text).font(AppFont.body(17)).frame(maxWidth: .infinity, alignment: .leading)
+                    }.padding(16).frame(minHeight: 52)
+                        .foregroundStyle(color(choice))
+                        .background(color(choice).opacity(selectedID == choice.id ? 0.1 : 0.035), in: RoundedRectangle(cornerRadius: 14))
+                        .overlay(RoundedRectangle(cornerRadius: 14).stroke(color(choice).opacity(selectedID == choice.id ? 0.7 : 0.15)))
+                    Group {
+                        // Read-only answers stay legible and are announced as text,
+                        // rather than disabled buttons with reduced contrast.
+                        if locked { row }
+                        else { Button { onSelect(choice.id) } label: { row }.buttonStyle(.plain) }
+                    }.accessibilityElement(children: .combine)
                         .accessibilityValue(reveal ? (choice.isCorrect ? "Correct answer" : (selectedID == choice.id ? "Selected, incorrect" : "Incorrect")) : (selectedID == choice.id ? "Selected" : "Not selected"))
                 }
-                if reveal { QuestionExplanationView(explanation: question.explanation, reference: question.reference) }
+                if reveal { QuestionExplanationView(questionID: displayedQuestion.id, explanation: displayedQuestion.explanation, reference: displayedQuestion.reference) }
             }
         }.foregroundStyle(AppTheme.text)
     }
@@ -288,7 +300,7 @@ struct StudyHistoryView: View {
                 LazyVStack(alignment: .leading, spacing: 16) {
                     Text("Your latest 200 sessions. History starts with this update.").font(AppFont.body(16))
                     if progress.studyHistory.isEmpty { ContentUnavailableView("Your next session starts here", systemImage: "chart.bar", description: Text("Complete a quiz, Daily Five, or custom session to see your history.")) }
-                    ForEach(progress.studyHistory) { entry in
+                    ForEach(progress.studyHistory.filter { entry in entry.questions.allSatisfy { progress.catalog.questionIDs.contains($0.id) } }) { entry in
                         NavigationLink { ZStack { BackgroundView(); StudyDebriefView(entry: entry) }.navigationTitle("Review session").navigationBarTitleDisplayMode(.inline) } label: {
                             ActionCard(title: "\(entry.kind.rawValue) · \(entry.score)/\(entry.total)", detail: entry.completedAt.formatted(date: .abbreviated, time: .shortened), icon: "checkmark.circle")
                         }.buttonStyle(.plain)
@@ -301,12 +313,13 @@ struct StudyHistoryView: View {
 
 struct SavedQuestionsView: View {
     @EnvironmentObject private var progress: ProgressStore
-    private var saved: [QuizQuestion] { progress.studyQuestions(for: StudyConfiguration(pool: .saved), from: TrainingContent.allQuizQuestions(for: progress.selectedRole)) }
+    private var saved: [QuizQuestion] { progress.studyQuestions(for: StudyConfiguration(pool: .saved), from: progress.catalog.questions) }
     var body: some View {
         ZStack {
             BackgroundView()
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: AppSpacing.section) {
+                    Text("\(progress.hiddenBookmarkCount) bookmarks hidden in this track.").font(.footnote).foregroundStyle(.secondary)
                     if saved.isEmpty { ContentUnavailableView("Save what matters", systemImage: "bookmark", description: Text("Tap the bookmark beside any question to keep it here.")) }
                     else {
                         NavigationLink("Practice saved questions") { StudyBuilderView(initialPool: .saved) }.buttonStyle(PrimaryButtonStyle())

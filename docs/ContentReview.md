@@ -1,6 +1,6 @@
-# Question content review — 9 October 2026
+# Question content review — 10 October 2026
 
-All 140 questions have individually authored explanations, conditions, and official-source references in `QuestionExplanations.swift`. The bank still contains 14 modules with 10 questions each. This is not a claim that every publication has been verified current.
+The 1.7 baseline below contains 140 questions with individually authored explanations, conditions, and official-source references in `QuestionExplanations.swift`. The bank still contains 14 modules with 10 questions each. This is not a claim that every publication has been verified current.
 
 ## Earlier evidence and retrieval limitations (superseded by the release review below)
 
@@ -123,3 +123,120 @@ Together with the earlier 19 retirements, the registry now contains 26 retired I
 
 - [DAFI 90-802](https://static.e-publishing.af.mil/production/1/af_se/publication/dafi90-802/dafi90-802.pdf) — 20 January 2026, primary RM directive.
 - [DAFI 90-801](https://static.e-publishing.af.mil/production/1/saf_ie/publication/dafi90-801/dafi90-801.pdf) — 9 May 2024, ESOHC.
+
+
+## 1.8 OSHA modules
+
+Reviewer: **Codex**, 10 October 2026. Reviewed against the official eCFR versioner API, Title 29 **up to date as of 7 October 2026**, latest amendment/issue 6 October. Each decision's correct answer, limiting conditions, and paragraph were compared with the current text. This is an implementation content review; Abdoul's release sign-off remains separate.
+
+The official compressed XML API was accessible even when the HTML host challenged scripted requests. The dated section extracts are in [ecfr-verified-sections.txt](review/1.8/ecfr-verified-sections.txt); retrieval URLs, title currency, and source hashes are in [source-manifest.json](review/1.8/source-manifest.json). The verified-date column identifies review date, not an assertion that the regulations were amended that day.
+
+| ID | Paragraph | Verified date | Status |
+|---|---|---|---|
+| `wws-q1` | 29 CFR 1910.22(d)(2) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `wws-q2` | 29 CFR 1910.22(d)(3) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `wws-q3` | 29 CFR 1910.23(b)(9) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `wws-q4` | 29 CFR 1910.23(b)(10) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `wws-q5` | 29 CFR 1910.23(c)(3) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `wws-q6` | 29 CFR 1910.23(c)(8) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `wws-q7` | 29 CFR 1910.23(c)(11) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `wws-q8` | 29 CFR 1910.23(b)(13) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `wws-q9` | 29 CFR 1910.30(c)(2) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `wws-q10` | 29 CFR 1910.28(b)(9)(i)(D) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `ppeha-q1` | 29 CFR 1910.132(d)(2) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `ppeha-q2` | 29 CFR 1910.132(d)(1)(iii) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `ppeha-q3` | 29 CFR 1910.132(f)(3)(i) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `ppeha-q4` | 29 CFR 1910.132(f)(3)(ii) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `ppeha-q5` | 29 CFR 1910.132(f)(3)(iii) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `ppeha-q6` | 29 CFR 1910.132(h)(2) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `ppeha-q7` | 29 CFR 1910.132(h)(4)(iii) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `ppeha-q8` | 29 CFR 1910.132(h)(5) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `ppeha-q9` | 29 CFR 1910.132(h)(6) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `ppeha-q10` | 29 CFR 1910.133(a)(3) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `rk-q1` | 29 CFR 1904.1(a)(1) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `rk-q2` | 29 CFR 1904.29(b)(3) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `rk-q3` | 29 CFR 1904.29(b)(4) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `rk-q4` | 29 CFR 1904.29(b)(7)(iv) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `rk-q5` | 29 CFR 1904.32(b)(3) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `rk-q6` | 29 CFR 1904.32(b)(4)(iii) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `rk-q7` | 29 CFR 1904.32(b)(6) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `rk-q8` | 29 CFR 1904.39(a)(1) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `rk-q9` | 29 CFR 1904.39(a)(2) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `rk-q10` | 29 CFR 1904.39(b)(10) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `eap-q1` | 29 CFR 1910.38(c)(1) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `eap-q2` | 29 CFR 1910.38(c)(2) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `eap-q3` | 29 CFR 1910.38(c)(3) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `eap-q4` | 29 CFR 1910.38(c)(4) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `eap-q5` | 29 CFR 1910.38(c)(5) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `eap-q6` | 29 CFR 1910.38(f)(2) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `eap-q7` | 29 CFR 1910.38(f)(3) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `eap-q8` | 29 CFR 1910.39(c)(1) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `eap-q9` | 29 CFR 1910.39(c)(2) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `eap-q10` | 29 CFR 1910.39(c)(3) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `resp-q1` | 29 CFR 1910.134(c)(1) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `resp-q2` | 29 CFR 1910.134(c)(2)(i) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `resp-q3` | 29 CFR 1910.134(c)(2)(ii) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `resp-q4` | 29 CFR 1910.134(c)(3) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `resp-q5` | 29 CFR 1910.134(d)(1)(ii) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `resp-q6` | 29 CFR 1910.134(g)(1)(i)(A) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `resp-q7` | 29 CFR 1910.134(g)(1)(iii) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `resp-q8` | 29 CFR 1910.134(h)(1)(ii) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `resp-q9` | 29 CFR 1910.134(h)(2)(i) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `resp-q10` | 29 CFR 1910.134(m)(2)(ii) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+| `fire-hot-work-q210` | 29 CFR 1910.252(a)(2)(vi)(B) | 2026-10-10 | Verified — eCFR 2026-10-07 |
+
+### Distinct teaching points and retained IDs
+
+The frozen [paragraph-and-point fixture](../Tests/Fixtures/osha18-points.json) records each new decision and its specific teaching point. The test compares both the paragraph and point; review is semantic, not just a check that paragraph strings differ.
+
+- Walking-working surfaces tests repair access control, qualified structural repair, shift inspection, removal of damaged ladders, intended load, top-step prohibition, rail extension, unbalancing loads, changed-equipment retraining, and the fixed-ladder transition. None repeats the existing four-foot threshold, guardrail height, or hole-cover strength points.
+- PPE hazard assessment tests certification elements, individual fit, three separate retraining triggers, the off-site-use payment exception, weather clothing, replacement-payment exceptions, voluntary employee equipment, and prescription-eyewear compatibility. Existing PPE questions retain the general assessment, training-topic, defective-PPE, and employer-payment rules. These narrower factual conditions are not replacements for those questions.
+- Recordkeeping tests small-employer partial exemption, the seven-day recording window, equivalent forms, HIV privacy handling, executive certification and eligibility, posting dates, immediate fatality/amputation reporting, and observation-only admission. None repeats the general recordability or sharps recording questions in Mishap Reporting.
+- Emergency plans test distinct required plan elements and review triggers. They do not repeat extinguisher mounting, inspection, or unobstructed exits.
+- Respiratory questions test program scope, voluntary-use information and elastomeric exception, administrator qualifications, certified configurations, facial hair, per-donning seal checks, shared cleaning, storage, and fit-test-record retention. They do not repeat APF arithmetic or the combined medical/fit/training prerequisite question.
+- `fire-hot-work-q210` tests prohibited work during sprinkler impairment. It is OSHA-only; AF retains `fire-hot-work-q10` on DAF permitting. There are **191 unique questions**, **150 OSHA**, **190 AF**, with exactly ten questions per visible module. No released 1.7 answer meaning was changed, and no additional IDs were retired. All 26 existing retired IDs and their saved records remain protected.
+
+### OSHA-hidden scenarios and assessments
+
+The following four module scenarios and their assessments are AF-only in full:
+
+- Risk Management: Flight Line Equipment Inspection (`risk-management`).
+- Program Responsibilities: Pre-Inspection Alignment (`roles-responsibilities`).
+- Mishap Reporting: Maintenance Injury (`mishap-reporting`).
+- Deployed ORM: the entire `deployed-orm` module, scenario and quiz; all separate Deployed ORM field exercises.
+
+The legacy scenario and lesson editions in each shared module stay on AF. OSHA receives neutral editions built from the reviewed question decisions, with no DAF references. Those legacy scenarios are:
+- Conveyor Guard Replacement.
+- Rooftop HVAC Inspection.
+- Flight Line Equipment Inspection.
+- Pre-Inspection Alignment.
+- Tank Inspection.
+- Flight Line Noise.
+- Maintenance Injury.
+- Grinding Operation.
+- Unknown Solvent Bottle.
+- Open Panel In A Shop.
+- Bench Grinder Setup.
+- Warehouse Reset.
+- Maintenance Bay Hot Work.
+- Sandstorm Damage Assessment.
+
+All legacy PPE loadout scenarios remain on AF; the OSHA menu uses two separately scoped civilian scenarios (`osha-ppe-splash`, `osha-ppe-warehouse`) with 29 CFR references and explicit exposure assumptions. The following legacy PPE scenario IDs are hidden on OSHA:
+- `ppe-confined-space`.
+- `ppe-hot-work`.
+- `ppe-elevated-antenna`.
+- `ppe-loto-electrical`.
+- `ppe-flightline-fod`.
+- `ppe-hazmat-spill`.
+- `ppe-routine-inspection`.
+- `ppe-post-mishap`.
+
+DAF Form 457/RAC exercises, DAF glossary terms and lookup questions, AF daily lessons, and Live e-Pubs are inaccessible on OSHA, including publication deep links. Bookmarks, review cards and session history are retained; current-track lists hide incompatible content. Settings and the shared legal disclaimer deliberately identify the other track and government organizations; these are not OSHA instructional content.
+
+### Citation and currency follow-up
+
+- All OSHA-cited quiz references, on both tracks, use HTTPS eCFR links. New questions have exact `#p-` paragraph anchors. `hc-q105` cites Appendix B; `hazcom-q9` identifies Appendix D sections 7 and 10. Hearing and fire-watch AF notes are displayed only on AF, below the neutral explanation.
+- HazCom 2024 was rechecked against current 1910.1200, including revised paragraph (j) transition dates. The existing questions concern labeling, SDS access/content, training and communication; they do not assert that every supplier has already completed the update. The current transition dates differ for substances and mixtures, so no blanket completion claim was added.
+- Current eCFR still includes 1910.134 requirements and the November 18, 2036 fixed-ladder deadline. The respiratory-protection and fixed-ladder deregulatory proposals are **not final requirements** in this bank. No pending heat-rule requirements were added. Recheck these before the separate release, especially if publication is delayed.
+- Foundation lessons additionally cover retained records and updates, employee/government access, electronic-submission applicability, plan oral/written thresholds, alarm/training responsibilities, PPE assessment scope, and respiratory IDLH/inspection requirements. The bundled OSHA Standards index includes their cited sections as well as quiz references.
+- The implementation source verification does not substitute for Abdoul's content approval, real-data upgrade smoke test, trademark decision or subsequent release steps. No 1.8 App Store version or metadata was created by this build task.

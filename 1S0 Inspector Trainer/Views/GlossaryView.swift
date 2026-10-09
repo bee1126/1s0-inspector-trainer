@@ -1,11 +1,12 @@
 import SwiftUI
 
 struct GlossaryView: View {
+    @EnvironmentObject private var progress: ProgressStore
     @State private var searchText = ""
     @State private var selectedCategory: GlossaryCategory?
 
     private var filteredTerms: [GlossaryTerm] {
-        GlossaryContent.terms
+        progress.catalog.glossary
             .filter { term in
                 (selectedCategory == nil || term.category == selectedCategory) && term.matches(searchText)
             }
@@ -24,7 +25,7 @@ struct GlossaryView: View {
                         Text("Safety Glossary")
                             .font(AppFont.title(26))
                             .foregroundColor(AppTheme.text)
-                        Text("\(GlossaryContent.terms.count) verified field terms for safety inspections, hazard reports, and practice scenarios.")
+                        Text("\(progress.catalog.glossary.count) verified field terms for safety inspections, hazard reports, and practice scenarios.")
                             .font(AppFont.body(16))
                             .foregroundColor(AppTheme.text.opacity(0.68))
                     }
@@ -70,7 +71,7 @@ struct GlossaryView: View {
                     selectedCategory = nil
                 }
 
-                ForEach(GlossaryCategory.allCases) { category in
+                ForEach(GlossaryCategory.allCases.filter { category in progress.catalog.glossary.contains { $0.category == category } }) { category in
                     GlossaryCategoryChip(title: category.rawValue, isSelected: selectedCategory == category) {
                         selectedCategory = category
                     }
@@ -118,10 +119,11 @@ private struct GlossaryTermCard: View {
 }
 
 private struct GlossaryDetailView: View {
+    @EnvironmentObject private var progress: ProgressStore
     let term: GlossaryTerm
 
     private var relatedModules: [TrainingModule] {
-        let modules = TrainingContent.modules(for: nil)
+        let modules = progress.catalog.modules
         return term.moduleIds.compactMap { moduleId in
             modules.first { $0.id == moduleId }
         }

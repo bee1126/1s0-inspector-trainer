@@ -2,7 +2,7 @@ import XCTest
 @testable import _S0_Inspector_Trainer
 
 final class TrainingContentIntegrityTests: XCTestCase {
-    private let expectedOneS0ModuleCount = 14
+    private let expectedOneS0ModuleCount = 19
     private let expectedQuestionsPerModule = 10
 
     func testOneS0ModuleCountMatchesExpected() {
@@ -336,7 +336,7 @@ private extension String {
 
 extension TrainingContentIntegrityTests {
     func testEveryQuestionHasSpecificExplanationAndHTTPSReference() throws {
-        let questions = TrainingContent.allQuizQuestions(for: .oneS0)
+        let questions = TrainingContent.allQuizQuestions(for: .oneS0) + [OSHAExpansion.hotWorkQuestion]
         XCTAssertEqual(Set(questions.map(\.id)), Set(QuestionExplanations.entries.keys))
         for question in questions {
             XCTAssertGreaterThan(question.explanation.count, 50, question.id)
@@ -344,7 +344,7 @@ extension TrainingContentIntegrityTests {
             XCTAssertFalse(reference.section.isEmpty, question.id)
             XCTAssertEqual(reference.url.scheme, "https", question.id)
             let host = try XCTUnwrap(reference.url.host)
-            XCTAssertTrue(["www.osha.gov", "static.e-publishing.af.mil", "www.cdc.gov"].contains(host), question.id)
+            XCTAssertTrue(["www.ecfr.gov", "www.osha.gov", "static.e-publishing.af.mil", "www.cdc.gov"].contains(host), question.id)
         }
     }
 
