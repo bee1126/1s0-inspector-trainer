@@ -58,6 +58,7 @@ final class TrackUITests: XCTestCase {
             let app = XCUIApplication(); app.launchEnvironment["SAFETYXP_SCREENSHOT"] = screen; app.launch()
             if screen == "picker" { XCTAssertTrue(app.buttons["track-continue"].waitForExistence(timeout: 20)) }
             else { XCTAssertTrue(app.navigationBars.firstMatch.waitForExistence(timeout: 20)) }
+            if screen == "progress" { XCTAssertFalse(app.staticTexts["Airman"].exists) }
             if screen == "hazard" {
                 XCTAssertTrue(app.textFields["Location or area"].exists)
                 app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.75)).press(forDuration: 0.1, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.45)))

@@ -100,6 +100,15 @@ struct ContentCatalog {
         let question = questions[(calendar.ordinality(of: .day, in: .era, for: date) ?? 0) % questions.count]
         return DailyLesson(id: "osha-daily-\(question.id)", moduleTag: modules.first { $0.quiz.contains(question) }?.title ?? "Daily review", title: "A decision worth reviewing", subtitle: question.prompt, icon: "book", keyPoints: [question.explanation], regulation: question.reference.map { "\($0.title) \($0.section)" }, proTip: "Check current requirements and your employer's procedures before use.")
     }
+    func progressStage(for completed: Int) -> String {
+        switch completed {
+        case 0: return "Trainee"
+        case 1...2: return track == .airForce ? "Airman" : "Learner"
+        case 3...5: return "Inspector"
+        case 6...8: return "Lead Inspector"
+        default: return "Safety Advisor"
+        }
+    }
     var ppeScenarios: [PPEScenario] { track == .airForce ? PPELoadoutBank.allScenarios : Self.civilianPPE }
     var showsDAFTools: Bool { track == .airForce }
     static let civilianPPE = [

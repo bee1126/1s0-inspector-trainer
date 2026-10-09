@@ -145,7 +145,7 @@ final class ContentIntegrityTests: XCTestCase {
     }
     func testEveryOSHAContentSurfaceIsNeutral() {
         let catalog = ContentCatalog.visible(for: .osha)
-        var strings = [String]()
+        var strings = (0...catalog.modules.count).map { catalog.progressStage(for: $0) }
         for m in catalog.modules {
             strings += [m.title, m.subtitle] + m.tags + m.objectives
             strings += m.lessonPages.flatMap { [$0.title] + $0.bullets }

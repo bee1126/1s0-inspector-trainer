@@ -167,7 +167,7 @@ struct ProgressDashboardView: View {
                                 Image(systemName: "shield.checkered")
                                     .font(.system(size: 14, weight: .semibold))
                                     .foregroundColor(AppTheme.accent)
-                                Text("Current Rank:")
+                                Text(progress.selectedTrack == .osha ? "Learning stage:" : "Current Rank:")
                                     .font(AppFont.body(16))
                                     .foregroundColor(AppTheme.text.opacity(0.68))
                                 Text(rankTitle)
@@ -420,18 +420,7 @@ struct ProgressDashboardView: View {
     }
 
     private func rankTitle(for completed: Int) -> String {
-        switch completed {
-        case 0:
-            return "Trainee"
-        case 1...2:
-            return "Airman"
-        case 3...5:
-            return "Inspector"
-        case 6...8:
-            return "Lead Inspector"
-        default:
-            return "Safety Advisor"
-        }
+        progress.catalog.progressStage(for: completed)
     }
 
     private func proficiencyColor(for accuracy: Double) -> Color {
