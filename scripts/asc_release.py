@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import base64
+import hashlib
 import json
 import os
 import ssl
@@ -182,6 +183,85 @@ def default_ssl_context() -> ssl.SSLContext:
     if MACOS_CA_BUNDLE.exists():
         return ssl.create_default_context(cafile=str(MACOS_CA_BUNDLE))
     return ssl.create_default_context()
+
+
+def upload_screenshot(client: AscClient, set_id: str, path: Path,
+                      *, timeout_seconds: int = 300) -> dict[str, Any]:
+    """Reserve, upload all byte ranges, commit the MD5, and verify processing.
+
+    Failed reservations are removed so they cannot block review submission.
+    Existing screenshots are never deleted by this helper.
+    """
+    content = path.read_bytes()
+    if not content:
+        raise AscError(f"Empty screenshot: {path}")
+    screenshot = client.request("POST", "/appScreenshots", body={"data": {
+        "type": "appScreenshots",
+        "attributes": {"fileName": path.name, "fileSize": len(content)},
+        "relationships": {"appScreenshotSet": {
+            "data": {"type": "appScreenshotSets", "id": set_id}}},
+    }})["data"]
+    screenshot_id = screenshot["id"]
+    try:
+        operations = screenshot["attributes"].get("uploadOperations") or []
+        if not operations:
+            raise AscError("Reservation returned no upload operations")
+        covered = 0
+        for operation in sorted(operations, key=lambda op: op["offset"]):
+            offset, length = operation["offset"], operation["length"]
+            if offset != covered or length <= 0 or offset + length > len(content):
+                raise AscError("Invalid screenshot upload byte ranges")
+            if not operation["url"].startswith("https://"):
+                raise AscError("Screenshot upload requires HTTPS")
+            headers = {header["name"]: header["value"]
+                       for header in operation.get("requestHeaders", [])}
+            # Upload URLs are independently signed; never send the ASC JWT.
+            request = urllib.request.Request(
+                operation["url"], data=content[offset:offset + length],
+                method=operation["method"], headers=headers)
+            try:
+                with urllib.request.urlopen(request, timeout=60,
+                                            context=default_ssl_context()) as response:
+                    response.read()
+            except urllib.error.HTTPError as error:
+                raise AscError(f"Screenshot part upload failed: HTTP {error.code}") from None
+            except urllib.error.URLError:
+                raise AscError("Screenshot part upload failed: network error") from None
+            covered += length
+        if covered != len(content):
+            raise AscError("Upload operations did not cover the entire screenshot")
+        client.request("PATCH", f"/appScreenshots/{screenshot_id}", body={"data": {
+            "type": "appScreenshots", "id": screenshot_id,
+            "attributes": {"uploaded": True,
+                           "sourceFileChecksum": hashlib.md5(content).hexdigest()},
+        }})
+        deadline = time.monotonic() + timeout_seconds
+        while True:
+            result = client.request("GET", f"/appScreenshots/{screenshot_id}")["data"]
+            delivery = result["attributes"].get("assetDeliveryState") or {}
+            state = delivery.get("state")
+            if state == "COMPLETE":
+                return result
+            if state == "FAILED" or delivery.get("errors"):
+                raise AscError(f"Screenshot processing failed: {delivery}")
+            if time.monotonic() >= deadline:
+                raise AscError(f"Screenshot processing timed out: {state}")
+            time.sleep(5)
+    except Exception:
+        try:
+            client.request("DELETE", f"/appScreenshots/{screenshot_id}")
+        except Exception:
+            print(f"Cleanup required for screenshot {screenshot_id}", file=sys.stderr)
+        raise
+
+
+def command_upload_screenshot(args: argparse.Namespace) -> None:
+    result = upload_screenshot(client_from_env(), args.set_id, Path(args.file),
+                               timeout_seconds=args.timeout_seconds)
+    print_json("uploaded_screenshot", {
+        "id": result["id"], "fileName": result["attributes"]["fileName"],
+        "assetDeliveryState": result["attributes"]["assetDeliveryState"],
+    })
 
 
 def client_from_env() -> AscClient:
@@ -654,6 +734,12 @@ def build_parser() -> argparse.ArgumentParser:
 
     status = subparsers.add_parser("status", help="Show app versions and review submissions")
     status.set_defaults(func=command_status)
+
+    screenshot = subparsers.add_parser("upload-screenshot", help="Upload and verify one screenshot")
+    screenshot.add_argument("--set-id", required=True)
+    screenshot.add_argument("--file", required=True)
+    screenshot.add_argument("--timeout-seconds", type=int, default=300)
+    screenshot.set_defaults(func=command_upload_screenshot)
 
     listing = subparsers.add_parser("listing", help="Validate and apply all English listing metadata and automatic release")
     listing.add_argument("--version", required=True)
