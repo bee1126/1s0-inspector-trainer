@@ -1,0 +1,90 @@
+[
+  {
+    "file": "screenshots/ipad-13/01-track-picker.png",
+    "width": 2064,
+    "height": 2752,
+    "mode": "RGB",
+    "caption": "Choose your training track",
+    "device": "iPad Pro 13-inch (M5)",
+    "source_test": "TrackUITests/testScreenshots()",
+    "captured_at": 1791566141.202,
+    "sha256": "a036bd484152952b8c51e577463e8fd1785d2e7c83566cb691e17c96336e3c73"
+  },
+  {
+    "file": "screenshots/ipad-13/02-today-osha.png",
+    "width": 2064,
+    "height": 2752,
+    "mode": "RGB",
+    "caption": "Build practical judgment daily",
+    "device": "iPad Pro 13-inch (M5)",
+    "source_test": "TrackUITests/testScreenshots()",
+    "captured_at": 1791566147.753,
+    "sha256": "d7645d447d6189ef388ea57e7a430323e7bec2263e5cde825b87383679438bb6"
+  },
+  {
+    "file": "screenshots/ipad-13/03-osha-catalog.png",
+    "width": 2064,
+    "height": 2752,
+    "mode": "RGB",
+    "caption": "15 OSHA modules and 150 questions",
+    "device": "iPad Pro 13-inch (M5)",
+    "source_test": "TrackUITests/testScreenshots()",
+    "captured_at": 1791566155.393,
+    "sha256": "8108c74674e7964ba4134503489f54d14260b78a2ec46d3f4df09286387d7f22"
+  },
+  {
+    "file": "screenshots/ipad-13/04-quiz-explanation.png",
+    "width": 2064,
+    "height": 2752,
+    "mode": "RGB",
+    "caption": "Learn the decision and its source",
+    "device": "iPad Pro 13-inch (M5)",
+    "source_test": "TrackUITests/testScreenshots()",
+    "captured_at": 1791566162.277,
+    "sha256": "82325be6d7011ddd1d7a320348a63e7ece03a6dd509381807c5bb4f4731a00c6"
+  },
+  {
+    "file": "screenshots/ipad-13/05-hazard-risk-matrix.png",
+    "width": 2064,
+    "height": 2752,
+    "mode": "RGB",
+    "caption": "Record hazards and follow-up",
+    "device": "iPad Pro 13-inch (M5)",
+    "source_test": "TrackUITests/testScreenshots()",
+    "captured_at": 1791566172.336,
+    "sha256": "34563db46774c48cad7b0291d8c18b6e4839b206622e1c1a46f3c91dd09534ee"
+  },
+  {
+    "file": "screenshots/ipad-13/06-exam-debrief.png",
+    "width": 2064,
+    "height": 2752,
+    "mode": "RGB",
+    "caption": "Review results by topic",
+    "device": "iPad Pro 13-inch (M5)",
+    "source_test": "TrackUITests/testScreenshots()",
+    "captured_at": 1791566179.633,
+    "sha256": "a8fe6ab176074e6963174ab77976ca2727fb34fc90aeaf35d282542f162f9312"
+  },
+  {
+    "file": "screenshots/ipad-13/07-progress.png",
+    "width": 2064,
+    "height": 2752,
+    "mode": "RGB",
+    "caption": "Keep your progress across tracks",
+    "device": "iPad Pro 13-inch (M5)",
+    "source_test": "TrackUITests/testScreenshots()",
+    "captured_at": 1791566187.653,
+    "sha256": "03f6f4bfec1fa509a99bf60e58136cc167e3e151b0fab2d3c9c842ee154eabda"
+  },
+  {
+    "file": "screenshots/ipad-13/08-air-force-catalog.png",
+    "width": 2064,
+    "height": 2752,
+    "mode": "RGB",
+    "caption": "19 Air Force modules and 190 questions",
+    "device": "iPad Pro 13-inch (M5)",
+    "source_test": "TrackUITests/testScreenshots()",
+    "captured_at": 1791566196.761,
+    "sha256": "7269f308121234c1ceb9691ccbe8be37a6047f2365556f0c181eea439eb109aa"
+  }
+]

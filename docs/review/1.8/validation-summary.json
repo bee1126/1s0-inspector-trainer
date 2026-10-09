@@ -1,0 +1,55 @@
+{
+  "app_source_commit": "a7a904297268fb1889fd8cd91bdda141866ee3be",
+  "xcode": "27.0 (27A266a)",
+  "app_version": "1.8",
+  "build": "7",
+  "iphone": {
+    "result": "Passed",
+    "totalTestCount": 87,
+    "passedTests": 87,
+    "failedTests": 0,
+    "skippedTests": 0
+  },
+  "release_simulator_build": "Passed (arm64 and x86_64)",
+  "content_counts": {
+    "osha": {
+      "modules": 15,
+      "questions": 150
+    },
+    "airForce": {
+      "modules": 19,
+      "questions": 190
+    },
+    "unique_questions": 191
+  },
+  "commands": {
+    "iphone": "xcodebuild -scheme \"1S0 Inspector Trainer\" -project \"1S0 Inspector Trainer.xcodeproj\" -destination \"platform=iOS Simulator,id=B90A241D-B455-4334-82FF-351860F37AA5\" -parallel-testing-enabled NO -collect-test-diagnostics never test",
+    "ipad": "Same scheme and built products; test-without-building on iPad Pro 13-inch (M5), testScreenshots and testPickerAndRiskSummaryAtXXLDark",
+    "release": "xcodebuild -scheme \"1S0 Inspector Trainer\" -project \"1S0 Inspector Trainer.xcodeproj\" -configuration Release -destination \"generic/platform=iOS Simulator\" build"
+  },
+  "reference_device_check": "1910.22(d)(2) opened and highlighted in iPad Simulator Safari",
+  "pending_manual_checks": [
+    "VoiceOver spoken navigation on picker and risk matrix",
+    "External proxy trace of OSHA navigation before opening a reference"
+  ],
+  "ipad": {
+    "result": "Passed",
+    "totalTestCount": 2,
+    "passedTests": 2,
+    "failedTests": 0,
+    "skippedTests": 0
+  },
+  "screenshots": {
+    "iphone-6.9": {
+      "count": 8,
+      "width": 1320,
+      "height": 2868
+    },
+    "ipad-13": {
+      "count": 8,
+      "width": 2064,
+      "height": 2752
+    },
+    "format": "PNG RGB, no alpha"
+  }
+}
