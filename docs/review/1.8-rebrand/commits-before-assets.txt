@@ -1,0 +1,6 @@
+3ae8e8dc4c5b0cda7a2cf2f9579fc5126f147629 Rebrand app as SafetyFluent with a layered Liquid Glass icon
+5eb2bed565736fd9701e3c50bf5d3dd585a6908b Finalize SafetyFluent listing and website copy with track-specific counts
+dae5883a95897cff3c942da21fc9524ce60c150c Place the checkmark above the shield in the compiled icon
+0da9b33dd0d74b4dacfa08643e556ba2ef7e9b83 Add reproducible home-screen label captures for simulator QA
+ce673b5754a79247351715d15c9f913b0c379df8 Avoid overshooting the risk summary during accessibility QA
+6076022474d44773c063c0eb1517f2fcce457ea9 Make label captures independent of icon queries and preserve exact sRGB accents

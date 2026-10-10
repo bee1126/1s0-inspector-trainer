@@ -1,0 +1,160 @@
+{
+  "family": "iphone-6.9",
+  "sourceResultAttachments": "/Users/bah/Projects/safetyxp-1.8/validation2/verified-iphone-attachments",
+  "screenshots": [
+    {
+      "order": 1,
+      "file": "01-today.png",
+      "caption": "Safety training put into practice, five minutes a day",
+      "screen": "today",
+      "dimensions": [
+        1320,
+        2868
+      ],
+      "mode": "RGB",
+      "raw": "raw/01-today.png",
+      "sha256": "95866b1512d527f2269611096702a476c230d5487c19a6c7f75b4d2384f91a13",
+      "sourceAttachment": {
+        "configurationName": "Test Scheme Action",
+        "deviceId": "B90A241D-B455-4334-82FF-351860F37AA5",
+        "deviceName": "iPhone 17 Pro Max",
+        "exportedFileName": "016178AC-52FB-4F76-99AF-68E5722030D3.png",
+        "isAssociatedWithFailure": false,
+        "suggestedHumanReadableName": "today_0_422FB0F0-9F10-447E-91B7-315291F15262.png",
+        "timestamp": 1791614637.338
+      }
+    },
+    {
+      "order": 2,
+      "file": "02-track-picker.png",
+      "caption": "OSHA or Air Force. Pick your track.",
+      "screen": "picker",
+      "dimensions": [
+        1320,
+        2868
+      ],
+      "mode": "RGB",
+      "raw": "raw/02-track-picker.png",
+      "sha256": "da9fe583ecc78010138777a2353cf10d7676eeae119200ff90a29eebf7e705d8",
+      "sourceAttachment": {
+        "configurationName": "Test Scheme Action",
+        "deviceId": "B90A241D-B455-4334-82FF-351860F37AA5",
+        "deviceName": "iPhone 17 Pro Max",
+        "exportedFileName": "F47E5386-7330-4983-8856-2CC9875CB783.png",
+        "isAssociatedWithFailure": false,
+        "suggestedHumanReadableName": "picker_0_669E807F-0246-48F5-8277-B4AA19E47A85.png",
+        "timestamp": 1791614642.947
+      }
+    },
+    {
+      "order": 3,
+      "file": "03-learn.png",
+      "caption": "Bite-size modules, from LOTO to confined space",
+      "screen": "airforce",
+      "dimensions": [
+        1320,
+        2868
+      ],
+      "mode": "RGB",
+      "raw": "raw/03-learn.png",
+      "sha256": "89b87003ee4a224458c63445d7dca37f41090e280c56fc412bb70506a57f5840",
+      "sourceAttachment": {
+        "configurationName": "Test Scheme Action",
+        "deviceId": "B90A241D-B455-4334-82FF-351860F37AA5",
+        "deviceName": "iPhone 17 Pro Max",
+        "exportedFileName": "AF80F84E-B002-4397-92D1-FCA397E36FA7.png",
+        "isAssociatedWithFailure": false,
+        "suggestedHumanReadableName": "airforce_0_0CFAF1C8-F81B-43B5-9C77-BDA9CEEF7926.png",
+        "timestamp": 1791614648.639
+      }
+    },
+    {
+      "order": 4,
+      "file": "04-session-builder.png",
+      "caption": "Build your own study or exam session",
+      "screen": "builder",
+      "dimensions": [
+        1320,
+        2868
+      ],
+      "mode": "RGB",
+      "raw": "raw/04-session-builder.png",
+      "sha256": "216ea1e63866bb97b7ae2ae84fcdf8ebe80b87e1fdd46fd2fc7dd601dc48b62e",
+      "sourceAttachment": {
+        "configurationName": "Test Scheme Action",
+        "deviceId": "B90A241D-B455-4334-82FF-351860F37AA5",
+        "deviceName": "iPhone 17 Pro Max",
+        "exportedFileName": "3CDAB563-CBEB-4F4C-8900-CC0CABD362AE.png",
+        "isAssociatedWithFailure": false,
+        "suggestedHumanReadableName": "builder_0_2128A0C8-8937-43A9-ADEC-5686F3C4CE61.png",
+        "timestamp": 1791614653.796
+      }
+    },
+    {
+      "order": 5,
+      "file": "05-exam-debrief.png",
+      "caption": "See exactly where you're strong and where you're not",
+      "screen": "debrief",
+      "dimensions": [
+        1320,
+        2868
+      ],
+      "mode": "RGB",
+      "raw": "raw/05-exam-debrief.png",
+      "sha256": "5909044d995dd4e06abe504342a2f62eff1095b26f5c06278e30335d62fd0738",
+      "sourceAttachment": {
+        "configurationName": "Test Scheme Action",
+        "deviceId": "B90A241D-B455-4334-82FF-351860F37AA5",
+        "deviceName": "iPhone 17 Pro Max",
+        "exportedFileName": "DD912193-3118-4386-B893-34E68371F439.png",
+        "isAssociatedWithFailure": false,
+        "suggestedHumanReadableName": "debrief_0_0A73C56E-814A-4091-8221-E7CF01A7C40F.png",
+        "timestamp": 1791614659.767
+      }
+    },
+    {
+      "order": 6,
+      "file": "06-question-explanation.png",
+      "caption": "Every answer explained, with the official reference",
+      "screen": "quiz",
+      "dimensions": [
+        1320,
+        2868
+      ],
+      "mode": "RGB",
+      "raw": "raw/06-question-explanation.png",
+      "sha256": "23f0930ae5e6ab23c195e3ecf77026161097d609a83e7a9883230b25ab8a7f21",
+      "sourceAttachment": {
+        "configurationName": "Test Scheme Action",
+        "deviceId": "B90A241D-B455-4334-82FF-351860F37AA5",
+        "deviceName": "iPhone 17 Pro Max",
+        "exportedFileName": "5F00B12F-2AD0-402D-9F69-29003EE5C344.png",
+        "isAssociatedWithFailure": false,
+        "suggestedHumanReadableName": "quiz_0_C010CB0A-4738-4B6B-920D-3A60A6887C87.png",
+        "timestamp": 1791614664.555
+      }
+    },
+    {
+      "order": 7,
+      "file": "07-progress.png",
+      "caption": "XP, streaks, and levels that keep you coming back",
+      "screen": "progress",
+      "dimensions": [
+        1320,
+        2868
+      ],
+      "mode": "RGB",
+      "raw": "raw/07-progress.png",
+      "sha256": "560c3f3789d72fca968f275e8366406e53a9f7ff6a1c5f6f0e84ae7510cc7e89",
+      "sourceAttachment": {
+        "configurationName": "Test Scheme Action",
+        "deviceId": "B90A241D-B455-4334-82FF-351860F37AA5",
+        "deviceName": "iPhone 17 Pro Max",
+        "exportedFileName": "758B8EB3-3318-463E-9DA3-DC600C080E3F.png",
+        "isAssociatedWithFailure": false,
+        "suggestedHumanReadableName": "progress_0_FEAC3714-082A-463F-A22D-4767A0C7396E.png",
+        "timestamp": 1791614669.86
+      }
+    }
+  ]
+}

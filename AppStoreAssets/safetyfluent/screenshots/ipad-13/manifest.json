@@ -1,0 +1,116 @@
+{
+  "family": "ipad-13",
+  "sourceResultAttachments": "/Users/bah/Projects/safetyxp-1.8/validation2/ipad-attachments",
+  "screenshots": [
+    {
+      "order": 1,
+      "file": "01-today.png",
+      "caption": "Safety training put into practice, five minutes a day",
+      "screen": "today",
+      "dimensions": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "raw": "raw/01-today.png",
+      "sha256": "b9d09a34183e593880d2db8d06577f36f2b3c6d54ca265f3a85394d4a8456a5f",
+      "sourceAttachment": {
+        "configurationName": "Test Scheme Action",
+        "deviceId": "8193D5A9-8F8B-47AE-9112-D697F1B38C25",
+        "deviceName": "iPad Pro 13-inch (M5)",
+        "exportedFileName": "830A5275-7D31-4FCC-A598-88931BE3698F.png",
+        "isAssociatedWithFailure": false,
+        "suggestedHumanReadableName": "today_0_0AB4CC1A-C4F3-4685-B06F-293D5E72E661.png",
+        "timestamp": 1791615389.253
+      }
+    },
+    {
+      "order": 2,
+      "file": "02-learn.png",
+      "caption": "Bite-size modules, from LOTO to confined space",
+      "screen": "airforce",
+      "dimensions": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "raw": "raw/02-learn.png",
+      "sha256": "17e88fa11ab5751fad5d44bdc1f698fdf7dcba9d3e7435d08bc719000495f12f",
+      "sourceAttachment": {
+        "configurationName": "Test Scheme Action",
+        "deviceId": "8193D5A9-8F8B-47AE-9112-D697F1B38C25",
+        "deviceName": "iPad Pro 13-inch (M5)",
+        "exportedFileName": "7396D343-6183-45AF-9BAE-5B1C7DEE1988.png",
+        "isAssociatedWithFailure": false,
+        "suggestedHumanReadableName": "airforce_0_33DD0322-8873-4629-877F-BD47886B6EF6.png",
+        "timestamp": 1791615400.278
+      }
+    },
+    {
+      "order": 3,
+      "file": "03-session-builder.png",
+      "caption": "Build your own study or exam session",
+      "screen": "builder",
+      "dimensions": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "raw": "raw/03-session-builder.png",
+      "sha256": "21001b2b607e4ce8b2dd20ea5b385a70fd0f955466b4dbaa7b12ac3a4c1d3f7c",
+      "sourceAttachment": {
+        "configurationName": "Test Scheme Action",
+        "deviceId": "8193D5A9-8F8B-47AE-9112-D697F1B38C25",
+        "deviceName": "iPad Pro 13-inch (M5)",
+        "exportedFileName": "45BAD09A-965A-4CC0-A313-A84A77D519AC.png",
+        "isAssociatedWithFailure": false,
+        "suggestedHumanReadableName": "builder_0_9DAFE2BB-8391-4A81-8C88-AB50E6DEFA5E.png",
+        "timestamp": 1791615406.249
+      }
+    },
+    {
+      "order": 4,
+      "file": "04-exam-debrief.png",
+      "caption": "See exactly where you're strong and where you're not",
+      "screen": "debrief",
+      "dimensions": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "raw": "raw/04-exam-debrief.png",
+      "sha256": "01f5a57ef0ab8b34b1627600398e019be1572bee470c089dfdefb953d5977111",
+      "sourceAttachment": {
+        "configurationName": "Test Scheme Action",
+        "deviceId": "8193D5A9-8F8B-47AE-9112-D697F1B38C25",
+        "deviceName": "iPad Pro 13-inch (M5)",
+        "exportedFileName": "28D5FA05-D955-4A50-959D-E1F46E525764.png",
+        "isAssociatedWithFailure": false,
+        "suggestedHumanReadableName": "debrief_0_6B5FD344-0E87-472F-ACA2-588D0DE83541.png",
+        "timestamp": 1791615411.565
+      }
+    },
+    {
+      "order": 5,
+      "file": "05-progress.png",
+      "caption": "XP, streaks, and levels that keep you coming back",
+      "screen": "progress",
+      "dimensions": [
+        2064,
+        2752
+      ],
+      "mode": "RGB",
+      "raw": "raw/05-progress.png",
+      "sha256": "c237a540663d99745771ff0bfeb8eaa73c84ee335fc9e48fbcafde9095a46067",
+      "sourceAttachment": {
+        "configurationName": "Test Scheme Action",
+        "deviceId": "8193D5A9-8F8B-47AE-9112-D697F1B38C25",
+        "deviceName": "iPad Pro 13-inch (M5)",
+        "exportedFileName": "6CF4370E-7470-43B2-B2EB-CFE85CEE669F.png",
+        "isAssociatedWithFailure": false,
+        "suggestedHumanReadableName": "progress_0_3AC8296E-28E2-4022-A5E9-2E384D8C2B1E.png",
+        "timestamp": 1791615422.244
+      }
+    }
+  ]
+}

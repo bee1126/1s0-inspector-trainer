@@ -1,0 +1,64 @@
+{
+  "runtime": "iOS 26.5 (23F77)",
+  "appVersion": "1.8 (7)",
+  "displayName": "SafetyFluent",
+  "largestText": "accessibility-extra-extra-extra-large",
+  "labelResult": "Full on both tested devices at both tested text sizes",
+  "displayZoom": "Unavailable in both simulator Settings; physical-device check not performed",
+  "screenshots": [
+    {
+      "file": "iphone-17-pro-max-display-zoom-unavailable.png",
+      "dimensions": [
+        1320,
+        2868
+      ],
+      "mode": "RGB",
+      "sha256": "61045bbd4acaab9303f628ceffbfa886a1c73651e51a1e631724ad4056f76c4d"
+    },
+    {
+      "file": "iphone-17-pro-max-largest-text.png",
+      "dimensions": [
+        1320,
+        2868
+      ],
+      "mode": "RGB",
+      "sha256": "f592487da525ff00a3dba0591d627c66046e1026a47ecb2abc92a6019733b637"
+    },
+    {
+      "file": "iphone-17-pro-max-standard.png",
+      "dimensions": [
+        1320,
+        2868
+      ],
+      "mode": "RGB",
+      "sha256": "9279e55b0af9996cb8a17e8ebef6044e9ac51c7f5b8289977296f617e8b2d311"
+    },
+    {
+      "file": "iphone-17e-display-zoom-unavailable.png",
+      "dimensions": [
+        1170,
+        2532
+      ],
+      "mode": "RGB",
+      "sha256": "3fe1c6a392de27beb0a7201009376b3f7eb0f0f490aaba171cce0e24ab8699c6"
+    },
+    {
+      "file": "iphone-17e-largest-text.png",
+      "dimensions": [
+        1170,
+        2532
+      ],
+      "mode": "RGB",
+      "sha256": "f0dcd92d6be69af0b455c2b3e140cedcbe942577dd8f410b19215ab398a2c1cd"
+    },
+    {
+      "file": "iphone-17e-standard.png",
+      "dimensions": [
+        1170,
+        2532
+      ],
+      "mode": "RGB",
+      "sha256": "7c975b65ffe165d2cde4a05c0ce25b6d7ede9eedbe1b67162e806d0e88f3b2b1"
+    }
+  ]
+}
