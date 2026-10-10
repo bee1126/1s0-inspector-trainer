@@ -1,4 +1,4 @@
-# SafetyXP
+# SafetyFluent
 
 Native SwiftUI training for OSHA general industry and Air Force safety inspectors. iOS 17 or later, Apple frameworks only, no account, ads, analytics, or third-party SDKs.
 
@@ -25,8 +25,8 @@ Use an available simulator ID if that name is unavailable. If simulator executio
 xcodebuild -scheme "1S0 Inspector Trainer" -project "1S0 Inspector Trainer.xcodeproj" -destination "generic/platform=iOS Simulator" build
 ```
 
-[Content review and exact paragraph evidence](docs/ContentReview.md) • [1.8 validation](docs/release/SafetyXP18Validation.md) • [Local listing and icon assets](AppStoreAssets/safetyxp)
+[Content review and exact paragraph evidence](docs/ContentReview.md) • [1.8 validation](docs/release/SafetyFluent18Validation.md) • [Local listing and icon assets](AppStoreAssets/safetyfluent)
 
-`AppBrand.name` in `ContentCatalog.swift` is the shared name. For the InspectXP fallback, change that one line, then run `python3 scripts/sync_brand.py` to regenerate static bundle/site/listing outputs. CI can use `--check` to reject stale names.
+`AppBrand.shortName`, `storeName`, `tagline`, and `disclaimer` in `ContentCatalog.swift` define the shared brand. Run `python3 scripts/sync_brand.py --check` to validate the prepared bundle, site, and listing. The bundle ID, App Store record, repository name, and existing Support/Privacy URLs are unchanged.
 
-All content is paraphrased training material. Follow current official requirements and local procedures. Reference links require internet access; the bundled training and local reports work offline. The website in `docs/` and listing in `AppStoreAssets/safetyxp/` are prepared source files, not evidence of deployment or App Store publication.
+All content is paraphrased training material. Follow current official requirements and local procedures. Reference links require internet access; the bundled training and local reports work offline. The website in `docs/` and listing in `AppStoreAssets/safetyfluent/` are prepared source files, not evidence of deployment or App Store publication.
