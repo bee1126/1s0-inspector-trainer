@@ -4,7 +4,7 @@ import Foundation
 let root = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
 let output = root.appendingPathComponent("AppStoreAssets/safetyfluent")
 let catalog = root.appendingPathComponent("1S0 Inspector Trainer/Resources/Assets.xcassets/AppIcon.appiconset")
-func color(_ hex: UInt32) -> CGColor { CGColor(red: CGFloat((hex >> 16) & 255)/255, green: CGFloat((hex >> 8) & 255)/255, blue: CGFloat(hex & 255)/255, alpha: 1) }
+func color(_ hex: UInt32) -> CGColor { CGColor(colorSpace: CGColorSpace(name: CGColorSpace.sRGB)!, components: [CGFloat((hex >> 16) & 255)/255, CGFloat((hex >> 8) & 255)/255, CGFloat(hex & 255)/255, 1])! }
 func render(_ size: Int, _ variant: String, _ url: URL) {
     let c = CGContext(data: nil, width: size, height: size, bitsPerComponent: 8, bytesPerRow: size*4, space: CGColorSpace(name: CGColorSpace.sRGB)!, bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue)!
     c.scaleBy(x: CGFloat(size)/1024, y: CGFloat(size)/1024)
