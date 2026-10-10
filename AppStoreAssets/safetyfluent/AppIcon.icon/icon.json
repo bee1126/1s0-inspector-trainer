@@ -6,16 +6,16 @@
     {
       "layers": [
         {
-          "image-name": "shield.svg",
-          "name": "SafetyFluent shield"
+          "image-name": "accent.svg",
+          "name": "SafetyFluent accent"
         },
         {
           "image-name": "checkmark.svg",
           "name": "SafetyFluent checkmark"
         },
         {
-          "image-name": "accent.svg",
-          "name": "SafetyFluent accent"
+          "image-name": "shield.svg",
+          "name": "SafetyFluent shield"
         }
       ]
     }
