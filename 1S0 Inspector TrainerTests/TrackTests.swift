@@ -5,7 +5,7 @@ import PDFKit
 class TrackTestCase: XCTestCase {
     var defaults: UserDefaults!
     private var suite = ""
-    override func setUp() { super.setUp(); suite = "SafetyXP.tests.\(UUID())"; defaults = UserDefaults(suiteName: suite)!; defaults.removePersistentDomain(forName: suite) }
+    override func setUp() { super.setUp(); suite = "SafetyFluent.tests.\(UUID())"; defaults = UserDefaults(suiteName: suite)!; defaults.removePersistentDomain(forName: suite) }
     override func tearDown() { defaults.removePersistentDomain(forName: suite); defaults = nil; super.tearDown() }
     func fixture() throws -> [String: Any] {
         let url = try XCTUnwrap(Bundle(for: TrackMigrationTests.self).url(forResource: "v17-install", withExtension: "plist"))
@@ -169,7 +169,9 @@ final class ContentIntegrityTests: XCTestCase {
 }
 final class BrandingTests: XCTestCase {
     func testDisplayNameAndDisclaimer() {
-        XCTAssertEqual(AppBrand.name, "SafetyXP")
+        XCTAssertEqual(AppBrand.shortName, "SafetyFluent")
+        XCTAssertEqual(AppBrand.storeName, "SafetyFluent: Workplace Safety")
+        XCTAssertEqual(AppBrand.tagline, "Safety training put into practice.")
         XCTAssertEqual(Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String, AppBrand.name)
         for term in ["Department of the Air Force", "U.S. Air Force", "Department of Defense", "OSHA", "ISO"] { XCTAssertTrue(AppBrand.disclaimer.contains(term)) }
     }

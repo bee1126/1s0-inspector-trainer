@@ -1,8 +1,10 @@
 import Foundation
 
 enum AppBrand {
-    static let name = "SafetyXP" // One-line fallback: "InspectXP".
-    static let storeName = "\(name): Inspector Training"
+    static let shortName = "SafetyFluent"
+    static let name = shortName
+    static let tagline = "Safety training put into practice."
+    static let storeName = "\(shortName): Workplace Safety"
     static let about = "\(storeName). Built by Abdoul Bah, independent developer."
     static let disclaimer = "\(name) is an independent study aid made by an individual developer. It is not affiliated with, endorsed by, or an official product of the Department of the Air Force, the U.S. Air Force, the Department of Defense, OSHA or the U.S. Department of Labor, or ISO. It is not an OSHA Outreach Training Program course and does not issue OSHA 10/30 cards or any certification. Content paraphrases public standards and publications; always follow your employer's or unit's procedures and the most current official text."
 }

@@ -10,7 +10,7 @@ struct InspectorTrainerApp: App {
         WindowGroup {
             appContent
                 #if DEBUG
-                .preferredColorScheme(ProcessInfo.processInfo.environment["SAFETYXP_QA_DARK"] == "1" ? .dark : nil)
+                .preferredColorScheme(ProcessInfo.processInfo.environment["SAFETYFLUENT_QA_DARK"] == "1" ? .dark : nil)
                 #endif
                 .environmentObject(progress)
                 .environmentObject(deepLinkRouter)
@@ -23,7 +23,7 @@ struct InspectorTrainerApp: App {
 
     @ViewBuilder private var appContent: some View {
         #if DEBUG
-        if let screen = ProcessInfo.processInfo.environment["SAFETYXP_SCREENSHOT"] { ScreenshotScene(screen: screen) }
+        if let screen = ProcessInfo.processInfo.environment["SAFETYFLUENT_SCREENSHOT"] { ScreenshotScene(screen: screen) }
         else { RootView() }
         #else
         RootView()
@@ -32,16 +32,16 @@ struct InspectorTrainerApp: App {
     private static func makeProgress() -> ProgressStore {
         #if DEBUG
         let env = ProcessInfo.processInfo.environment
-        if let testID = env["SAFETYXP_UI_TEST"] ?? env["SAFETYXP_SCREENSHOT"] {
-            let suite = "SafetyXP.QA." + testID
+        if let testID = env["SAFETYFLUENT_UI_TEST"] ?? env["SAFETYFLUENT_SCREENSHOT"] {
+            let suite = "SafetyFluent.QA." + testID
             let defaults = UserDefaults(suiteName: suite)!
             defaults.removePersistentDomain(forName: suite)
-            if let encoded = env["SAFETYXP_LEGACY_FIXTURE"], let data = Data(base64Encoded: encoded),
+            if let encoded = env["SAFETYFLUENT_LEGACY_FIXTURE"], let data = Data(base64Encoded: encoded),
                let values = try? PropertyListSerialization.propertyList(from: data, format: nil) as? [String: Any] {
                 values.forEach { defaults.set($0.value, forKey: $0.key) }
             }
             let store = ProgressStore(defaults: defaults)
-            if let screen = env["SAFETYXP_SCREENSHOT"], screen != "picker" {
+            if let screen = env["SAFETYFLUENT_SCREENSHOT"], screen != "picker" {
                 store.selectTrack(screen == "airforce" ? .airForce : .osha)
                 store.dismissTrackBanner()
                 if screen == "debrief" || screen == "progress" || screen == "today" {

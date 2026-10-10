@@ -2,7 +2,7 @@ import XCTest
 
 final class TrackUITests: XCTestCase {
     private func launch(_ track: String? = nil) -> XCUIApplication {
-        let app = XCUIApplication(); app.launchEnvironment["SAFETYXP_UI_TEST"] = UUID().uuidString; app.launch()
+        let app = XCUIApplication(); app.launchEnvironment["SAFETYFLUENT_UI_TEST"] = UUID().uuidString; app.launch()
         XCTAssertTrue(app.buttons["track-continue"].waitForExistence(timeout: 20))
         XCTAssertFalse(app.buttons["track-continue"].isEnabled)
         if let track { app.buttons["track-\(track)"].tap(); app.buttons["track-continue"].tap() }
@@ -18,16 +18,16 @@ final class TrackUITests: XCTestCase {
         XCTAssertTrue(app.buttons["today-track-chip"].label.contains("OSHA"))
     }
     func testUpgradeShowsBannerAndNoPicker() throws {
-        let app = XCUIApplication(); app.launchEnvironment["SAFETYXP_UI_TEST"] = UUID().uuidString
+        let app = XCUIApplication(); app.launchEnvironment["SAFETYFLUENT_UI_TEST"] = UUID().uuidString
         let url = try XCTUnwrap(Bundle(for: Self.self).url(forResource: "v17-install", withExtension: "plist"))
-        app.launchEnvironment["SAFETYXP_LEGACY_FIXTURE"] = try Data(contentsOf: url).base64EncodedString(); app.launch()
+        app.launchEnvironment["SAFETYFLUENT_LEGACY_FIXTURE"] = try Data(contentsOf: url).base64EncodedString(); app.launch()
         XCTAssertTrue(app.staticTexts["New: an OSHA / Civilian track. Switch in Settings."].waitForExistence(timeout: 20))
         XCTAssertFalse(app.buttons["track-continue"].exists)
     }
     func testPickerAndRiskSummaryAtXXLDark() throws {
         for screen in ["picker", "hazard"] {
             let app = XCUIApplication()
-            app.launchEnvironment["SAFETYXP_SCREENSHOT"] = screen
+            app.launchEnvironment["SAFETYFLUENT_SCREENSHOT"] = screen
             app.launch()
             XCTAssertTrue(app.wait(for: .runningForeground, timeout: 20))
             // Audit custom picker typography across the full range. Native Form
@@ -36,7 +36,7 @@ final class TrackUITests: XCTestCase {
             try app.performAccessibilityAudit(for: screen == "picker" ? [.sufficientElementDescription, .dynamicType] : [.sufficientElementDescription])
             let standardLabelHeight = screen == "hazard" ? app.staticTexts["Imminent danger"].firstMatch.frame.height : 0
             app.terminate()
-            app.launchEnvironment["SAFETYXP_QA_DARK"] = "1"
+            app.launchEnvironment["SAFETYFLUENT_QA_DARK"] = "1"
             app.launchArguments += ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryXXL"]
             app.launch()
             if screen == "picker" {
@@ -54,8 +54,8 @@ final class TrackUITests: XCTestCase {
         }
     }
     func testScreenshots() {
-        for screen in ["picker", "today", "catalog", "quiz", "hazard", "debrief", "progress", "airforce"] {
-            let app = XCUIApplication(); app.launchEnvironment["SAFETYXP_SCREENSHOT"] = screen; app.launch()
+        for screen in ["today", "picker", "airforce", "builder", "debrief", "quiz", "progress", "hazard"] {
+            let app = XCUIApplication(); app.launchEnvironment["SAFETYFLUENT_SCREENSHOT"] = screen; app.launch()
             if screen == "picker" { XCTAssertTrue(app.buttons["track-continue"].waitForExistence(timeout: 20)) }
             else { XCTAssertTrue(app.navigationBars.firstMatch.waitForExistence(timeout: 20)) }
             if screen == "progress" { XCTAssertFalse(app.staticTexts["Airman"].exists) }

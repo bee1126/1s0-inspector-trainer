@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F1A818000000000000000001 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = F1A818000000000000000002 /* AppIcon.icon */; };
 		05913B87B18360AF583623ED /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 9B985BD79A7D2983D60E5E5A /* PrivacyInfo.xcprivacy */; };
 		0E91ED6632454A578EE1F04D /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AEBFFBDDE847C4A5C225B5 /* Components.swift */; };
 		184A33BE966D40AC984D48F9 /* TrainingRole.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0C3EDD2069644FCA0930019 /* TrainingRole.swift */; };
@@ -91,13 +92,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F1A818000000000000000002 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.icon; path = AppStoreAssets/safetyfluent/AppIcon.icon; sourceTree = SOURCE_ROOT; };
 		0468BD1193644207B5426AC2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		072153175F864C95A13A7416 /* ModuleFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleFlowView.swift; sourceTree = "<group>"; };
 		0F087354F1FB468AB89CEEBD /* TrainingModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingModels.swift; sourceTree = "<group>"; };
 		11A6F504FDC7B30AD0872959 /* ContentCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "1S0 Inspector Trainer/Models/ContentCatalog.swift"; sourceTree = SOURCE_ROOT; };
 		19302FDEB72143C5A663AE4E /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
 		1B55B06176264F239FEAABC9 /* ToolsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsView.swift; sourceTree = "<group>"; };
-		23073D27D0EF1E2C316BBD98 /* SafetyXPUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SafetyXPUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		23073D27D0EF1E2C316BBD98 /* SafetyFluentUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SafetyFluentUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		23300B9FDEF1494197E818B3 /* AppFeedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeedback.swift; sourceTree = "<group>"; };
 		24AEBEDADFC9A5EE253C1BC0 /* LocalHazardReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "1S0 Inspector Trainer/Models/LocalHazardReport.swift"; sourceTree = SOURCE_ROOT; };
 		2691524A045503D65B6C5FFE /* DeepLinkRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkRouter.swift; sourceTree = "<group>"; };
@@ -119,7 +121,7 @@
 		82B3542E911F480904DD728E /* TrainingHubViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingHubViews.swift; sourceTree = "<group>"; };
 		8B61CBA9B08E4B2C90ECD50B /* SourcesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourcesView.swift; sourceTree = "<group>"; };
 		8BAAC854C3FE4083A46821F8 /* TrainingContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingContent.swift; sourceTree = "<group>"; };
-		9539247B0E621F4E7DAAFF80 /* TrackUITests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TrackUITests.swift; path = SafetyXPUITests/TrackUITests.swift; sourceTree = "<group>"; };
+		9539247B0E621F4E7DAAFF80 /* TrackUITests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TrackUITests.swift; path = SafetyFluentUITests/TrackUITests.swift; sourceTree = "<group>"; };
 		9B5CF336337C6BFFF7652BEE /* OSHAExpansion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "1S0 Inspector Trainer/Models/OSHAExpansion.swift"; sourceTree = SOURCE_ROOT; };
 		9B985BD79A7D2983D60E5E5A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A11CC3557B9E4A7D8F612340 /* AccessibilityCopy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityCopy.swift; sourceTree = "<group>"; };
@@ -246,7 +248,7 @@
 			children = (
 				C506A214268B476AB97AFCF9 /* 1S0 Inspector Trainer.app */,
 				745F612C42314496B474DCAD3B30A012 /* 1S0 Inspector TrainerTests.xctest */,
-				23073D27D0EF1E2C316BBD98 /* SafetyXPUITests.xctest */,
+				23073D27D0EF1E2C316BBD98 /* SafetyFluentUITests.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -286,6 +288,7 @@
 		C15083C0F3D94AE09873BD8B = {
 			isa = PBXGroup;
 			children = (
+				F1A818000000000000000002 /* AppIcon.icon */,
 				3C642D13FB8F405FAE878EF0 /* 1S0 Inspector Trainer */,
 				2A26C8A311474A2881B559F9D3F1501B /* 1S0 Inspector TrainerTests */,
 				80242FCCE50E4387A7C830B9 /*  */,
@@ -353,9 +356,9 @@
 			productReference = 745F612C42314496B474DCAD3B30A012 /* 1S0 Inspector TrainerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		DC46EB76BB0733F0F331ACD7 /* SafetyXPUITests */ = {
+		DC46EB76BB0733F0F331ACD7 /* SafetyFluentUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 596BD3832C476DEE8A010B9D /* Build configuration list for PBXNativeTarget "SafetyXPUITests" */;
+			buildConfigurationList = 596BD3832C476DEE8A010B9D /* Build configuration list for PBXNativeTarget "SafetyFluentUITests" */;
 			buildPhases = (
 				4B8A7F569B3CA0D239783113 /* Sources */,
 				025EC49986C8BB4307798BF1 /* Frameworks */,
@@ -366,9 +369,9 @@
 			dependencies = (
 				9415A88B166A9FEDB2654262 /* PBXTargetDependency */,
 			);
-			name = SafetyXPUITests;
-			productName = SafetyXPUITests;
-			productReference = 23073D27D0EF1E2C316BBD98 /* SafetyXPUITests.xctest */;
+			name = SafetyFluentUITests;
+			productName = SafetyFluentUITests;
+			productReference = 23073D27D0EF1E2C316BBD98 /* SafetyFluentUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 		EBB4F50E21FC4E5D918D0003 /* 1S0 Inspector Trainer */ = {
@@ -422,7 +425,7 @@
 			targets = (
 				EBB4F50E21FC4E5D918D0003 /* 1S0 Inspector Trainer */,
 				6B9DF976ADDB412281C53AAACD2F21B7 /* 1S0 Inspector TrainerTests */,
-				DC46EB76BB0733F0F331ACD7 /* SafetyXPUITests */,
+				DC46EB76BB0733F0F331ACD7 /* SafetyFluentUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -433,6 +436,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C9CB5AC29954FB895B07BB2 /* Assets.xcassets in Resources */,
+				F1A818000000000000000001 /* AppIcon.icon in Resources */,
 				05913B87B18360AF583623ED /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -606,7 +610,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 7;
 				INFOPLIST_FILE = "1S0 Inspector Trainer/Resources/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "1S0 Inspector Trainer";
+				INFOPLIST_KEY_CFBundleDisplayName = SafetyFluent;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -646,7 +650,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 7;
 				INFOPLIST_FILE = "1S0 Inspector Trainer/Resources/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "1S0 Inspector Trainer";
+				INFOPLIST_KEY_CFBundleDisplayName = SafetyFluent;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -768,7 +772,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		596BD3832C476DEE8A010B9D /* Build configuration list for PBXNativeTarget "SafetyXPUITests" */ = {
+		596BD3832C476DEE8A010B9D /* Build configuration list for PBXNativeTarget "SafetyFluentUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				441A906AB44E364A227FDF2D /* Release */,

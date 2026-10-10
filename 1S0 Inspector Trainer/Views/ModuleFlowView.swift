@@ -376,7 +376,7 @@ struct CompletionView: View {
                     Button("Share Challenge") {
                         let appName = AppBrand.name
                         let verb = passed ? "completed" : "attempted"
-                        let text = "I \(verb) \(moduleTitle) with a score of \(score)% in the \(appName)."
+                        let text = "I \(verb) \(moduleTitle) with a score of \(score)% in \(appName). \(AppBrand.tagline)"
                         shareItems = [text]
                         showShareSheet = true
                     }

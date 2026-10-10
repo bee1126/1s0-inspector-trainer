@@ -55,8 +55,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "DC46EB76BB0733F0F331ACD7"
-               BuildableName = "SafetyXPUITests.xctest"
-               BlueprintName = "SafetyXPUITests"
+               BuildableName = "SafetyFluentUITests.xctest"
+               BlueprintName = "SafetyFluentUITests"
                ReferencedContainer = "container:1S0 Inspector Trainer.xcodeproj">
             </BuildableReference>
          </TestableReference>

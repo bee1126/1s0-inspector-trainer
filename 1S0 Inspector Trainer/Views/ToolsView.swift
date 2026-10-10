@@ -31,6 +31,7 @@ struct ToolsView: View {
                     Button { showTrackSettings = true } label: { ToolCard(title: "Training track", detail: progress.selectedTrack?.title ?? "Choose a track") }.buttonStyle(.plain)
                     GlassCard { VStack(alignment: .leading, spacing: 12) {
                         Text(AppBrand.about).font(.headline)
+                        Text(AppBrand.tagline).font(.subheadline)
                         Link("abdoulbah1126@gmail.com", destination: URL(string: "mailto:abdoulbah1126@gmail.com")!)
                         Text(AppBrand.disclaimer).font(.footnote).foregroundStyle(.secondary)
                     } }

@@ -1,0 +1,28 @@
+{
+  "fill": {
+    "solid": "srgb:0.06275,0.09412,0.12941,1.00000"
+  },
+  "groups": [
+    {
+      "layers": [
+        {
+          "image-name": "shield.svg",
+          "name": "SafetyFluent shield"
+        },
+        {
+          "image-name": "checkmark.svg",
+          "name": "SafetyFluent checkmark"
+        },
+        {
+          "image-name": "accent.svg",
+          "name": "SafetyFluent accent"
+        }
+      ]
+    }
+  ],
+  "supported-platforms": {
+    "squares": [
+      "iOS"
+    ]
+  }
+}

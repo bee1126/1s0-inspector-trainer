@@ -13,7 +13,7 @@ struct TrackPickerView: View {
                         Image(systemName: "checkmark.shield").font(.system(size: 44)).foregroundStyle(AppTheme.primary).accessibilityHidden(true)
                         Text(AppBrand.name).font(.largeTitle.bold())
                         Text("Choose your training track").font(.title2.bold())
-                        Text("Build practical judgment, one session at a time.").foregroundStyle(.secondary)
+                        Text(AppBrand.tagline).foregroundStyle(.secondary)
                         ForEach(Track.allCases) { track in
                             Button { selection = track } label: {
                                 GlassCard {

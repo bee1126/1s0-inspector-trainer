@@ -11,9 +11,10 @@ struct ScreenshotScene: View {
         else if screen == "today" { RootView() }
         else if screen == "catalog" || screen == "airforce" { RootView(initialTab: 1) }
         else if screen == "progress" { RootView(initialTab: 4) }
-        else if screen == "hazard" { LocalHazardEditor(report: Self.report, store: LocalHazardReportStore(directory: FileManager.default.temporaryDirectory.appendingPathComponent("SafetyXP-screenshot-reports"))) }
+        else if screen == "hazard" { LocalHazardEditor(report: Self.report, store: LocalHazardReportStore(directory: FileManager.default.temporaryDirectory.appendingPathComponent("SafetyFluent-screenshot-reports"))) }
         else { NavigationStack {
             switch screen {
+            case "builder": StudyBuilderView()
             case "quiz":
                 ZStack { BackgroundView(); ScrollView {
                     VStack(alignment: .leading, spacing: 20) {
