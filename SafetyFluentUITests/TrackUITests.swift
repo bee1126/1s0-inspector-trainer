@@ -68,4 +68,21 @@ final class TrackUITests: XCTestCase {
             app.terminate()
         }
     }
+    func testHomeScreenLabelCapture() {
+        let app = launch("osha")
+        XCTAssertTrue(app.buttons["today-track-chip"].waitForExistence(timeout: 10))
+        XCUIDevice.shared.press(.home)
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        let icon = springboard.icons["SafetyFluent"].firstMatch
+        for _ in 0..<3 {
+            if icon.exists && icon.isHittable { break }
+            springboard.swipeLeft()
+        }
+        XCTAssertTrue(icon.exists && icon.isHittable)
+        // Accessibility retains full labels even if visually truncated. The
+        // screenshot must be reviewed separately; this assertion is not that review.
+        let shot = XCTAttachment(screenshot: springboard.screenshot())
+        shot.name = "home-screen"; shot.lifetime = .keepAlways; add(shot)
+    }
+
 }
