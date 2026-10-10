@@ -46,8 +46,13 @@ final class TrackUITests: XCTestCase {
             } else {
                 XCTAssertTrue(app.textFields["Location or area"].waitForExistence(timeout: 20))
                 XCTAssertGreaterThan(app.staticTexts["Imminent danger"].firstMatch.frame.height, standardLabelHeight)
-                app.swipeUp()
-                XCTAssertTrue(app.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS %@", "Risk level: Medium")).firstMatch.exists)
+                let risk = app.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS %@", "Risk level: Medium")).firstMatch
+                // Short, bounded scrolls avoid overshooting the lazily loaded Form section.
+                for _ in 0..<5 {
+                    if risk.exists { break }
+                    app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.75)).press(forDuration: 0.1, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.45)))
+                }
+                XCTAssertTrue(risk.exists)
             }
             let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "XXL-dark-" + screen; shot.lifetime = .keepAlways; add(shot)
             app.terminate()
